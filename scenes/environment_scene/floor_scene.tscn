@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://b4lmfhnv3qefn"]
+
+[ext_resource type="Texture2D" uid="uid://clt54c0amqpp" path="res://assets/sprites/environment/Terrain (16x16).png" id="1_hdr4l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hdr4l"]
+size = Vector2(48, 10)
+
+[node name="FloorScene" type="Area2D" unique_id=1432407782]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1065406673]
+texture = ExtResource("1_hdr4l")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 9)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=911803485]
+shape = SubResource("RectangleShape2D_hdr4l")

@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dqi7bo55oh5cp"]
+
+[ext_resource type="PackedScene" uid="uid://dfiomxa4fli0f" path="res://scenes/player_scene/player_scene.tscn" id="1_awkfx"]
+[ext_resource type="PackedScene" uid="uid://boe26ixwk1fjm" path="res://scenes/test_rooms/test_room1.tscn" id="2_ujilw"]
+
+[node name="TestScene" type="Node" unique_id=345745939]
+
+[node name="PlayerScene" parent="." unique_id=2098649948 instance=ExtResource("1_awkfx")]
+
+[node name="TestRoom1" parent="." unique_id=929027271 instance=ExtResource("2_ujilw")]
