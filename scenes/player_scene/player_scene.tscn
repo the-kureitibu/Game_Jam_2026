@@ -8,9 +8,10 @@
 script = ExtResource("2_qr5f1")
 metadata/_custom_type_script = "uid://rc0p3ykjd7ra"
 
-[node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871]
+[node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871 node_paths=PackedStringArray("p_sprite")]
 script = ExtResource("1_w7gii")
 stats = SubResource("Resource_qr5f1")
+p_sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=235654134]
 texture = ExtResource("1_2uwvc")

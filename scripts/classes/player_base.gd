@@ -6,6 +6,8 @@ class_name PlayerBase
 enum PlayerState {
 	RUN,
 	ATTACKING,
+	HUMAN_FORM,
+	SPIDER_FORM,
 	HIT,
 	RAGE,
 	IDLE,
@@ -17,6 +19,12 @@ enum PlayerState {
 }
 #endregion
 
+
 func death() -> void:
 	pass
-	
+
+func to_human() -> void:
+	pass
+
+func to_spider() -> void:
+	pass
