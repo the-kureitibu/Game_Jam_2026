@@ -2,13 +2,19 @@
 
 [ext_resource type="Texture2D" uid="uid://b0kcclg6lim23" path="res://assets/sprites/player/saintmiya_main_sprite.png" id="1_2uwvc"]
 [ext_resource type="Script" uid="uid://s1qvrey745ir" path="res://scenes/player_scene/player_scene.gd" id="1_w7gii"]
+[ext_resource type="Script" uid="uid://rc0p3ykjd7ra" path="res://resources/player/player_stats.gd" id="2_qr5f1"]
 
-[node name="PlayerScene" type="Node2D" unique_id=2098649948]
+[sub_resource type="Resource" id="Resource_qr5f1"]
+script = ExtResource("2_qr5f1")
+metadata/_custom_type_script = "uid://rc0p3ykjd7ra"
+
+[node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871]
 script = ExtResource("1_w7gii")
+stats = SubResource("Resource_qr5f1")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=235654134]
 texture = ExtResource("1_2uwvc")
-offset = Vector2(0, -48)
+offset = Vector2(0, -43)
 region_enabled = true
 region_rect = Rect2(1.0470428, 1.2226563, 121.95296, 95.77734)
 

@@ -1,12 +1,22 @@
-extends Node
+extends CharacterBody2D
 
 class_name PlayerBase
 
-var player_health: int
-var player_speed: float
-var player_damage: int
+#region enum state
+enum PlayerState {
+	RUN,
+	ATTACKING,
+	HIT,
+	RAGE,
+	IDLE,
+	JUMPING,
+	COMBO_ATTACK,
+	DIED,
+	REVIVING
+	
+}
+#endregion
 
-func _init(p_health: int, p_speed: float, p_damage: int) -> void:
-	player_health = p_health
-	player_speed = p_speed
-	player_damage = p_damage
+func death() -> void:
+	pass
+	
