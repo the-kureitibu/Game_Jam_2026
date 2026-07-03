@@ -19,7 +19,7 @@ enum PlayerState {
 }
 #endregion
 
-func set_timer(timer: float, delta) -> void:
+func set_timer(timer: float) -> float:
 	return max(timer, 0.0)
 
 func death() -> void:
