@@ -23,7 +23,7 @@ var can_dash: bool
 
 #region References Vars
 
-@onready var p_attk_sprite: Sprite2D = $AttkSprite
+@onready var p_attk_sprite: Sprite2D = $MainSprite
 
 #endregion
 
