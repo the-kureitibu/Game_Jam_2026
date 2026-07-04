@@ -17,8 +17,14 @@ extends PlayerBase
 var p_direction: float = 0.0
 var can_dash: bool 
 
-
 #endregion 
+
+#region References Vars
+
+@onready var p_attk_sprite: Sprite2D = $AttkSprite
+
+#endregion
+
 
 #region Consts
 

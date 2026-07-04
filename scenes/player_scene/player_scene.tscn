@@ -27,20 +27,54 @@ animations = [{
 radius = 19.0
 height = 88.0
 
+[sub_resource type="Animation" id="Animation_gdmn6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AttkSprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(128, 0, 128, 95)]
+}
+
 [sub_resource type="Animation" id="Animation_qr5f1"]
-resource_name = "test"
+resource_name = "attack_anim"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AttkSprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.43333334),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Rect2(0, 0, 128, 95), Rect2(128, 0, 128, 95), Rect2(256, 0, 128, 95)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gdmn6"]
 _data = {
-&"test": SubResource("Animation_qr5f1")
+&"RESET": SubResource("Animation_gdmn6"),
+&"attack_anim": SubResource("Animation_qr5f1")
 }
 
-[node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871 node_paths=PackedStringArray("p_sprite")]
+[node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871]
 script = ExtResource("1_w7gii")
 stats = SubResource("Resource_qr5f1")
-p_sprite = NodePath("")
+
+[node name="AttkSprite" type="Sprite2D" parent="." unique_id=94083200]
+position = Vector2(0, -45)
+texture = ExtResource("1_2uwvc")
+region_enabled = true
+region_rect = Rect2(128, 0, 128, 95)
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=445073929]
+visible = false
 sprite_frames = SubResource("SpriteFrames_gdmn6")
 offset = Vector2(0, -45)
 
