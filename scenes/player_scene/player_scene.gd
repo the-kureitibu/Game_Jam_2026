@@ -10,10 +10,13 @@ extends PlayerBase
 @export var r_per_attk: int
 @export var p_sprite: Sprite2D
 @export var p_jump_h: float
-@export var p_state: PlayerBase.PlayerState = PlayerState.IDLE
+@export var p_move_state: PlayerBase.PlayerMoveState = PlayerMoveState.IDLE
+@export var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE
 @export var p_gravity: float = -680.0
 
 var p_direction: float = 0.0
+var can_dash: bool 
+
 
 #endregion 
 
@@ -35,7 +38,7 @@ const UP_DIRECTION: Vector2 = Vector2.UP
 #endregion 
 
 #region Test vars
-var p_cur_state = p_state
+var p_cur_state = p_move_state
 
 #endregion 
 
@@ -54,12 +57,11 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 
-	
+	reduce_timer(delta)
 	apply_gravity(delta)
 	player_move()
 	player_jump()
-	change_p_state()
-	view_state()
+	change_move_state()
 
 	
 #region Base movement
@@ -87,43 +89,34 @@ func apply_gravity(delta) -> void:
 
 #region Player States 
 
-func change_p_state() -> void:
+func change_move_state() -> void:
 	if !is_on_floor():
-		p_state = PlayerState.JUMPING
+		p_move_state = PlayerMoveState.JUMP
 	elif velocity.x != 0:
-		p_state = PlayerState.RUN
+		p_move_state = PlayerMoveState.RUN
 	else:
-		p_state = PlayerState.IDLE
+		p_move_state = PlayerMoveState.IDLE
+		
+	print(p_move_state)
 
+func change_action_state(new_state) -> void:
+	if p_action_state == new_state:
+		return
+	
+	p_action_state = new_state
+	print(p_action_state)
 
 #endregion 
 
 #region Timers func
 
-func update_timers(timer_res: float, delta: float) -> void:
-	match timer_res:
-		stats.attk_combo_timer:
-			if attk_c_timer != 0:
-				attk_c_timer -= delta
-	
-			
-
-	#attk_c_timer = set_timer(stats.attk_combo_timer)
-	#print(attk_c_timer)
-	#d_timer = set_timer(stats.dash_timer)
-	#r_timer = set_timer(stats.rage_timer)
-	#r_cd_timer = set_timer(stats.rage_cd_timer)
-	#s1_timer = set_timer(stats.s1_cd_timer)
-	#s2_timer = set_timer(stats.s2_cd_timer)
-
-func set_timers() -> void:
-	attk_c_timer = set_timer(stats.attk_combo_timer)
-	print(attk_c_timer)
-	d_timer = set_timer(stats.dash_timer)
-	r_timer = set_timer(stats.rage_timer)
-	r_cd_timer = set_timer(stats.rage_cd_timer)
-	s1_timer = set_timer(stats.s1_cd_timer)
-	s2_timer = set_timer(stats.s2_cd_timer)
+func reduce_timer(delta: float) -> void:
+	attk_c_timer = set_timer(stats.attk_combo_timer, delta)
+	d_timer = set_timer(stats.dash_timer, delta)
+	r_timer = set_timer(stats.rage_timer, delta)
+	r_cd_timer = set_timer(stats.rage_cd_timer, delta)
+	s1_timer = set_timer(stats.s1_cd_timer, delta)
+	s2_timer = set_timer(stats.s2_cd_timer, delta)
 
 #endregion
 

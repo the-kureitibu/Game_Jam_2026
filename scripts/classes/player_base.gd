@@ -2,25 +2,39 @@ extends CharacterBody2D
 
 class_name PlayerBase
 
-#region enum state
-enum PlayerState {
+#region Enums States
+
+enum PlayerMoveState {
 	RUN,
-	ATTACKING,
-	HUMAN_FORM,
-	SPIDER_FORM,
-	HIT,
-	RAGE,
 	IDLE,
-	JUMPING,
+	JUMP,
+	FALL,
+	DASH,
+	KNOCKBACK
+}
+
+enum PlayerActionState {
+	RAGE_TRANSFORM,
+	ATTACK,
 	COMBO_ATTACK,
-	DIED,
-	REVIVING
-	
+	HURT,
+	SKILL_1,
+	SKILL_2,
+	DEAD,
+	REVIVE,
+	NONE,
+}
+
+enum PlayerFormState {
+	HUMAN_FORM,
+	RAGE_CD,
+	SPIDER_FORM,
 }
 #endregion
 
-func set_timer(timer: float) -> float:
-	return max(timer, 0.0)
+
+func set_timer(timer: float, delta: float) -> float:
+	return max(timer - delta, 0.0)
 
 func death() -> void:
 	pass

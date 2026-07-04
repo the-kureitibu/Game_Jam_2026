@@ -8,15 +8,47 @@
 script = ExtResource("2_qr5f1")
 metadata/_custom_type_script = "uid://rc0p3ykjd7ra"
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_qr5f1"]
+atlas = ExtResource("1_2uwvc")
+region = Rect2(0, 0, 128, 94)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gdmn6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qr5f1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_10rhv"]
+radius = 19.0
+height = 88.0
+
+[sub_resource type="Animation" id="Animation_qr5f1"]
+resource_name = "test"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gdmn6"]
+_data = {
+&"test": SubResource("Animation_qr5f1")
+}
+
 [node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871 node_paths=PackedStringArray("p_sprite")]
 script = ExtResource("1_w7gii")
 stats = SubResource("Resource_qr5f1")
-p_sprite = NodePath("Sprite2D")
+p_sprite = NodePath("")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=235654134]
-texture = ExtResource("1_2uwvc")
-offset = Vector2(0, -43)
-region_enabled = true
-region_rect = Rect2(1.0470428, 1.2226563, 121.95296, 95.77734)
+[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=445073929]
+sprite_frames = SubResource("SpriteFrames_gdmn6")
+offset = Vector2(0, -45)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=35895923]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=457907004]
+position = Vector2(0, -44)
+shape = SubResource("CapsuleShape2D_10rhv")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=390354101]
+libraries/ = SubResource("AnimationLibrary_gdmn6")
