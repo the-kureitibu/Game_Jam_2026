@@ -3,23 +3,79 @@
 [ext_resource type="Texture2D" uid="uid://b0kcclg6lim23" path="res://assets/sprites/player/saintmiya_main_sprite.png" id="1_2uwvc"]
 [ext_resource type="Script" uid="uid://s1qvrey745ir" path="res://scenes/player_scene/player_scene.gd" id="1_w7gii"]
 [ext_resource type="Script" uid="uid://rc0p3ykjd7ra" path="res://resources/player/player_stats.gd" id="2_qr5f1"]
+[ext_resource type="Texture2D" uid="uid://6gld3f250kl5" path="res://assets/sprites/player/saintmiya_main_sprite2.png" id="4_gdmn6"]
+[ext_resource type="PackedScene" uid="uid://dg8083i8qh8us" path="res://scenes/projectiles_scene/cross_projectile.tscn" id="5_10rhv"]
 
 [sub_resource type="Resource" id="Resource_qr5f1"]
 script = ExtResource("2_qr5f1")
 metadata/_custom_type_script = "uid://rc0p3ykjd7ra"
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qr5f1"]
-atlas = ExtResource("1_2uwvc")
+[sub_resource type="AtlasTexture" id="AtlasTexture_10rhv"]
+atlas = ExtResource("4_gdmn6")
 region = Rect2(0, 0, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l2g17"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(128, 0, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_epsfl"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(256, 0, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gdmn6"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(384, 0, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5kvy6"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(512, 0, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cft5a"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(640, 0, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gack1"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(768, 0, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kn2tg"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(896, 0, 128, 94)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gdmn6"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qr5f1")
+"texture": SubResource("AtlasTexture_10rhv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l2g17")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_epsfl")
 }],
-"loop": true,
-"name": &"default",
+"loop": false,
+"name": &"attk_combo_1",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gdmn6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5kvy6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cft5a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gack1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kn2tg")
+}],
+"loop": false,
+"name": &"attk_combo_2",
 "speed": 5.0
 }]
 
@@ -142,6 +198,7 @@ script = ExtResource("1_w7gii")
 stats = SubResource("Resource_qr5f1")
 
 [node name="AttkSprite" type="Sprite2D" parent="." unique_id=94083200]
+visible = false
 position = Vector2(0, -45)
 texture = ExtResource("1_2uwvc")
 region_enabled = true
@@ -155,9 +212,12 @@ region_enabled = true
 region_rect = Rect2(645, 0, 56, 95)
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=445073929]
-visible = false
 sprite_frames = SubResource("SpriteFrames_gdmn6")
+animation = &"attk_combo_2"
 offset = Vector2(0, -45)
+
+[node name="CrossProjectile" parent="." unique_id=148571568 instance=ExtResource("5_10rhv")]
+position = Vector2(89, -43)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=35895923]
 

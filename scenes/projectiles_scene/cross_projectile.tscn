@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://dg8083i8qh8us"]
+
+[ext_resource type="Texture2D" uid="uid://b0kcclg6lim23" path="res://assets/sprites/player/saintmiya_main_sprite.png" id="1_0du4b"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0d3vr"]
+radius = 24.0
+height = 74.0
+
+[sub_resource type="Animation" id="Animation_pyef5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(641, 0, 64, 95)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ecl23"]
+resource_name = "c_projectile_anim"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.76666665, 0.96666664),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Rect2(641, 0, 64, 95), Rect2(831, 0, 68, 95)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.06666667, 0.76666665, 1.1, 1.4666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g17u6"]
+_data = {
+&"RESET": SubResource("Animation_pyef5"),
+&"c_projectile_anim": SubResource("Animation_ecl23")
+}
+
+[node name="CrossProjectile" type="Area2D" unique_id=148571568]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1071610332]
+texture = ExtResource("1_0du4b")
+region_enabled = true
+region_rect = Rect2(641, 0, 64, 95)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1790288829]
+position = Vector2(0, -6)
+shape = SubResource("CapsuleShape2D_0d3vr")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=523664599]
+libraries/ = SubResource("AnimationLibrary_g17u6")
