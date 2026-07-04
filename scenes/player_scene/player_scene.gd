@@ -1,5 +1,7 @@
 extends PlayerBase
 
+#add if AttkComboSprite is vis > AttkComboSprite anim play 
+
 #region Base Vars
 
 @export var stats: PlayerStats 

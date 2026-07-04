@@ -41,9 +41,37 @@ tracks/0/keys = {
 "update": 0,
 "values": [Rect2(128, 0, 128, 95)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AttkComboSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AttkComboSprite:region_rect")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(645, 0, 56, 95)]
+}
+
+[sub_resource type="Animation" id="Animation_10rhv"]
+resource_name = "attck_combo_3"
 
 [sub_resource type="Animation" id="Animation_qr5f1"]
-resource_name = "attack_anim"
+resource_name = "attk_combo_1"
+length = 0.23333333
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -51,16 +79,62 @@ tracks/0/path = NodePath("AttkSprite:region_rect")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.43333334),
+"times": PackedFloat32Array(0, 0.06666667, 0.16666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Rect2(0, 0, 128, 95), Rect2(128, 0, 128, 95), Rect2(256, 0, 128, 95)]
 }
 
+[sub_resource type="Animation" id="Animation_l2g17"]
+resource_name = "attk_combo_2"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AttkSprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.23, 0.4366667, 0.6666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(384, 0, 128, 95), Rect2(512, 0, 128, 95), Rect2(384, 0, 128, 95), Rect2(512, 0, 128, 95)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AttkComboSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.8333333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_epsfl"]
+resource_name = "attk_combo_light"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AttkComboSprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.53),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Rect2(645, 0, 56, 95), Rect2(830, 0, 70, 95)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gdmn6"]
 _data = {
 &"RESET": SubResource("Animation_gdmn6"),
-&"attack_anim": SubResource("Animation_qr5f1")
+&"attck_combo_3": SubResource("Animation_10rhv"),
+&"attk_combo_1": SubResource("Animation_qr5f1"),
+&"attk_combo_2": SubResource("Animation_l2g17"),
+&"attk_combo_light": SubResource("Animation_epsfl")
 }
 
 [node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871]
@@ -72,6 +146,13 @@ position = Vector2(0, -45)
 texture = ExtResource("1_2uwvc")
 region_enabled = true
 region_rect = Rect2(128, 0, 128, 95)
+
+[node name="AttkComboSprite" type="Sprite2D" parent="." unique_id=1473703359]
+visible = false
+position = Vector2(97, -44)
+texture = ExtResource("1_2uwvc")
+region_enabled = true
+region_rect = Rect2(645, 0, 56, 95)
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=445073929]
 visible = false
