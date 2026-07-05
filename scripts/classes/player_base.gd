@@ -36,6 +36,9 @@ enum PlayerFormState {
 func set_timer(timer: float, delta: float) -> float:
 	return max(timer - delta, 0.0)
 
+func play_anim(anim: Animation, anim_name: String) -> void:
+	anim.play(anim_name)
+
 func death() -> void:
 	pass
 

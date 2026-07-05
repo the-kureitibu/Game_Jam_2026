@@ -3,11 +3,10 @@ extends Resource
 class_name PlayerStats
 
 @export var player_health: int = 120
-@export var player_speed: float = 60.0
+@export var player_speed: float = 120.0
 @export var player_damage: int = 20
 @export var rage_amount: int = 100
 @export var rage_per_attack: int = 5
-@export var player_jump_height: float = -350.0
 
 #region Timers
 @export var attk_combo_timer: float = 1.0 

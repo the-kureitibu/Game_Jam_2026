@@ -11,10 +11,8 @@ extends PlayerBase
 @export var r_amount: int
 @export var r_per_attk: int
 @export var p_sprite: AnimatedSprite2D
-@export var p_jump_h: float
 @export var p_move_state: PlayerBase.PlayerMoveState = PlayerMoveState.IDLE
 @export var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE
-@export var p_gravity: float = 680.0
 
 var p_direction: float = 0.0
 var can_dash: bool 
@@ -22,10 +20,10 @@ var can_dash: bool
 #endregion 
 
 #region Movement Vars
-@export var time_to_apex := 0.35
-@export var jump_height := 80.0
-@export var gravity := (2 * jump_height) / pow(time_to_apex, 2)
-@export var jump_velocity := -gravity * time_to_apex
+@onready var time_to_apex := 0.35
+@onready var jump_height := 100.0
+@onready var gravity := (2 * jump_height) / pow(time_to_apex, 2)
+@onready var jump_velocity := -gravity * time_to_apex
 
 #endregion
 
@@ -59,27 +57,31 @@ var p_cur_state = p_move_state
 #endregion 
 
 func _ready() -> void:
-	p_heath = stats.player_health
-	p_speed = stats.player_speed
-	p_damage = stats.player_damage
-	r_amount = stats.rage_amount
-	r_per_attk = stats.rage_per_attack
-	p_jump_h = stats.player_jump_height
-	
-	
+	dec_ini_stats()
+		
 	if stats == null:
 		push_error("Enemy has no stats resource assigned.")
 		return
 
 func _physics_process(delta: float) -> void:
-
+	
+	p_sprite.play("idle")
 	reduce_timer(delta)
 	apply_gravity(delta)
 	player_move()
 	player_jump()
 	change_move_state()
 
-	
+#region Initial Stats declaration
+func dec_ini_stats() -> void:
+	p_heath = stats.player_health
+	p_speed = stats.player_speed
+	p_damage = stats.player_damage
+	r_amount = stats.rage_amount
+	r_per_attk = stats.rage_per_attack
+
+#endregion
+
 #region Base movement
 
 func player_move() -> void:
@@ -94,15 +96,13 @@ func player_move() -> void:
 
 func player_jump() -> void:
 	if Input.is_action_just_pressed("jump"):
-		velocity.y += p_jump_h
+		velocity.y = jump_velocity
 
 
 func apply_gravity(delta) -> void:
-	print(is_on_floor())
-	
+
 	if !is_on_floor():
-		velocity.y += p_gravity * delta
-		print(is_on_floor())
+		velocity.y += gravity * delta
 
 #endregion
 
@@ -116,7 +116,7 @@ func change_move_state() -> void:
 	else:
 		p_move_state = PlayerMoveState.IDLE
 		
-	print(p_move_state)
+	#print(PlayerMoveState.keys()[p_move_state])
 
 func change_action_state(new_state) -> void:
 	if p_action_state == new_state:
