@@ -382,15 +382,16 @@ _data = {
 &"attk_combo_2": SubResource("Animation_l2g17")
 }
 
-[node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871]
+[node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871 node_paths=PackedStringArray("p_sprite")]
+collision_mask = 28
 script = ExtResource("1_w7gii")
 stats = SubResource("Resource_qr5f1")
+p_sprite = NodePath("MainSprite")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")
 animation = &"idle"
 frame = 6
-frame_progress = 1.0
 offset = Vector2(0, -45)
 
 [node name="CrossProjectile" parent="." unique_id=148571568 instance=ExtResource("5_10rhv")]

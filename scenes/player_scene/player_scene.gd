@@ -10,20 +10,28 @@ extends PlayerBase
 @export var p_damage: int
 @export var r_amount: int
 @export var r_per_attk: int
-@export var p_sprite: Sprite2D
+@export var p_sprite: AnimatedSprite2D
 @export var p_jump_h: float
 @export var p_move_state: PlayerBase.PlayerMoveState = PlayerMoveState.IDLE
 @export var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE
-@export var p_gravity: float = -680.0
+@export var p_gravity: float = 680.0
 
 var p_direction: float = 0.0
 var can_dash: bool 
 
 #endregion 
 
+#region Movement Vars
+@export var time_to_apex := 0.35
+@export var jump_height := 80.0
+@export var gravity := (2 * jump_height) / pow(time_to_apex, 2)
+@export var jump_velocity := -gravity * time_to_apex
+
+#endregion
+
 #region References Vars
 
-@onready var p_attk_sprite: Sprite2D = $MainSprite
+@onready var p_attk_sprite: AnimatedSprite2D = $MainSprite
 
 #endregion
 
@@ -90,9 +98,12 @@ func player_jump() -> void:
 
 
 func apply_gravity(delta) -> void:
+	print(is_on_floor())
+	
 	if !is_on_floor():
 		velocity.y += p_gravity * delta
-	
+		print(is_on_floor())
+
 #endregion
 
 #region Player States 
