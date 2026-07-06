@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 class_name PlayerBase
 
+
 #region Enums States
 
 enum PlayerMoveState {
@@ -36,8 +37,25 @@ enum PlayerFormState {
 func set_timer(timer: float, delta: float) -> float:
 	return max(timer - delta, 0.0)
 
-func play_anim(anim: Animation, anim_name: String) -> void:
-	anim.play(anim_name)
+func play_anim(anim_node: Node, anim_name: StringName, force_restart := false) -> void:
+	if anim_node == null:
+		push_error("No animation node exists.")
+		return
+	
+	if anim_node is AnimatedSprite2D:
+		if anim_node.sprite_frames == null:
+			push_error("AnimatedSprite2D has no SpriteFrames resource.")
+			return
+		
+		if not anim_node.sprite_frames.has_animation(anim_name):
+			push_error("Missing animation: %s" % anim_name)
+			return
+		
+		if not force_restart and anim_node.animation == anim_name and anim_node.is_playing():
+			return
+		
+		anim_node.play(anim_name)
+		return
 
 func death() -> void:
 	pass

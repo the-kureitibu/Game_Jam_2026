@@ -294,12 +294,12 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_43o33")
 }],
-"loop": false,
+"loop": true,
 "name": &"idle",
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_f8jnl")
 }, {
 "duration": 1.0,
@@ -314,7 +314,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_5kfht")
 }],
-"loop": false,
+"loop": true,
 "name": &"jump",
 "speed": 5.0
 }, {
@@ -343,9 +343,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xhl6r")
 }],
-"loop": false,
+"loop": true,
 "name": &"walk",
-"speed": 8.0
+"speed": 7.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_10rhv"]
@@ -390,8 +390,8 @@ p_sprite = NodePath("MainSprite")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")
-animation = &"idle"
-frame = 6
+animation = &"jump"
+frame_progress = 0.89139414
 offset = Vector2(0, -45)
 
 [node name="CrossProjectile" parent="." unique_id=148571568 instance=ExtResource("5_10rhv")]

@@ -20,10 +20,17 @@ var can_dash: bool
 #endregion 
 
 #region Movement Vars
-@onready var time_to_apex := 0.35
 @onready var jump_height := 100.0
-@onready var gravity := (2 * jump_height) / pow(time_to_apex, 2)
-@onready var jump_velocity := -gravity * time_to_apex
+
+@onready var time_to_apex := 0.35
+@onready var time_to_fall := 0.25
+@onready var apex_threshold := 35.0
+@onready var apex_gravity_multiplier := 0.25
+
+@onready var jump_gravity := (2.0 * jump_height) / pow(time_to_apex, 2.0)
+@onready var fall_gravity := (2.0 * jump_height) / pow(time_to_fall, 2.0)
+
+@onready var jump_velocity := -jump_gravity * time_to_apex
 
 #endregion
 
@@ -59,18 +66,21 @@ var p_cur_state = p_move_state
 func _ready() -> void:
 	dec_ini_stats()
 		
+	if not p_sprite.is_playing():
+		p_sprite.play("idle")
+
 	if stats == null:
 		push_error("Enemy has no stats resource assigned.")
 		return
 
 func _physics_process(delta: float) -> void:
 	
-	p_sprite.play("idle")
+	#p_sprite.play("idle") - animation never runs without this
 	reduce_timer(delta)
 	apply_gravity(delta)
 	player_move()
 	player_jump()
-	change_move_state()
+	update_move_state()
 
 #region Initial Stats declaration
 func dec_ini_stats() -> void:
@@ -100,23 +110,52 @@ func player_jump() -> void:
 
 
 func apply_gravity(delta) -> void:
-
-	if !is_on_floor():
-		velocity.y += gravity * delta
+	if is_on_floor():
+		return
+	
+	var current_gravity: float
+	
+	if velocity.y < 0.0:
+		current_gravity = jump_gravity
+	else:
+		current_gravity = fall_gravity
+	
+	if abs(velocity.y) < apex_threshold:
+		current_gravity *= apex_gravity_multiplier
+		
+	velocity.y += current_gravity * delta
+		
+	
 
 #endregion
 
 #region Player States 
 
-func change_move_state() -> void:
-	if !is_on_floor():
-		p_move_state = PlayerMoveState.JUMP
-	elif velocity.x != 0:
-		p_move_state = PlayerMoveState.RUN
-	else:
-		p_move_state = PlayerMoveState.IDLE
+func change_move_state(new_state: PlayerMoveState) -> void:
+	if p_move_state == new_state:
+		return
+		
+	p_move_state = new_state
+	
+	match p_move_state:
+		PlayerMoveState.JUMP: 
+			play_anim(p_sprite, "jump")
+		PlayerMoveState.RUN:
+			play_anim(p_sprite, "walk")
+		PlayerMoveState.IDLE:
+			play_anim(p_sprite, "idle")
 		
 	#print(PlayerMoveState.keys()[p_move_state])
+
+func update_move_state() -> void:
+	
+	if !is_on_floor():
+		change_move_state(PlayerMoveState.JUMP)
+	elif abs(velocity.x) > 0.1:
+		change_move_state(PlayerMoveState.RUN)
+	elif velocity.x == 0:
+		change_move_state(PlayerMoveState.IDLE)
+		
 
 func change_action_state(new_state) -> void:
 	if p_action_state == new_state:
