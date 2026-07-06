@@ -12,7 +12,6 @@ extends PlayerBase
 @export var r_per_attk: int
 @export var p_sprite: AnimatedSprite2D
 @export var p_move_state: PlayerBase.PlayerMoveState = PlayerMoveState.IDLE
-@export var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE
 
 var p_direction: float = 0.0
 var can_dash: bool 
@@ -34,6 +33,16 @@ var can_dash: bool
 
 #endregion
 
+#region Attack Base Vars
+var is_attacking := false 
+var combo_seq := 0
+const MAX_COMBO = 2
+var combo_input_queued: bool
+
+@export var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE
+
+
+#endregion
 #region References Vars
 
 @onready var p_attk_sprite: AnimatedSprite2D = $MainSprite
@@ -65,7 +74,7 @@ var p_cur_state = p_move_state
 
 func _ready() -> void:
 	dec_ini_stats()
-		
+	
 	if not p_sprite.is_playing():
 		p_sprite.play("idle")
 
@@ -73,12 +82,17 @@ func _ready() -> void:
 		push_error("Enemy has no stats resource assigned.")
 		return
 
+	print_debug(is_attacking)
+	
+	attk_c_timer = stats.attk_combo_timer
+	
 func _physics_process(delta: float) -> void:
 	
 	#p_sprite.play("idle") - animation never runs without this
 	reduce_timer(delta)
 	apply_gravity(delta)
 	player_move()
+	start_attack()
 	player_jump()
 	update_move_state()
 
@@ -129,6 +143,56 @@ func apply_gravity(delta) -> void:
 
 #endregion
 
+
+#region Attack Related 
+
+func start_attack() -> void:
+	
+	if not Input.is_action_just_pressed("attack"):
+		return
+		
+	if is_attacking:
+		if attk_c_timer > 0.0:
+			combo_input_queued = true
+		return 
+		
+	start_attk_combo(1)
+
+
+func start_attk_combo(combo_count: int) -> void:
+	is_attacking = true
+	combo_input_queued = false
+	combo_seq = combo_count
+
+	match combo_seq:
+		1:
+			p_action_state = PlayerActionState.ATTACK
+			play_anim(p_sprite, "attk_combo_1", true)
+		2:
+			p_action_state = PlayerActionState.COMBO_ATTACK
+			play_anim(p_sprite, "attk_combo_2", true)
+
+	attk_c_timer = stats.attk_combo_timer
+
+
+func _on_main_sprite_animation_finished() -> void:
+	if not is_attacking:
+		return
+	
+	if combo_input_queued and combo_seq < MAX_COMBO:
+		start_attk_combo(combo_seq + 1)
+	else:
+		end_combo()
+
+func end_combo() -> void:
+	is_attacking = false
+	combo_input_queued = false
+	combo_seq = 0
+	attk_c_timer = 0.0
+	p_action_state = PlayerActionState.NONE
+	
+#endregion 
+
 #region Player States 
 
 func change_move_state(new_state: PlayerMoveState) -> void:
@@ -169,12 +233,12 @@ func change_action_state(new_state) -> void:
 #region Timers func
 
 func reduce_timer(delta: float) -> void:
-	attk_c_timer = set_timer(stats.attk_combo_timer, delta)
-	d_timer = set_timer(stats.dash_timer, delta)
-	r_timer = set_timer(stats.rage_timer, delta)
-	r_cd_timer = set_timer(stats.rage_cd_timer, delta)
-	s1_timer = set_timer(stats.s1_cd_timer, delta)
-	s2_timer = set_timer(stats.s2_cd_timer, delta)
+	attk_c_timer = set_timer(attk_c_timer, delta)
+	d_timer = set_timer(d_timer, delta)
+	r_timer = set_timer(r_timer, delta)
+	r_cd_timer = set_timer(r_cd_timer, delta)
+	s1_timer = set_timer(s1_timer, delta)
+	s2_timer = set_timer(s2_timer, delta)
 
 #endregion
 
