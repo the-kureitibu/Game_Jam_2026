@@ -391,8 +391,6 @@ p_sprite = NodePath("MainSprite")
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")
 animation = &"attk_combo_1"
-frame = 2
-frame_progress = 1.0
 offset = Vector2(0, -45)
 
 [node name="CrossProjectile" parent="." unique_id=148571568 instance=ExtResource("5_10rhv")]

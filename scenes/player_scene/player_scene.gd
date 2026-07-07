@@ -30,6 +30,7 @@ var can_dash: bool
 @onready var fall_gravity := (2.0 * jump_height) / pow(time_to_fall, 2.0)
 
 @onready var jump_velocity := -jump_gravity * time_to_apex
+var is_on_air := false
 
 #endregion
 
@@ -38,6 +39,8 @@ var is_attacking := false
 var combo_seq := 0
 const MAX_COMBO = 2
 var combo_input_queued: bool
+var attack_window_open := false
+var has_attk_mid_air := false
 
 @export var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE
 
@@ -81,8 +84,6 @@ func _ready() -> void:
 	if stats == null:
 		push_error("Enemy has no stats resource assigned.")
 		return
-
-	print_debug(is_attacking)
 	
 	attk_c_timer = stats.attk_combo_timer
 	
@@ -94,6 +95,7 @@ func _physics_process(delta: float) -> void:
 	player_move()
 	start_attack()
 	player_jump()
+	handle_air_state()
 	update_move_state()
 
 #region Initial Stats declaration
@@ -109,6 +111,13 @@ func dec_ini_stats() -> void:
 #region Base movement
 
 func player_move() -> void:
+	if is_on_floor():
+		is_on_air = false
+
+#handle horizontal movement instead 
+	if is_attacking:
+		return
+
 	p_direction = Input.get_axis("left", "right")
 
 	velocity.x = p_direction * p_speed
@@ -118,10 +127,17 @@ func player_move() -> void:
 	
 	move_and_slide()
 
+
 func player_jump() -> void:
+	if !is_on_floor():
+		return
+	
 	if Input.is_action_just_pressed("jump"):
 		velocity.y = jump_velocity
 
+func handle_air_state() -> void:
+	if !is_on_floor():
+		is_on_air = true
 
 func apply_gravity(delta) -> void:
 	if is_on_floor():
@@ -147,40 +163,67 @@ func apply_gravity(delta) -> void:
 #region Attack Related 
 
 func start_attack() -> void:
+	if is_on_floor():
+		has_attk_mid_air = false
 	
 	if not Input.is_action_just_pressed("attack"):
 		return
 		
 	if is_attacking:
-		if attk_c_timer > 0.0:
+		if attack_window_open and combo_seq < MAX_COMBO:
 			combo_input_queued = true
 		return 
 		
 	start_attk_combo(1)
 
+func open_attack_window() -> void:
+	attack_window_open = true
+		
+
+func close_attack_window() -> void:
+	attack_window_open = false
 
 func start_attk_combo(combo_count: int) -> void:
+	print("is on air? ", is_on_air)
+	print("is on floor? ", is_on_floor())
+	print("player move state ", PlayerMoveState.keys()[p_move_state])
+	print("player action state ", PlayerActionState.keys()[p_action_state])
+	if has_attk_mid_air:
+		return
+	
 	is_attacking = true
+	attack_window_open = false
 	combo_input_queued = false
 	combo_seq = combo_count
+	attk_c_timer = stats.attk_combo_timer
 
 	match combo_seq:
 		1:
 			p_action_state = PlayerActionState.ATTACK
 			play_anim(p_sprite, "attk_combo_1", true)
+			print("player action state in match line ", PlayerActionState.keys()[p_action_state])
 		2:
 			p_action_state = PlayerActionState.COMBO_ATTACK
 			play_anim(p_sprite, "attk_combo_2", true)
 
-	attk_c_timer = stats.attk_combo_timer
+	
+	open_attack_window()
 
 
 func _on_main_sprite_animation_finished() -> void:
+
 	if not is_attacking:
 		return
 	
+	if is_on_air:
+		has_attk_mid_air = true
+		end_combo()
+		print('Im in air, on finished signal')
+
 	if combo_input_queued and combo_seq < MAX_COMBO:
 		start_attk_combo(combo_seq + 1)
+	elif combo_seq == MAX_COMBO:
+		end_combo()
 	else:
 		end_combo()
 
@@ -191,14 +234,30 @@ func end_combo() -> void:
 	attk_c_timer = 0.0
 	p_action_state = PlayerActionState.NONE
 	
+	force_move_animation()
+
+func force_move_animation() -> void:
+	
+	if !is_on_floor():
+		play_anim(p_sprite, "jump")
+	elif abs(velocity.x) > 0.1:
+		play_anim(p_sprite, "walk")
+	else:
+		play_anim(p_sprite, "idle")
+
+		
+		
 #endregion 
 
 #region Player States 
 
 func change_move_state(new_state: PlayerMoveState) -> void:
+	if is_attacking:
+		return
+
 	if p_move_state == new_state:
 		return
-		
+	
 	p_move_state = new_state
 	
 	match p_move_state:
@@ -217,7 +276,7 @@ func update_move_state() -> void:
 		change_move_state(PlayerMoveState.JUMP)
 	elif abs(velocity.x) > 0.1:
 		change_move_state(PlayerMoveState.RUN)
-	elif velocity.x == 0:
+	else:
 		change_move_state(PlayerMoveState.IDLE)
 		
 
@@ -234,6 +293,9 @@ func change_action_state(new_state) -> void:
 
 func reduce_timer(delta: float) -> void:
 	attk_c_timer = set_timer(attk_c_timer, delta)
+	if attk_c_timer <= 0.0:
+		close_attack_window()
+	
 	d_timer = set_timer(d_timer, delta)
 	r_timer = set_timer(r_timer, delta)
 	r_cd_timer = set_timer(r_cd_timer, delta)

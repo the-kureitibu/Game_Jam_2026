@@ -9,7 +9,7 @@ class_name PlayerStats
 @export var rage_per_attack: int = 5
 
 #region Timers
-@export var attk_combo_timer: float = 1.0 
+@export var attk_combo_timer: float = 2.0 
 @export var dash_timer: float = 0.35
 @export var rage_timer: float = 15.0
 @export var rage_cd_timer: float = 10.0
