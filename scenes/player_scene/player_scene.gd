@@ -48,7 +48,7 @@ var has_attk_mid_air := false
 #endregion
 #region References Vars
 
-@onready var p_attk_sprite: AnimatedSprite2D = $MainSprite
+#@onready var p_attk_sprite: AnimatedSprite2D = $MainSprite
 
 #endregion
 
@@ -88,12 +88,13 @@ func _ready() -> void:
 	attk_c_timer = stats.attk_combo_timer
 	
 func _physics_process(delta: float) -> void:
-	
+
 	#p_sprite.play("idle") - animation never runs without this
 	reduce_timer(delta)
 	apply_gravity(delta)
 	player_move()
 	start_attack()
+	handle_hitbox_pos()
 	player_jump()
 	handle_air_state()
 	update_move_state()
@@ -184,10 +185,7 @@ func close_attack_window() -> void:
 	attack_window_open = false
 
 func start_attk_combo(combo_count: int) -> void:
-	print("is on air? ", is_on_air)
-	print("is on floor? ", is_on_floor())
-	print("player move state ", PlayerMoveState.keys()[p_move_state])
-	print("player action state ", PlayerActionState.keys()[p_action_state])
+	
 	if has_attk_mid_air:
 		return
 	
@@ -201,7 +199,6 @@ func start_attk_combo(combo_count: int) -> void:
 		1:
 			p_action_state = PlayerActionState.ATTACK
 			play_anim(p_sprite, "attk_combo_1", true)
-			print("player action state in match line ", PlayerActionState.keys()[p_action_state])
 		2:
 			p_action_state = PlayerActionState.COMBO_ATTACK
 			play_anim(p_sprite, "attk_combo_2", true)
@@ -218,7 +215,6 @@ func _on_main_sprite_animation_finished() -> void:
 	if is_on_air:
 		has_attk_mid_air = true
 		end_combo()
-		print('Im in air, on finished signal')
 
 	if combo_input_queued and combo_seq < MAX_COMBO:
 		start_attk_combo(combo_seq + 1)
@@ -246,8 +242,43 @@ func force_move_animation() -> void:
 		play_anim(p_sprite, "idle")
 
 		
-		
 #endregion 
+
+#region HitBox/HurtBox
+
+func handle_hitbox_pos() -> void:
+	if !is_attacking:
+		return
+	
+	var cur_frame = p_sprite.frame
+	
+	update_hit_box_pos(cur_frame)
+
+func update_hit_box_pos(frame: int) -> void:
+	var current_pos := frame
+	
+	match current_pos:
+		1: 
+			print("is this working?")
+		2:
+			pass
+		3:
+			pass
+		4:
+			pass
+		_:
+			pass
+
+#func match_sprite_f() -> int:
+	#if !is_attacking:
+		#return -1
+	#
+	#var anim_sprite_frame: int = p_sprite.get_frame()
+	#print(anim_sprite_frame)
+	#return anim_sprite_frame
+	
+		
+#endregion
 
 #region Player States 
 

@@ -145,10 +145,6 @@ region = Rect2(256, 188, 128, 94)
 atlas = ExtResource("4_gdmn6")
 region = Rect2(384, 188, 128, 94)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5kfht"]
-atlas = ExtResource("4_gdmn6")
-region = Rect2(512, 188, 128, 94)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_ob0tm"]
 atlas = ExtResource("4_gdmn6")
 region = Rect2(0, 94, 128, 94)
@@ -310,11 +306,8 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ledtb")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5kfht")
 }],
-"loop": true,
+"loop": false,
 "name": &"jump",
 "speed": 5.0
 }, {
@@ -390,7 +383,7 @@ p_sprite = NodePath("MainSprite")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")
-animation = &"attk_combo_1"
+animation = &"attk_combo_2"
 offset = Vector2(0, -45)
 
 [node name="CrossProjectile" parent="." unique_id=148571568 instance=ExtResource("5_10rhv")]
