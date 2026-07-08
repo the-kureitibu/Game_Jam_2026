@@ -83,10 +83,6 @@ var p_cur_state = p_move_state
 func _ready() -> void:
 	dec_ini_stats()
 	
-	print_debug(mace_hit_box.shape.radius)
-	print_debug(mace_hit_box.shape.height)
-	print_debug(mace_hit_box.position)
-	print_debug(mace_hit_box.rotation)
 	
 	if not p_sprite.is_playing():
 		p_sprite.play("idle")
@@ -241,6 +237,7 @@ func end_combo() -> void:
 	p_action_state = PlayerActionState.NONE
 	
 	force_move_animation()
+	reset_hit_box_pos()
 
 func force_move_animation() -> void:
 	
@@ -265,37 +262,55 @@ func handle_hitbox_pos() -> void:
 	update_hit_box_pos(cur_frame)
 
 func update_hit_box_pos(frame: int) -> void:
-
+	
 	var current_pos := frame
-	
-	match current_pos:
-		1: 
-			mace_hit_box.shape.radius = 10.0
-			mace_hit_box.shape.height = 30.0
-			mace_hit_box.position = Vector2(19.0, -37.0)
-			mace_hit_box.rotation = 43.9
-			print_debug(mace_hit_box.shape.radius)
-			print_debug(mace_hit_box.shape.height)
-			print_debug(mace_hit_box.position)
-			print_debug(mace_hit_box.rotation)
-		2:
-			pass
-		3:
-			pass
-		4:
-			pass
-		_:
-			pass
+	if p_sprite.animation == "attk_combo_1":
+		match current_pos:
+			1: 
+				if p_sprite.flip_h:
+					pass_hitbox_values(10.0, 30.0, Vector2(-19.0, -37.0), 43.9)
+				else:
+					pass_hitbox_values(10.0, 30.0, Vector2(19.0, -37.0), 43.9)
+			2:
+				if p_sprite.flip_h:
+					pass_hitbox_values(12.0, 36.1, Vector2(-36.1, -46.0), -91.6)
+				else:
+					pass_hitbox_values(12.0, 36.1, Vector2(36.1, -46.0), -91.6)
+			_:
+				pass
 
-#func match_sprite_f() -> int:
-	#if !is_attacking:
-		#return -1
-	#
-	#var anim_sprite_frame: int = p_sprite.get_frame()
-	#print(anim_sprite_frame)
-	#return anim_sprite_frame
+	if p_sprite.animation == "attk_combo_2":
+		match current_pos:
+			0, 1, 2: 
+				if p_sprite.flip_h:
+					pass_hitbox_val_two(12.0, 36.1, Vector2(-45.0, -50.0), -93.1)
+				else:
+					pass_hitbox_val_two(12.0, 36.1, Vector2(45.0, -50.0), -93.1)
+			3, 4, 5:
+				pass_hitbox_val_two(10.0, 30.0, Vector2(0.0, 0.0), 0.0)
+			_:
+				pass
+
+func pass_hitbox_values(radius: float, height: float, pos: Vector2, rot_deg: float):
+
+	mace_hit_box.shape.radius = radius
+	mace_hit_box.shape.height = height
+	mace_hit_box.position = pos
+	mace_hit_box.rotation = rad_to_deg(rot_deg)
+
+func pass_hitbox_val_two(radius: float, height: float, pos: Vector2, rot_degrees: float):
+
+	mace_hit_box.shape.radius = radius
+	mace_hit_box.shape.height = height
+	mace_hit_box.position = pos
+	mace_hit_box.rotation_degrees = rot_degrees
 	
-		
+func reset_hit_box_pos() -> void:
+	mace_hit_box.shape.radius = 10.0
+	mace_hit_box.shape.height = 30.0
+	mace_hit_box.position = Vector2(0.0, 0.0)
+	mace_hit_box.rotation = 0
+
 #endregion
 
 #region Player States 

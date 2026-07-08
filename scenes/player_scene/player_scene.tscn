@@ -347,59 +347,6 @@ height = 88.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gdmn6"]
 
-[sub_resource type="Animation" id="Animation_gdmn6"]
-length = 0.001
-
-[sub_resource type="Animation" id="Animation_qr5f1"]
-resource_name = "attk_combo_1"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("HitBox/HitBoxCollision:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.0009999999, 0.34),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(19, 6), Vector2(32, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("HitBox/HitBoxCollision:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.0009999999, 0.34),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [-1.8794982, -1.8794982]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("HitBox/HitBoxCollision:shape")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.46666667, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [SubResource("CapsuleShape2D_gdmn6"), SubResource("CapsuleShape2D_gdmn6"), SubResource("CapsuleShape2D_gdmn6")]
-}
-
-[sub_resource type="Animation" id="Animation_l2g17"]
-resource_name = "attk_combo_2"
-length = 1.5
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_gdmn6"]
-_data = {
-&"RESET": SubResource("Animation_gdmn6"),
-&"attk_combo_1": SubResource("Animation_qr5f1"),
-&"attk_combo_2": SubResource("Animation_l2g17")
-}
-
 [node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871 node_paths=PackedStringArray("p_sprite")]
 collision_mask = 28
 script = ExtResource("1_w7gii")
@@ -408,8 +355,7 @@ p_sprite = NodePath("MainSprite")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")
-animation = &"attk_combo_1"
-frame = 1
+animation = &"attk_combo_2"
 offset = Vector2(0, -45)
 
 [node name="CrossProjectile" parent="." unique_id=148571568 instance=ExtResource("5_10rhv")]
@@ -426,8 +372,5 @@ shape = SubResource("CapsuleShape2D_gdmn6")
 debug_color = Color(0.6468885, 0.5205917, 0.09065964, 0.41960785)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=35895923]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=390354101]
-libraries/ = SubResource("AnimationLibrary_gdmn6")
 
 [connection signal="animation_finished" from="MainSprite" to="." method="_on_main_sprite_animation_finished"]

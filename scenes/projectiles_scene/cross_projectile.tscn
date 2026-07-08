@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://dg8083i8qh8us"]
 
+[ext_resource type="Script" uid="uid://bdgtt2gn3gku3" path="res://scenes/projectiles_scene/cross_projectile.gd" id="1_0d3vr"]
 [ext_resource type="Texture2D" uid="uid://b0kcclg6lim23" path="res://assets/sprites/player/saintmiya_main_sprite.png" id="1_0du4b"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0d3vr"]
@@ -11,7 +12,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/path = NodePath("MainSprite:region_rect")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -23,7 +24,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:self_modulate")
+tracks/1/path = NodePath("MainSprite:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -39,7 +40,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/path = NodePath("MainSprite:region_rect")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -51,7 +52,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:self_modulate")
+tracks/1/path = NodePath("MainSprite:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -68,15 +69,16 @@ _data = {
 }
 
 [node name="CrossProjectile" type="Area2D" unique_id=148571568]
+script = ExtResource("1_0d3vr")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1071610332]
+[node name="MainSprite" type="Sprite2D" parent="." unique_id=1071610332]
 texture = ExtResource("1_0du4b")
 region_enabled = true
 region_rect = Rect2(641, 0, 64, 95)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1790288829]
+[node name="HitBox" type="CollisionShape2D" parent="." unique_id=1790288829]
 position = Vector2(0, -6)
 shape = SubResource("CapsuleShape2D_0d3vr")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=523664599]
+[node name="Anim" type="AnimationPlayer" parent="." unique_id=523664599]
 libraries/ = SubResource("AnimationLibrary_g17u6")
