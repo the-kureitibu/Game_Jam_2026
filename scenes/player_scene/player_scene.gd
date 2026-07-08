@@ -52,6 +52,11 @@ var has_attk_mid_air := false
 
 #endregion
 
+#region Hitboxes, Hurtboxes Vars
+
+@onready var mace_hit_box: CollisionShape2D = $HitBox/HitBoxCollision
+
+#endregion
 
 #region Consts
 
@@ -77,6 +82,10 @@ var p_cur_state = p_move_state
 
 func _ready() -> void:
 	dec_ini_stats()
+	
+	print(mace_hit_box.shape.radius)
+	print(mace_hit_box.shape.height)
+	print(mace_hit_box.position)
 	
 	if not p_sprite.is_playing():
 		p_sprite.play("idle")
