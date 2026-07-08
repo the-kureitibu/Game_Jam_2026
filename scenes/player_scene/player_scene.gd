@@ -83,9 +83,10 @@ var p_cur_state = p_move_state
 func _ready() -> void:
 	dec_ini_stats()
 	
-	print(mace_hit_box.shape.radius)
-	print(mace_hit_box.shape.height)
-	print(mace_hit_box.position)
+	print_debug(mace_hit_box.shape.radius)
+	print_debug(mace_hit_box.shape.height)
+	print_debug(mace_hit_box.position)
+	print_debug(mace_hit_box.rotation)
 	
 	if not p_sprite.is_playing():
 		p_sprite.play("idle")
@@ -264,11 +265,19 @@ func handle_hitbox_pos() -> void:
 	update_hit_box_pos(cur_frame)
 
 func update_hit_box_pos(frame: int) -> void:
+
 	var current_pos := frame
 	
 	match current_pos:
 		1: 
-			print("is this working?")
+			mace_hit_box.shape.radius = 10.0
+			mace_hit_box.shape.height = 30.0
+			mace_hit_box.position = Vector2(19.0, -37.0)
+			mace_hit_box.rotation = 43.9
+			print_debug(mace_hit_box.shape.radius)
+			print_debug(mace_hit_box.shape.height)
+			print_debug(mace_hit_box.position)
+			print_debug(mace_hit_box.rotation)
 		2:
 			pass
 		3:
