@@ -8,18 +8,17 @@ radius = 24.0
 height = 74.0
 
 [sub_resource type="Animation" id="Animation_pyef5"]
-length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath("MainSprite:region_rect")
-tracks/0/interp = 1
+tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.41),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Rect2(641, 0, 64, 95)]
+"values": [Rect2(641, 0, 64, 95), Rect2(831, 0, 68, 95)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -28,10 +27,10 @@ tracks/1/path = NodePath("MainSprite:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.2, 0.6, 0.8333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_ecl23"]
@@ -62,16 +61,45 @@ tracks/1/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_0d3vr"]
+resource_name = "trigger_attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainSprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.41),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Rect2(641, 0, 64, 95), Rect2(831, 0, 68, 95)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainSprite:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6, 0.8333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g17u6"]
 _data = {
 &"RESET": SubResource("Animation_pyef5"),
-&"c_projectile_anim": SubResource("Animation_ecl23")
+&"c_projectile_anim": SubResource("Animation_ecl23"),
+&"trigger_attack": SubResource("Animation_0d3vr")
 }
 
 [node name="CrossProjectile" type="Area2D" unique_id=148571568]
 script = ExtResource("1_0d3vr")
 
 [node name="MainSprite" type="Sprite2D" parent="." unique_id=1071610332]
+self_modulate = Color(1, 1, 1, 0)
 texture = ExtResource("1_0du4b")
 region_enabled = true
 region_rect = Rect2(641, 0, 64, 95)
@@ -82,3 +110,5 @@ shape = SubResource("CapsuleShape2D_0d3vr")
 
 [node name="Anim" type="AnimationPlayer" parent="." unique_id=523664599]
 libraries/ = SubResource("AnimationLibrary_g17u6")
+
+[connection signal="animation_finished" from="Anim" to="." method="_on_anim_animation_finished"]

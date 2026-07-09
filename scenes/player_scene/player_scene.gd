@@ -48,7 +48,8 @@ var has_attk_mid_air := false
 #endregion
 #region References Vars
 
-#@onready var p_attk_sprite: AnimatedSprite2D = $MainSprite
+@export var p_proj_sprite: Area2D
+
 
 #endregion
 
@@ -82,6 +83,12 @@ var p_cur_state = p_move_state
 
 func _ready() -> void:
 	dec_ini_stats()
+	
+	
+	add_to_group("Player_target") #ask this later
+	print(is_in_group("Player_target"))
+	if "t_player" in p_proj_sprite:
+		print("there is")
 	
 	
 	if not p_sprite.is_playing():
@@ -175,7 +182,7 @@ func start_attack() -> void:
 	
 	if not Input.is_action_just_pressed("attack"):
 		return
-		
+	
 	if is_attacking:
 		if attack_window_open and combo_seq < MAX_COMBO:
 			combo_input_queued = true
@@ -208,6 +215,7 @@ func start_attk_combo(combo_count: int) -> void:
 		2:
 			p_action_state = PlayerActionState.COMBO_ATTACK
 			play_anim(p_sprite, "attk_combo_2", true)
+
 
 	
 	open_attack_window()
@@ -268,42 +276,49 @@ func update_hit_box_pos(frame: int) -> void:
 		match current_pos:
 			1: 
 				if p_sprite.flip_h:
-					pass_hitbox_values(10.0, 30.0, Vector2(-19.0, -37.0), 43.9)
+					pass_hitbox_values(10.0, 30.0, Vector2(-19.0, -37.0), 43.9, false)
 				else:
-					pass_hitbox_values(10.0, 30.0, Vector2(19.0, -37.0), 43.9)
+					pass_hitbox_values(10.0, 30.0, Vector2(19.0, -37.0), 43.9, false)
 			2:
 				if p_sprite.flip_h:
-					pass_hitbox_values(12.0, 36.1, Vector2(-36.1, -46.0), -91.6)
+					pass_hitbox_values(12.0, 36.1, Vector2(-36.1, -46.0), -91.6, false)
 				else:
-					pass_hitbox_values(12.0, 36.1, Vector2(36.1, -46.0), -91.6)
+					pass_hitbox_values(12.0, 36.1, Vector2(36.1, -46.0), -91.6, false)
 			_:
 				pass
 
 	if p_sprite.animation == "attk_combo_2":
 		match current_pos:
-			0, 1, 2: 
+			0, 1: 
 				if p_sprite.flip_h:
-					pass_hitbox_val_two(12.0, 36.1, Vector2(-45.0, -50.0), -93.1)
+					pass_hitbox_values(12.0, 36.1, Vector2(-45.0, -50.0), -93.1, true)
 				else:
-					pass_hitbox_val_two(12.0, 36.1, Vector2(45.0, -50.0), -93.1)
+					pass_hitbox_values(12.0, 36.1, Vector2(45.0, -50.0), -93.1, true)
+			2:
+				if p_sprite.flip_h:
+					pass_hitbox_values(12.0, 36.1, Vector2(-45.0, -50.0), -93.1, true)
+					p_proj_sprite.position = Vector2(-89.0, -43.0)
+				else:
+					pass_hitbox_values(12.0, 36.1, Vector2(45.0, -50.0), -93.1, true)
+					p_proj_sprite.position = Vector2(89.0, -43.0)
+				
+				p_proj_sprite.handle_initial_attack()
 			3, 4, 5:
-				pass_hitbox_val_two(10.0, 30.0, Vector2(0.0, 0.0), 0.0)
+				pass_hitbox_values(10.0, 30.0, Vector2(0.0, 0.0), 0.0, true)
 			_:
 				pass
 
-func pass_hitbox_values(radius: float, height: float, pos: Vector2, rot_deg: float):
+func pass_hitbox_values(radius: float, height: float, pos: Vector2, rot: float, change_rot: bool):
 
 	mace_hit_box.shape.radius = radius
 	mace_hit_box.shape.height = height
 	mace_hit_box.position = pos
-	mace_hit_box.rotation = rad_to_deg(rot_deg)
+	
+	if change_rot:
+		mace_hit_box.rotation_degrees = rot
+	else:
+		mace_hit_box.rotation = rad_to_deg(rot)
 
-func pass_hitbox_val_two(radius: float, height: float, pos: Vector2, rot_degrees: float):
-
-	mace_hit_box.shape.radius = radius
-	mace_hit_box.shape.height = height
-	mace_hit_box.position = pos
-	mace_hit_box.rotation_degrees = rot_degrees
 	
 func reset_hit_box_pos() -> void:
 	mace_hit_box.shape.radius = 10.0

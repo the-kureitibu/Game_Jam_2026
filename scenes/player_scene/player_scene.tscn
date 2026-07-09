@@ -347,11 +347,12 @@ height = 88.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gdmn6"]
 
-[node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871 node_paths=PackedStringArray("p_sprite")]
+[node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871 node_paths=PackedStringArray("p_sprite", "p_proj_sprite")]
 collision_mask = 28
 script = ExtResource("1_w7gii")
 stats = SubResource("Resource_qr5f1")
 p_sprite = NodePath("MainSprite")
+p_proj_sprite = NodePath("CrossProjectile")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")
