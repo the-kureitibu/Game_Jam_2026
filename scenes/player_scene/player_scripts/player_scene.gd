@@ -85,12 +85,6 @@ func _ready() -> void:
 	dec_ini_stats()
 	
 	
-	add_to_group("Player_target") #ask this later
-	print(is_in_group("Player_target"))
-	if "t_player" in p_proj_sprite:
-		print("there is")
-	
-	
 	if not p_sprite.is_playing():
 		p_sprite.play("idle")
 

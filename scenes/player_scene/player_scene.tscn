@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://dfiomxa4fli0f"]
 
-[ext_resource type="Script" uid="uid://s1qvrey745ir" path="res://scenes/player_scene/player_scene.gd" id="1_w7gii"]
+[ext_resource type="Script" uid="uid://s1qvrey745ir" path="res://scenes/player_scene/player_scripts/player_scene.gd" id="1_w7gii"]
 [ext_resource type="Script" uid="uid://rc0p3ykjd7ra" path="res://resources/player/player_stats.gd" id="2_qr5f1"]
 [ext_resource type="Texture2D" uid="uid://6gld3f250kl5" path="res://assets/sprites/player/saintmiya_main_sprite2.png" id="4_gdmn6"]
 [ext_resource type="PackedScene" uid="uid://dg8083i8qh8us" path="res://scenes/projectiles_scene/cross_projectile.tscn" id="5_10rhv"]
+[ext_resource type="PackedScene" uid="uid://wxyw3dr3fl1b" path="res://scenes/player_scene/player_two_scene.tscn" id="5_l2g17"]
 
 [sub_resource type="Resource" id="Resource_qr5f1"]
 script = ExtResource("2_qr5f1")
@@ -347,7 +348,7 @@ height = 88.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gdmn6"]
 
-[node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871 node_paths=PackedStringArray("p_sprite", "p_proj_sprite")]
+[node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871 node_paths=PackedStringArray("p_sprite", "p_proj_sprite") groups=["Player_target"]]
 collision_mask = 28
 script = ExtResource("1_w7gii")
 stats = SubResource("Resource_qr5f1")
@@ -373,5 +374,10 @@ shape = SubResource("CapsuleShape2D_gdmn6")
 debug_color = Color(0.6468885, 0.5205917, 0.09065964, 0.41960785)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=35895923]
+
+[node name="PlayerTwoScene" parent="." unique_id=1399677113 node_paths=PackedStringArray("t_player") instance=ExtResource("5_l2g17")]
+position = Vector2(45, 0)
+scale = Vector2(0.5, 0.5)
+t_player = NodePath("..")
 
 [connection signal="animation_finished" from="MainSprite" to="." method="_on_main_sprite_animation_finished"]
