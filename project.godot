@@ -15,6 +15,11 @@ run/main_scene="uid://dqi7bo55oh5cp"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=640
+window/size/viewport_height=340
+
 [global_group]
 
 Player_target=""
@@ -59,6 +64,7 @@ attack={
 2d_physics/layer_3="projectiles"
 2d_physics/layer_4="traps"
 2d_physics/layer_5="terrain"
+2d_physics/layer_6="player two"
 
 [physics]
 
