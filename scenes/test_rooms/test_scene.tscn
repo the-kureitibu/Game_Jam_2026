@@ -11,4 +11,4 @@
 [node name="TestRoom1" parent="." unique_id=929027271 instance=ExtResource("2_ujilw")]
 
 [node name="PlayerTwoScene" parent="." unique_id=1399677113 instance=ExtResource("3_nk52i")]
-position = Vector2(73, 0)
+position = Vector2(50, 0)

@@ -31,6 +31,7 @@ var can_dash: bool
 
 @onready var jump_velocity := -jump_gravity * time_to_apex
 var is_on_air := false
+var facing_dir := 1
 
 #endregion
 
@@ -129,6 +130,12 @@ func player_move() -> void:
 	p_direction = Input.get_axis("left", "right")
 
 	velocity.x = p_direction * p_speed
+	if velocity.x > 0:
+		facing_dir = 1
+		print(facing_dir)
+	elif velocity.x < 0:
+		facing_dir = -1
+		print(facing_dir)
 
 	if p_direction != 0:
 		p_sprite.flip_h = p_direction < 0
