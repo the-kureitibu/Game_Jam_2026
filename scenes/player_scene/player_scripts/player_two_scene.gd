@@ -95,6 +95,9 @@ func handle_follow_player(delta: float) -> void:
 		velocity.x = 0.0
 	else:
 		velocity.x = sign(distance_x) * to_target_speed 
+	
+	if distance_x != 0:
+		main_sprite.flip_h = distance_x < 0
 
 func handle_player_blocking() -> void:
 	
@@ -104,12 +107,34 @@ func handle_player_blocking() -> void:
 	if p_blocked == false:
 		return
 	
-	is_blocking_player = true
+	if is_blocking_player:
+		return
+
 	start_blocking_player()
 	
 func start_blocking_player() -> void:
+	snap_to_guard_pos()
+		
+	is_blocking_player = true
+	
 	p_two_state = PlayerTwoState.BLOCK
 	play_anim(main_sprite, "block")
+	
+func snap_to_guard_pos() -> void:
+	if t_player == null:
+		return
+	
+	var p_facing_dir: int = 1
+	
+	if "facing_dir" in t_player:
+		p_facing_dir = t_player.facing_dir
+	
+	var target_pos := t_player.global_position + (follow_offset * p_facing_dir)
+	
+	global_position.x = target_pos.x #automatically snap regardless
+	velocity.x = 0.0
+	main_sprite.flip_h = p_facing_dir < 0
+	
 
 func force_next_animation() -> void:
 	match t_player.p_move_state:
