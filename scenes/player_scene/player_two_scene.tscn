@@ -195,7 +195,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_milhb")
 }],
-"loop": true,
+"loop": false,
 "name": &"block",
 "speed": 10.0
 }, {
@@ -312,7 +312,7 @@ script = ExtResource("1_s2g3w")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=1751077176]
 sprite_frames = SubResource("SpriteFrames_7orl8")
-animation = &"jump"
+animation = &"block"
 offset = Vector2(0, -30)
 
 [node name="MainColShape" type="CollisionShape2D" parent="." unique_id=1291117403]

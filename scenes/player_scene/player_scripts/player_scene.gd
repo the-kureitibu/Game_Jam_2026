@@ -84,8 +84,11 @@ var p_cur_state = p_move_state
 #endregion 
 
 func _ready() -> void:
-	dec_ini_stats()
+	#Signals
+	SignalHub.blocking_anim_done.connect(end_blocking_state)
+	#Signals region end
 	
+	dec_ini_stats()
 	
 	if not p_sprite.is_playing():
 		p_sprite.play("idle")
@@ -95,6 +98,9 @@ func _ready() -> void:
 		return
 	
 	attk_c_timer = stats.attk_combo_timer
+
+func test_signal() -> void:
+	print("test worked")
 	
 func _physics_process(delta: float) -> void:
 
@@ -122,6 +128,9 @@ func dec_ini_stats() -> void:
 #region Base movement
 
 func player_move() -> void:
+	if is_blocking:
+		return
+	
 	if is_on_floor():
 		is_on_air = false
 
@@ -134,10 +143,8 @@ func player_move() -> void:
 	velocity.x = p_direction * p_speed
 	if velocity.x > 0:
 		facing_dir = 1
-		print(facing_dir)
 	elif velocity.x < 0:
 		facing_dir = -1
-		print(facing_dir)
 
 	if p_direction != 0:
 		p_sprite.flip_h = p_direction < 0
@@ -193,7 +200,24 @@ func start_blocking() -> void:
 	
 	p_action_state = PlayerActionState.BLOCKING
 	play_anim(p_sprite, "block", true)
+	p_sprite.sprite_frames.set_animation_loop("block", true)
 	
+
+func end_blocking_state() -> void:
+	if !is_blocking:
+		return
+		
+	end_blocking()
+
+func end_blocking() -> void:
+	if p_sprite.is_playing() and p_sprite.animation == "block":
+		p_sprite.sprite_frames.set_animation_loop("block", false)
+		p_sprite.stop()
+
+	is_blocking = false
+	p_action_state = PlayerActionState.NONE
+	
+	force_move_animation()
 
 func start_attack() -> void:
 	if is_on_floor():
@@ -238,9 +262,6 @@ func start_attk_combo(combo_count: int) -> void:
 
 
 func _on_main_sprite_animation_finished() -> void:
-	
-	if is_blocking:
-		end_blocking()
 
 	if is_attacking:
 		if is_on_air:
@@ -253,12 +274,7 @@ func _on_main_sprite_animation_finished() -> void:
 			end_combo()
 		else:
 			end_combo()
-		
-
-func end_blocking() -> void:
-	is_blocking = false
-
-	force_move_animation()
+	
 
 func end_combo() -> void:
 	is_attacking = false
@@ -370,7 +386,6 @@ func change_move_state(new_state: PlayerMoveState) -> void:
 		PlayerMoveState.IDLE:
 			play_anim(p_sprite, "idle")
 		
-	#print(PlayerMoveState.keys()[p_move_state])
 
 func update_move_state() -> void:
 	
