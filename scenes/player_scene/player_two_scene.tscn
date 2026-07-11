@@ -326,3 +326,5 @@ visible = false
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_kgobb")
 debug_color = Color(0.73422676, 0.457223, 0.31594896, 0.41960785)
+
+[connection signal="animation_finished" from="MainSprite" to="." method="_on_main_sprite_animation_finished"]

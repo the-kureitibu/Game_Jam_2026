@@ -42,8 +42,9 @@ const MAX_COMBO = 2
 var combo_input_queued: bool
 var attack_window_open := false
 var has_attk_mid_air := false
+var is_blocking := false
 
-@export var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE
+var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE
 
 
 #endregion
@@ -103,6 +104,7 @@ func _physics_process(delta: float) -> void:
 	player_move()
 	start_attack()
 	handle_hitbox_pos()
+	start_block()
 	player_jump()
 	handle_air_state()
 	update_move_state()
@@ -176,6 +178,22 @@ func apply_gravity(delta) -> void:
 
 
 #region Attack Related 
+func start_block() -> void:
+	
+	if is_attacking and !is_on_floor():
+		return
+		
+	if not Input.is_action_just_pressed("block"):
+		return
+
+	start_blocking()
+
+func start_blocking() -> void:
+	is_blocking = true
+	
+	p_action_state = PlayerActionState.BLOCKING
+	play_anim(p_sprite, "block", true)
+	
 
 func start_attack() -> void:
 	if is_on_floor():
@@ -194,7 +212,6 @@ func start_attack() -> void:
 func open_attack_window() -> void:
 	attack_window_open = true
 		
-
 func close_attack_window() -> void:
 	attack_window_open = false
 
@@ -216,27 +233,32 @@ func start_attk_combo(combo_count: int) -> void:
 		2:
 			p_action_state = PlayerActionState.COMBO_ATTACK
 			play_anim(p_sprite, "attk_combo_2", true)
-
-
 	
 	open_attack_window()
 
 
 func _on_main_sprite_animation_finished() -> void:
-
-	if not is_attacking:
-		return
 	
-	if is_on_air:
-		has_attk_mid_air = true
-		end_combo()
+	if is_blocking:
+		end_blocking()
 
-	if combo_input_queued and combo_seq < MAX_COMBO:
-		start_attk_combo(combo_seq + 1)
-	elif combo_seq == MAX_COMBO:
-		end_combo()
-	else:
-		end_combo()
+	if is_attacking:
+		if is_on_air:
+			has_attk_mid_air = true
+			end_combo()
+
+		if combo_input_queued and combo_seq < MAX_COMBO:
+			start_attk_combo(combo_seq + 1)
+		elif combo_seq == MAX_COMBO:
+			end_combo()
+		else:
+			end_combo()
+		
+
+func end_blocking() -> void:
+	is_blocking = false
+
+	force_move_animation()
 
 func end_combo() -> void:
 	is_attacking = false

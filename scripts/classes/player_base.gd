@@ -19,6 +19,7 @@ enum PlayerActionState {
 	ATTACK,
 	COMBO_ATTACK,
 	HURT,
+	BLOCKING,
 	SKILL_1,
 	SKILL_2,
 	DEAD,

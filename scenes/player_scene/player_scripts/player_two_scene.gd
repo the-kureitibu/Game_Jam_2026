@@ -16,6 +16,7 @@ var target_was_moving := false
 var to_target_speed := 120.0
 @export var follow_offset := Vector2(60.0, 0.0)
 @export var follow_stop_distance := 4.0
+var is_blocking_player: bool = false
 
 #endregion
 
@@ -40,8 +41,10 @@ func _physics_process(delta: float) -> void:
 	handle_animation()
 	handle_movement(delta)
 	handle_follow_player(delta)
+	handle_player_blocking()
 	handle_gravity(delta)
 	move_and_slide()
+	
 
 func handle_animation() -> void:
 	
@@ -57,8 +60,7 @@ func handle_animation() -> void:
 func handle_movement(delta: float) -> void:
 
 	var target_is_moving = abs(t_player.velocity.x) > 0.1
-	
-	#create guard
+
 
 	if target_is_moving and not target_was_moving and is_on_floor():
 		velocity.y = jump_velocity
@@ -84,17 +86,31 @@ func handle_follow_player(delta: float) -> void:
 	if "facing_dir" in t_player:
 		p_facing_dir = t_player.facing_dir
 	
-	var target_pos := t_player.global_position + (follow_offset * p_facing_dir)#This just returns the player's
-	#main global_position + another vector2 value as offset 
-	var distance_x := target_pos.x - global_position.x #base calculation for distance 
+	var target_pos := t_player.global_position + (follow_offset * p_facing_dir)
+	var distance_x := target_pos.x - global_position.x
 	
 	if abs(distance_x) < follow_stop_distance: 
-		#this means that the float returned from distance_x is less than the follow stop distance
-		#the movement will stop
 		velocity.x = 0.0
 	else:
 		velocity.x = sign(distance_x) * to_target_speed 
-		#then this is the movement speed. Can you tell me why sign this time? 
 
+func handle_player_blocking() -> void:
+	var p_blocked: bool
 	
+	if "is_blocking" in t_player:
+		p_blocked = t_player.is_blocking
 	
+	if p_blocked == false:
+		return
+	
+	is_blocking_player = true
+	print(is_blocking_player)
+	
+func start_blocking_player() -> void:
+	
+	p_two_state = PlayerTwoState.BLOCK
+	play_anim(main_sprite, "block")
+
+
+func _on_main_sprite_animation_finished() -> void:
+	pass # Replace with function body.
