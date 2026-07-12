@@ -2,12 +2,112 @@
 
 [ext_resource type="Script" uid="uid://s1qvrey745ir" path="res://scenes/player_scene/player_scripts/player_scene.gd" id="1_w7gii"]
 [ext_resource type="Script" uid="uid://rc0p3ykjd7ra" path="res://resources/player/player_stats.gd" id="2_qr5f1"]
+[ext_resource type="Texture2D" uid="uid://b2p72tagowg07" path="res://assets/sprites/player/saintmiya_main_sprite3.png" id="3_10rhv"]
 [ext_resource type="Texture2D" uid="uid://6gld3f250kl5" path="res://assets/sprites/player/saintmiya_main_sprite2.png" id="4_gdmn6"]
 [ext_resource type="PackedScene" uid="uid://dg8083i8qh8us" path="res://scenes/projectiles_scene/cross_projectile.tscn" id="5_10rhv"]
 
 [sub_resource type="Resource" id="Resource_qr5f1"]
 script = ExtResource("2_qr5f1")
 metadata/_custom_type_script = "uid://rc0p3ykjd7ra"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i8d3k"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(0, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oaqwi"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(128, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajm3f"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(256, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ufe6k"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(384, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3wbb"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(512, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlhs3"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(640, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ovi0l"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(768, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rcv3v"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(896, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8s600"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(1024, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jifhv"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(1152, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u84l7"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(1280, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q0xqk"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(1408, 0, 128, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dw3aj"]
+atlas = ExtResource("3_10rhv")
+region = Rect2(1536, 0, 128, 103)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xpk8o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i8d3k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oaqwi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ajm3f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ufe6k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r3wbb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlhs3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ovi0l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rcv3v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8s600")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jifhv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u84l7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q0xqk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dw3aj")
+}],
+"loop": false,
+"name": &"default",
+"speed": 11.0
+}]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_10rhv"]
 atlas = ExtResource("4_gdmn6")
@@ -372,6 +472,13 @@ script = ExtResource("1_w7gii")
 stats = SubResource("Resource_qr5f1")
 p_sprite = NodePath("MainSprite")
 p_proj_sprite = NodePath("CrossProjectile")
+
+[node name="SpiderSprite" type="AnimatedSprite2D" parent="." unique_id=958795497]
+visible = false
+position = Vector2(0, -51)
+sprite_frames = SubResource("SpriteFrames_xpk8o")
+frame = 12
+frame_progress = 1.0
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")
