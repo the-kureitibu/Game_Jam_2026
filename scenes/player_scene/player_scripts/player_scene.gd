@@ -122,6 +122,8 @@ func dec_ini_stats() -> void:
 	p_damage = stats.player_damage
 	r_amount = stats.rage_amount
 	r_per_attk = stats.rage_per_attack
+	SignalHub.set_ini_a_state.emit()
+	SignalHub.set_ini_m_state.emit()
 
 #endregion
 

@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://dmce6111r1rt"]
+
+[ext_resource type="Script" uid="uid://d1egr0unlk80v" path="res://scenes/ui/test_ui.gd" id="1_5uadj"]
+
+[node name="TestUi" type="Control" unique_id=1506350038 node_paths=PackedStringArray("health_label", "action_state_label", "movement_state_label", "attack_label", "rage_label", "rage_duration_label", "rage_cd_label")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5uadj")
+health_label = NodePath("MarginContainer/VBoxContainer/Health")
+action_state_label = NodePath("MarginContainer/VBoxContainer/ActionState")
+movement_state_label = NodePath("MarginContainer/VBoxContainer/MovementState")
+attack_label = NodePath("MarginContainer/VBoxContainer/Attack")
+rage_label = NodePath("MarginContainer/VBoxContainer/Rage")
+rage_duration_label = NodePath("MarginContainer/VBoxContainer/RageDuration")
+rage_cd_label = NodePath("MarginContainer/VBoxContainer/RageCooling")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=717025728]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=746264757]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Health" type="Label" parent="MarginContainer/VBoxContainer" unique_id=583557781]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Health: "
+
+[node name="ActionState" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1654905297]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "ActionState: "
+
+[node name="MovementState" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1939530071]
+layout_mode = 2
+text = "MovementState:"
+
+[node name="Attack" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1173181931]
+layout_mode = 2
+text = "Attack:"
+
+[node name="Rage" type="Label" parent="MarginContainer/VBoxContainer" unique_id=437347192]
+layout_mode = 2
+text = "Rage:"
+
+[node name="RageDuration" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1665894038]
+layout_mode = 2
+text = "RageDuration:"
+
+[node name="RageCooling" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2098136397]
+layout_mode = 2
+text = "RageCooling:"
