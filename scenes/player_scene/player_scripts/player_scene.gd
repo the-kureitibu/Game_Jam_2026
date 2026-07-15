@@ -1,17 +1,42 @@
 extends PlayerBase
 
-#add if AttkComboSprite is vis > AttkComboSprite anim play 
+#
+#signal SignalHub.set_ini_a_state(player_action_state)
+#signal SignalHub.set_ini_m_state(player_move_state)
+#
+#signal SignalHub.update_p_a_state(player_action_state)
+#signal SignalHub.update_p_r_duration(rage_duration)
+#signal SignalHub.update_p_r_cooling(rage_cooling)
+
+
 
 #region Base Vars
 
+#add duration and cooling for rage 
+
 @export var stats: PlayerStats 
-@export var p_heath: int 
+@export var p_health: int:
+	set(value):
+		p_health = value
+		SignalHub.update_p_health.emit(value)
+		
 @export var p_speed: float
-@export var p_damage: int
-@export var r_amount: int
+@export var p_damage: int:
+	set(value):
+		p_damage = value
+		SignalHub.update_p_attack.emit(p_damage)
+		
+@export var r_amount: int:
+	set(value):
+		r_amount = value
+		SignalHub.update_p_rage.emit(value)
+		
 @export var r_per_attk: int
 @export var p_sprite: AnimatedSprite2D
-@export var p_move_state: PlayerBase.PlayerMoveState = PlayerMoveState.IDLE
+@export var p_move_state: PlayerBase.PlayerMoveState = PlayerMoveState.IDLE:
+	set(value):
+		p_move_state = value
+		SignalHub.update_p_m_state.emit(value)
 
 var p_direction: float = 0.0
 var can_dash: bool 
@@ -44,7 +69,10 @@ var attack_window_open := false
 var has_attk_mid_air := false
 var is_blocking := false
 
-var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE
+var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE:
+	set(value):
+		p_health = value
+		SignalHub.update_p_health.emit(value)
 
 
 #endregion
@@ -117,7 +145,7 @@ func _physics_process(delta: float) -> void:
 
 #region Initial Stats declaration
 func dec_ini_stats() -> void:
-	p_heath = stats.player_health
+	p_health = stats.player_health
 	p_speed = stats.player_speed
 	p_damage = stats.player_damage
 	r_amount = stats.rage_amount
