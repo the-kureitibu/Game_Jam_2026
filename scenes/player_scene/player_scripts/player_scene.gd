@@ -8,35 +8,55 @@ extends PlayerBase
 #signal SignalHub.update_p_r_duration(rage_duration)
 #signal SignalHub.update_p_r_cooling(rage_cooling)
 
+#region Signals
+signal stat_changed(s_name: String, s_value: int)
+signal r_timer_changed(r_name: String, r_value: float)
+signal a_m_state_changed(st_value: int)
+
+#endregion
 
 
 #region Base Vars
 
 #add duration and cooling for rage 
-
+#make signal local to char
+#make hitbox disabled when not on frame
+const MAX_HEALTH: int = 200
+const MAX_DMG: int = 50
+const MAX_RAGE: int = 100
 @export var stats: PlayerStats 
 @export var p_health: int:
 	set(value):
-		p_health = value
-		SignalHub.update_p_health.emit(value)
+		if p_health == value:
+			return
+		
+		p_health = clamp(value, 0, MAX_HEALTH)
+		
+		stat_changed.emit("p_health", value)
 		
 @export var p_speed: float
 @export var p_damage: int:
 	set(value):
-		p_damage = value
-		SignalHub.update_p_attack.emit(p_damage)
+		if value == p_damage:
+			return
+		
+		p_damage = clamp(value, 0, MAX_DMG)
+		stat_changed.emit("p_damage", value)
 		
 @export var r_amount: int:
 	set(value):
-		r_amount = value
-		SignalHub.update_p_rage.emit(value)
+		
+		r_amount = clamp(value, 0, MAX_RAGE)
+		stat_changed.emit("r_amount", value)
 		
 @export var r_per_attk: int
 @export var p_sprite: AnimatedSprite2D
 @export var p_move_state: PlayerBase.PlayerMoveState = PlayerMoveState.IDLE:
 	set(value):
 		p_move_state = value
-		SignalHub.update_p_m_state.emit(value)
+		
+		a_m_state_changed.emit(PlayerBase.PlayerMoveState.keys()[p_move_state])
+
 
 var p_direction: float = 0.0
 var can_dash: bool 
@@ -72,7 +92,8 @@ var is_blocking := false
 var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE:
 	set(value):
 		p_health = value
-		SignalHub.update_p_health.emit(value)
+		
+		a_m_state_changed.emit(PlayerBase.PlayerActionState.keys()[p_health])
 
 
 #endregion
