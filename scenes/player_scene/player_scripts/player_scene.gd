@@ -1,17 +1,13 @@
 extends PlayerBase
 
-#
-#signal SignalHub.set_ini_a_state(player_action_state)
-#signal SignalHub.set_ini_m_state(player_move_state)
-#
-#signal SignalHub.update_p_a_state(player_action_state)
-#signal SignalHub.update_p_r_duration(rage_duration)
-#signal SignalHub.update_p_r_cooling(rage_cooling)
+#Optional bug - player can block in air
+#make hitbox disabled on not attacking state
 
 #region Signals
 signal stat_changed(s_name: String, s_value: int)
 signal r_timer_changed(r_name: String, r_value: float)
 signal a_m_state_changed(st_value: int)
+signal tmp_send_ini_state(st_name: String, st_value: int)
 
 #endregion
 
@@ -53,9 +49,11 @@ const MAX_RAGE: int = 100
 @export var p_sprite: AnimatedSprite2D
 @export var p_move_state: PlayerBase.PlayerMoveState = PlayerMoveState.IDLE:
 	set(value):
-		p_move_state = value
+		if p_move_state == value:
+			return
 		
-		a_m_state_changed.emit(PlayerBase.PlayerMoveState.keys()[p_move_state])
+		p_move_state = value
+		tmp_send_ini_state.emit("p_move_state", p_move_state)
 
 
 var p_direction: float = 0.0
@@ -91,10 +89,11 @@ var is_blocking := false
 
 var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE:
 	set(value):
-		p_health = value
+		if p_action_state == value:
+			return
 		
-		a_m_state_changed.emit(PlayerBase.PlayerActionState.keys()[p_health])
-
+		p_action_state = value
+		tmp_send_ini_state.emit("p_action_state", p_action_state)
 
 #endregion
 #region References Vars
@@ -135,6 +134,8 @@ var p_cur_state = p_move_state
 func _ready() -> void:
 	#Signals
 	SignalHub.blocking_anim_done.connect(end_blocking_state)
+	#tmp_send_ini_state.emit(PlayerBase.PlayerMoveState.keys()[p_move_state])
+		
 	#Signals region end
 	
 	dec_ini_stats()

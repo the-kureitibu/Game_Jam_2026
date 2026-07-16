@@ -26,8 +26,17 @@ var r_per_attk: int
 
 #endregion
 
+#region On Ready's
+#signal stat_changed(s_name: String, s_value: int)
+#signal r_timer_changed(r_name: String, r_value: float)
+#signal a_m_state_changed(st_value: int)
+@onready var player = get_tree().get_first_node_in_group("Player_target")
+#endregion
+
+
 func _ready() -> void:
-	dec_ini_p_stats("test", "test")
+	con_to_signals()
+	dec_ini_p_stats()
 	update_ini_hud_labels()
 
 
@@ -35,7 +44,30 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-func dec_ini_p_stats(a_state: String, m_state: String) -> void:
+func con_to_signals() -> void: 
+	if player == null:
+		push_error("Player is null")
+		return
+	
+	player.tmp_send_ini_state.connect(dec_ini_p_action)
+
+func dec_ini_p_action(st_name: String, st_value: int) -> void:
+	var p_m_state = PlayerBase.PlayerMoveState
+	var p_a_state = PlayerBase.PlayerActionState
+
+	match st_name:
+		"p_move_state":
+			p_m_state = PlayerBase.PlayerMoveState.keys()[st_value]
+			movement_state_label.text = "%s, %s" % [st_name, p_m_state]
+		"p_action_state":
+			p_a_state = PlayerBase.PlayerActionState.keys()[st_value]
+			action_state_label.text = "%s, %s" % [st_name, p_a_state]
+		_:
+			pass
+
+
+
+func dec_ini_p_stats() -> void:
 		#p_move_state = m_state
 		#p_action_state = a_state
 		p_heath = p_stats.player_health
