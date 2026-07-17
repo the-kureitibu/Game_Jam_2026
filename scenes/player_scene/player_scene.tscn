@@ -466,6 +466,10 @@ height = 88.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gdmn6"]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_l2g17"]
+radius = 19.0
+height = 86.0
+
 [node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871 node_paths=PackedStringArray("p_sprite", "p_proj_sprite") groups=["Player_target"]]
 collision_mask = 28
 script = ExtResource("1_w7gii")
@@ -499,6 +503,14 @@ shape = SubResource("CapsuleShape2D_10rhv")
 [node name="HitBoxCollision" type="CollisionShape2D" parent="HitBox" unique_id=1147473880]
 shape = SubResource("CapsuleShape2D_gdmn6")
 debug_color = Color(0.6468885, 0.5205917, 0.09065964, 0.41960785)
+
+[node name="HurtBox" type="Area2D" parent="." unique_id=1928722774]
+collision_mask = 14
+
+[node name="HurtBoxCollision" type="CollisionShape2D" parent="HurtBox" unique_id=1160704513]
+position = Vector2(0, -44)
+shape = SubResource("CapsuleShape2D_l2g17")
+debug_color = Color(0.7791053, 0.37414992, 0.600027, 0.41960785)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=35895923]
 

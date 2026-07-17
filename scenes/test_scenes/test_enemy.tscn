@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://diwouwpiparj3"]
+
+[ext_resource type="Texture2D" uid="uid://0qewb1eoteia" path="res://assets/sprites/player/bucko2026.png" id="1_6yrqo"]
+[ext_resource type="Script" uid="uid://wblkovs6vc4m" path="res://scenes/test_scenes/test_enemy.gd" id="1_ibyn7"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ibyn7"]
+radius = 24.0
+height = 48.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bilpt"]
+radius = 23.021729
+
+[node name="TestEnemy" type="CharacterBody2D" unique_id=2023477993 node_paths=PackedStringArray("hurtbox")]
+script = ExtResource("1_ibyn7")
+hurtbox = NodePath("HurtBox")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=410294672]
+texture = ExtResource("1_6yrqo")
+offset = Vector2(0, -30)
+region_enabled = true
+region_rect = Rect2(0, 0, 64, 64)
+
+[node name="MainCollision" type="CollisionShape2D" parent="." unique_id=1252192208]
+position = Vector2(0, -24)
+shape = SubResource("CapsuleShape2D_ibyn7")
+
+[node name="HurtBox" type="Area2D" parent="." unique_id=144136501]
+
+[node name="HurtBoxCollision" type="CollisionShape2D" parent="HurtBox" unique_id=317018800]
+position = Vector2(0, -24)
+shape = SubResource("CircleShape2D_bilpt")
+debug_color = Color(0.8826046, 0.2616325, 0.54085463, 0.41960785)
+
+[connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]

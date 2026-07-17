@@ -14,6 +14,7 @@ signal tmp_send_ini_state(st_name: String, st_value: int)
 #region Base Vars
 
 #add duration and cooling for rage 
+var is_busy: bool = false
 const MAX_HEALTH: int = 200
 const MAX_DMG: int = 50
 const MAX_RAGE: int = 100
@@ -243,8 +244,12 @@ func apply_gravity(delta) -> void:
 
 #region Attack Related 
 func start_block() -> void:
+	if is_busy:
+		return
 	
 	if is_attacking and !is_on_floor():
+		return
+	elif !is_on_floor():
 		return
 		
 	if not Input.is_action_just_pressed("block"):
@@ -253,6 +258,8 @@ func start_block() -> void:
 	start_blocking()
 
 func start_blocking() -> void:
+	
+	is_busy = true
 	is_blocking = true
 	
 	p_action_state = PlayerActionState.BLOCKING
@@ -267,16 +274,21 @@ func end_blocking_state() -> void:
 	end_blocking()
 
 func end_blocking() -> void:
+	
 	if p_sprite.is_playing() and p_sprite.animation == "block":
 		p_sprite.sprite_frames.set_animation_loop("block", false)
 		p_sprite.stop()
 
+	is_busy = false
 	is_blocking = false
 	p_action_state = PlayerActionState.NONE
 	
 	force_move_animation()
 
 func start_attack() -> void:
+	if is_blocking:
+		return
+	
 	if is_on_floor():
 		has_attk_mid_air = false
 	
@@ -301,7 +313,7 @@ func start_attk_combo(combo_count: int) -> void:
 	
 	if has_attk_mid_air:
 		return
-	
+	is_busy = true
 	is_attacking = true
 	mace_hit_box.set_deferred("disabled", false)
 	attack_window_open = false
@@ -336,6 +348,7 @@ func _on_main_sprite_animation_finished() -> void:
 	
 
 func end_combo() -> void:
+	is_busy = false
 	is_attacking = false
 	mace_hit_box.set_deferred("disabled", true)
 	combo_input_queued = false
@@ -358,15 +371,13 @@ func force_move_animation() -> void:
 		
 #endregion 
 
-#region Debuggings
-func print_debug_with_timestamp(message: String, object: bool):
-	var time_ms = Time.get_ticks_msec()
-	var frame = Engine.get_process_frames()
-	print("[%s | Frame %d] %s %s" % [time_ms, frame, message, object])
+#region HurtBox
+
+func hit() -> void:
+	print("Got hit!")
+
 #endregion
-
-
-#region HitBox/HurtBox
+#region HitBox
 
 func handle_hitbox_pos() -> void:
 	if !is_attacking:
@@ -494,4 +505,11 @@ func reduce_timer(delta: float) -> void:
 func view_state() -> void:
 	print(p_cur_state)
 
+#endregion
+
+#region Debuggings
+func print_debug_with_timestamp(message: String, object: Variant):
+	var time_ms = Time.get_ticks_msec()
+	var frame = Engine.get_process_frames()
+	print("[%s | Frame %d] %s %s" % [time_ms, frame, message, object])
 #endregion
