@@ -6,7 +6,6 @@ extends PlayerBase
 #region Signals
 signal stat_changed(s_name: String, s_value: int)
 signal r_timer_changed(r_name: String, r_value: float)
-signal a_m_state_changed(st_value: int)
 signal tmp_send_ini_state(st_name: String, st_value: int)
 
 #endregion
@@ -15,8 +14,6 @@ signal tmp_send_ini_state(st_name: String, st_value: int)
 #region Base Vars
 
 #add duration and cooling for rage 
-#make signal local to char
-#make hitbox disabled when not on frame
 const MAX_HEALTH: int = 200
 const MAX_DMG: int = 50
 const MAX_RAGE: int = 100
@@ -54,6 +51,14 @@ const MAX_RAGE: int = 100
 		
 		p_move_state = value
 		tmp_send_ini_state.emit("p_move_state", p_move_state)
+@export var p_form_state: PlayerBase.PlayerFormState = PlayerFormState.HUMAN_FORM:
+	set(value):
+		if p_form_state == value:
+			return
+		
+		p_form_state = value
+		tmp_send_ini_state.emit("p_form", p_form_state)
+
 
 
 var p_direction: float = 0.0
@@ -230,8 +235,8 @@ func apply_gravity(delta) -> void:
 		current_gravity *= apex_gravity_multiplier
 		
 	velocity.y += current_gravity * delta
-		
-	
+
+
 
 #endregion
 
@@ -279,6 +284,7 @@ func start_attack() -> void:
 		return
 	
 	if is_attacking:
+		
 		if attack_window_open and combo_seq < MAX_COMBO:
 			combo_input_queued = true
 		return 
@@ -297,6 +303,7 @@ func start_attk_combo(combo_count: int) -> void:
 		return
 	
 	is_attacking = true
+	mace_hit_box.set_deferred("disabled", false)
 	attack_window_open = false
 	combo_input_queued = false
 	combo_seq = combo_count
@@ -330,6 +337,7 @@ func _on_main_sprite_animation_finished() -> void:
 
 func end_combo() -> void:
 	is_attacking = false
+	mace_hit_box.set_deferred("disabled", true)
 	combo_input_queued = false
 	combo_seq = 0
 	attk_c_timer = 0.0
@@ -349,6 +357,14 @@ func force_move_animation() -> void:
 
 		
 #endregion 
+
+#region Debuggings
+func print_debug_with_timestamp(message: String, object: bool):
+	var time_ms = Time.get_ticks_msec()
+	var frame = Engine.get_process_frames()
+	print("[%s | Frame %d] %s %s" % [time_ms, frame, message, object])
+#endregion
+
 
 #region HitBox/HurtBox
 

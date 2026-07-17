@@ -7,7 +7,7 @@
 script = ExtResource("2_rxn4h")
 metadata/_custom_type_script = "uid://rc0p3ykjd7ra"
 
-[node name="TestUi" type="Control" unique_id=1506350038 node_paths=PackedStringArray("health_label", "action_state_label", "movement_state_label", "attack_label", "rage_label", "rage_duration_label", "rage_cd_label")]
+[node name="TestUi" type="Control" unique_id=1506350038 node_paths=PackedStringArray("health_label", "action_state_label", "movement_state_label", "p_form_state", "attack_label", "rage_label", "rage_duration_label", "rage_cd_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,6 +19,7 @@ p_stats = SubResource("Resource_7ghdq")
 health_label = NodePath("MarginContainer/VBoxContainer/Health")
 action_state_label = NodePath("MarginContainer/VBoxContainer/ActionState")
 movement_state_label = NodePath("MarginContainer/VBoxContainer/MovementState")
+p_form_state = NodePath("MarginContainer/VBoxContainer/FormState")
 attack_label = NodePath("MarginContainer/VBoxContainer/Attack")
 rage_label = NodePath("MarginContainer/VBoxContainer/Rage")
 rage_duration_label = NodePath("MarginContainer/VBoxContainer/RageDuration")
@@ -66,3 +67,6 @@ text = "RageDuration:"
 [node name="RageCooling" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2098136397]
 layout_mode = 2
 text = "RageCooling:"
+
+[node name="FormState" type="Label" parent="MarginContainer/VBoxContainer" unique_id=126045320]
+layout_mode = 2
