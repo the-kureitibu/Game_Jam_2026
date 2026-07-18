@@ -140,11 +140,11 @@ var p_cur_state = p_move_state
 func _ready() -> void:
 	#Signals
 	SignalHub.blocking_anim_done.connect(end_blocking_state)
-	#tmp_send_ini_state.emit(PlayerBase.PlayerMoveState.keys()[p_move_state])
-		
 	#Signals region end
 	
+	
 	dec_ini_stats()
+	
 	
 	if not p_sprite.is_playing():
 		p_sprite.play("idle")
@@ -153,11 +153,12 @@ func _ready() -> void:
 		push_error("Enemy has no stats resource assigned.")
 		return
 	
+	if !mace_hit_box.disabled:
+		mace_hit_box.set_deferred("disabled", true)
+	
 	attk_c_timer = stats.attk_combo_timer
 
-func test_signal() -> void:
-	print("test worked")
-	
+
 func _physics_process(delta: float) -> void:
 
 	#p_sprite.play("idle") - animation never runs without this
@@ -372,12 +373,16 @@ func force_move_animation() -> void:
 #endregion 
 
 #region HurtBox
+func hurt(damage: int) -> void:
+	print_debug("I got hit!")
+	p_health -= damage
 
-func hit() -> void:
-	print("Got hit!")
 
 #endregion
 #region HitBox
+func hit() -> int:
+	print_debug("You Got hit!")
+	return p_damage
 
 func handle_hitbox_pos() -> void:
 	if !is_attacking:
@@ -500,10 +505,26 @@ func reduce_timer(delta: float) -> void:
 
 #endregion
 
+#region Area2d Related 
+func _on_hurt_box_area_entered(area: Area2D) -> void:
+	var from_enemy = area.get_tree().get_first_node_in_group("Enemy_target")
+	
+	if from_enemy:
+		print_debug("Entered enemy hitbox")
+		if "hit" in from_enemy:
+			print("you're hit")
+	
+#endregion
+
+
 #region Test func
 
 func view_state() -> void:
 	print(p_cur_state)
+	
+func test_signal() -> void:
+	print("test worked")
+	
 
 #endregion
 

@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dfiomxa4fli0f" path="res://scenes/player_scene/player_scene.tscn" id="1_awkfx"]
 [ext_resource type="PackedScene" uid="uid://boe26ixwk1fjm" path="res://scenes/test_rooms/test_room1.tscn" id="2_ujilw"]
 [ext_resource type="PackedScene" uid="uid://wxyw3dr3fl1b" path="res://scenes/player_scene/player_two_scene.tscn" id="3_nk52i"]
+[ext_resource type="PackedScene" uid="uid://diwouwpiparj3" path="res://scenes/test_scenes/test_enemy.tscn" id="4_5aiuk"]
 [ext_resource type="PackedScene" uid="uid://dmce6111r1rt" path="res://scenes/ui/test_ui.tscn" id="4_anwaf"]
 
 [node name="TestScene" type="Node" unique_id=345745939]
@@ -13,6 +14,9 @@
 
 [node name="PlayerTwoScene" parent="." unique_id=1399677113 instance=ExtResource("3_nk52i")]
 position = Vector2(50, 0)
+
+[node name="TestEnemy" parent="." unique_id=2023477993 instance=ExtResource("4_5aiuk")]
+position = Vector2(-90, -1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1696112634]
 

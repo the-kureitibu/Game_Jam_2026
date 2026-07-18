@@ -27,6 +27,7 @@ window/size/viewport_height=340
 [global_group]
 
 Player_target=""
+Enemy_target=""
 
 [input]
 
@@ -74,6 +75,10 @@ block={
 2d_physics/layer_4="traps"
 2d_physics/layer_5="terrain"
 2d_physics/layer_6="player two"
+2d_physics/layer_7="en_hurtbox"
+2d_physics/layer_8="p_hurtbox"
+2d_physics/layer_9="p_hitbox"
+2d_physics/layer_10="en_hitbox"
 
 [physics]
 
