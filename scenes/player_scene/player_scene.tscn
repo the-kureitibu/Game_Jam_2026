@@ -474,8 +474,22 @@ height = 86.0
 collision_mask = 28
 script = ExtResource("1_w7gii")
 stats = SubResource("Resource_qr5f1")
+p_health = null
+p_speed = null
+p_damage = null
+r_amount = null
+r_per_attk = null
 p_sprite = NodePath("MainSprite")
+p_move_state = null
+p_form_state = null
 p_proj_sprite = NodePath("CrossProjectile")
+invulnerable_timer = null
+attk_c_timer = null
+d_timer = null
+r_timer = null
+r_cd_timer = null
+s1_timer = null
+s2_timer = null
 
 [node name="SpiderSprite" type="AnimatedSprite2D" parent="." unique_id=958795497]
 visible = false

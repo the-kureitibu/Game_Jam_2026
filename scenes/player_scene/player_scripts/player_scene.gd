@@ -15,6 +15,7 @@ signal tmp_send_ini_state(st_name: String, st_value: int)
 
 #add duration and cooling for rage 
 var is_busy: bool = false
+var is_invulnerable: bool = false
 const MAX_HEALTH: int = 200
 const MAX_DMG: int = 50
 const MAX_RAGE: int = 100
@@ -123,6 +124,7 @@ const UP_DIRECTION: Vector2 = Vector2.UP
 
 #region Timers
 
+@export var invulnerable_timer: float = 0.0 
 @export var attk_c_timer: float = 0.0 
 @export var d_timer: float = 0.0
 @export var r_timer: float = 0.0
@@ -373,15 +375,28 @@ func force_move_animation() -> void:
 #endregion 
 
 #region HurtBox
-func hurt(damage: int) -> void:
+func handle_hurt(damage: int) -> void:
+	if is_invulnerable:
+		print("Player is invulnerable")
+		return
+	
+	start_hurt(damage)
+
+
+func start_hurt(damage: int) -> void:
+	if is_invulnerable:
+		return
+
+	is_invulnerable = true
+	
 	print_debug("I got hit!")
 	p_health -= damage
+	invulnerable_timer = stats.invul_timer
 
 
 #endregion
 #region HitBox
 func hit() -> int:
-	print_debug("You Got hit!")
 	return p_damage
 
 func handle_hitbox_pos() -> void:
@@ -497,6 +512,10 @@ func reduce_timer(delta: float) -> void:
 	if attk_c_timer <= 0.0:
 		close_attack_window()
 	
+	invulnerable_timer = set_timer(invulnerable_timer, delta)
+	if invulnerable_timer <= 0.0:
+		is_invulnerable = false
+	
 	d_timer = set_timer(d_timer, delta)
 	r_timer = set_timer(r_timer, delta)
 	r_cd_timer = set_timer(r_cd_timer, delta)
@@ -510,9 +529,13 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 	var from_enemy = area.get_tree().get_first_node_in_group("Enemy_target")
 	
 	if from_enemy:
-		print_debug("Entered enemy hitbox")
+		var en_damage: int
+		
+		print_debug("Entered enemy hurtbox")
 		if "hit" in from_enemy:
-			print("you're hit")
+			from_enemy.hit()
+			en_damage = from_enemy.hit()
+			handle_hurt(en_damage)
 	
 #endregion
 

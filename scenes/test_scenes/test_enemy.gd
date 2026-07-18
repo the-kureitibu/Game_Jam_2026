@@ -8,22 +8,18 @@ func _ready() -> void:
 	pass
  
 func hit() -> int:
-	
-	print("You got hit!")
 	return test_dmg
 
 func hurt() -> void: 
-	print("I got hurt!")
+	print_debug("I got hurt!, in enemy")
 
 func _on_hurt_box_area_entered(area: Area2D) -> void:
 	var from_player = area.get_tree().get_first_node_in_group("Player_target")
 	var test_val: int
 	
 	if from_player:
-		print("hit exist")
 		if "hit" in from_player:
 			test_val = from_player.hit()
-			print("value from player ", test_val)
 			hurt()
 	else:
 		print("no hit")
