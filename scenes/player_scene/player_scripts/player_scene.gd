@@ -14,6 +14,7 @@ signal tmp_send_ini_state(st_name: String, st_value: int)
 #region Base Vars
 
 #add duration and cooling for rage 
+var is_hurt: bool = false
 var is_busy: bool = false
 var is_invulnerable: bool = false
 const MAX_HEALTH: int = 200
@@ -189,6 +190,9 @@ func dec_ini_stats() -> void:
 #region Base movement
 
 func player_move() -> void:
+	if is_busy:
+		return
+	
 	if is_blocking:
 		return
 	
@@ -289,6 +293,9 @@ func end_blocking() -> void:
 	force_move_animation()
 
 func start_attack() -> void:
+	if is_busy:
+		return
+	
 	if is_blocking:
 		return
 	
@@ -336,7 +343,11 @@ func start_attk_combo(combo_count: int) -> void:
 
 
 func _on_main_sprite_animation_finished() -> void:
+	
+	if is_hurt and p_action_state == PlayerActionState.HURT:
+		end_hurt()
 
+	
 	if is_attacking:
 		if is_on_air:
 			has_attk_mid_air = true
@@ -348,8 +359,9 @@ func _on_main_sprite_animation_finished() -> void:
 			end_combo()
 		else:
 			end_combo()
-	
 
+	
+	
 func end_combo() -> void:
 	is_busy = false
 	is_attacking = false
@@ -377,21 +389,36 @@ func force_move_animation() -> void:
 #region HurtBox
 func handle_hurt(damage: int) -> void:
 	if is_invulnerable:
-		print("Player is invulnerable")
 		return
 	
 	start_hurt(damage)
 
 
 func start_hurt(damage: int) -> void:
+	is_busy = true
+	
 	if is_invulnerable:
 		return
 
 	is_invulnerable = true
+	is_hurt = true 
 	
-	print_debug("I got hit!")
-	p_health -= damage
+	p_action_state = PlayerActionState.HURT
+	play_anim(p_sprite, "hurt")
+	
+	if not (p_health <= 0):
+		p_health -= damage
+	else:
+		death()
 	invulnerable_timer = stats.invul_timer
+
+func end_hurt() -> void:
+	
+	is_busy = false
+	is_hurt = false
+	p_action_state = PlayerActionState.NONE
+	force_move_animation()
+
 
 
 #endregion
@@ -531,7 +558,6 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 	if from_enemy:
 		var en_damage: int
 		
-		print_debug("Entered enemy hurtbox")
 		if "hit" in from_enemy:
 			from_enemy.hit()
 			en_damage = from_enemy.hit()
