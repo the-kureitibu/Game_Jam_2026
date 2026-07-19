@@ -1,16 +1,16 @@
 extends Control
-
+#Get from Player instead 
 #region Base Vars
 
 @export var p_stats: PlayerStats
-var p_move_state: String
-var p_action_state: String
-var p_heath: int 
-var p_damage: int
-var r_amount: int
-var r_duration: float
-var r_cooling: float
-var r_per_attk: int
+var player_move_state: String
+var player_action_state: String
+var player_heath: int 
+var player_damage: int
+var rage_amount: int
+var rage_duration: float
+var rage_cooling: float
+var rage_per_attk: int
 
 #endregion
 
@@ -97,19 +97,19 @@ func dec_ini_p_stats() -> void:
 		p_form_state.text = "%s, %s" % ["Form State: ", temp_form]
 			
 		#change this to get player's value, not the resource
-		p_heath = p_stats.player_health
-		p_damage = p_stats.player_damage
-		r_amount = p_stats.rage_amount
-		r_duration = p_stats.rage_timer
-		r_cooling = p_stats.rage_cd_timer
-		r_per_attk = p_stats.rage_per_attack
-		
+		player_heath = player.p_health
+		player_damage = player.p_damage
+		rage_amount = player.r_amount
+		rage_duration = player.r_timer
+		rage_cooling = player.r_cd_timer
+		rage_per_attk = player.r_per_attk
 
+	
 
 func update_ini_hud_labels() -> void:
 	
-	health_label.text = "Health: " + str(p_heath)
-	attack_label.text = "Attack: " + str(p_damage)
-	rage_label.text = "Rage Bar: " + str(r_amount)
-	rage_duration_label.text = "Rage Duration: " + str(r_duration)
-	rage_cd_label.text = "Rage cooling down: " +str(r_cooling)
+	health_label.text = "Health: " + str(player_heath)
+	attack_label.text = "Attack: " + str(player_damage)
+	rage_label.text = "Rage Bar: " + str(rage_amount)
+	rage_duration_label.text = "Rage Duration: " + str(rage_duration)
+	rage_cd_label.text = "Rage cooling down: " +str(rage_cooling)

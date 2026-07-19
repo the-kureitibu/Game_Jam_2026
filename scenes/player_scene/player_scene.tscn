@@ -518,4 +518,5 @@ debug_color = Color(0.7791053, 0.37414992, 0.600027, 0.41960785)
 [node name="Camera2D" type="Camera2D" parent="." unique_id=35895923]
 
 [connection signal="animation_finished" from="MainSprite" to="." method="_on_main_sprite_animation_finished"]
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]

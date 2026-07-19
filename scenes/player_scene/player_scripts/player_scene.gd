@@ -16,6 +16,7 @@ signal tmp_send_ini_state(st_name: String, st_value: int)
 #add duration and cooling for rage 
 var is_hurt: bool = false
 var is_busy: bool = false
+var input_available: bool = true
 var is_invulnerable: bool = false
 const MAX_HEALTH: int = 200
 const MAX_DMG: int = 50
@@ -42,7 +43,7 @@ const MAX_RAGE: int = 100
 @export var r_amount: int:
 	set(value):
 		
-		r_amount = clamp(value, 0, MAX_RAGE)
+		r_amount = clamp(value, 0, stats.rage_amount)
 		stat_changed.emit("r_amount", value)
 		
 @export var r_per_attk: int
@@ -108,7 +109,6 @@ var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE:
 
 @export var p_proj_sprite: Area2D
 
-
 #endregion
 
 #region Hitboxes, Hurtboxes Vars
@@ -153,7 +153,6 @@ func _ready() -> void:
 		p_sprite.play("idle")
 
 	if stats == null:
-		push_error("Enemy has no stats resource assigned.")
 		return
 	
 	if !mace_hit_box.disabled:
@@ -180,7 +179,6 @@ func dec_ini_stats() -> void:
 	p_health = stats.player_health
 	p_speed = stats.player_speed
 	p_damage = stats.player_damage
-	r_amount = stats.rage_amount
 	r_per_attk = stats.rage_per_attack
 	SignalHub.set_ini_a_state.emit()
 	SignalHub.set_ini_m_state.emit()
@@ -293,9 +291,9 @@ func end_blocking() -> void:
 	force_move_animation()
 
 func start_attack() -> void:
-	if is_busy:
+	if !input_available:
 		return
-	
+
 	if is_blocking:
 		return
 	
@@ -320,7 +318,7 @@ func close_attack_window() -> void:
 	attack_window_open = false
 
 func start_attk_combo(combo_count: int) -> void:
-	
+
 	if has_attk_mid_air:
 		return
 	is_busy = true
@@ -361,6 +359,8 @@ func _on_main_sprite_animation_finished() -> void:
 			end_combo()
 
 	
+func handle_rage() -> void:
+	pass
 	
 func end_combo() -> void:
 	is_busy = false
@@ -396,6 +396,7 @@ func handle_hurt(damage: int) -> void:
 
 func start_hurt(damage: int) -> void:
 	is_busy = true
+	input_available = false
 	
 	if is_invulnerable:
 		return
@@ -410,10 +411,12 @@ func start_hurt(damage: int) -> void:
 		p_health -= damage
 	else:
 		death()
+	
 	invulnerable_timer = stats.invul_timer
 
 func end_hurt() -> void:
 	
+	input_available = true
 	is_busy = false
 	is_hurt = false
 	p_action_state = PlayerActionState.NONE
@@ -491,6 +494,8 @@ func reset_hit_box_pos() -> void:
 	mace_hit_box.position = Vector2(0.0, 0.0)
 	mace_hit_box.rotation = 0
 
+
+
 #endregion
 
 #region Player States 
@@ -562,7 +567,14 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 			from_enemy.hit()
 			en_damage = from_enemy.hit()
 			handle_hurt(en_damage)
+
+func _on_hit_box_area_entered(area: Area2D) -> void:
+	var from_area = area.get_tree().get_first_node_in_group("Enemy_target")
 	
+	if from_area:
+		print("Enemy Exist")
+
+
 #endregion
 
 
