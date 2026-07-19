@@ -2,6 +2,7 @@ extends PlayerBase
 
 #Optional bug - player can block in air
 #make hitbox disabled on not attacking state
+#fix hitbox on cross attack
 
 #region Signals
 signal stat_changed(s_name: String, s_value: int)
@@ -16,12 +17,13 @@ signal tmp_send_ini_state(st_name: String, st_value: int)
 #add duration and cooling for rage 
 var is_hurt: bool = false
 var is_busy: bool = false
+var is_raging: bool = false
 var input_available: bool = true
 var is_invulnerable: bool = false
 const MAX_HEALTH: int = 200
 const MAX_DMG: int = 50
 const MAX_RAGE: int = 100
-@export var stats: PlayerStats 
+@export var stats: PlayerStats
 @export var p_health: int:
 	set(value):
 		if p_health == value:
@@ -66,7 +68,7 @@ const MAX_RAGE: int = 100
 
 
 var p_direction: float = 0.0
-var can_dash: bool 
+var can_dash: bool
 
 #endregion 
 
@@ -88,7 +90,7 @@ var facing_dir := 1
 #endregion
 
 #region Attack Base Vars
-var is_attacking := false 
+var is_attacking := false
 var combo_seq := 0
 const MAX_COMBO = 2
 var combo_input_queued: bool
@@ -125,10 +127,18 @@ const UP_DIRECTION: Vector2 = Vector2.UP
 
 #region Timers
 
-@export var invulnerable_timer: float = 0.0 
-@export var attk_c_timer: float = 0.0 
+@export var invulnerable_timer: float = 0.0
+@export var attk_c_timer: float = 0.0
 @export var d_timer: float = 0.0
-@export var r_timer: float = 0.0
+@export var r_timer: float = 0.0:
+	set(value):
+		if r_timer == value:
+			return
+		
+		r_timer = value
+		r_timer_changed.emit("rage_dur", value)
+
+
 @export var r_cd_timer: float = 0.0
 @export var s1_timer: float = 0.0
 @export var s2_timer: float = 0.0
@@ -197,7 +207,6 @@ func player_move() -> void:
 	if is_on_floor():
 		is_on_air = false
 
-#handle horizontal movement instead 
 	if is_attacking:
 		return
 
@@ -307,7 +316,7 @@ func start_attack() -> void:
 		
 		if attack_window_open and combo_seq < MAX_COMBO:
 			combo_input_queued = true
-		return 
+		return
 		
 	start_attk_combo(1)
 
@@ -359,9 +368,44 @@ func _on_main_sprite_animation_finished() -> void:
 			end_combo()
 
 	
-func handle_rage() -> void:
-	pass
+func accumulate_rage() -> void:
+	if p_form_state == PlayerFormState.SPIDER_FORM:
+		print("Player is Spider form")
+		return
 	
+	if p_action_state == PlayerActionState.RAGE_TRANSFORM:
+		print("Player is rage transforming")
+		return
+	
+	if is_raging:
+		print("Player raging. ", is_raging)
+		return
+	
+	if r_amount < MAX_RAGE:
+		r_amount += r_per_attk
+	
+	handle_rage()
+
+
+func handle_rage() -> void:
+	if r_amount != MAX_RAGE:
+		return
+
+	is_raging = true
+	p_form_state = PlayerFormState.SPIDER_FORM
+	
+	r_timer = stats.rage_timer
+	
+func end_rage() -> void:
+	if !is_raging: 
+		return
+	
+	print("rage ended")
+	is_raging = false
+	r_amount = 0
+	p_form_state = PlayerFormState.HUMAN_FORM
+	
+
 func end_combo() -> void:
 	is_busy = false
 	is_attacking = false
@@ -402,7 +446,7 @@ func start_hurt(damage: int) -> void:
 		return
 
 	is_invulnerable = true
-	is_hurt = true 
+	is_hurt = true
 	
 	p_action_state = PlayerActionState.HURT
 	play_anim(p_sprite, "hurt")
@@ -442,7 +486,7 @@ func update_hit_box_pos(frame: int) -> void:
 	var current_pos := frame
 	if p_sprite.animation == "attk_combo_1":
 		match current_pos:
-			1: 
+			1:
 				if p_sprite.flip_h:
 					pass_hitbox_values(10.0, 30.0, Vector2(-19.0, -37.0), 43.9, false)
 				else:
@@ -457,7 +501,7 @@ func update_hit_box_pos(frame: int) -> void:
 
 	if p_sprite.animation == "attk_combo_2":
 		match current_pos:
-			0, 1: 
+			0, 1:
 				if p_sprite.flip_h:
 					pass_hitbox_values(12.0, 36.1, Vector2(-45.0, -50.0), -93.1, true)
 				else:
@@ -510,7 +554,7 @@ func change_move_state(new_state: PlayerMoveState) -> void:
 	p_move_state = new_state
 	
 	match p_move_state:
-		PlayerMoveState.JUMP: 
+		PlayerMoveState.JUMP:
 			play_anim(p_sprite, "jump")
 		PlayerMoveState.RUN:
 			play_anim(p_sprite, "walk")
@@ -550,6 +594,9 @@ func reduce_timer(delta: float) -> void:
 	
 	d_timer = set_timer(d_timer, delta)
 	r_timer = set_timer(r_timer, delta)
+	if r_timer <= 0.0:
+		end_rage()
+	
 	r_cd_timer = set_timer(r_cd_timer, delta)
 	s1_timer = set_timer(s1_timer, delta)
 	s2_timer = set_timer(s2_timer, delta)
@@ -572,7 +619,7 @@ func _on_hit_box_area_entered(area: Area2D) -> void:
 	var from_area = area.get_tree().get_first_node_in_group("Enemy_target")
 	
 	if from_area:
-		print("Enemy Exist")
+		accumulate_rage()
 
 
 #endregion
@@ -590,6 +637,10 @@ func test_signal() -> void:
 #endregion
 
 #region Debuggings
+func print_default(message: String, object: Variant):
+
+	print("%s , %s" % [message, object])
+
 func print_debug_with_timestamp(message: String, object: Variant):
 	var time_ms = Time.get_ticks_msec()
 	var frame = Engine.get_process_frames()

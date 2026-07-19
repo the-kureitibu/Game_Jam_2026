@@ -53,6 +53,8 @@ func con_to_signals() -> void:
 	
 	player.tmp_send_ini_state.connect(update_p_action)
 	player.stat_changed.connect(update_p_stats)
+	player.r_timer_changed.connect(update_p_rage)
+	
 
 
 func update_p_action(st_name: String, st_value: int) -> void:
@@ -69,7 +71,7 @@ func update_p_action(st_name: String, st_value: int) -> void:
 			action_state_label.text = "%s, %s" % [st_name, p_a_state]
 		"p_form":
 			p_f_state = PlayerBase.PlayerFormState.keys()[st_value]
-			p_form_state.text = "%s, %s" % [st_name, p_a_state]
+			p_form_state.text = "%s, %s" % [st_name, p_f_state]
 		_:
 			pass
 
@@ -85,6 +87,16 @@ func update_p_stats(s_name: String, s_value: int) -> void:
 			attack_label.text = "%s, %s" % ["Attack: ", s_value]
 		"r_amount":
 			rage_label.text = "%s, %s" % ["Rage Bar: ", s_value]
+
+
+func update_p_rage(r_name: String, r_value: float) -> void:
+	if player == null:
+		push_error("Player does not Exist")
+		return
+	
+	match r_name:
+		"rage_dur": 
+			rage_duration_label.text = "%s, %s" % ["Rage Duration: ", r_value]
 
 	
 
