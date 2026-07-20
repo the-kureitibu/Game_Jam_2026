@@ -12,7 +12,6 @@ func hit() -> int:
 
 func hurt() -> void: 
 	pass
-	#print_debug("I got hurt!, in enemy")
 
 func _on_hurt_box_area_entered(area: Area2D) -> void:
 	var from_player = area.get_tree().get_first_node_in_group("Player_target")

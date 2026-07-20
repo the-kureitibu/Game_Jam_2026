@@ -18,6 +18,7 @@ signal tmp_send_ini_state(st_name: String, st_value: int)
 var is_hurt: bool = false
 var is_busy: bool = false
 var is_raging: bool = false
+var is_transforming: bool = false
 var input_available: bool = true
 var is_invulnerable: bool = false
 const MAX_HEALTH: int = 200
@@ -50,6 +51,8 @@ const MAX_RAGE: int = 100
 		
 @export var r_per_attk: int
 @export var p_sprite: AnimatedSprite2D
+@export var s_sprite: AnimatedSprite2D
+@export var anim_player: AnimationPlayer
 @export var p_move_state: PlayerBase.PlayerMoveState = PlayerMoveState.IDLE:
 	set(value):
 		if p_move_state == value:
@@ -183,6 +186,7 @@ func _physics_process(delta: float) -> void:
 	player_jump()
 	handle_air_state()
 	update_move_state()
+	update_rage_timer(delta)
 
 #region Initial Stats declaration
 func dec_ini_stats() -> void:
@@ -198,6 +202,9 @@ func dec_ini_stats() -> void:
 #region Base movement
 
 func player_move() -> void:
+	if is_transforming:
+		return
+	
 	if is_busy:
 		return
 	
@@ -258,6 +265,9 @@ func apply_gravity(delta) -> void:
 
 #region Attack Related 
 func start_block() -> void:
+	if is_transforming:
+		return
+	
 	if is_busy:
 		return
 	
@@ -300,6 +310,9 @@ func end_blocking() -> void:
 	force_move_animation()
 
 func start_attack() -> void:
+	if is_transforming:
+		return
+	
 	if !input_available:
 		return
 
@@ -367,7 +380,7 @@ func _on_main_sprite_animation_finished() -> void:
 		else:
 			end_combo()
 
-	
+
 func accumulate_rage() -> void:
 	if p_form_state == PlayerFormState.SPIDER_FORM:
 		print("Player is Spider form")
@@ -391,20 +404,53 @@ func handle_rage() -> void:
 	if r_amount != MAX_RAGE:
 		return
 
+	rage_transform()
+
+
+func rage_transform() -> void:
+	
+	if is_raging or is_transforming:
+		return
+	
+	is_transforming = true
+
+	p_action_state = PlayerActionState.RAGE_TRANSFORM
+	anim_player.play("rage_transform")
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	
+	if anim_name != "rage_transform":
+		return
+	
+	is_transforming = false
 	is_raging = true
+	
 	p_form_state = PlayerFormState.SPIDER_FORM
+	p_action_state = PlayerActionState.NONE
 	
 	r_timer = stats.rage_timer
+
+func update_rage_timer(delta) -> void:
+	if !is_raging:
+		return
 	
+	r_timer = set_timer(r_timer, delta)
+	
+	if r_timer <= 0.0:
+		end_rage()
+	
+
 func end_rage() -> void:
 	if !is_raging: 
 		return
 	
+
 	print("rage ended")
 	is_raging = false
 	r_amount = 0
 	p_form_state = PlayerFormState.HUMAN_FORM
-	
+	print("cur form after rage, ", PlayerFormState.keys()[p_form_state])
+
 
 func end_combo() -> void:
 	is_busy = false
@@ -593,9 +639,6 @@ func reduce_timer(delta: float) -> void:
 		is_invulnerable = false
 	
 	d_timer = set_timer(d_timer, delta)
-	r_timer = set_timer(r_timer, delta)
-	if r_timer <= 0.0:
-		end_rage()
 	
 	r_cd_timer = set_timer(r_cd_timer, delta)
 	s1_timer = set_timer(s1_timer, delta)

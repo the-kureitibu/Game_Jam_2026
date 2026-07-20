@@ -95,7 +95,9 @@ _data = {
 &"trigger_attack": SubResource("Animation_0d3vr")
 }
 
-[node name="CrossProjectile" type="Area2D" unique_id=148571568]
+[node name="CrossProjectile" type="Area2D" unique_id=148571568 groups=["Player_target"]]
+collision_layer = 256
+collision_mask = 64
 script = ExtResource("1_0d3vr")
 
 [node name="MainSprite" type="Sprite2D" parent="." unique_id=1071610332]
@@ -111,4 +113,5 @@ shape = SubResource("CapsuleShape2D_0d3vr")
 [node name="Anim" type="AnimationPlayer" parent="." unique_id=523664599]
 libraries/ = SubResource("AnimationLibrary_g17u6")
 
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="animation_finished" from="Anim" to="." method="_on_anim_animation_finished"]
