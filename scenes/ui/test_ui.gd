@@ -75,7 +75,7 @@ func update_p_action(st_name: String, st_value: int) -> void:
 		_:
 			pass
 
-func update_p_stats(s_name: String, s_value: int) -> void:
+func update_p_stats(s_name: String, s_value: Variant) -> void:
 	if player == null:
 		push_error("Player does not Exist")
 		return
@@ -97,6 +97,8 @@ func update_p_rage(r_name: String, r_value: float) -> void:
 	match r_name:
 		"rage_dur": 
 			rage_duration_label.text = "%s, %s" % ["Rage Duration: ", r_value]
+		"r_cd":
+			rage_cd_label.text = "%s, %s" % ["Rage cooling down: ", r_value]
 
 	
 

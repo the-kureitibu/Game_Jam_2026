@@ -18,12 +18,13 @@ signal tmp_send_ini_state(st_name: String, st_value: int)
 var is_hurt: bool = false
 var is_busy: bool = false
 var is_raging: bool = false
+var is_rage_cooling: bool = false
 var is_transforming: bool = false
 var input_available: bool = true
 var is_invulnerable: bool = false
 const MAX_HEALTH: int = 200
 const MAX_DMG: int = 50
-const MAX_RAGE: int = 100
+const MAX_RAGE: int = 20
 @export var stats: PlayerStats
 @export var p_health: int:
 	set(value):
@@ -43,7 +44,7 @@ const MAX_RAGE: int = 100
 		p_damage = clamp(value, 0, MAX_DMG)
 		stat_changed.emit("p_damage", value)
 		
-@export var r_amount: int:
+@export var r_amount: float:
 	set(value):
 		
 		r_amount = clamp(value, 0, stats.rage_amount)
@@ -142,7 +143,14 @@ const UP_DIRECTION: Vector2 = Vector2.UP
 		r_timer_changed.emit("rage_dur", value)
 
 
-@export var r_cd_timer: float = 0.0
+@export var r_cd_timer: float = 0.0:
+	set(value):
+		if r_cd_timer == value:
+			return
+		
+		r_cd_timer = value
+		r_timer_changed.emit("r_cd",value)
+
 @export var s1_timer: float = 0.0
 @export var s2_timer: float = 0.0
 
@@ -187,6 +195,7 @@ func _physics_process(delta: float) -> void:
 	handle_air_state()
 	update_move_state()
 	update_rage_timer(delta)
+	update_rage_cooling(delta)
 
 #region Initial Stats declaration
 func dec_ini_stats() -> void:
@@ -437,17 +446,36 @@ func update_rage_timer(delta) -> void:
 	r_timer = set_timer(r_timer, delta)
 	
 	if r_timer <= 0.0:
-		end_rage()
+		handle_rage_cooling()
+
+func handle_rage_cooling() -> void:
+	if is_rage_cooling:
+		return
+
+	is_rage_cooling = true
+	r_cd_timer = stats.rage_cd_timer
 	
+
+func update_rage_cooling(delta) -> void:
+	if !is_rage_cooling:
+		return
+	
+	r_cd_timer = set_timer(r_cd_timer, delta)
+
+	#if r_cd_timer > 0.0:
+	r_amount = max(r_amount - 5.0 * delta, 0)
+
+	if r_cd_timer <= 0.0:
+		end_rage()
 
 func end_rage() -> void:
 	if !is_raging: 
 		return
 	
-
 	print("rage ended")
+	is_rage_cooling = false
 	is_raging = false
-	r_amount = 0
+	#r_amount = 0
 	p_form_state = PlayerFormState.HUMAN_FORM
 	print("cur form after rage, ", PlayerFormState.keys()[p_form_state])
 
@@ -640,7 +668,7 @@ func reduce_timer(delta: float) -> void:
 	
 	d_timer = set_timer(d_timer, delta)
 	
-	r_cd_timer = set_timer(r_cd_timer, delta)
+
 	s1_timer = set_timer(s1_timer, delta)
 	s2_timer = set_timer(s2_timer, delta)
 
