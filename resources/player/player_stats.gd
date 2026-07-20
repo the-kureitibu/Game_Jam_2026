@@ -5,7 +5,7 @@ class_name PlayerStats
 @export var player_health: int = 120
 @export var player_speed: float = 120.0
 @export var player_damage: int = 20
-@export var rage_amount: float = 20.0
+@export var rage_amount: float = 100.0
 @export var rage_per_attack: int = 5
 
 #region Timers

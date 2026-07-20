@@ -24,7 +24,7 @@ var input_available: bool = true
 var is_invulnerable: bool = false
 const MAX_HEALTH: int = 200
 const MAX_DMG: int = 50
-const MAX_RAGE: int = 20
+const MAX_RAGE: int = 100.0
 @export var stats: PlayerStats
 @export var p_health: int:
 	set(value):
@@ -235,7 +235,10 @@ func player_move() -> void:
 		facing_dir = -1
 
 	if p_direction != 0:
-		p_sprite.flip_h = p_direction < 0
+		if p_form_state == PlayerFormState.HUMAN_FORM:
+			p_sprite.flip_h = p_direction < 0
+		else:
+			s_sprite.flip_h = p_direction < 0
 	
 	move_and_slide()
 
@@ -352,6 +355,7 @@ func start_attk_combo(combo_count: int) -> void:
 
 	if has_attk_mid_air:
 		return
+	
 	is_busy = true
 	is_attacking = true
 	mace_hit_box.set_deferred("disabled", false)
@@ -360,23 +364,33 @@ func start_attk_combo(combo_count: int) -> void:
 	combo_seq = combo_count
 	attk_c_timer = stats.attk_combo_timer
 
-	match combo_seq:
-		1:
-			p_action_state = PlayerActionState.ATTACK
-			play_anim(p_sprite, "attk_combo_1", true)
-		2:
-			p_action_state = PlayerActionState.COMBO_ATTACK
-			play_anim(p_sprite, "attk_combo_2", true)
+	if p_form_state == PlayerFormState.HUMAN_FORM:
+		if p_form_state == PlayerFormState.SPIDER_FORM:
+			return
+		
+		match combo_seq:
+			1:
+				p_action_state = PlayerActionState.ATTACK
+				play_anim(p_sprite, "attk_combo_1", true)
+			2:
+				p_action_state = PlayerActionState.COMBO_ATTACK
+				play_anim(p_sprite, "attk_combo_2", true)
+				
+
+	if p_form_state == PlayerFormState.SPIDER_FORM:
+		if p_form_state == PlayerFormState.HUMAN_FORM:
+			return
+		
+		p_action_state = PlayerActionState.ATTACK
+		play_anim(s_sprite, "attack", true)
 	
 	open_attack_window()
-
 
 func _on_main_sprite_animation_finished() -> void:
 	
 	if is_hurt and p_action_state == PlayerActionState.HURT:
 		end_hurt()
 
-	
 	if is_attacking:
 		if is_on_air:
 			has_attk_mid_air = true
@@ -388,6 +402,19 @@ func _on_main_sprite_animation_finished() -> void:
 			end_combo()
 		else:
 			end_combo()
+
+func _on_spider_sprite_animation_finished() -> void:
+	
+	if is_hurt and p_action_state == PlayerActionState.HURT:
+		end_hurt()
+		
+
+	if is_attacking:
+		if is_on_air:
+			has_attk_mid_air = true
+			
+
+	end_combo()
 
 
 func accumulate_rage() -> void:
@@ -410,7 +437,7 @@ func accumulate_rage() -> void:
 
 
 func handle_rage() -> void:
-	if r_amount != MAX_RAGE:
+	if r_amount < MAX_RAGE:
 		return
 
 	rage_transform()
@@ -428,16 +455,28 @@ func rage_transform() -> void:
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	
-	if anim_name != "rage_transform":
+	if anim_name == "rage_transform":
+		is_transforming = false
+		is_raging = true
+		
+		p_form_state = PlayerFormState.SPIDER_FORM
+		p_action_state = PlayerActionState.NONE
+		
+		r_timer = stats.rage_timer
+		
+	if anim_name == "to_human_transform":
+		is_transforming = false
+		end_rage()
+
+func to_human_transform() -> void:
+	
+	if is_transforming:
 		return
 	
-	is_transforming = false
-	is_raging = true
-	
-	p_form_state = PlayerFormState.SPIDER_FORM
-	p_action_state = PlayerActionState.NONE
-	
-	r_timer = stats.rage_timer
+	is_transforming = true
+
+	p_action_state = PlayerActionState.RAGE_TRANSFORM
+	anim_player.play("to_human_transform")
 
 func update_rage_timer(delta) -> void:
 	if !is_raging:
@@ -461,23 +500,18 @@ func update_rage_cooling(delta) -> void:
 		return
 	
 	r_cd_timer = set_timer(r_cd_timer, delta)
-
-	#if r_cd_timer > 0.0:
-	r_amount = max(r_amount - 5.0 * delta, 0)
+	r_amount = max(r_amount - 20.0 * delta, 0)
 
 	if r_cd_timer <= 0.0:
-		end_rage()
+		to_human_transform()
 
 func end_rage() -> void:
 	if !is_raging: 
 		return
 	
-	print("rage ended")
 	is_rage_cooling = false
 	is_raging = false
-	#r_amount = 0
 	p_form_state = PlayerFormState.HUMAN_FORM
-	print("cur form after rage, ", PlayerFormState.keys()[p_form_state])
 
 
 func end_combo() -> void:
@@ -522,8 +556,12 @@ func start_hurt(damage: int) -> void:
 	is_invulnerable = true
 	is_hurt = true
 	
+	
 	p_action_state = PlayerActionState.HURT
-	play_anim(p_sprite, "hurt")
+	if p_form_state == PlayerFormState.HUMAN_FORM:
+		play_anim(p_sprite, "hurt")
+	else:
+		play_anim(s_sprite, "hurt")
 	
 	if not (p_health <= 0):
 		p_health -= damage
@@ -627,14 +665,21 @@ func change_move_state(new_state: PlayerMoveState) -> void:
 	
 	p_move_state = new_state
 	
-	match p_move_state:
-		PlayerMoveState.JUMP:
-			play_anim(p_sprite, "jump")
-		PlayerMoveState.RUN:
-			play_anim(p_sprite, "walk")
-		PlayerMoveState.IDLE:
-			play_anim(p_sprite, "idle")
-		
+	if p_form_state == PlayerFormState.HUMAN_FORM:
+		match_spider_human_movement(p_move_state, p_sprite, "jump", "walk", "idle")
+	if p_form_state == PlayerFormState.SPIDER_FORM:
+		match_spider_human_movement(p_move_state, s_sprite, "jump", "walk", "idle")
+
+func match_spider_human_movement(f_state: PlayerBase.PlayerMoveState, sprt: AnimatedSprite2D,
+	jump: StringName, walk: StringName, idle: StringName) -> void:
+		match f_state:
+			PlayerMoveState.JUMP:
+				play_anim(sprt, jump)
+			PlayerMoveState.RUN:
+				play_anim(sprt, walk)
+			PlayerMoveState.IDLE:
+				play_anim(sprt, idle)
+	
 
 func update_move_state() -> void:
 	
