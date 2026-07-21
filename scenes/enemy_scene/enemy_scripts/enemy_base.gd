@@ -1,39 +1,29 @@
-extends CharacterBody2D
+extends Node
 
-class_name PlayerBase
+class_name EnemyBase
 
+#region Enums
 
-#region Enums States
-
-enum PlayerMoveState {
-	RUN,
-	IDLE,
-	JUMP,
-	FALL,
-	DASH,
-	KNOCKBACK
+enum EnemyActionState {
+	COMBO_ONE,
+	COMBO_TWO,
+	COMBO_THREE,
+	COMBO_FOUR,
+	COMBO_RECOVERY
 }
 
-enum PlayerActionState {
-	RAGE_TRANSFORM,
-	ATTACK,
-	COMBO_ATTACK,
-	HURT,
-	BLOCKING,
-	SKILL_1,
-	SKILL_2,
-	DEAD,
-	REVIVE,
-	NONE,
-}
-
-enum PlayerFormState {
+enum EnemyFormState {
 	HUMAN_FORM,
-	RAGE_CD,
-	SPIDER_FORM,
+	DEMON_LORD	
 }
-#endregion
 
+enum EnemyMovementState {
+	JUMPING,
+	CHASING,
+	FLYING
+}
+
+#endregion
 
 func set_timer(timer: float, delta: float) -> float:
 	return max(timer - delta, 0.0)

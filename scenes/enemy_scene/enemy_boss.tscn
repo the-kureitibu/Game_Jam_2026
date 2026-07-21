@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://cetfn5r0cjj7c"]
+
+[ext_resource type="Texture2D" uid="uid://dkt2pte0tirw2" path="res://assets/sprites/enemies/bucko2026_boss.png" id="1_m08xj"]
+[ext_resource type="Script" uid="uid://c580b1upu2c3" path="res://scenes/enemy_scene/enemy_scripts/enemy_boss.gd" id="1_pel0o"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pel0o"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(128, 0, 128, 145)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p55qm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pel0o")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kjeor"]
+radius = 24.0
+height = 136.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kgnny"]
+radius = 23.0
+height = 136.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qfbu3"]
+radius = 22.0
+height = 134.0
+
+[node name="EnemyBoss" type="CharacterBody2D" unique_id=1734450653 groups=["Boss_target"]]
+script = ExtResource("1_pel0o")
+
+[node name="e_sprite" type="AnimatedSprite2D" parent="." unique_id=290278967]
+sprite_frames = SubResource("SpriteFrames_p55qm")
+offset = Vector2(0, -68)
+
+[node name="MainCol" type="CollisionShape2D" parent="." unique_id=1285489192]
+position = Vector2(0, -68)
+shape = SubResource("CapsuleShape2D_kjeor")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1771797632]
+
+[node name="HurtCol" type="CollisionShape2D" parent="Hurtbox" unique_id=87264605]
+position = Vector2(0, -68)
+shape = SubResource("CapsuleShape2D_kgnny")
+debug_color = Color(0.87479186, 0.29014167, 0.4893539, 0.41960785)
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=445985100]
+
+[node name="HitCol" type="CollisionShape2D" parent="Hitbox" unique_id=25482164]
+position = Vector2(0, -68)
+shape = SubResource("CapsuleShape2D_qfbu3")
+debug_color = Color(0.73545045, 0.46660084, 0.1578205, 0.41960785)

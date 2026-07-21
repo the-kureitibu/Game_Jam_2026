@@ -28,6 +28,7 @@ window/size/viewport_height=340
 
 Player_target=""
 Enemy_target=""
+Boss_target=""
 
 [input]
 
