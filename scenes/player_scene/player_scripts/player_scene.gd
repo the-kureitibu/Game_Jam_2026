@@ -156,16 +156,37 @@ const UP_DIRECTION: Vector2 = Vector2.UP
 
 #endregion 
 
+#region Camera Related 
+@onready var cam_r_offset := 50.0
+@onready var cam_l_offset := -50.0
+@onready var cam_t_offset := -80.0
+@onready var cam_b_offset := 20.0
+
+#endregion
+
 #region Test vars
 var p_cur_state = p_move_state
 
 #endregion 
 
+#region Camera Support 
+func grab_cam_limits() -> Dictionary:
+	return {
+		"cam_r_limit": global_position.x + cam_r_offset,
+		"cam_l_limit": global_position.x + cam_l_offset,
+		"cam_t_limit": global_position.y + cam_t_offset,
+		"cam_b_limit": global_position.y + cam_b_offset
+	}
+	
+	
+	
+#endregion
+
+
 func _ready() -> void:
 	#Signals
 	SignalHub.blocking_anim_done.connect(end_blocking_state)
 	#Signals region end
-	
 	
 	dec_ini_stats()
 	

@@ -1,6 +1,5 @@
 extends EnemyBase
 
-
 #region Base Variables
 
 var b_health: int = 100

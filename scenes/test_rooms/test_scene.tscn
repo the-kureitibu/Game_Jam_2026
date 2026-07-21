@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://wxyw3dr3fl1b" path="res://scenes/player_scene/player_two_scene.tscn" id="3_nk52i"]
 [ext_resource type="PackedScene" uid="uid://diwouwpiparj3" path="res://scenes/test_scenes/test_enemy.tscn" id="4_5aiuk"]
 [ext_resource type="PackedScene" uid="uid://dmce6111r1rt" path="res://scenes/ui/test_ui.tscn" id="4_anwaf"]
+[ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="4_xbjce"]
 
 [node name="TestScene" type="Node" unique_id=345745939]
 
@@ -14,6 +15,8 @@
 
 [node name="PlayerTwoScene" parent="." unique_id=1399677113 instance=ExtResource("3_nk52i")]
 position = Vector2(50, 0)
+
+[node name="CamRig" parent="." unique_id=819861590 instance=ExtResource("4_xbjce")]
 
 [node name="TestEnemy" parent="." unique_id=2023477993 instance=ExtResource("4_5aiuk")]
 position = Vector2(-90, -1)
