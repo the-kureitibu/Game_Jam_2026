@@ -1,17 +1,27 @@
 extends EnemyBase
 
 
-#draw the limit files first 
 
 #region Base Variables
 
 var b_health: int = 100
 var b_damage: int = 20
-var b_speed: float = 40.0
-
+var b_speed: float = 50.0
+var b_acceleration := 60.0
+var slowing_speed := 20.0
+	
 @onready var jump_height: float = 120.0
 @onready var time_to_apex: float = 0.35
 @onready var jump_gravity := (2.0 * jump_height) / pow(time_to_apex, 2.0)
+
+#endregion
+
+#region References
+
+@onready var m_sprite: AnimatedSprite2D = $e_sprite
+@onready var s_texture = m_sprite.sprite_frames.get_frame_texture("default", 0)
+@onready var s_height = s_texture.get_height() / - 2.0
+@onready var r_marker: Marker2D = $RadiusTarget
 
 #endregion
 
@@ -96,35 +106,52 @@ var is_stunned := false
 #region Target
 @onready var p_target = get_tree().get_first_node_in_group("Player_target")
 
-var slowing_d_radius := 200.0
-var stopping_radius := 0.0
+var slowing_d_radius := 400.0
+var stopping_radius := 200.0
 var b_max_speed := 100.0
 
 
 #endregion
+
+func draw_speed_limit() -> void:
+	pass
 
 func _ready() -> void:
 	if p_target == null:
 		push_error("Player does not exist")
 	
 	find_target()
+	
 
+#
+#func _draw() -> void:
+	#var text_center = global_position + Vector2(0, s_height)
+	#print(text_center)
+	#
+	#draw_circle(text_center, 100.0, Color.RED, false, 3.0)
+#
+#func _process(delta: float) -> void:
+	#queue_redraw()
+	
+	
 func _physics_process(delta: float) -> void:
-	handle_movement(delta)
+	handle_movement()
 	
 	move_and_slide()
 
 #region Movement func
 
-func handle_movement(delta: float) -> void:
+func handle_movement() -> void:
 	if p_target == null:
 		return
 	
-	var target_distance = find_target()
-	var target_direction = target_distance
+	var signed_distance = find_target()
+	var signed_direction = sign(signed_distance)
+	var abs_distance = abs(signed_distance)
+	print(signed_direction)
 	
-	chase_target(target_direction, delta)
-	
+	chase_target(signed_direction, abs_distance)
+
 	
 
 #endregion
@@ -153,18 +180,30 @@ func reduce_timer(delta: float) -> void:
 
 #region Target related func 
 
-func chase_target(dir: float, delta: float) -> void:
+func chase_target(dir: float, abs_dis: int) -> void:
 	
-	velocity.x = dir * b_speed * delta
+	var l_weight = clamp(global_position.x, 0, 1.0)
+	var current_speed: float
 	
-
+	
+	if abs_dis <= stopping_radius:
+		current_speed = 0
+		
+		velocity.x = current_speed
+		
+	elif abs_dis < slowing_d_radius:
+		velocity.x = dir * slowing_speed
+	
+	else:
+		velocity.x = dir * b_speed
+		print(velocity.x)
+		
 func find_target() -> float:
 	if p_target == null:
 		push_error("Player does not Exist")
 	
 	var target_dis = p_target.global_position.x - global_position.x
-	print("Boss is ", target_dis, " from Player")
-	
+
 	return target_dis
 
 #endregion

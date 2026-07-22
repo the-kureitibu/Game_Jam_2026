@@ -54,3 +54,5 @@ debug_color = Color(0.87479186, 0.29014167, 0.4893539, 0.41960785)
 position = Vector2(0, -68)
 shape = SubResource("CapsuleShape2D_qfbu3")
 debug_color = Color(0.73545045, 0.46660084, 0.1578205, 0.41960785)
+
+[node name="RadiusTarget" type="Marker2D" parent="." unique_id=2025523298]
