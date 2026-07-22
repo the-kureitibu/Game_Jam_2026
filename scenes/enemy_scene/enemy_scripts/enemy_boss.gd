@@ -1,10 +1,13 @@
 extends EnemyBase
 
+
+#draw the limit files first 
+
 #region Base Variables
 
 var b_health: int = 100
 var b_damage: int = 20
-var b_speed: float = 120.0
+var b_speed: float = 40.0
 
 @onready var jump_height: float = 120.0
 @onready var time_to_apex: float = 0.35
@@ -93,6 +96,11 @@ var is_stunned := false
 #region Target
 @onready var p_target = get_tree().get_first_node_in_group("Player_target")
 
+var slowing_d_radius := 200.0
+var stopping_radius := 0.0
+var b_max_speed := 100.0
+
+
 #endregion
 
 func _ready() -> void:
@@ -102,12 +110,21 @@ func _ready() -> void:
 	find_target()
 
 func _physics_process(delta: float) -> void:
-	pass
+	handle_movement(delta)
+	
+	move_and_slide()
 
 #region Movement func
 
-func handle_movement() -> void:
-	pass
+func handle_movement(delta: float) -> void:
+	if p_target == null:
+		return
+	
+	var target_distance = find_target()
+	var target_direction = target_distance
+	
+	chase_target(target_direction, delta)
+	
 	
 
 #endregion
@@ -136,15 +153,18 @@ func reduce_timer(delta: float) -> void:
 
 #region Target related func 
 
-func chase_target() -> void:
-	pass
+func chase_target(dir: float, delta: float) -> void:
+	
+	velocity.x = dir * b_speed * delta
 	
 
-func find_target() -> void:
+func find_target() -> float:
 	if p_target == null:
 		push_error("Player does not Exist")
 	
-	var target_dis = p_target.global_position.x - self.global_position.x
-	print(target_dis)
+	var target_dis = p_target.global_position.x - global_position.x
+	print("Boss is ", target_dis, " from Player")
+	
+	return target_dis
 
 #endregion
