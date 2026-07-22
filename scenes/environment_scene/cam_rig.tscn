@@ -6,3 +6,4 @@
 script = ExtResource("1_vijl8")
 
 [node name="Cam" type="Camera2D" parent="." unique_id=805998542]
+offset = Vector2(0, -80)

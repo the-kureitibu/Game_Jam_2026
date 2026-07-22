@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="4_xbjce"]
 
 [node name="TestScene" type="Node" unique_id=345745939]
+metadata/_edit_vertical_guides_ = [-137.0]
+metadata/_edit_horizontal_guides_ = [14.0]
 
 [node name="PlayerScene" parent="." unique_id=2131738871 instance=ExtResource("1_awkfx")]
 

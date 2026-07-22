@@ -160,7 +160,7 @@ const UP_DIRECTION: Vector2 = Vector2.UP
 @onready var cam_r_offset := 50.0
 @onready var cam_l_offset := -50.0
 @onready var cam_t_offset := -80.0
-@onready var cam_b_offset := 20.0
+@onready var cam_b_offset := -100.0
 
 #endregion
 

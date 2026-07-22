@@ -1,5 +1,7 @@
 extends Control
 #Get from Player instead 
+
+
 #region Base Vars
 
 @export var p_stats: PlayerStats

@@ -1,6 +1,6 @@
 extends Node
 
-class_name EnemyBase
+class_name EnemyBaseTest
 
 
 func got_hurt(dmg: int, cur_health: int) -> void:
