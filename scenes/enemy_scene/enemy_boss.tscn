@@ -27,8 +27,141 @@ radius = 23.0
 height = 136.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qfbu3"]
-radius = 22.0
-height = 134.0
+radius = 10.6865635
+height = 31.25744
+
+[sub_resource type="Animation" id="Animation_pel0o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HitboxSlam/HitCol:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HitboxSlam/HitCol:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.4954271]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HitboxSlam/HitCol:shape:radius")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [10.6865635]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HitboxSlam/HitCol:shape:height")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [31.25744]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("HitboxSlam/HitCol:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_p55qm"]
+resource_name = "slam"
+length = 1.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HitboxSlam/HitCol:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.15, 0.26333335, 0.38333336, 0.50333333, 0.6333333, 0.9, 1.1666666, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-25.000008, -100), Vector2(-52.999996, -79), Vector2(-61.999996, -52.000008), Vector2(-63, -12.000001), Vector2(-63, -12.000001), Vector2(-63, -12.000001), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HitboxSlam/HitCol:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.27333337, 0.38333336, 0.50333333, 0.6333333, 0.9, 1.1666666, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [2.4954271, 2.2708204, 2.076112, 1.5677569, 1.5677569, 1.5677569, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HitboxSlam/HitCol:shape:radius")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.116666675, 0.27333337, 0.38333336, 0.5233334, 0.6533333, 0.9, 1.1666666, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [10.6865635, 10.6865635, 10.6865635, 10.6865635, 10.6865635, 10.6865635, 10.6865635, 10.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HitboxSlam/HitCol:shape:height")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.116666675, 0.27333337, 0.38333336, 0.5233334, 0.6533333, 0.9, 1.1666666, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [31.25744, 48.38748, 66.8289, 78.087036, 129.98724, 129.98724, 129.98724, 30.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("HitboxSlam/HitCol:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.1666666),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kjeor"]
+_data = {
+&"RESET": SubResource("Animation_pel0o"),
+&"slam": SubResource("Animation_p55qm")
+}
 
 [node name="EnemyBoss" type="CharacterBody2D" unique_id=1734450653 groups=["Boss_target"]]
 script = ExtResource("1_pel0o")
@@ -48,11 +181,16 @@ position = Vector2(0, -68)
 shape = SubResource("CapsuleShape2D_kgnny")
 debug_color = Color(0.87479186, 0.29014167, 0.4893539, 0.41960785)
 
-[node name="Hitbox" type="Area2D" parent="." unique_id=445985100]
+[node name="HitboxSlam" type="Area2D" parent="." unique_id=445985100]
 
-[node name="HitCol" type="CollisionShape2D" parent="Hitbox" unique_id=25482164]
-position = Vector2(0, -68)
+[node name="HitCol" type="CollisionShape2D" parent="HitboxSlam" unique_id=25482164]
+rotation = 2.4954271
 shape = SubResource("CapsuleShape2D_qfbu3")
 debug_color = Color(0.73545045, 0.46660084, 0.1578205, 0.41960785)
 
 [node name="RadiusTarget" type="Marker2D" parent="." unique_id=2025523298]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1362673902]
+libraries/ = SubResource("AnimationLibrary_kjeor")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

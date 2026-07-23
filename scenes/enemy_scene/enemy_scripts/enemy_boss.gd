@@ -6,9 +6,9 @@ extends EnemyBase
 
 var b_health: int = 100
 var b_damage: int = 20
-var b_speed: float = 50.0
-var b_acceleration := 60.0
-var slowing_speed := 20.0
+var b_speed: float = 60.0
+var b_acceleration := 2.5
+var slowing_speed := 70.0
 	
 @onready var jump_height: float = 120.0
 @onready var time_to_apex: float = 0.35
@@ -22,15 +22,16 @@ var slowing_speed := 20.0
 @onready var s_texture = m_sprite.sprite_frames.get_frame_texture("default", 0)
 @onready var s_height = s_texture.get_height() / - 2.0
 @onready var r_marker: Marker2D = $RadiusTarget
+@onready var p_anim: AnimationPlayer = $AnimationPlayer
 
 #endregion
 
 #region Combo Base Variables
-var is_combo_one: bool = false
-var is_combo_two: bool = false
-var is_combo_three: bool = false
-var is_combo_four: bool = false
-var is_combo_recovery: bool = false
+var is_skill_one: bool = false
+var is_skill_two: bool = false
+var is_skill_three: bool = false
+var is_skill_four: bool = false
+var is_skill_recovery: bool = false
 
 #endregion
 
@@ -100,14 +101,16 @@ var is_flying := false
 var is_human := false
 var is_demon := false
 var is_stunned := false
+var is_chasing := false
+var is_skilling := false
 
 #endregion
 
 #region Target
 @onready var p_target = get_tree().get_first_node_in_group("Player_target")
 
-var slowing_d_radius := 400.0
-var stopping_radius := 200.0
+var slowing_d_radius := 150.0
+var stopping_radius := 70.0
 var b_max_speed := 100.0
 
 
@@ -148,7 +151,6 @@ func handle_movement() -> void:
 	var signed_distance = find_target()
 	var signed_direction = sign(signed_distance)
 	var abs_distance = abs(signed_distance)
-	print(signed_direction)
 	
 	chase_target(signed_direction, abs_distance)
 
@@ -181,22 +183,24 @@ func reduce_timer(delta: float) -> void:
 #region Target related func 
 
 func chase_target(dir: float, abs_dis: int) -> void:
+	if is_skilling:
+		return
+
 	
-	var l_weight = clamp(global_position.x, 0, 1.0)
 	var current_speed: float
-	
 	
 	if abs_dis <= stopping_radius:
 		current_speed = 0
 		
 		velocity.x = current_speed
+		slam()
 		
 	elif abs_dis < slowing_d_radius:
 		velocity.x = dir * slowing_speed
 	
 	else:
-		velocity.x = dir * b_speed
-		print(velocity.x)
+		current_speed = b_speed * b_acceleration
+		velocity.x = dir * current_speed 
 		
 func find_target() -> float:
 	if p_target == null:
@@ -205,5 +209,39 @@ func find_target() -> float:
 	var target_dis = p_target.global_position.x - global_position.x
 
 	return target_dis
+#endregion
+
+#region Skills
+
+func slam() -> void:
+	if is_skill_one:
+		return
+	print("ever made it here?")
+	
+	is_skilling = true
+	play_anim(p_anim, "slam")
+	print(p_anim.is_playing())
+	
+#endregion
+
+#region Default Signals
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if !is_skilling:
+		return
+	
+	match anim_name:
+		"slam":
+			end_skill_one()
+		_:
+			pass
+
+#endregion
+
+#region End Actions
+
+func end_skill_one() -> void:
+	is_skilling = false
+	is_skill_one = true
 
 #endregion

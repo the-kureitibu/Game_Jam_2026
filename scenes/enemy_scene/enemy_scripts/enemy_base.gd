@@ -5,11 +5,11 @@ class_name EnemyBase
 #region Enums
 
 enum EnemyActionState {
-	COMBO_ONE,
-	COMBO_TWO,
-	COMBO_THREE,
-	COMBO_FOUR,
-	COMBO_RECOVERY
+	SKILL_ONE,
+	SKILL_TWO,
+	SKILL_THREE,
+	SKILL_FOUR,
+	SKILL_RECOVERY
 }
 
 enum EnemyFormState {
@@ -20,7 +20,8 @@ enum EnemyFormState {
 enum EnemyMovementState {
 	JUMPING,
 	CHASING,
-	FLYING
+	FLYING,
+	SKILLING
 }
 
 #endregion
@@ -43,6 +44,18 @@ func play_anim(anim_node: Node, anim_name: StringName, force_restart := false) -
 			return
 		
 		if not force_restart and anim_node.animation == anim_name and anim_node.is_playing():
+			return
+		
+		anim_node.play(anim_name)
+		return
+	
+	if anim_node is AnimationPlayer:
+
+		if not anim_node.has_animation(anim_name):
+			push_error("Missing animation: %s" % anim_name)
+			return
+		
+		if not force_restart and anim_node.current_animation == anim_name and anim_node.is_playing():
 			return
 		
 		anim_node.play(anim_name)
