@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bbwc0bd5ogtfr" path="res://scenes/projectiles_scene/chair_skill.gd" id="1_vc0ga"]
 [ext_resource type="Texture2D" uid="uid://bg3mck5srffps" path="res://assets/sprites/projectiles/Blink (54x52).png" id="2_ufrag"]
-[ext_resource type="PackedScene" uid="uid://boe26ixwk1fjm" path="res://scenes/test_rooms/test_room1.tscn" id="3_twyl8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_twyl8"]
 atlas = ExtResource("2_ufrag")
@@ -59,8 +58,6 @@ position = Vector2(0, -22)
 shape = SubResource("CapsuleShape2D_memwi")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=213835528]
-
-[node name="TestRoom1" parent="." unique_id=929027271 instance=ExtResource("3_twyl8")]
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="animation_finished" from="MainSprite" to="." method="_on_main_sprite_animation_finished"]

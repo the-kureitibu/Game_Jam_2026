@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cetfn5r0cjj7c" path="res://scenes/enemy_scene/enemy_boss.tscn" id="4_l7ur8"]
 [ext_resource type="PackedScene" uid="uid://dmce6111r1rt" path="res://scenes/ui/test_ui.tscn" id="5_1ll34"]
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="5_ea7vf"]
+[ext_resource type="PackedScene" uid="uid://ywxgus73nrf2" path="res://scenes/projectiles_scene/chair_skill.tscn" id="7_l7ur8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5ocqi"]
 texture = ExtResource("1_k4cf4")
@@ -310,10 +311,12 @@ position = Vector2(115, -1)
 position = Vector2(182, -5)
 
 [node name="EnemyBoss" parent="." unique_id=1734450653 instance=ExtResource("4_l7ur8")]
-position = Vector2(567, -27)
+position = Vector2(567, -17)
 
 [node name="CamRig" parent="." unique_id=819861590 instance=ExtResource("5_ea7vf")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1048109508]
 
 [node name="TestUi" parent="CanvasLayer" unique_id=1506350038 instance=ExtResource("5_1ll34")]
+
+[node name="ChairSkill" parent="." unique_id=1656640518 instance=ExtResource("7_l7ur8")]

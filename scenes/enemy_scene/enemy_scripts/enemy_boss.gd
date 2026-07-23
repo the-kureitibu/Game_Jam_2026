@@ -21,8 +21,10 @@ var slowing_speed := 70.0
 @onready var m_sprite: AnimatedSprite2D = $e_sprite
 @onready var s_texture = m_sprite.sprite_frames.get_frame_texture("default", 0)
 @onready var s_height = s_texture.get_height() / - 2.0
-@onready var r_marker: Marker2D = $RadiusTarget
+@onready var c_marker: Marker2D = $ChairMarker
 @onready var p_anim: AnimationPlayer = $AnimationPlayer
+
+var c_marker_dir: float
 
 #endregion
 
@@ -155,7 +157,23 @@ func handle_movement() -> void:
 	chase_target(signed_direction, abs_distance)
 
 	
+func get_m_dis(marker: Marker2D) -> void:
+	
+	var marker_dis = marker.global_position.x - global_position.x
+	var signed_dir = sign(marker_dis)
+	
+	pass_marker_dir(signed_dir)
 
+func pass_marker_dir(s_dir: int) -> int:
+	if s_dir == 1:
+		c_marker_dir = 1
+	elif s_dir == -1:
+		c_marker_dir = -1
+	else:
+		print("value is zero")
+	
+	return int(c_marker_dir)
+	
 #endregion
 
 #region Combo Func

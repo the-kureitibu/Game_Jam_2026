@@ -19,12 +19,12 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kjeor"]
-radius = 24.0
-height = 136.0
+radius = 19.0
+height = 104.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kgnny"]
-radius = 23.0
-height = 136.0
+radius = 19.0
+height = 98.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qfbu3"]
 radius = 10.6865635
@@ -164,20 +164,24 @@ _data = {
 }
 
 [node name="EnemyBoss" type="CharacterBody2D" unique_id=1734450653 groups=["Boss_target"]]
+collision_layer = 2
+collision_mask = 16
 script = ExtResource("1_pel0o")
 
 [node name="e_sprite" type="AnimatedSprite2D" parent="." unique_id=290278967]
+position = Vector2(-4, 1.0086212)
+scale = Vector2(0.8, 0.8)
 sprite_frames = SubResource("SpriteFrames_p55qm")
 offset = Vector2(0, -68)
 
 [node name="MainCol" type="CollisionShape2D" parent="." unique_id=1285489192]
-position = Vector2(0, -68)
+position = Vector2(0, -52)
 shape = SubResource("CapsuleShape2D_kjeor")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1771797632]
 
 [node name="HurtCol" type="CollisionShape2D" parent="Hurtbox" unique_id=87264605]
-position = Vector2(0, -68)
+position = Vector2(0, -55)
 shape = SubResource("CapsuleShape2D_kgnny")
 debug_color = Color(0.87479186, 0.29014167, 0.4893539, 0.41960785)
 
@@ -188,7 +192,8 @@ rotation = 2.4954271
 shape = SubResource("CapsuleShape2D_qfbu3")
 debug_color = Color(0.73545045, 0.46660084, 0.1578205, 0.41960785)
 
-[node name="RadiusTarget" type="Marker2D" parent="." unique_id=2025523298]
+[node name="ChairMarker" type="Marker2D" parent="." unique_id=2025523298]
+position = Vector2(-51, -56)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1362673902]
 libraries/ = SubResource("AnimationLibrary_kjeor")

@@ -3,8 +3,12 @@ extends Area2D
 #region Base vars
 
 var dmg := 10.0
-var base_speed := 50.0
+var base_speed := 250.0
 var max_speed := 120.0
+
+@onready var marker_dir: float
+@onready var dir: Vector2 = Vector2.ZERO
+@onready var boss_target = get_tree().get_first_node_in_group("Boss_target")
 
 #endregion 
 
@@ -19,10 +23,14 @@ var max_speed := 120.0
 
 func _ready() -> void:
 	play_anim(m_sprite, "launch")
+	
+	if boss_target == null:
+		push_error("Boss does not exist")
 
 func _physics_process(delta: float) -> void:
-	position.x += base_speed * delta
 	
+	position += dir * base_speed * delta
+
 #endregion
 
 #region Animation
