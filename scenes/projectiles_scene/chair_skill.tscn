@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://ywxgus73nrf2"]
+
+[ext_resource type="Script" uid="uid://bbwc0bd5ogtfr" path="res://scenes/projectiles_scene/chair_skill.gd" id="1_vc0ga"]
+[ext_resource type="Texture2D" uid="uid://bg3mck5srffps" path="res://assets/sprites/projectiles/Blink (54x52).png" id="2_ufrag"]
+[ext_resource type="PackedScene" uid="uid://boe26ixwk1fjm" path="res://scenes/test_rooms/test_room1.tscn" id="3_twyl8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_twyl8"]
+atlas = ExtResource("2_ufrag")
+region = Rect2(0, 0, 54, 52)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gfe4c"]
+atlas = ExtResource("2_ufrag")
+region = Rect2(54, 0, 54, 52)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yyxgb"]
+atlas = ExtResource("2_ufrag")
+region = Rect2(108, 0, 54, 52)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dd5q2"]
+atlas = ExtResource("2_ufrag")
+region = Rect2(162, 0, 54, 52)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3fq3m"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_twyl8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gfe4c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yyxgb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dd5q2")
+}],
+"loop": false,
+"name": &"launch",
+"speed": 8.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_memwi"]
+radius = 23.0
+height = 46.0
+
+[node name="ChairSkill" type="Area2D" unique_id=1656640518]
+script = ExtResource("1_vc0ga")
+
+[node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=496167170]
+position = Vector2(0, -23)
+sprite_frames = SubResource("SpriteFrames_3fq3m")
+animation = &"launch"
+frame = 3
+frame_progress = 1.0
+
+[node name="HitBox" type="CollisionShape2D" parent="." unique_id=1458832394]
+position = Vector2(0, -22)
+shape = SubResource("CapsuleShape2D_memwi")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=213835528]
+
+[node name="TestRoom1" parent="." unique_id=929027271 instance=ExtResource("3_twyl8")]
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="animation_finished" from="MainSprite" to="." method="_on_main_sprite_animation_finished"]
