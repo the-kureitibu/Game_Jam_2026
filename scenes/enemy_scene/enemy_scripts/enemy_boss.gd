@@ -24,6 +24,8 @@ var slowing_speed := 70.0
 @onready var c_marker: Marker2D = $ChairMarker
 @onready var p_anim: AnimationPlayer = $AnimationPlayer
 
+const CHAIR_SCENE = preload("res://scenes/projectiles_scene/chair_skill.tscn")
+
 var c_marker_dir: float
 
 #endregion
@@ -127,6 +129,7 @@ func _ready() -> void:
 	
 	find_target()
 	
+	launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
 
 #
 #func _draw() -> void:
@@ -155,7 +158,8 @@ func handle_movement() -> void:
 	var abs_distance = abs(signed_distance)
 	
 	chase_target(signed_direction, abs_distance)
-
+	get_m_dis(c_marker)
+	
 	
 func get_m_dis(marker: Marker2D) -> void:
 	
@@ -164,7 +168,7 @@ func get_m_dis(marker: Marker2D) -> void:
 	
 	pass_marker_dir(signed_dir)
 
-func pass_marker_dir(s_dir: int) -> int:
+func pass_marker_dir(s_dir: int) -> void:
 	if s_dir == 1:
 		c_marker_dir = 1
 	elif s_dir == -1:
@@ -172,7 +176,7 @@ func pass_marker_dir(s_dir: int) -> int:
 	else:
 		print("value is zero")
 	
-	return int(c_marker_dir)
+
 	
 #endregion
 
@@ -234,11 +238,19 @@ func find_target() -> float:
 func slam() -> void:
 	if is_skill_one:
 		return
-	print("ever made it here?")
 	
 	is_skilling = true
 	play_anim(p_anim, "slam")
-	print(p_anim.is_playing())
+
+	
+func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
+	var chair_scene = scene.instantiate()
+	chair_scene.global_position = pos
+	chair_scene.marker_dir = direction
+	
+	var projectile_parent = get_tree().current_scene.get_node("Projectiles")
+	
+	projectile_parent.add_child(chair_scene)
 	
 #endregion
 

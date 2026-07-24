@@ -6,9 +6,10 @@ var dmg := 10.0
 var base_speed := 250.0
 var max_speed := 120.0
 
-@onready var marker_dir: float
-@onready var dir: Vector2 = Vector2.ZERO
+
+@onready var dir: Vector2
 @onready var boss_target = get_tree().get_first_node_in_group("Boss_target")
+@onready var marker_dir: int
 
 #endregion 
 
@@ -26,19 +27,43 @@ func _ready() -> void:
 	
 	if boss_target == null:
 		push_error("Boss does not exist")
+	
 
 func _physics_process(delta: float) -> void:
+	
+	if boss_target:
+		marker_dir = boss_target.c_marker_dir
+
+	handle_movement(marker_dir)
 	
 	position += dir * base_speed * delta
 
 #endregion
 
+#region Movement
+func handle_movement(sign_dir: int) -> void:
+	if boss_target == null:
+		push_error("Boss does not exist")
+	
+	var temp: Vector2
+	
+	if sign_dir == -1:
+		temp = Vector2.LEFT 
+		dir = temp
+		
+	elif sign_dir == 1:
+		temp = Vector2.RIGHT 
+		dir = temp
+	else:
+		dir = Vector2.ZERO
+
+
+#endregion
 #region Animation
 
 func play_anim(anim_node: AnimatedSprite2D, anim_name: StringName) -> void:
 	if anim_node.sprite_frames.has_animation(anim_name):
 		m_sprite.play(anim_name)
-		print(m_sprite.is_playing())
 
 func _on_main_sprite_animation_finished() -> void:
 	pass # Replace with function body.
