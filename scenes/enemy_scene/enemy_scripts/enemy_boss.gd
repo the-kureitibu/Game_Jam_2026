@@ -31,11 +31,15 @@ var c_marker_dir: float
 #endregion
 
 #region Combo Base Variables
-var is_skill_one: bool = false
-var is_skill_two: bool = false
-var is_skill_three: bool = false
-var is_skill_four: bool = false
-var is_skill_recovery: bool = false
+var is_skill_one_done: bool = false
+var is_skill_two_done: bool = false
+var is_skill_three_done: bool = false
+var is_skill_four_done: bool = false
+var is_skill_recovering: bool = false
+
+var can_skill_one: bool = true
+var can_skill_two: bool = true
+var can_skill_three: bool = true
 
 #endregion
 
@@ -74,13 +78,13 @@ signal send_timers(timer: String, value: float)
 		
 		send_timers.emit("c_four_timer", value)
 		
-@onready var recover_timer := 0.0:
+@onready var recovery_timer := 0.0:
 	set(value):
-		if recover_timer == value: 
+		if recovery_timer == value: 
 			return
 		
 		send_timers.emit("recover_timer", value)
-		
+
 @onready var chase_timer := 0.0:
 	set(value):
 		if chase_timer == value: 
@@ -129,17 +133,8 @@ func _ready() -> void:
 	
 	find_target()
 	
-	launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
+	#launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
 
-#
-#func _draw() -> void:
-	#var text_center = global_position + Vector2(0, s_height)
-	#print(text_center)
-	#
-	#draw_circle(text_center, 100.0, Color.RED, false, 3.0)
-#
-#func _process(delta: float) -> void:
-	#queue_redraw()
 	
 	
 func _physics_process(delta: float) -> void:
@@ -197,7 +192,7 @@ func reduce_timer(delta: float) -> void:
 
 	c_three_timer = set_timer(c_three_timer, delta)
 	c_four_timer = set_timer(c_four_timer, delta)
-	recover_timer = set_timer(recover_timer, delta)
+	recovery_timer = set_timer(recovery_timer, delta)
 	
 
 #endregion
@@ -205,17 +200,21 @@ func reduce_timer(delta: float) -> void:
 #region Target related func 
 
 func chase_target(dir: float, abs_dis: int) -> void:
+	
+
 	if is_skilling:
 		return
 
-	
 	var current_speed: float
 	
 	if abs_dis <= stopping_radius:
 		current_speed = 0
 		
 		velocity.x = current_speed
-		slam()
+		if !is_skill_one_done:
+			slam()
+		if !is_skill_two_done and is_skill_one_done and chase_timer == 0.0:
+			launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
 		
 	elif abs_dis < slowing_d_radius:
 		velocity.x = dir * slowing_speed
@@ -236,7 +235,7 @@ func find_target() -> float:
 #region Skills
 
 func slam() -> void:
-	if is_skill_one:
+	if is_skill_one_done:
 		return
 	
 	is_skilling = true
@@ -252,6 +251,17 @@ func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
 	
 	projectile_parent.add_child(chair_scene)
 	
+	is_skill_two_done = true
+	if chase_timer == 0.0:
+		chase_timer = 5.0
+	
+	end_skill_two()
+	
+	
+func slam_directory() -> void:
+	pass
+
+
 #endregion
 
 #region Default Signals
@@ -272,6 +282,11 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 func end_skill_one() -> void:
 	is_skilling = false
-	is_skill_one = true
+	is_skill_one_done = true
+	can_skill_one = false
+	chase_timer = 5.0
+	
+func end_skill_two() -> void:
+	can_skill_two = false
 
 #endregion
