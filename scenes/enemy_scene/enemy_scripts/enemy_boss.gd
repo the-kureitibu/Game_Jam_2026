@@ -43,6 +43,8 @@ var can_skill_three: bool = true
 
 var skill_bag: Array[int] = []
 var available_skills: Array[int] = [1, 2, 3]
+var is_recovering: bool = false
+var pending_skill := 0
 
 
 
@@ -143,7 +145,8 @@ func _ready() -> void:
 	
 	
 func _physics_process(delta: float) -> void:
-	handle_movement()
+	handle_boss_logic(delta)
+	update_recovery(delta)
 	
 	move_and_slide()
 
@@ -160,7 +163,7 @@ func handle_movement() -> void:
 	chase_target(signed_direction, abs_distance)
 	get_m_dis(c_marker)
 	
-	
+
 func get_m_dis(marker: Marker2D) -> void:
 	
 	var marker_dis = marker.global_position.x - global_position.x
@@ -202,6 +205,41 @@ func reduce_timer(delta: float) -> void:
 
 #endregion
 
+#region Boss Logic
+
+func handle_boss_logic(delta: float) -> void:
+	if is_skilling:
+		velocity.x = 0
+		return
+	
+	if is_recovering:
+		velocity.x = 0
+		return
+	
+	var signed_distance = find_target()
+	var signed_direction = sign(signed_distance)
+	var abs_distance = abs(signed_distance)
+	
+	if chase_timer > 0.0:
+		chase_timer = set_timer(chase_timer, delta)
+		handle_movement()
+		return
+	
+	if pending_skill == 0:
+		pending_skill = get_next_skill()
+	
+	if skill_needs_range(pending_skill) and abs_distance > stopping_radius:
+		handle_movement()
+		return
+	
+	start_skill(pending_skill)
+	pending_skill = 0
+	
+
+
+#endregion
+
+
 #region Target related func 
 
 func chase_target(dir: float, abs_dis: int) -> void:
@@ -211,16 +249,10 @@ func chase_target(dir: float, abs_dis: int) -> void:
 
 	var current_speed: float
 	
-	#skill 1, 3, and 4 only here - after a skill, chase first before stopping and skill again
 	if abs_dis <= stopping_radius:
 		current_speed = 0
 		
 		velocity.x = current_speed
-		
-		if !is_skill_one_done:
-			slam()
-		if !is_skill_two_done and is_skill_one_done and chase_timer == 0.0:
-			launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
 
 	elif abs_dis < slowing_d_radius:
 		velocity.x = dir * slowing_speed
@@ -228,7 +260,8 @@ func chase_target(dir: float, abs_dis: int) -> void:
 	else:
 		current_speed = b_speed * b_acceleration
 		velocity.x = dir * current_speed 
-		
+
+	
 func find_target() -> float:
 	if p_target == null:
 		push_error("Player does not Exist")
@@ -272,26 +305,40 @@ func slam_directory() -> void:
 
 #region Handle Skill
 
-func handle_random_skill() -> void:
-	if is_skilling:
-		return
-	
+func get_next_skill() -> int:
+
 	if skill_bag.is_empty():
 		refill_skill_bag()
 	
-	var skill_num: int = skill_bag.pop_front()
-	start_skill(skill_num)
+	return skill_bag.pop_front()
+	#choose_skill(skill_num)
 	
 func refill_skill_bag() -> void:
 	skill_bag = available_skills.duplicate()
 	skill_bag.shuffle()
+
+func choose_skill(skill_num: int) -> void:
+	var pending_skill: int
+	
+	var range_needed = skill_needs_range(skill_num)
+	
+	if range_needed:
+		pending_skill = skill_num
+	
+	if !range_needed:
+		start_skill(skill_num)
+
+
+func skill_needs_range(skill_num: int) -> bool:
+	return skill_num == 1 or skill_num == 2 or skill_num == 4
 	
 func start_skill(num: int) -> void:
+	#Make sure to face character direction first 
 	is_skilling = true
 	
 	match num:
 		1:
-			slam()
+				slam()
 		2:
 			launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
 		3:
@@ -318,6 +365,28 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 #endregion
 
 #region End Actions
+
+func end_skill() -> void:
+	is_skilling = false
+	
+	if skill_bag.is_empty() and pending_skill == 0:
+		start_recovery()
+	else:
+		chase_timer = 3.0
+
+func start_recovery() -> void:
+	is_recovering = true
+	recovery_timer = 5.0
+
+func update_recovery(delta: float) -> void:
+	if not is_recovering:
+		return
+	
+	recovery_timer = set_timer(recovery_timer, delta)
+	
+	if recovery_timer <= 0.0:
+		is_recovering = false
+		
 
 func end_skill_one() -> void:
 	is_skilling = false
