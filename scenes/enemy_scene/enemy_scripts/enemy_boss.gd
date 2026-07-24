@@ -41,6 +41,11 @@ var can_skill_one: bool = true
 var can_skill_two: bool = true
 var can_skill_three: bool = true
 
+var skill_bag: Array[int] = []
+var available_skills: Array[int] = [1, 2, 3]
+
+
+
 #endregion
 
 #region Signals 
@@ -201,21 +206,22 @@ func reduce_timer(delta: float) -> void:
 
 func chase_target(dir: float, abs_dis: int) -> void:
 	
-
 	if is_skilling:
 		return
 
 	var current_speed: float
 	
+	#skill 1, 3, and 4 only here - after a skill, chase first before stopping and skill again
 	if abs_dis <= stopping_radius:
 		current_speed = 0
 		
 		velocity.x = current_speed
+		
 		if !is_skill_one_done:
 			slam()
 		if !is_skill_two_done and is_skill_one_done and chase_timer == 0.0:
 			launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
-		
+
 	elif abs_dis < slowing_d_radius:
 		velocity.x = dir * slowing_speed
 	
@@ -259,9 +265,42 @@ func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
 	
 	
 func slam_directory() -> void:
-	pass
+	print("I slammed something")
 
 
+#endregion 
+
+#region Handle Skill
+
+func handle_random_skill() -> void:
+	if is_skilling:
+		return
+	
+	if skill_bag.is_empty():
+		refill_skill_bag()
+	
+	var skill_num: int = skill_bag.pop_front()
+	start_skill(skill_num)
+	
+func refill_skill_bag() -> void:
+	skill_bag = available_skills.duplicate()
+	skill_bag.shuffle()
+	
+func start_skill(num: int) -> void:
+	is_skilling = true
+	
+	match num:
+		1:
+			slam()
+		2:
+			launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
+		3:
+			slam_directory()
+		_:
+			is_skilling = false
+
+
+	
 #endregion
 
 #region Default Signals
