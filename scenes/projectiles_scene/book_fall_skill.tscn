@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://b40eul8efpmko"]
+
+[ext_resource type="Texture2D" uid="uid://cidyv4r7kq1xt" path="res://assets/sprites/projectiles/boss_skill1.png" id="1_hukjt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qvw37"]
+atlas = ExtResource("1_hukjt")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2x3mt"]
+atlas = ExtResource("1_hukjt")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cohtm"]
+atlas = ExtResource("1_hukjt")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2sofb"]
+atlas = ExtResource("1_hukjt")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vk5al"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qvw37")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2x3mt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cohtm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2sofb")
+}],
+"loop": false,
+"name": &"default",
+"speed": 7.0
+}]
+
+[node name="BookFallSkill" type="Area2D" unique_id=2073984826]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1179899986]
+sprite_frames = SubResource("SpriteFrames_vk5al")
+frame = 3
+frame_progress = 1.0

@@ -31,15 +31,6 @@ var c_marker_dir: float
 #endregion
 
 #region Combo Base Variables
-var is_skill_one_done: bool = false
-var is_skill_two_done: bool = false
-var is_skill_three_done: bool = false
-var is_skill_four_done: bool = false
-var is_skill_recovering: bool = false
-
-var can_skill_one: bool = true
-var can_skill_two: bool = true
-var can_skill_three: bool = true
 
 var skill_bag: Array[int] = []
 var available_skills: Array[int] = [1, 2, 3]
@@ -57,51 +48,31 @@ signal send_timers(timer: String, value: float)
 #endregion
 
 #region Timers 
-@onready var c_one_timer := 0.0:
-	set(value):
-		if c_one_timer == value: 
-			return
-		
-		send_timers.emit("c_one_timer", value)
-		
-@onready var c_two_timer := 0.0:
-	set(value):
-		if c_two_timer == value: 
-			return
-		
-		send_timers.emit("c_two_timer", value)
-		
-@onready var c_three_timer := 0.0:
-	set(value):
-		if c_three_timer == value: 
-			return
-		
-		send_timers.emit("c_three_timer", value)
-		
-@onready var c_four_timer := 0.0:
-	set(value):
-		if c_four_timer == value: 
-			return
-		
-		send_timers.emit("c_four_timer", value)
-		
+
 @onready var recovery_timer := 0.0:
 	set(value):
-		if recovery_timer == value: 
+		var new_value = max(value, 0.0)
+		
+		if recovery_timer == new_value: 
 			return
 		
 		send_timers.emit("recover_timer", value)
 
 @onready var chase_timer := 0.0:
 	set(value):
-		if chase_timer == value: 
+		var new_value = max(value, 0.0)
+		
+		if chase_timer == new_value:
 			return
 		
-		send_timers.emit("chase_timer", value)
+		chase_timer = new_value
+		send_timers.emit("chase_timer", chase_timer)
 
 @onready var stunned_timer := 0.0:
 	set(value):
-		if stunned_timer == value:
+		var new_value = max(value, 0.0)
+		
+		if stunned_timer == new_value:
 			return
 		
 		send_timers.emit("stunned_timer", value)
@@ -156,6 +127,7 @@ func handle_movement() -> void:
 	if p_target == null:
 		return
 	
+	print("still handling movement? ")
 	var signed_distance = find_target()
 	var signed_direction = sign(signed_distance)
 	var abs_distance = abs(signed_distance)
@@ -179,70 +151,13 @@ func pass_marker_dir(s_dir: int) -> void:
 	else:
 		print("value is zero")
 	
-
 	
-#endregion
-
-#region Combo Func
-
-#endregion
-
-#region Timers Func
-
-func reduce_timer(delta: float) -> void:
-	
-	c_one_timer = set_timer(c_one_timer, delta)
-	#if attk_c_timer <= 0.0:
-		#close_attack_window()
-	#
-	stunned_timer = set_timer(stunned_timer, delta)
-	c_two_timer = set_timer(c_two_timer, delta)
-
-	c_three_timer = set_timer(c_three_timer, delta)
-	c_four_timer = set_timer(c_four_timer, delta)
-	recovery_timer = set_timer(recovery_timer, delta)
-	
-
-#endregion
-
-#region Boss Logic
-
-func handle_boss_logic(delta: float) -> void:
-	if is_skilling:
-		velocity.x = 0
-		return
-	
-	if is_recovering:
-		velocity.x = 0
-		return
-	
-	var signed_distance = find_target()
-	var signed_direction = sign(signed_distance)
-	var abs_distance = abs(signed_distance)
-	
-	if chase_timer > 0.0:
-		chase_timer = set_timer(chase_timer, delta)
-		handle_movement()
-		return
-	
-	if pending_skill == 0:
-		pending_skill = get_next_skill()
-	
-	if skill_needs_range(pending_skill) and abs_distance > stopping_radius:
-		handle_movement()
-		return
-	
-	start_skill(pending_skill)
-	pending_skill = 0
-	
-
-
 #endregion
 
 
 #region Target related func 
 
-func chase_target(dir: float, abs_dis: int) -> void:
+func chase_target(dir: float, abs_dis: float) -> void:
 	
 	if is_skilling:
 		return
@@ -253,6 +168,7 @@ func chase_target(dir: float, abs_dis: int) -> void:
 		current_speed = 0
 		
 		velocity.x = current_speed
+		print("abs distance in boss ", abs_dis)
 
 	elif abs_dis < slowing_d_radius:
 		velocity.x = dir * slowing_speed
@@ -271,17 +187,55 @@ func find_target() -> float:
 	return target_dis
 #endregion
 
+
+#region Boss Logic
+
+func handle_boss_logic(delta: float) -> void:
+	if is_skilling:
+		velocity.x = 0
+		return
+	
+	if is_recovering:
+		velocity.x = 0
+		return
+	
+	var signed_distance = find_target()
+	var signed_direction = sign(int(signed_distance))
+	var abs_distance = abs(signed_distance)
+	
+	if signed_direction != 0:
+		m_sprite.flip_h = signed_direction == 1
+	
+	if chase_timer > 0.0:
+		chase_timer = set_timer(chase_timer, delta)
+		handle_movement()
+		return
+	
+	if pending_skill == 0:
+		pending_skill = get_next_skill()
+	
+	if skill_needs_range(pending_skill) and abs_distance > stopping_radius:
+		handle_movement()
+		return
+	
+	var skill_to_start = pending_skill
+	pending_skill = 0
+	start_skill(skill_to_start)
+
+#endregion
+
+
 #region Skills
 
 func slam() -> void:
-	if is_skill_one_done:
-		return
-	
+
 	is_skilling = true
 	play_anim(p_anim, "slam")
 
 	
 func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
+	is_skilling = true
+	
 	var chair_scene = scene.instantiate()
 	chair_scene.global_position = pos
 	chair_scene.marker_dir = direction
@@ -289,16 +243,16 @@ func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
 	var projectile_parent = get_tree().current_scene.get_node("Projectiles")
 	
 	projectile_parent.add_child(chair_scene)
+
 	
-	is_skill_two_done = true
-	if chase_timer == 0.0:
-		chase_timer = 5.0
-	
-	end_skill_two()
+	end_skill()
 	
 	
 func slam_directory() -> void:
+	is_skilling = true
+	
 	print("I slammed something")
+	end_skill()
 
 
 #endregion 
@@ -311,34 +265,20 @@ func get_next_skill() -> int:
 		refill_skill_bag()
 	
 	return skill_bag.pop_front()
-	#choose_skill(skill_num)
-	
+
 func refill_skill_bag() -> void:
 	skill_bag = available_skills.duplicate()
 	skill_bag.shuffle()
 
-func choose_skill(skill_num: int) -> void:
-	var pending_skill: int
-	
-	var range_needed = skill_needs_range(skill_num)
-	
-	if range_needed:
-		pending_skill = skill_num
-	
-	if !range_needed:
-		start_skill(skill_num)
-
-
 func skill_needs_range(skill_num: int) -> bool:
-	return skill_num == 1 or skill_num == 2 or skill_num == 4
+	return skill_num == 1 or skill_num == 3 or skill_num == 4
 	
 func start_skill(num: int) -> void:
-	#Make sure to face character direction first 
 	is_skilling = true
 	
 	match num:
 		1:
-				slam()
+			slam()
 		2:
 			launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
 		3:
@@ -346,9 +286,10 @@ func start_skill(num: int) -> void:
 		_:
 			is_skilling = false
 
-
-	
 #endregion
+
+
+
 
 #region Default Signals
 
@@ -358,7 +299,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	
 	match anim_name:
 		"slam":
-			end_skill_one()
+			end_skill()
 		_:
 			pass
 
@@ -378,6 +319,7 @@ func start_recovery() -> void:
 	is_recovering = true
 	recovery_timer = 5.0
 
+
 func update_recovery(delta: float) -> void:
 	if not is_recovering:
 		return
@@ -388,13 +330,18 @@ func update_recovery(delta: float) -> void:
 		is_recovering = false
 		
 
-func end_skill_one() -> void:
-	is_skilling = false
-	is_skill_one_done = true
-	can_skill_one = false
-	chase_timer = 5.0
+#endregion
+
+
+#region Timers Func
+
+func reduce_timer(delta: float) -> void:
 	
-func end_skill_two() -> void:
-	can_skill_two = false
+	#if attk_c_timer <= 0.0:
+		#close_attack_window()
+	
+	stunned_timer = set_timer(stunned_timer, delta)
+	recovery_timer = set_timer(recovery_timer, delta)
+	
 
 #endregion
