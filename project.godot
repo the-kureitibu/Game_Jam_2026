@@ -30,6 +30,7 @@ Player_target=""
 Enemy_target=""
 Boss_target=""
 Boss_Projectile=""
+Terrain=""
 
 [input]
 

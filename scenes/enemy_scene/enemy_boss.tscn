@@ -179,6 +179,8 @@ position = Vector2(0, -52)
 shape = SubResource("CapsuleShape2D_kjeor")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1771797632]
+collision_layer = 64
+collision_mask = 256
 
 [node name="HurtCol" type="CollisionShape2D" parent="Hurtbox" unique_id=87264605]
 position = Vector2(0, -55)
@@ -186,6 +188,8 @@ shape = SubResource("CapsuleShape2D_kgnny")
 debug_color = Color(0.87479186, 0.29014167, 0.4893539, 0.41960785)
 
 [node name="HitboxSlam" type="Area2D" parent="." unique_id=445985100]
+collision_layer = 512
+collision_mask = 128
 
 [node name="HitCol" type="CollisionShape2D" parent="HitboxSlam" unique_id=25482164]
 rotation = 2.4954271
@@ -196,9 +200,6 @@ debug_color = Color(0.73545045, 0.46660084, 0.1578205, 0.41960785)
 position = Vector2(-50, -19)
 
 [node name="BookFMarker" type="Marker2D" parent="." unique_id=1141616924]
-position = Vector2(-51, -85)
-
-[node name="GroundMarker" type="Marker2D" parent="." unique_id=1456882858]
 position = Vector2(-51, -85)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1362673902]

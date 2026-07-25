@@ -44,6 +44,8 @@ radius = 23.0
 height = 46.0
 
 [node name="ChairSkill" type="Area2D" unique_id=1656640518]
+collision_layer = 512
+collision_mask = 128
 script = ExtResource("1_vc0ga")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=496167170]

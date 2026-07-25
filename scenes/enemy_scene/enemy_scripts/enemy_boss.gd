@@ -129,7 +129,7 @@ func handle_movement() -> void:
 	if p_target == null:
 		return
 	
-	print("still handling movement? ")
+
 	var signed_distance = find_target()
 	var signed_direction = sign(signed_distance)
 	var abs_distance = abs(signed_distance)
@@ -170,7 +170,6 @@ func chase_target(dir: float, abs_dis: float) -> void:
 		current_speed = 0
 		
 		velocity.x = current_speed
-		print("abs distance in boss ", abs_dis)
 
 	elif abs_dis < slowing_d_radius:
 		velocity.x = dir * slowing_speed
@@ -238,10 +237,10 @@ func fall_book(scene: PackedScene, pos: Vector2) -> void:
 	book_scene.global_position = pos
 	
 	var book_parent = get_tree().current_scene.get_node("Projectiles")
-	book_parent.add_child(book_parent)
+	book_parent.add_child(book_scene)
 	
-	if book_parent.is_inside_tree():
-		book_parent.anim_done.connect(end_skill)
+	if book_scene.is_inside_tree():
+		book_scene.anim_done.connect(end_skill)
 
 
 

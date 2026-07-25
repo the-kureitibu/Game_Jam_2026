@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://ngl18wqpeqo8"]
+
+[ext_resource type="PackedScene" uid="uid://cetfn5r0cjj7c" path="res://scenes/enemy_scene/enemy_boss.tscn" id="1_ibshu"]
+[ext_resource type="Script" uid="uid://bjkxisk2fu2rn" path="res://scenes/test_rooms/boss_room_test.gd" id="1_qwkq5"]
+[ext_resource type="PackedScene" uid="uid://dfiomxa4fli0f" path="res://scenes/player_scene/player_scene.tscn" id="2_qwkq5"]
+[ext_resource type="PackedScene" uid="uid://wxyw3dr3fl1b" path="res://scenes/player_scene/player_two_scene.tscn" id="3_1mv3o"]
+[ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="4_xa24e"]
+[ext_resource type="PackedScene" uid="uid://dmce6111r1rt" path="res://scenes/ui/test_ui.tscn" id="6_gxqsa"]
+[ext_resource type="PackedScene" uid="uid://boe26ixwk1fjm" path="res://scenes/test_rooms/test_room1.tscn" id="8_1mv3o"]
+
+[node name="BossRoomTest" type="Node2D" unique_id=171335621]
+script = ExtResource("1_qwkq5")
+
+[node name="EnemyBoss" parent="." unique_id=1734450653 instance=ExtResource("1_ibshu")]
+position = Vector2(34, -1)
+
+[node name="PlayerScene" parent="." unique_id=2131738871 instance=ExtResource("2_qwkq5")]
+position = Vector2(120, 0)
+
+[node name="PlayerTwoScene" parent="." unique_id=1399677113 instance=ExtResource("3_1mv3o")]
+position = Vector2(176, 1)
+
+[node name="CamRig" parent="." unique_id=819861590 instance=ExtResource("4_xa24e")]
+
+[node name="Projectiles" type="Node2D" parent="." unique_id=1083729600]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=807048723]
+
+[node name="TestUi" parent="CanvasLayer" unique_id=1506350038 instance=ExtResource("6_gxqsa")]
+
+[node name="TestRoom1" parent="." unique_id=929027271 groups=["Terrain_test"] instance=ExtResource("8_1mv3o")]
+position = Vector2(119, 1)
+
+[node name="TestRoom2" parent="." unique_id=805366691 groups=["Terrain_test"] instance=ExtResource("8_1mv3o")]
+position = Vector2(-10, -91.00001)
+rotation = 1.4668504
+
+[node name="TestRoom3" parent="." unique_id=1970120711 groups=["Terrain_test"] instance=ExtResource("8_1mv3o")]
+position = Vector2(239, -83)
+rotation = 1.4668504

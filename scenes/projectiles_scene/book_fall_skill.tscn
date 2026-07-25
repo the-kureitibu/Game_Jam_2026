@@ -108,36 +108,35 @@ animations = [{
 "speed": 7.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yhni5"]
-radius = 14.026638
-height = 30.052021
+[sub_resource type="CircleShape2D" id="CircleShape2D_2x3mt"]
 
 [node name="BookFallSkill" type="Area2D" unique_id=2073984826 groups=["Boss_Projectile"]]
 collision_layer = 512
-collision_mask = 128
+collision_mask = 144
 script = ExtResource("1_qvw37")
 
 [node name="Book" type="AnimatedSprite2D" parent="." unique_id=1179899986]
-visible = false
-position = Vector2(-1, 2)
+position = Vector2(2, -29)
 sprite_frames = SubResource("SpriteFrames_vk5al")
 animation = &"fall"
 
 [node name="BookHitbox" type="CollisionShape2D" parent="." unique_id=269964415]
-visible = false
-position = Vector2(-2.0000002, 12)
+position = Vector2(1, -19)
 rotation = 1.1938171
 shape = SubResource("CapsuleShape2D_2x3mt")
 debug_color = Color(0.8393374, 0.23473653, 0.75709486, 0.41960785)
 
 [node name="Explode" type="AnimatedSprite2D" parent="." unique_id=1636716960]
+visible = false
+position = Vector2(0, -29)
 sprite_frames = SubResource("SpriteFrames_pn0gp")
 animation = &"explode"
 
-[node name="ExplodeHitBox" type="CollisionShape2D" parent="." unique_id=1621591473]
-position = Vector2(0, 19)
-rotation = -1.6062281
-shape = SubResource("CapsuleShape2D_yhni5")
+[node name="ExplodeHitbox" type="CollisionShape2D" parent="." unique_id=1087272780]
+position = Vector2(1, -19)
+rotation = 1.1938171
+shape = SubResource("CircleShape2D_2x3mt")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="animation_finished" from="Explode" to="." method="_on_explode_animation_finished"]
