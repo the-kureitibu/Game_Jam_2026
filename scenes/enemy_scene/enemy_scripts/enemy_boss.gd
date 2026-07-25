@@ -1,7 +1,6 @@
 extends EnemyBase
 
 
-
 #region Base Variables
 
 var b_health: int = 100
@@ -22,9 +21,12 @@ var slowing_speed := 70.0
 @onready var s_texture = m_sprite.sprite_frames.get_frame_texture("default", 0)
 @onready var s_height = s_texture.get_height() / - 2.0
 @onready var c_marker: Marker2D = $ChairMarker
+@onready var bf_marker: Marker2D = $BookFMarker
 @onready var p_anim: AnimationPlayer = $AnimationPlayer
 
+
 const CHAIR_SCENE = preload("res://scenes/projectiles_scene/chair_skill.tscn")
+const BOOK_FALL_SCENE = preload("res://scenes/projectiles_scene/book_fall_skill.tscn")
 
 var c_marker_dir: float
 
@@ -227,10 +229,21 @@ func handle_boss_logic(delta: float) -> void:
 
 #region Skills
 
-func slam() -> void:
+func fall_book(scene: PackedScene, pos: Vector2) -> void:
 
 	is_skilling = true
-	play_anim(p_anim, "slam")
+	
+	var book_scene = scene.instantiate()
+
+	book_scene.global_position = pos
+	
+	var book_parent = get_tree().current_scene.get_node("Projectiles")
+	book_parent.add_child(book_parent)
+	
+	if book_parent.is_inside_tree():
+		book_parent.anim_done.connect(end_skill)
+
+
 
 	
 func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
@@ -278,7 +291,7 @@ func start_skill(num: int) -> void:
 	
 	match num:
 		1:
-			slam()
+			fall_book(BOOK_FALL_SCENE, bf_marker.global_position)
 		2:
 			launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
 		3:

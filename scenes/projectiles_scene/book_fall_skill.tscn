@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://b40eul8efpmko"]
 
 [ext_resource type="Texture2D" uid="uid://cidyv4r7kq1xt" path="res://assets/sprites/projectiles/boss_skill1.png" id="1_hukjt"]
+[ext_resource type="Script" uid="uid://6h6p5mbh20xo" path="res://scenes/projectiles_scene/book_fall_skill.gd" id="1_qvw37"]
+[ext_resource type="Texture2D" uid="uid://dgqfgp06oqf43" path="res://assets/sprites/projectiles/boss_skill1.1.png" id="3_2x3mt"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qvw37"]
 atlas = ExtResource("1_hukjt")
@@ -34,13 +36,108 @@ animations = [{
 "texture": SubResource("AtlasTexture_2sofb")
 }],
 "loop": false,
-"name": &"default",
+"name": &"fall",
 "speed": 7.0
 }]
 
-[node name="BookFallSkill" type="Area2D" unique_id=2073984826]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2x3mt"]
+radius = 14.489387
+height = 47.5364
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1179899986]
+[sub_resource type="AtlasTexture" id="AtlasTexture_vk5al"]
+atlas = ExtResource("3_2x3mt")
+region = Rect2(0, 64, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yl6yh"]
+atlas = ExtResource("3_2x3mt")
+region = Rect2(128, 64, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vxfxl"]
+atlas = ExtResource("3_2x3mt")
+region = Rect2(256, 64, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ihoa"]
+atlas = ExtResource("3_2x3mt")
+region = Rect2(384, 64, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lna43"]
+atlas = ExtResource("3_2x3mt")
+region = Rect2(512, 64, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qruta"]
+atlas = ExtResource("3_2x3mt")
+region = Rect2(640, 64, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i17ma"]
+atlas = ExtResource("3_2x3mt")
+region = Rect2(768, 64, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fufdq"]
+atlas = ExtResource("3_2x3mt")
+region = Rect2(896, 64, 128, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pn0gp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vk5al")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yl6yh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vxfxl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ihoa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lna43")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qruta")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i17ma")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fufdq")
+}],
+"loop": false,
+"name": &"explode",
+"speed": 7.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yhni5"]
+radius = 14.026638
+height = 30.052021
+
+[node name="BookFallSkill" type="Area2D" unique_id=2073984826 groups=["Boss_Projectile"]]
+collision_layer = 512
+collision_mask = 128
+script = ExtResource("1_qvw37")
+
+[node name="Book" type="AnimatedSprite2D" parent="." unique_id=1179899986]
+visible = false
+position = Vector2(-1, 2)
 sprite_frames = SubResource("SpriteFrames_vk5al")
-frame = 3
-frame_progress = 1.0
+animation = &"fall"
+
+[node name="BookHitbox" type="CollisionShape2D" parent="." unique_id=269964415]
+visible = false
+position = Vector2(-2.0000002, 12)
+rotation = 1.1938171
+shape = SubResource("CapsuleShape2D_2x3mt")
+debug_color = Color(0.8393374, 0.23473653, 0.75709486, 0.41960785)
+
+[node name="Explode" type="AnimatedSprite2D" parent="." unique_id=1636716960]
+sprite_frames = SubResource("SpriteFrames_pn0gp")
+animation = &"explode"
+
+[node name="ExplodeHitBox" type="CollisionShape2D" parent="." unique_id=1621591473]
+position = Vector2(0, 19)
+rotation = -1.6062281
+shape = SubResource("CapsuleShape2D_yhni5")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="animation_finished" from="Explode" to="." method="_on_explode_animation_finished"]
