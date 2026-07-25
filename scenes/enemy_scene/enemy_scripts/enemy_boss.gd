@@ -24,6 +24,9 @@ var slowing_speed := 70.0
 @onready var bf_marker: Marker2D = $BookFMarker
 @onready var p_anim: AnimationPlayer = $AnimationPlayer
 
+@onready var c_marker_base_x = abs(c_marker.position.x)
+@onready var bf_marker_base_x = abs(bf_marker.position.x)
+
 
 const CHAIR_SCENE = preload("res://scenes/projectiles_scene/chair_skill.tscn")
 const BOOK_FALL_SCENE = preload("res://scenes/projectiles_scene/book_fall_skill.tscn")
@@ -38,7 +41,6 @@ var skill_bag: Array[int] = []
 var available_skills: Array[int] = [1, 2, 3]
 var is_recovering: bool = false
 var pending_skill := 0
-
 
 
 #endregion
@@ -58,6 +60,8 @@ signal send_timers(timer: String, value: float)
 		if recovery_timer == new_value: 
 			return
 		
+		recovery_timer = new_value
+		
 		send_timers.emit("recover_timer", value)
 
 @onready var chase_timer := 0.0:
@@ -76,6 +80,8 @@ signal send_timers(timer: String, value: float)
 		
 		if stunned_timer == new_value:
 			return
+		
+		stunned_timer = new_value
 		
 		send_timers.emit("stunned_timer", value)
 
@@ -122,6 +128,12 @@ func _physics_process(delta: float) -> void:
 	update_recovery(delta)
 	
 	move_and_slide()
+	
+	if chase_timer > 0.0:
+		print("Chase timer ", chase_timer)
+	
+	if recovery_timer > 0.0:
+		print("Recovery timer ", recovery_timer) # - this guy was named chase lmao
 
 #region Movement func
 
@@ -196,16 +208,21 @@ func handle_boss_logic(delta: float) -> void:
 		velocity.x = 0
 		return
 	
-	if is_recovering:
-		velocity.x = 0
-		return
-	
 	var signed_distance = find_target()
 	var signed_direction = sign(int(signed_distance))
 	var abs_distance = abs(signed_distance)
 	
+	if is_recovering:
+		handle_movement()
+		return
+	
 	if signed_direction != 0:
+		var boss_facing_dir = signed_direction
 		m_sprite.flip_h = signed_direction == 1
+		
+		c_marker.position.x = c_marker_base_x * boss_facing_dir
+		bf_marker.position.x =bf_marker_base_x * boss_facing_dir
+
 	
 	if chase_timer > 0.0:
 		chase_timer = set_timer(chase_timer, delta)
@@ -219,7 +236,9 @@ func handle_boss_logic(delta: float) -> void:
 		handle_movement()
 		return
 	
+	
 	var skill_to_start = pending_skill
+	
 	pending_skill = 0
 	start_skill(skill_to_start)
 
@@ -241,7 +260,8 @@ func fall_book(scene: PackedScene, pos: Vector2) -> void:
 	
 	if book_scene.is_inside_tree():
 		book_scene.anim_done.connect(end_skill)
-
+		
+	print("I throw book")
 
 
 	
@@ -256,7 +276,7 @@ func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
 	
 	projectile_parent.add_child(chair_scene)
 
-	
+	print(" I throw chair")
 	end_skill()
 	
 	
@@ -272,11 +292,14 @@ func slam_directory() -> void:
 #region Handle Skill
 
 func get_next_skill() -> int:
-
+	print("BEFORE get_next_skill, bag: ", skill_bag)
 	if skill_bag.is_empty():
+		print("BAG EMPTY, REFILLING")
 		refill_skill_bag()
 	
-	return skill_bag.pop_front()
+	var skill = skill_bag.pop_front()
+	print("PICKED SKILL: ", skill, " | BAG AFTER PICK: ", skill_bag)
+	return skill
 
 func refill_skill_bag() -> void:
 	skill_bag = available_skills.duplicate()
@@ -322,6 +345,11 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 func end_skill() -> void:
 	is_skilling = false
 	
+	print("END SKILL")
+	print("bag now: ", skill_bag)
+	print("bag empty? ", skill_bag.is_empty())
+	print("pending skill? ", pending_skill)
+	
 	if skill_bag.is_empty() and pending_skill == 0:
 		start_recovery()
 	else:
@@ -329,7 +357,7 @@ func end_skill() -> void:
 
 func start_recovery() -> void:
 	is_recovering = true
-	recovery_timer = 5.0
+	recovery_timer = 3.0
 
 
 func update_recovery(delta: float) -> void:
@@ -348,10 +376,7 @@ func update_recovery(delta: float) -> void:
 #region Timers Func
 
 func reduce_timer(delta: float) -> void:
-	
-	#if attk_c_timer <= 0.0:
-		#close_attack_window()
-	
+
 	stunned_timer = set_timer(stunned_timer, delta)
 	recovery_timer = set_timer(recovery_timer, delta)
 	
