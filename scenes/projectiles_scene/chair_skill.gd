@@ -6,6 +6,7 @@ var dmg := 10.0
 var base_speed := 250.0
 var max_speed := 120.0
 var queue_timer := 0.0
+var chair_broken := false
 
 
 @onready var dir: Vector2
@@ -38,7 +39,15 @@ func _physics_process(delta: float) -> void:
 
 	handle_movement(marker_dir)
 	
-	position += dir * base_speed * delta
+	if chair_broken:
+		var movement_stopper = Vector2.ZERO
+		dir = movement_stopper
+		
+		position += dir * base_speed * delta
+		
+	else:
+		position += dir * base_speed * delta
+
 	
 	if queue_timer > 0.0:
 		queue_timer -= delta
@@ -84,12 +93,46 @@ func _on_main_sprite_animation_finished() -> void:
 
 func _on_area_entered(area: Area2D) -> void:
 	var player = area.get_tree().get_first_node_in_group("Player_target")
+
 	
 	if !player:
 		return
 	
 	if "handle_hurt" in player:
 		player.handle_hurt(dmg)
+	
+
+	m_sprite.play("break")
+	chair_broken = true
+	end_chair_queu() 
+
+
+	
+func end_chair_queu() -> void:
+	if !chair_broken:
+		return
+	
+	var tween = create_tween()
+	tween.tween_property(m_sprite, "modulate:a", 0.0, 1.0)
+	
+	if m_sprite.modulate.a <= 0.0:
+
+		queue_free()
 
 
 #endregion
+
+
+func _on_body_entered(body: Node2D) -> void:
+	print("entered a body?")
+	var terrain = body.get_tree().get_first_node_in_group("Terrain")
+	
+	if !terrain:
+		return
+	
+	if terrain:
+		print("entered a terrain?")
+	
+	m_sprite.play("break")
+	chair_broken = true
+	end_chair_queu() 

@@ -224,21 +224,9 @@ func find_target() -> float:
 #region Boss Logic
 
 func handle_boss_logic(delta: float) -> void:
-	if is_skilling:
-		velocity.x = 0
-		return
-	
-	if is_shooting:
-		velocity.x = 0
-		return
-		
 	var signed_distance = find_target()
 	var signed_direction = sign(int(signed_distance))
 	var abs_distance = abs(signed_distance)
-	
-	if is_recovering:
-		handle_movement()
-		return
 	
 	if signed_direction != 0:
 		var boss_facing_dir = signed_direction
@@ -247,6 +235,18 @@ func handle_boss_logic(delta: float) -> void:
 		c_marker.position.x = c_marker_base_x * boss_facing_dir
 		bf_marker.position.x =bf_marker_base_x * boss_facing_dir
 
+	if is_skilling:
+		velocity.x = 0
+		return
+	
+	if is_shooting:
+		velocity.x = 0
+		return
+	
+	if is_recovering:
+		handle_movement()
+		return
+	
 	
 	if chase_timer > 0.0:
 		chase_timer = set_timer(chase_timer, delta)
@@ -310,7 +310,6 @@ func update_chair_skill(delta) -> void:
 		end_skill()
 	else: 
 		shots_timer = CHAIR_SHOT_INTERVAL
-
 
 	
 func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
