@@ -39,6 +39,11 @@ var c_marker_dir: float
 
 var skill_bag: Array[int] = []
 var available_skills: Array[int] = [1, 2, 3]
+var available_shots: Array[int] = [1, 2, 3]
+var chair_shots_fired := 0
+const MAX_CHAIR_SHOTS := 3
+const CHAIR_SHOT_INTERVAL := 1.5
+
 var is_recovering: bool = false
 var pending_skill := 0
 
@@ -57,7 +62,7 @@ signal send_timers(timer: String, value: float)
 	set(value):
 		var new_value = max(value, 0.0)
 		
-		if recovery_timer == new_value: 
+		if recovery_timer == new_value:
 			return
 		
 		recovery_timer = new_value
@@ -85,18 +90,29 @@ signal send_timers(timer: String, value: float)
 		
 		send_timers.emit("stunned_timer", value)
 
+@onready var shots_timer := 0.0:
+	set(value):
+		var new_value = max(value, 0.0)
+		
+		if shots_timer == new_value:
+			return
+		
+		shots_timer = new_value
+		
+
 #endregion
 
 #region Gate Keepers
 var is_transforming := false
 var is_hurt := false
 var hurt_count := [] #make boss stunned after 3 hits
-var is_flying := false 
+var is_flying := false
 var is_human := false
 var is_demon := false
 var is_stunned := false
 var is_chasing := false
 var is_skilling := false
+var is_shooting := false
 
 #endregion
 
@@ -119,21 +135,25 @@ func _ready() -> void:
 	
 	find_target()
 	
+	print("Number of shots ", chair_shots_fired)
 	#launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
 
 	
 	
 func _physics_process(delta: float) -> void:
 	handle_boss_logic(delta)
+	update_chair_skill(delta)
 	update_recovery(delta)
 	
 	move_and_slide()
 	
-	if chase_timer > 0.0:
-		print("Chase timer ", chase_timer)
-	
-	if recovery_timer > 0.0:
-		print("Recovery timer ", recovery_timer) # - this guy was named chase lmao
+	#if chase_timer > 0.0:
+		#print("Chase timer ", chase_timer)
+	#
+	#if recovery_timer > 0.0:
+		#print("Recovery timer ", recovery_timer) # - this guy was named chase lmao
+
+
 
 #region Movement func
 
@@ -188,7 +208,7 @@ func chase_target(dir: float, abs_dis: float) -> void:
 	
 	else:
 		current_speed = b_speed * b_acceleration
-		velocity.x = dir * current_speed 
+		velocity.x = dir * current_speed
 
 	
 func find_target() -> float:
@@ -208,6 +228,10 @@ func handle_boss_logic(delta: float) -> void:
 		velocity.x = 0
 		return
 	
+	if is_shooting:
+		velocity.x = 0
+		return
+		
 	var signed_distance = find_target()
 	var signed_direction = sign(int(signed_distance))
 	var abs_distance = abs(signed_distance)
@@ -241,6 +265,7 @@ func handle_boss_logic(delta: float) -> void:
 	
 	pending_skill = 0
 	start_skill(skill_to_start)
+	
 
 #endregion
 
@@ -261,12 +286,36 @@ func fall_book(scene: PackedScene, pos: Vector2) -> void:
 	if book_scene.is_inside_tree():
 		book_scene.anim_done.connect(end_skill)
 		
-	print("I throw book")
+
+func start_chair_skill() -> void:
+	is_skilling = true
+	is_shooting = true
+	chair_shots_fired = 0
+	shots_timer = 0.0
+
+func update_chair_skill(delta) -> void:
+	
+	if !is_shooting:
+		return
+	
+	shots_timer = set_timer(shots_timer, delta)
+	
+	if shots_timer > 0.0:
+		return
+
+	launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
+	chair_shots_fired += 1
+
+	if chair_shots_fired >= MAX_CHAIR_SHOTS:
+		end_skill()
+	else: 
+		shots_timer = CHAIR_SHOT_INTERVAL
 
 
 	
 func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
 	is_skilling = true
+	is_shooting = true
 	
 	var chair_scene = scene.instantiate()
 	chair_scene.global_position = pos
@@ -277,7 +326,8 @@ func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
 	projectile_parent.add_child(chair_scene)
 
 	print(" I throw chair")
-	end_skill()
+	shots_timer = 1.5
+	print("Shots timer refilled? ", shots_timer)
 	
 	
 func slam_directory() -> void:
@@ -315,11 +365,13 @@ func start_skill(num: int) -> void:
 		1:
 			fall_book(BOOK_FALL_SCENE, bf_marker.global_position)
 		2:
-			launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
+			start_chair_skill()
 		3:
 			slam_directory()
 		_:
 			is_skilling = false
+
+
 
 #endregion
 
@@ -344,11 +396,9 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 func end_skill() -> void:
 	is_skilling = false
-	
-	print("END SKILL")
+	is_shooting = false
+
 	print("bag now: ", skill_bag)
-	print("bag empty? ", skill_bag.is_empty())
-	print("pending skill? ", pending_skill)
 	
 	if skill_bag.is_empty() and pending_skill == 0:
 		start_recovery()

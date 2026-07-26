@@ -1,23 +1,27 @@
 [gd_scene format=3 uid="uid://ywxgus73nrf2"]
 
 [ext_resource type="Script" uid="uid://bbwc0bd5ogtfr" path="res://scenes/projectiles_scene/chair_skill.gd" id="1_vc0ga"]
-[ext_resource type="Texture2D" uid="uid://bg3mck5srffps" path="res://assets/sprites/projectiles/Blink (54x52).png" id="2_ufrag"]
+[ext_resource type="Texture2D" uid="uid://n46mrd7ucryr" path="res://assets/sprites/projectiles/boss_skill2.png" id="2_ufrag"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_twyl8"]
 atlas = ExtResource("2_ufrag")
-region = Rect2(0, 0, 54, 52)
+region = Rect2(256, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gfe4c"]
 atlas = ExtResource("2_ufrag")
-region = Rect2(54, 0, 54, 52)
+region = Rect2(320, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yyxgb"]
 atlas = ExtResource("2_ufrag")
-region = Rect2(108, 0, 54, 52)
+region = Rect2(384, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dd5q2"]
 atlas = ExtResource("2_ufrag")
-region = Rect2(162, 0, 54, 52)
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3fq3m"]
+atlas = ExtResource("2_ufrag")
+region = Rect2(512, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_3fq3m"]
 animations = [{
@@ -33,6 +37,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dd5q2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3fq3m")
 }],
 "loop": false,
 "name": &"launch",
@@ -40,8 +47,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_memwi"]
-radius = 23.0
-height = 46.0
+radius = 15.0
+height = 52.0
 
 [node name="ChairSkill" type="Area2D" unique_id=1656640518]
 collision_layer = 512
@@ -49,14 +56,14 @@ collision_mask = 128
 script = ExtResource("1_vc0ga")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=496167170]
-position = Vector2(0, -23)
+position = Vector2(0, -30)
 sprite_frames = SubResource("SpriteFrames_3fq3m")
 animation = &"launch"
 frame = 3
 frame_progress = 1.0
 
 [node name="HitBox" type="CollisionShape2D" parent="." unique_id=1458832394]
-position = Vector2(0, -22)
+position = Vector2(0, -26)
 shape = SubResource("CapsuleShape2D_memwi")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=213835528]

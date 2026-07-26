@@ -74,7 +74,7 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 		
 	if terrain_group:
-		print("hit the ground")
+
 		dir = movement_stopper
 		
 		b_sprite.visible = true

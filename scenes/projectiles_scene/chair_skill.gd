@@ -5,6 +5,7 @@ extends Area2D
 var dmg := 10.0
 var base_speed := 250.0
 var max_speed := 120.0
+var queue_timer := 0.0
 
 
 @onready var dir: Vector2
@@ -28,6 +29,7 @@ func _ready() -> void:
 	if boss_target == null:
 		push_error("Boss does not exist")
 	
+	queue_timer = 1.5
 
 func _physics_process(delta: float) -> void:
 	
@@ -37,6 +39,13 @@ func _physics_process(delta: float) -> void:
 	handle_movement(marker_dir)
 	
 	position += dir * base_speed * delta
+	
+	if queue_timer > 0.0:
+		queue_timer -= delta
+		if queue_timer <= 0.0:
+			queue_free()
+			print("Chair freed")
+	
 
 #endregion
 
@@ -81,5 +90,6 @@ func _on_area_entered(area: Area2D) -> void:
 	
 	if "handle_hurt" in player:
 		player.handle_hurt(dmg)
+
 
 #endregion

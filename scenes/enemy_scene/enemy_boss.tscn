@@ -197,7 +197,7 @@ shape = SubResource("CapsuleShape2D_qfbu3")
 debug_color = Color(0.73545045, 0.46660084, 0.1578205, 0.41960785)
 
 [node name="ChairMarker" type="Marker2D" parent="." unique_id=2025523298]
-position = Vector2(-50, -19)
+position = Vector2(-50, 0)
 
 [node name="BookFMarker" type="Marker2D" parent="." unique_id=1141616924]
 position = Vector2(-51, -85)
