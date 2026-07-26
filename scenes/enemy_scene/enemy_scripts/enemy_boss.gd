@@ -380,14 +380,7 @@ func start_skill(num: int) -> void:
 #region Default Signals
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	if !is_skilling:
-		return
-	
-	match anim_name:
-		"slam":
-			end_skill()
-		_:
-			pass
+	pass
 
 #endregion
 

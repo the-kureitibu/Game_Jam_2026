@@ -60,7 +60,7 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_memwi"]
 radius = 15.0
-height = 52.0
+height = 48.0
 
 [node name="ChairSkill" type="Area2D" unique_id=1656640518]
 collision_layer = 512
