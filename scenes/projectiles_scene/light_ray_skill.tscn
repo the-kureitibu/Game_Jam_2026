@@ -73,15 +73,34 @@ size = Vector2(10, 64)
 [node name="LightRaySkill" type="Area2D" unique_id=1384102649]
 script = ExtResource("1_d2dq4")
 
-[node name="S_1" type="AnimatedSprite2D" parent="." unique_id=611349243]
+[node name="S_1" type="AnimatedSprite2D" parent="." unique_id=611349243 groups=["sprites"]]
+visible = false
 sprite_frames = SubResource("SpriteFrames_jkvdt")
 animation = &"ray_attk"
 
-[node name="S_2" type="AnimatedSprite2D" parent="." unique_id=481519286]
+[node name="S_2" type="AnimatedSprite2D" parent="." unique_id=481519286 groups=["sprites"]]
+visible = false
+sprite_frames = SubResource("SpriteFrames_jkvdt")
+animation = &"ray_attk"
+
+[node name="S_3" type="AnimatedSprite2D" parent="." unique_id=2137954378 groups=["sprites"]]
+visible = false
+sprite_frames = SubResource("SpriteFrames_jkvdt")
+animation = &"ray_attk"
+
+[node name="S_4" type="AnimatedSprite2D" parent="." unique_id=1041658502 groups=["sprites"]]
+visible = false
+sprite_frames = SubResource("SpriteFrames_jkvdt")
+animation = &"ray_attk"
+
+[node name="S_5" type="AnimatedSprite2D" parent="." unique_id=1536551648 groups=["sprites"]]
+visible = false
 sprite_frames = SubResource("SpriteFrames_jkvdt")
 animation = &"ray_attk"
 
 [node name="HitBox" type="CollisionShape2D" parent="." unique_id=1792983604]
+position = Vector2(0, 32)
 shape = SubResource("RectangleShape2D_jspbb")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2042940572]
+offset = Vector2(0, 120)
