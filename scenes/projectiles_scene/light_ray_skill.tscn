@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://cloklfwpjputp"]
+
+[ext_resource type="Script" uid="uid://cjsah7s37ia3a" path="res://scenes/projectiles_scene/light_ray_skill.gd" id="1_d2dq4"]
+[ext_resource type="Texture2D" uid="uid://nipyn2bh241d" path="res://assets/sprites/projectiles/skills.png" id="2_q8wod"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ept2l"]
+atlas = ExtResource("2_q8wod")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g8ve0"]
+atlas = ExtResource("2_q8wod")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xksj2"]
+atlas = ExtResource("2_q8wod")
+region = Rect2(128, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qddkn"]
+atlas = ExtResource("2_q8wod")
+region = Rect2(192, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khteu"]
+atlas = ExtResource("2_q8wod")
+region = Rect2(256, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_whbm2"]
+atlas = ExtResource("2_q8wod")
+region = Rect2(320, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ufkr"]
+atlas = ExtResource("2_q8wod")
+region = Rect2(384, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r61r4"]
+atlas = ExtResource("2_q8wod")
+region = Rect2(448, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jkvdt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ept2l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g8ve0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xksj2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qddkn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_khteu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_whbm2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ufkr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r61r4")
+}],
+"loop": false,
+"name": &"ray_attk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jspbb"]
+size = Vector2(10, 64)
+
+[node name="LightRaySkill" type="Area2D" unique_id=1384102649]
+script = ExtResource("1_d2dq4")
+
+[node name="S_1" type="AnimatedSprite2D" parent="." unique_id=611349243]
+sprite_frames = SubResource("SpriteFrames_jkvdt")
+animation = &"ray_attk"
+
+[node name="S_2" type="AnimatedSprite2D" parent="." unique_id=481519286]
+sprite_frames = SubResource("SpriteFrames_jkvdt")
+animation = &"ray_attk"
+
+[node name="HitBox" type="CollisionShape2D" parent="." unique_id=1792983604]
+shape = SubResource("RectangleShape2D_jspbb")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2042940572]
