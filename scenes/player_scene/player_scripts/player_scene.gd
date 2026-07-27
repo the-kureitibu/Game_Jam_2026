@@ -114,12 +114,15 @@ var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE:
 #region References Vars
 
 @export var p_proj_sprite: Area2D
+@onready var player_two: Node2D
+@onready var hurt_box_col: CollisionShape2D = $HurtBox/HurtBoxCollision
 
 #endregion
 
 #region Hitboxes, Hurtboxes Vars
 
 @onready var mace_hit_box: CollisionShape2D = $HitBox/HitBoxCollision
+
 
 #endregion
 
@@ -183,14 +186,21 @@ func grab_cam_limits() -> Dictionary:
 #endregion
 
 
+
+
 func _ready() -> void:
-	#Signals
+
 	SignalHub.blocking_anim_done.connect(end_blocking_state)
-	#Signals region end
-	
+
 	dec_ini_stats()
 	
+	await get_tree().process_frame
+
+	player_two = get_tree().get_first_node_in_group("Player_two")
 	
+	if player_two:
+		player_two.blocking_started.connect(_on_block_connect)
+
 	if not p_sprite.is_playing():
 		p_sprite.play("idle")
 
@@ -323,6 +333,9 @@ func start_blocking() -> void:
 	play_anim(p_sprite, "block", true)
 	p_sprite.sprite_frames.set_animation_loop("block", true)
 	
+func _on_block_connect() -> void:
+	hurt_box_col.set_deferred("disabled", true)
+	
 
 func end_blocking_state() -> void:
 	if !is_blocking:
@@ -339,6 +352,7 @@ func end_blocking() -> void:
 	is_busy = false
 	is_blocking = false
 	p_action_state = PlayerActionState.NONE
+	hurt_box_col.set_deferred("disabled", false)
 	
 	force_move_animation()
 

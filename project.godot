@@ -31,6 +31,8 @@ Enemy_target=""
 Boss_target=""
 Boss_Projectile=""
 Terrain=""
+Block=""
+Player_two=""
 
 [input]
 

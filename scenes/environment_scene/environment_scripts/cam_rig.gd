@@ -22,7 +22,7 @@ func _ready() -> void:
 
 	if is_boss_room:
 		if boss_target == null:
-			push_error("Player does not exist")
+			print("Boss does not exist")
 			return
 		
 		global_position = get_boss_room_midpoint()

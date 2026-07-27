@@ -1,13 +1,25 @@
 extends PlayerBase
 
-const UP_DIRECTION: Vector2 = Vector2.UP
+
+
+#region References 
 
 @onready var main_sprite: AnimatedSprite2D = $MainSprite
+@onready var blocking_col: CollisionShape2D = $BlockBox/BlockShape
+
+#endregion
+
+#region Base Vars
+
 @onready var jump_height := 30.0
 @onready var time_to_apex := 0.35
 
 @onready var jump_gravity := (2 * jump_height) / pow(time_to_apex, 2.0)
 @onready var jump_velocity := -jump_gravity * time_to_apex
+const UP_DIRECTION: Vector2 = Vector2.UP
+
+signal blocking_started
+#endregion
 
 #region Target player related
 
@@ -33,9 +45,17 @@ var is_on_air := false
 
 #endregion
 
+func _enter_tree() -> void:
+	if not is_in_group("Player_two"):
+		add_to_group("Player_two")
+
 func _ready() -> void:
 	t_player = get_tree().get_first_node_in_group("Player_target")
-
+	
+	if !is_in_group("Player_two"):
+		push_error("Not in Group")
+	
+	blocking_col.set_deferred("disabled", true)
 
 func _physics_process(delta: float) -> void:
 	handle_animation()
@@ -112,6 +132,7 @@ func handle_player_blocking() -> void:
 
 	start_blocking_player()
 	
+
 func start_blocking_player() -> void:
 	snap_to_guard_pos()
 		
@@ -120,6 +141,8 @@ func start_blocking_player() -> void:
 	p_two_state = PlayerTwoState.BLOCK
 	play_anim(main_sprite, "block")
 	
+	blocking_started.emit()
+
 func snap_to_guard_pos() -> void:
 	if t_player == null:
 		return
@@ -135,6 +158,8 @@ func snap_to_guard_pos() -> void:
 	velocity.x = 0.0
 	main_sprite.flip_h = p_facing_dir < 0
 	
+func handle_blocking_shape() -> void:
+	pass
 
 func force_next_animation() -> void:
 	match t_player.p_move_state:

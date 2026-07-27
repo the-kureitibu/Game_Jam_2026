@@ -12,6 +12,20 @@ metadata/_edit_vertical_guides_ = [-137.0]
 metadata/_edit_horizontal_guides_ = [14.0]
 
 [node name="PlayerScene" parent="." unique_id=2131738871 instance=ExtResource("1_awkfx")]
+p_health = 0
+p_speed = 0.0
+p_damage = 0
+r_amount = 0.0
+r_per_attk = 0
+p_move_state = 1
+p_form_state = 0
+invulnerable_timer = 0.0
+attk_c_timer = 0.0
+d_timer = 0.0
+r_timer = 0.0
+r_cd_timer = 0.0
+s1_timer = 0.0
+s2_timer = 0.0
 
 [node name="TestRoom1" parent="." unique_id=929027271 instance=ExtResource("2_ujilw")]
 

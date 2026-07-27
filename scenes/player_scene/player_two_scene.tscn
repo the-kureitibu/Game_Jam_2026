@@ -319,10 +319,9 @@ offset = Vector2(0, -30)
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_sddkf")
 
-[node name="BlockBox" type="Area2D" parent="." unique_id=490490049]
-visible = false
+[node name="BlockBox" type="Area2D" parent="." unique_id=490490049 groups=["Block"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BlockBox" unique_id=960837518]
+[node name="BlockShape" type="CollisionShape2D" parent="BlockBox" unique_id=960837518]
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_kgobb")
 debug_color = Color(0.73422676, 0.457223, 0.31594896, 0.41960785)
