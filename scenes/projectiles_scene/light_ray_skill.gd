@@ -19,13 +19,17 @@ var can_enable_vis := false
 var h_offset: float
 var des_position: Vector2
 const MAX_STACK := 5
-var current_visible_stack := 1
+var current_visible_stack := 0
 
 #endregion
 
 #region References 
 
 @onready var player_target = get_tree().get_first_node_in_group("Player_target")
+
+#endregion
+
+#region Signals
 
 #endregion
 
@@ -47,14 +51,10 @@ func _process(delta: float) -> void:
 
 	if sprite_vis_timer > 0.0:
 		sprite_vis_timer -= delta
-		print("Vis timer in process: ", sprite_vis_timer)
 		if sprite_vis_timer <= 0.0:
 			can_enable_vis = true
 	
 	
-
-
-
 func handle_chaining() -> void:
 	stack_chaining(sprite_two, "ray_attk", 0, 1)
 	stack_chaining(sprite_three, "ray_attk", 0, 2)
@@ -72,11 +72,10 @@ func stack_chaining(sprite: AnimatedSprite2D, anim_name: StringName, frame_num: 
 	target_pos = Vector2(0, y_offset) * multiplier
 	sprite.position = target_pos
 	
-
 	hitbox.shape.size = Vector2(10.0, y_offset + (y_offset * multiplier) )
 	hitbox.position.y = y_offset * multiplier / 2.0
 	
-	start_stack_vis()
+	#start_stack_vis()
 	
 
 func handle_stack_visibility() -> void:
@@ -84,45 +83,61 @@ func handle_stack_visibility() -> void:
 	start_stack_vis()
 
 func start_stack_vis() -> void:
+	
 	if !is_stacking:
 		return
-	
+
 	if !sprite_vis_timer <= 0.0:
 		return
 	
-	sprite_vis_timer = 1.0
-	
 	var group_nodes = get_tree().get_nodes_in_group("sprites")
-	print(group_nodes)
 	
 	if can_enable_vis and current_visible_stack < MAX_STACK:
-		print("made it here?")
 		for i in range(group_nodes.size()):
 			var node = group_nodes[i]
-			print_debug(node)
-			
-			match node.name:
-				"S_1":
-					if node.visible == false:
-						print_debug("match works?")
-						print_debug("visible? ", node.visible)
-						node.visible = true
-						print_debug("visible? ", node.visible)
-						can_enable_vis = false
-						#node.visible = true
-						#current_visible_stack += 1 
-					
-				1:
-					if node.visible == false:
-						node.visible = true
-						current_visible_stack += 1 
-				
-			
-	#
-	#if !sprite_one.visible:
-		#sprite_one.visible = true 
-	#elif sprite_one.visible and sprite_two.visible == false and is_stacking:
-		#sprite_two.visible = true
+			try_t(node, current_visible_stack)
+
 	
+			
+func try_t(node: Node2D, cur_index: int) -> void:
+	if !can_enable_vis:
+		return
 	
-	#print("Vis timer in function: ", sprite_vis_timer)
+	match node.name:
+		"S_1":
+			if node.visible == false and cur_index == 0 and can_enable_vis:
+				node.visible = true
+				can_enable_vis = false
+				current_visible_stack += 1
+				sprite_vis_timer = 0.08
+		"S_2":
+			if node.visible == false and cur_index == 1 and can_enable_vis:
+				node.visible = true
+				can_enable_vis = false
+				current_visible_stack += 1
+				sprite_vis_timer = 0.08
+		"S_3":
+			if node.visible == false and cur_index == 2 and can_enable_vis:
+				node.visible = true
+				can_enable_vis = false
+				current_visible_stack += 1
+				sprite_vis_timer = 0.08
+		"S_4":
+			if node.visible == false and cur_index == 3 and can_enable_vis:
+				node.visible = true
+				can_enable_vis = false
+				current_visible_stack += 1
+				sprite_vis_timer = 0.08
+		"S_5":
+			if node.visible == false and cur_index == 4 and can_enable_vis:
+				node.visible = true
+				can_enable_vis = false
+				is_stacking = false
+				sprite_vis_timer = 0.0
+				handle_col_shape()
+
+func handle_col_shape() -> void:
+	start_col_shape()
+
+func start_col_shape() -> void:
+	hitbox.set_deferred("disabled", false)
