@@ -116,6 +116,7 @@ var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE:
 const LIGHT_RAY = preload("res://scenes/projectiles_scene/light_ray_skill.tscn")
 
 @onready var nearest_enemy: Node2D
+const MAX_TARGET := 1
 
 #endregion
 
@@ -332,6 +333,9 @@ func apply_gravity(delta) -> void:
 
 #region Attack Related 
 func start_block() -> void:
+	if is_skilling:
+		return
+	
 	if is_transforming:
 		return
 	
@@ -381,6 +385,9 @@ func end_blocking() -> void:
 	force_move_animation()
 
 func start_attack() -> void:
+	if is_skilling:
+		return
+	
 	if is_transforming:
 		return
 	
@@ -766,7 +773,6 @@ func handle_skills() -> void:
 		return
 	
 	if Input.is_action_just_pressed("skill_one"):
-		print("Am I skilling?")
 		start_skills()
 
 func start_skills() -> void:
@@ -779,22 +785,40 @@ func handle_light_ray() -> void:
 	find_nearest_enemy()
 
 func find_nearest_enemy() -> void:
-	print("Made it to find nearest enemy?")
 	var targets = get_tree().get_nodes_in_group("Enemy_target")
 
+	
+	var closest_target: Node2D = null
+	var closest_distance := INF
+	var acquired_target := 0
+	
 	for target in targets:
-		if target.global_position.distance_to(global_position) <= light_ray_range:
-			print(target.name)
-			nearest_enemy = target
-			print_debug(nearest_enemy)
 		
-			start_light_ray_skill(nearest_enemy, LIGHT_RAY)
-		else:
-			print("No target")
+		if target == null or not is_instance_valid(target):
+			continue
+		
+		if target is not Node2D:
+			continue
+		
+		var distance := global_position.distance_to(target.global_position)
+		
+		if distance > light_ray_range:
+			continue
+		
+		if distance < closest_distance:
+			closest_distance = distance
+			closest_target = target
+		
+		if closest_target == null:
+			print("No enemy in range")
+			return
+		
+	
+	nearest_enemy = closest_target
+	start_light_ray_skill(nearest_enemy, LIGHT_RAY)
 
 func start_light_ray_skill(n: Node2D, scene: PackedScene):
-	print_debug("Made it to start skill?")
-	
+
 	is_skilling = true
 	
 	var light_ray_scene = scene.instantiate()
@@ -802,19 +826,18 @@ func start_light_ray_skill(n: Node2D, scene: PackedScene):
 	
 	light_ray_scene.global_position = Vector2(n.global_position.x, 
 									n.global_position.y + -y_offset) 
+	light_ray_scene.scale = Vector2(2.5, 2.5)
+	
 	var parent_node = get_tree().current_scene.get_node("Projectiles")
 	parent_node.add_child(light_ray_scene)
-	
-	#check if light ray can reach ground
-	
-	print("Instantiated Light ray pos: ", light_ray_scene.global_position)
-	print("Target Node position: ", n.global_position)
-	
-	can_skill = false
 
+	can_skill = false
+	light_ray_scene.light_ray_done.connect(end_skill)
 
 func end_skill() -> void:
-	pass
+	is_skilling = false
+	can_skill = true
+	print("Skill ended")
 
 #endregion
 

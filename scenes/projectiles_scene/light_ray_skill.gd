@@ -16,7 +16,7 @@ var anim_start_timer := 2.0
 var sprite_vis_timer: float
 var is_stacking := false
 var can_enable_vis := false
-var h_offset: float = 64 * 5
+var h_offset: float = 64.0 * 4.0
 var des_position: Vector2
 const MAX_STACK := 5
 var current_visible_stack := 0
@@ -45,6 +45,7 @@ signal light_ray_done
 #region Processes
 func _ready() -> void:
 	
+		
 	if player_target == null:
 		push_error("Player does not Exist")
 	
@@ -52,6 +53,7 @@ func _ready() -> void:
 	get_tree().call_group("sprites", "hide")
 	
 	can_enable_vis = true
+	
 	
 	handle_chaining()
 	start_reveal_sequence()
@@ -171,6 +173,7 @@ func start_alpha_fade_in_sequence() -> void:
 		await fade_in_to_trans_sprite(item, 0.3)
 	
 	light_ray_done.emit()
+	queue_free()
 
 func fade_in_to_trans_sprite(sprite: AnimatedSprite2D, delay: float) -> void:
 

@@ -39,13 +39,13 @@ position = Vector2(203, -1)
 [node name="CamRig" parent="." unique_id=819861590 instance=ExtResource("4_xbjce")]
 
 [node name="TestEnemy" parent="." unique_id=2023477993 instance=ExtResource("4_5aiuk")]
-position = Vector2(-90, -1)
-
-[node name="TestEnemy2" parent="." unique_id=829613963 instance=ExtResource("4_5aiuk")]
-position = Vector2(267, -1)
+position = Vector2(-109, -36)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1696112634]
 
 [node name="TestUi" parent="CanvasLayer" unique_id=1506350038 instance=ExtResource("4_anwaf")]
 
 [node name="Projectiles" type="Node2D" parent="." unique_id=1609918380]
+
+[node name="TestEnemy2" parent="." unique_id=865536425 instance=ExtResource("4_5aiuk")]
+position = Vector2(282, -36)

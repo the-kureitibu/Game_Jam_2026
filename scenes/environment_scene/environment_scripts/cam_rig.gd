@@ -12,7 +12,7 @@ extends Node2D
 
 func _ready() -> void:
 	
-	is_boss_room = true
+	#is_boss_room = true
 	
 	cam.make_current()
 	
