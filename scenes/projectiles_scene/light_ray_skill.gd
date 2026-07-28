@@ -21,6 +21,14 @@ var des_position: Vector2
 const MAX_STACK := 5
 var current_visible_stack := 0
 
+@onready var ray_sprites: Array[AnimatedSprite2D] = [
+	sprite_one,
+	sprite_two,
+	sprite_three,
+	sprite_four,
+	sprite_five
+]
+
 #endregion
 
 #region References 
@@ -31,8 +39,10 @@ var current_visible_stack := 0
 
 #region Signals
 
+signal light_ray_done
 #endregion
 
+#region Processes
 func _ready() -> void:
 	
 	if player_target == null:
@@ -44,17 +54,15 @@ func _ready() -> void:
 	can_enable_vis = true
 	
 	handle_chaining()
+	start_reveal_sequence()
 
-func _process(delta: float) -> void:
-	
-	handle_stack_visibility()
+func _physics_process(delta: float) -> void:
+	adjust_col_frame(sprite_one)
 
-	if sprite_vis_timer > 0.0:
-		sprite_vis_timer -= delta
-		if sprite_vis_timer <= 0.0:
-			can_enable_vis = true
-	
-	
+#endregion
+
+#region Chaining Logic
+
 func handle_chaining() -> void:
 	stack_chaining(sprite_two, "ray_attk", 0, 1)
 	stack_chaining(sprite_three, "ray_attk", 0, 2)
@@ -77,67 +85,103 @@ func stack_chaining(sprite: AnimatedSprite2D, anim_name: StringName, frame_num: 
 	
 	#start_stack_vis()
 	
-
-func handle_stack_visibility() -> void:
-	is_stacking = true
-	start_stack_vis()
-
-func start_stack_vis() -> void:
+func start_reveal_sequence() -> void:
+	for sprite in ray_sprites:
+		await reveal_sprite(sprite, 0.06)
 	
-	if !is_stacking:
+	start_animation()
+
+
+func reveal_sprite(sprite: AnimatedSprite2D, delay: float) -> void:
+	sprite.visible = true
+	sprite.modulate.a = 0.0
+	
+	var tween := create_tween()
+	tween.tween_interval(delay)
+	tween.tween_property(sprite, "modulate:a", 1.0, 0.06)
+	await tween.finished
+
+#endregion
+
+#region Animation handling Logic 
+func start_animation() -> void:
+	anim_helper(sprite_one, "ray_attk")
+	anim_helper(sprite_two, "ray_attk")
+	anim_helper(sprite_three, "ray_attk")
+	anim_helper(sprite_four, "ray_attk")
+	anim_helper(sprite_five, "ray_attk")
+
+func anim_helper(anim_node: AnimatedSprite2D, anim_name: StringName) -> void:
+	if !anim_node.sprite_frames.has_animation(anim_name):
 		return
+	
+	anim_node.play(anim_name)
+	handle_col_shape()
 
-	if !sprite_vis_timer <= 0.0:
-		return
-	
-	var group_nodes = get_tree().get_nodes_in_group("sprites")
-	
-	if can_enable_vis and current_visible_stack < MAX_STACK:
-		for i in range(group_nodes.size()):
-			var node = group_nodes[i]
-			try_t(node, current_visible_stack)
+#endregion
 
-	
-			
-func try_t(node: Node2D, cur_index: int) -> void:
-	if !can_enable_vis:
-		return
-	
-	match node.name:
-		"S_1":
-			if node.visible == false and cur_index == 0 and can_enable_vis:
-				node.visible = true
-				can_enable_vis = false
-				current_visible_stack += 1
-				sprite_vis_timer = 0.08
-		"S_2":
-			if node.visible == false and cur_index == 1 and can_enable_vis:
-				node.visible = true
-				can_enable_vis = false
-				current_visible_stack += 1
-				sprite_vis_timer = 0.08
-		"S_3":
-			if node.visible == false and cur_index == 2 and can_enable_vis:
-				node.visible = true
-				can_enable_vis = false
-				current_visible_stack += 1
-				sprite_vis_timer = 0.08
-		"S_4":
-			if node.visible == false and cur_index == 3 and can_enable_vis:
-				node.visible = true
-				can_enable_vis = false
-				current_visible_stack += 1
-				sprite_vis_timer = 0.08
-		"S_5":
-			if node.visible == false and cur_index == 4 and can_enable_vis:
-				node.visible = true
-				can_enable_vis = false
-				is_stacking = false
-				sprite_vis_timer = 0.0
-				handle_col_shape()
-
+#region Collision Shape Logic
 func handle_col_shape() -> void:
 	start_col_shape()
 
 func start_col_shape() -> void:
 	hitbox.set_deferred("disabled", false)
+
+func adjust_col_frame(sprite: AnimatedSprite2D) -> void:
+	if hitbox.disabled:
+		return
+	
+	if !sprite.is_playing():
+		return
+	
+	match sprite.frame:
+		
+		0:
+			handle_col_shape_expand(hitbox, 10.0)
+		1:
+			handle_col_shape_expand(hitbox, 14.0)
+		2:
+			handle_col_shape_expand(hitbox, 16.0)
+		3:
+			handle_col_shape_expand(hitbox, 26.0)
+		4:
+			handle_col_shape_expand(hitbox, 18.0)
+		5:
+			handle_col_shape_expand(hitbox, 14.0)
+		6:
+			handle_col_shape_expand(hitbox, 10.0)
+		7:
+			hitbox.set_deferred("disabled", true)
+			
+func handle_col_shape_expand(col: CollisionShape2D, x_size: float) -> void:
+	
+	col.shape.size.x = x_size
+	
+#endregion
+
+#region End Sequence Logic
+
+func start_alpha_fade_in_sequence() -> void:
+	
+	var backwards_array = ray_sprites.duplicate()
+
+	backwards_array.reverse()
+
+	for item in backwards_array:
+		await fade_in_to_trans_sprite(item, 0.3)
+	
+	light_ray_done.emit()
+
+func fade_in_to_trans_sprite(sprite: AnimatedSprite2D, delay: float) -> void:
+
+	var tween := create_tween()
+	tween.tween_property(sprite, "modulate:a", 0.0, delay)
+	await tween.finished
+	
+#endregion
+
+#region Local Signals
+func _on_s_1_animation_finished() -> void:
+	start_alpha_fade_in_sequence()
+	
+#endregion
