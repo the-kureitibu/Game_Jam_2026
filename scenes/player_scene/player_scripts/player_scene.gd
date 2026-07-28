@@ -17,7 +17,7 @@ var is_rage_cooling: bool = false
 var is_transforming: bool = false
 var input_available: bool = true
 var is_invulnerable: bool = false
-var can_skill: bool = true
+
 
 const MAX_HEALTH: int = 200
 const MAX_DMG: int = 50
@@ -92,7 +92,6 @@ var facing_dir := 1
 
 #region Attack Base Vars
 var is_attacking := false
-var is_skilling := false
 var combo_seq := 0
 const MAX_COMBO = 2
 var combo_input_queued: bool
@@ -116,6 +115,15 @@ var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE:
 @onready var hurt_box_col: CollisionShape2D = $HurtBox/HurtBoxCollision
 const LIGHT_RAY = preload("res://scenes/projectiles_scene/light_ray_skill.tscn")
 
+@onready var nearest_enemy: Node2D
+
+#endregion
+
+#region Skill Base Vars
+
+var light_ray_range: float = 180.0
+var can_skill: bool = true
+var is_skilling := false
 
 #endregion
 
@@ -193,9 +201,8 @@ func _draw() -> void:
 	var sp_height = sp_texture.get_height() / -2.0
 	var y_offset = sp_height
 	
-	print(sp_height)
 	var draw_pos: Vector2 = Vector2(0, y_offset)
-	draw_circle(draw_pos, 35.0, Color.RED, false, 2.0)
+	draw_circle(draw_pos, 180.0, Color.RED, false, 2.0)
 
 #endregion
 
@@ -227,7 +234,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	queue_redraw()
+	#queue_redraw()
+	handle_skills()
 	#p_sprite.play("idle") - animation never runs without this
 	reduce_timer(delta)
 	apply_gravity(delta)
@@ -758,19 +766,52 @@ func handle_skills() -> void:
 		return
 	
 	if Input.is_action_just_pressed("skill_one"):
-		print("click action 1")
+		print("Am I skilling?")
+		start_skills()
 
 func start_skills() -> void:
-	if !is_skilling:
+	if is_skilling:
 		return
+
+	handle_light_ray()
+	
+func handle_light_ray() -> void:
+	find_nearest_enemy()
+
+func find_nearest_enemy() -> void:
+	print("Made it to find nearest enemy?")
+	var targets = get_tree().get_nodes_in_group("Enemy_target")
+
+	for target in targets:
+		if target.global_position.distance_to(global_position) <= light_ray_range:
+			print(target.name)
+			nearest_enemy = target
+			print_debug(nearest_enemy)
+		
+			start_light_ray_skill(nearest_enemy, LIGHT_RAY)
+		else:
+			print("No target")
+
+func start_light_ray_skill(n: Node2D, scene: PackedScene):
+	print_debug("Made it to start skill?")
 	
 	is_skilling = true
 	
+	var light_ray_scene = scene.instantiate()
+	var y_offset = light_ray_scene.h_offset
+	
+	light_ray_scene.global_position = Vector2(n.global_position.x, 
+									n.global_position.y + -y_offset) 
+	var parent_node = get_tree().current_scene.get_node("Projectiles")
+	parent_node.add_child(light_ray_scene)
+	
+	#check if light ray can reach ground
+	
+	print("Instantiated Light ray pos: ", light_ray_scene.global_position)
+	print("Target Node position: ", n.global_position)
+	
 	can_skill = false
 
-func handle_light_ray() -> void:
-	var light_ray_scene = LIGHT_RAY.instantiate()
-	light_ray_scene.position = Vector2.ZERO
 
 func end_skill() -> void:
 	pass
