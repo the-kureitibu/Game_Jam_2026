@@ -44,8 +44,8 @@ signal light_ray_done
 
 #region Processes
 func _ready() -> void:
+	z_index = 10
 	
-		
 	if player_target == null:
 		push_error("Player does not Exist")
 	
