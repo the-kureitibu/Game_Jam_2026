@@ -1,9 +1,5 @@
 extends PlayerBase
 
-#Optional bug - player can block in air
-#make hitbox disabled on not attacking state
-#fix hitbox on cross attack
-
 #region Signals
 signal stat_changed(s_name: String, s_value: int)
 signal r_timer_changed(r_name: String, r_value: float)
@@ -14,7 +10,6 @@ signal tmp_send_ini_state(st_name: String, st_value: int)
 
 #region Base Vars
 
-#add duration and cooling for rage 
 var is_hurt: bool = false
 var is_busy: bool = false
 var is_raging: bool = false
@@ -22,9 +17,12 @@ var is_rage_cooling: bool = false
 var is_transforming: bool = false
 var input_available: bool = true
 var is_invulnerable: bool = false
+var can_skill: bool = true
+
 const MAX_HEALTH: int = 200
 const MAX_DMG: int = 50
-const MAX_RAGE: int = 100.0
+const MAX_RAGE: float = 100.0
+
 @export var stats: PlayerStats
 @export var p_health: int:
 	set(value):
@@ -54,6 +52,7 @@ const MAX_RAGE: int = 100.0
 @export var p_sprite: AnimatedSprite2D
 @export var s_sprite: AnimatedSprite2D
 @export var anim_player: AnimationPlayer
+
 @export var p_move_state: PlayerBase.PlayerMoveState = PlayerMoveState.IDLE:
 	set(value):
 		if p_move_state == value:
@@ -68,8 +67,6 @@ const MAX_RAGE: int = 100.0
 		
 		p_form_state = value
 		tmp_send_ini_state.emit("p_form", p_form_state)
-
-
 
 var p_direction: float = 0.0
 var can_dash: bool
@@ -95,6 +92,7 @@ var facing_dir := 1
 
 #region Attack Base Vars
 var is_attacking := false
+var is_skilling := false
 var combo_seq := 0
 const MAX_COMBO = 2
 var combo_input_queued: bool
@@ -116,6 +114,8 @@ var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE:
 @export var p_proj_sprite: Area2D
 @onready var player_two: Node2D
 @onready var hurt_box_col: CollisionShape2D = $HurtBox/HurtBoxCollision
+const LIGHT_RAY = preload("res://scenes/projectiles_scene/light_ray_skill.tscn")
+
 
 #endregion
 
@@ -186,7 +186,20 @@ func grab_cam_limits() -> Dictionary:
 #endregion
 
 
+#region Test and Draw 
 
+func _draw() -> void:
+	var sp_texture = p_sprite.sprite_frames.get_frame_texture("idle", 0)
+	var sp_height = sp_texture.get_height() / -2.0
+	var y_offset = sp_height
+	
+	print(sp_height)
+	var draw_pos: Vector2 = Vector2(0, y_offset)
+	draw_circle(draw_pos, 35.0, Color.RED, false, 2.0)
+
+#endregion
+
+#region Processes 
 
 func _ready() -> void:
 
@@ -214,19 +227,22 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-
+	queue_redraw()
 	#p_sprite.play("idle") - animation never runs without this
 	reduce_timer(delta)
 	apply_gravity(delta)
 	player_move()
 	start_attack()
 	handle_hitbox_pos()
+	handle_skills()
 	start_block()
 	player_jump()
 	handle_air_state()
 	update_move_state()
 	update_rage_timer(delta)
 	update_rage_cooling(delta)
+
+#endregion
 
 #region Initial Stats declaration
 func dec_ini_stats() -> void:
@@ -574,6 +590,7 @@ func force_move_animation() -> void:
 #endregion 
 
 #region HurtBox
+
 func handle_hurt(damage: int) -> void:
 	if is_invulnerable:
 		return
@@ -613,9 +630,8 @@ func end_hurt() -> void:
 	p_action_state = PlayerActionState.NONE
 	force_move_animation()
 
-
-
 #endregion
+
 #region HitBox
 func hit() -> int:
 	return p_damage
@@ -734,6 +750,34 @@ func change_action_state(new_state) -> void:
 	print(p_action_state)
 
 #endregion 
+
+#region Skill related Logic 
+
+func handle_skills() -> void:
+	if !can_skill:
+		return
+	
+	if Input.is_action_just_pressed("skill_one"):
+		print("click action 1")
+
+func start_skills() -> void:
+	if !is_skilling:
+		return
+	
+	is_skilling = true
+	
+	can_skill = false
+
+func handle_light_ray() -> void:
+	var light_ray_scene = LIGHT_RAY.instantiate()
+	light_ray_scene.position = Vector2.ZERO
+
+func end_skill() -> void:
+	pass
+
+#endregion
+
+
 
 #region Timers func
 

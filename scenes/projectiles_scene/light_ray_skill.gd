@@ -16,7 +16,7 @@ var anim_start_timer := 2.0
 var sprite_vis_timer: float
 var is_stacking := false
 var can_enable_vis := false
-var h_offset: float
+var h_offset: float = 64 * 5
 var des_position: Vector2
 const MAX_STACK := 5
 var current_visible_stack := 0
