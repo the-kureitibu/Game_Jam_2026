@@ -114,8 +114,12 @@ var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE:
 @onready var player_two: Node2D
 @onready var hurt_box_col: CollisionShape2D = $HurtBox/HurtBoxCollision
 const LIGHT_RAY = preload("res://scenes/projectiles_scene/light_ray_skill.tscn")
+const MAGIC_BALL = preload("res://scenes/projectiles_scene/magic_ball_skill.tscn")
 
 @onready var nearest_enemy: Node2D
+@onready var magic_ball_marker: Marker2D = $MagicBallMarker
+@onready var m_ball_marker_base_x = abs(magic_ball_marker.position.x)
+
 const MAX_TARGET := 1
 
 #endregion
@@ -236,14 +240,14 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	#queue_redraw()
-	handle_skills()
 	#p_sprite.play("idle") - animation never runs without this
 	reduce_timer(delta)
 	apply_gravity(delta)
 	player_move()
 	start_attack()
 	handle_hitbox_pos()
-	handle_skills()
+	handle_skill_one()
+	handle_skill_two()
 	start_block()
 	player_jump()
 	handle_air_state()
@@ -295,6 +299,8 @@ func player_move() -> void:
 			p_sprite.flip_h = p_direction < 0
 		else:
 			s_sprite.flip_h = p_direction < 0
+			
+		magic_ball_marker.position.x = m_ball_marker_base_x * p_direction
 	
 	move_and_slide()
 
@@ -768,14 +774,18 @@ func change_action_state(new_state) -> void:
 
 #region Skill related Logic 
 
-func handle_skills() -> void:
+#region Light Ray Skill
+func handle_skill_one() -> void:
 	if !can_skill:
 		return
 	
+	if is_skilling:
+		return
+	
 	if Input.is_action_just_pressed("skill_one"):
-		start_skills()
+		start_skill_one()
 
-func start_skills() -> void:
+func start_skill_one() -> void:
 	if is_skilling:
 		return
 
@@ -818,6 +828,9 @@ func find_nearest_enemy() -> void:
 	start_light_ray_skill(nearest_enemy, LIGHT_RAY)
 
 func start_light_ray_skill(n: Node2D, scene: PackedScene):
+	if n == null:
+		print("No target acquired")
+		return
 
 	is_skilling = true
 	
@@ -833,6 +846,65 @@ func start_light_ray_skill(n: Node2D, scene: PackedScene):
 
 	can_skill = false
 	light_ray_scene.light_ray_done.connect(end_skill)
+#endregion
+
+#region Magic Ball Skill
+
+func handle_skill_two() -> void:
+	if !can_skill:
+		return
+	
+	if is_skilling:
+		return
+	
+	if Input.is_action_just_pressed("skill_two"):
+		start_skill_two()
+
+func start_skill_two() -> void:
+	if is_skilling:
+		return
+	
+	launch_magic_ball(MAGIC_BALL, facing_dir, magic_ball_marker.global_position)
+
+#func update_magic_marker_pos() -> void:
+	#var des_dir = global_position.distance_to(magic_ball_marker.global_position)
+	#
+	#
+	#
+	#if facing_dir == -1:
+		#
+		#
+		#magic_ball_marker.position = des_dir
+		#print("Magic ball new pos: ", magic_ball_marker.position)
+		#print("Magic ball desired pos: ", des_dir)
+	#else:
+		#var des_dir = magic_ball_marker.position * -1.0
+		#magic_ball_marker.position = des_dir
+		#print("Magic ball new pos: ", magic_ball_marker.position)
+		#print("Magic ball desired pos: ", des_dir)
+
+func launch_magic_ball(scene: PackedScene, dir: int, pos: Vector2) -> void:
+	is_skilling = true
+	can_skill = false
+	
+	var signed_dir: Vector2 = Vector2.ZERO
+	if dir == -1:
+		signed_dir = Vector2.LEFT
+	else: 
+		signed_dir = Vector2.RIGHT
+	
+	var magic_ball_scene = scene.instantiate()
+	magic_ball_scene.dir = signed_dir
+	magic_ball_scene.global_position = pos
+	magic_ball_scene.marker_target = magic_ball_marker
+	
+	var parent_node = get_tree().current_scene.get_node("Projectiles")
+	parent_node.add_child(magic_ball_scene)
+	
+	magic_ball_scene.launched_done.connect(end_skill)
+	
+	
+#endregion
 
 func end_skill() -> void:
 	is_skilling = false

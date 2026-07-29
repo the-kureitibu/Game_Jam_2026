@@ -233,7 +233,7 @@ func handle_boss_logic(delta: float) -> void:
 		m_sprite.flip_h = signed_direction == 1
 		
 		c_marker.position.x = c_marker_base_x * boss_facing_dir
-		bf_marker.position.x =bf_marker_base_x * boss_facing_dir
+		bf_marker.position.x = bf_marker_base_x * boss_facing_dir
 
 	if is_skilling:
 		velocity.x = 0
