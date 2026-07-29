@@ -286,7 +286,8 @@ func player_move() -> void:
 	if is_on_floor():
 		is_on_air = false
 
-	if is_attacking:
+	if is_attacking and p_form_state == PlayerFormState.HUMAN_FORM:
+		print("worked on human?")
 		return
 
 	p_direction = Input.get_axis("left", "right")
@@ -736,7 +737,6 @@ func reset_hit_box_pos() -> void:
 
 func change_move_state(new_state: PlayerMoveState) -> void:
 	if is_attacking and p_form_state == PlayerFormState.HUMAN_FORM:
-		print("Did this worked")
 		return
 
 	if p_move_state == new_state:
@@ -910,8 +910,6 @@ func start_web_attack() -> void:
 	if is_attacking:
 		return
 
-	
-	is_busy = true
 	is_attacking = true
 
 	handle_web_rays()
