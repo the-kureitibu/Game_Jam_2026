@@ -115,6 +115,7 @@ var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE:
 @onready var hurt_box_col: CollisionShape2D = $HurtBox/HurtBoxCollision
 const LIGHT_RAY = preload("res://scenes/projectiles_scene/light_ray_skill.tscn")
 const MAGIC_BALL = preload("res://scenes/projectiles_scene/magic_ball_skill.tscn")
+const WEB_ATTACK = preload("res://scenes/projectiles_scene/web_attack.tscn")
 
 @onready var nearest_enemy: Node2D
 @onready var magic_ball_marker: Marker2D = $MagicBallMarker
@@ -126,6 +127,7 @@ const MAX_TARGET := 1
 
 #region Skill Base Vars
 
+var web_ray_range: float = 250.0
 var light_ray_range: float = 180.0
 var can_skill: bool = true
 var is_skilling := false
@@ -236,6 +238,7 @@ func _ready() -> void:
 		mace_hit_box.set_deferred("disabled", true)
 	
 	attk_c_timer = stats.attk_combo_timer
+
 
 
 func _physics_process(delta: float) -> void:
@@ -415,7 +418,10 @@ func start_attack() -> void:
 			combo_input_queued = true
 		return
 		
-	start_attk_combo(1)
+	if p_form_state == PlayerFormState.HUMAN_FORM:
+		start_attk_combo(1)
+	else: 
+		handle_web_attack()
 
 func open_attack_window() -> void:
 	attack_window_open = true
@@ -729,7 +735,8 @@ func reset_hit_box_pos() -> void:
 #region Player States 
 
 func change_move_state(new_state: PlayerMoveState) -> void:
-	if is_attacking:
+	if is_attacking and p_form_state == PlayerFormState.HUMAN_FORM:
+		print("Did this worked")
 		return
 
 	if p_move_state == new_state:
@@ -891,10 +898,94 @@ func launch_magic_ball(scene: PackedScene, dir: int, pos: Vector2) -> void:
 	
 #endregion
 
+#region Web Attack 
+func handle_web_attack() -> void:
+	if !p_form_state == PlayerFormState.SPIDER_FORM:
+		return
+
+	start_web_attack()
+
+func start_web_attack() -> void:
+	
+	if is_attacking:
+		return
+
+	
+	is_busy = true
+	is_attacking = true
+
+	handle_web_rays()
+	
+func handle_web_rays() -> void:
+	find_nearest_target()
+
+func find_nearest_target() -> void:
+	var targets = get_tree().get_nodes_in_group("Enemy_target")
+
+	var closest_target: Node2D = null
+	var closest_distance := INF
+	var acquired_target := 0
+	
+	for target in targets:
+		
+		if target == null or not is_instance_valid(target):
+			continue
+		
+		if target is not Node2D:
+			continue
+		
+		var distance := global_position.distance_to(target.global_position)
+		
+		if distance > web_ray_range:
+			continue
+		
+		if distance < closest_distance:
+			closest_distance = distance
+			closest_target = target
+		
+		if closest_target == null:
+			print("No enemy in range")
+			return
+		
+	
+	nearest_enemy = closest_target
+	start_web_ray(nearest_enemy, WEB_ATTACK)
+
+func start_web_ray(n: Node2D, scene: PackedScene):
+	if n == null:
+		print("No target acquired") #play anim here
+		return
+
+	var web_ray_scene = scene.instantiate()
+	var y_offset = web_ray_scene.h_offset
+	
+	web_ray_scene.global_position = Vector2(n.global_position.x, 
+									n.global_position.y) 
+	web_ray_scene.scale = Vector2(2.5, 1.0)
+	
+	var parent_node = get_tree().current_scene.get_node("Projectiles")
+	parent_node.add_child(web_ray_scene)
+
+	can_skill = false
+	web_ray_scene.web_attack_done.connect(end_web_combo)
+
+#endregion
+
+func end_web_combo() -> void:
+	
+	is_busy = false
+	is_attacking = false
+	attk_c_timer = 0.0
+	p_action_state = PlayerActionState.NONE
+	
+	force_move_animation()
+
+
 func end_skill() -> void:
 	is_skilling = false
 	can_skill = true
 	print("Skill ended")
+
 
 #endregion
 
