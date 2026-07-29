@@ -839,7 +839,7 @@ func start_light_ray_skill(n: Node2D, scene: PackedScene):
 	
 	light_ray_scene.global_position = Vector2(n.global_position.x, 
 									n.global_position.y + -y_offset) 
-	light_ray_scene.scale = Vector2(2.5, 2.5)
+	light_ray_scene.scale = Vector2(2.5, 1.0)
 	
 	var parent_node = get_tree().current_scene.get_node("Projectiles")
 	parent_node.add_child(light_ray_scene)
@@ -866,22 +866,6 @@ func start_skill_two() -> void:
 	
 	launch_magic_ball(MAGIC_BALL, facing_dir, magic_ball_marker.global_position)
 
-#func update_magic_marker_pos() -> void:
-	#var des_dir = global_position.distance_to(magic_ball_marker.global_position)
-	#
-	#
-	#
-	#if facing_dir == -1:
-		#
-		#
-		#magic_ball_marker.position = des_dir
-		#print("Magic ball new pos: ", magic_ball_marker.position)
-		#print("Magic ball desired pos: ", des_dir)
-	#else:
-		#var des_dir = magic_ball_marker.position * -1.0
-		#magic_ball_marker.position = des_dir
-		#print("Magic ball new pos: ", magic_ball_marker.position)
-		#print("Magic ball desired pos: ", des_dir)
 
 func launch_magic_ball(scene: PackedScene, dir: int, pos: Vector2) -> void:
 	is_skilling = true
@@ -897,6 +881,7 @@ func launch_magic_ball(scene: PackedScene, dir: int, pos: Vector2) -> void:
 	magic_ball_scene.dir = signed_dir
 	magic_ball_scene.global_position = pos
 	magic_ball_scene.marker_target = magic_ball_marker
+	magic_ball_scene.scale = Vector2(2.5, 2.5)
 	
 	var parent_node = get_tree().current_scene.get_node("Projectiles")
 	parent_node.add_child(magic_ball_scene)

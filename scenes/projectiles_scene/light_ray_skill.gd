@@ -58,18 +58,18 @@ func _ready() -> void:
 	handle_chaining()
 	start_reveal_sequence()
 
-func _physics_process(delta: float) -> void:
-	adjust_col_frame(sprite_one)
+#func _physics_process(delta: float) -> void:
+	#adjust_col_frame(sprite_one)
 
 #endregion
 
 #region Chaining Logic
 
 func handle_chaining() -> void:
-	stack_chaining(sprite_two, "ray_attk", 0, 1)
-	stack_chaining(sprite_three, "ray_attk", 0, 2)
-	stack_chaining(sprite_four, "ray_attk", 0, 3)
-	stack_chaining(sprite_five, "ray_attk", 0, 4)
+	stack_chaining(sprite_two, "spawn_web", 0, 1)
+	stack_chaining(sprite_three, "spawn_web", 0, 2)
+	stack_chaining(sprite_four, "spawn_web", 0, 3)
+	stack_chaining(sprite_five, "spawn_web", 0, 4)
 
 func stack_chaining(sprite: AnimatedSprite2D, anim_name: StringName, frame_num: int, multiplier: int) -> void:
 	

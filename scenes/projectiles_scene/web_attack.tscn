@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://uuj3gtoup3kt"]
+
+[ext_resource type="Script" uid="uid://d4lnfwnytdtg6" path="res://scenes/projectiles_scene/web_attack.gd" id="1_fpllg"]
+[ext_resource type="Texture2D" uid="uid://nipyn2bh241d" path="res://assets/sprites/projectiles/skills.png" id="2_q4j5e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6n66r"]
+atlas = ExtResource("2_q4j5e")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_exkrl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6n66r")
+}],
+"loop": true,
+"name": &"spawn_web",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_251um"]
+size = Vector2(32, 64)
+
+[node name="WebAttack" type="Area2D" unique_id=830659441]
+script = ExtResource("1_fpllg")
+
+[node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=879461333 groups=["sprites"]]
+sprite_frames = SubResource("SpriteFrames_exkrl")
+animation = &"spawn_web"
+
+[node name="MainSprite2" type="AnimatedSprite2D" parent="." unique_id=1716624464 groups=["sprites"]]
+sprite_frames = SubResource("SpriteFrames_exkrl")
+animation = &"spawn_web"
+
+[node name="MainSprite3" type="AnimatedSprite2D" parent="." unique_id=633769693 groups=["sprites"]]
+sprite_frames = SubResource("SpriteFrames_exkrl")
+animation = &"spawn_web"
+
+[node name="MainSprite4" type="AnimatedSprite2D" parent="." unique_id=350553856 groups=["sprites"]]
+sprite_frames = SubResource("SpriteFrames_exkrl")
+animation = &"spawn_web"
+
+[node name="MainSprite5" type="AnimatedSprite2D" parent="." unique_id=203339029 groups=["sprites"]]
+sprite_frames = SubResource("SpriteFrames_exkrl")
+animation = &"spawn_web"
+
+[node name="HitBox" type="CollisionShape2D" parent="." unique_id=32465962]
+shape = SubResource("RectangleShape2D_251um")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1266791028]

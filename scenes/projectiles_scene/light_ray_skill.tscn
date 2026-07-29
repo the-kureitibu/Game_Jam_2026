@@ -102,7 +102,4 @@ animation = &"ray_attk"
 position = Vector2(0, 32)
 shape = SubResource("RectangleShape2D_jspbb")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=2042940572]
-offset = Vector2(0, 120)
-
 [connection signal="animation_finished" from="S_1" to="." method="_on_s_1_animation_finished"]
