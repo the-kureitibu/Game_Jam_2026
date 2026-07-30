@@ -128,6 +128,15 @@ const WEB_ATTACK = preload("res://scenes/projectiles_scene/web_attack.tscn")
 
 const MAX_TARGET := 1
 
+const MAX_WEB_COUNT := 3
+
+var current_web_index := 0
+var current_web_count := 0
+var web_marker_queue: Array[Node] = []
+var is_web_sequence_active := false
+const WEB_DELAY := 0.08
+
+
 #endregion
 
 #region Skill Base Vars
@@ -176,6 +185,9 @@ const UP_DIRECTION: Vector2 = Vector2.UP
 
 @export var s1_timer: float = 0.0
 @export var s2_timer: float = 0.0
+@onready var web_attk_timer: float = 0.0
+
+
 
 #endregion 
 
@@ -221,8 +233,7 @@ func _draw() -> void:
 #region Processes 
 
 func _ready() -> void:
-	print(web_markers_parent.global_position)
-	print(web_marker1.global_position)
+
 
 	SignalHub.blocking_anim_done.connect(end_blocking_state)
 
@@ -251,6 +262,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	#queue_redraw()
 	#p_sprite.play("idle") - animation never runs without this
+	
+
+
 	reduce_timer(delta)
 	apply_gravity(delta)
 	player_move()
@@ -258,6 +272,7 @@ func _physics_process(delta: float) -> void:
 	handle_hitbox_pos()
 	handle_skill_one()
 	handle_skill_two()
+	update_web_sequence()
 	start_block()
 	player_jump()
 	handle_air_state()
@@ -294,7 +309,6 @@ func player_move() -> void:
 		is_on_air = false
 
 	if is_attacking and p_form_state == PlayerFormState.HUMAN_FORM:
-		print("worked on human?")
 		return
 
 	p_direction = Input.get_axis("left", "right")
@@ -615,11 +629,20 @@ func end_combo() -> void:
 func force_move_animation() -> void:
 	
 	if !is_on_floor():
-		play_anim(p_sprite, "jump")
+		if p_form_state == PlayerFormState.HUMAN_FORM:
+			play_anim(p_sprite, "jump")
+		else:
+			play_anim(s_sprite, "walk")
 	elif abs(velocity.x) > 0.1:
-		play_anim(p_sprite, "walk")
+		if p_form_state == PlayerFormState.HUMAN_FORM:
+			play_anim(p_sprite, "walk")
+		else:
+			play_anim(s_sprite, "walk")
 	else:
-		play_anim(p_sprite, "idle")
+		if p_form_state == PlayerFormState.HUMAN_FORM:
+			play_anim(p_sprite, "idle")
+		else:
+			play_anim(s_sprite, "walk")
 
 		
 #endregion 
@@ -914,10 +937,8 @@ func handle_web_attack() -> void:
 
 func start_web_attack() -> void:
 	
-	if is_attacking:
+	if p_form_state == PlayerFormState.HUMAN_FORM:
 		return
-
-	is_attacking = true
 
 	handle_web_rays()
 	
@@ -952,47 +973,79 @@ func find_nearest_target() -> void:
 			print("No enemy in range")
 			return
 		
-	
 	nearest_enemy = closest_target
 	move_markers_to_target(nearest_enemy)
-	#start_web_ray(nearest_enemy, WEB_ATTACK)
 
 func move_markers_to_target(n: Node2D) -> void:
-	print(web_markers_parent.global_position)
-	
+
 	var marker_parent = web_markers_parent
 	marker_parent.global_position = n.global_position
-	
-	print(marker_parent.global_position)
 
+	spawn_web_ray_to_marker(marker_parent)
 	
-	start_web_ray(marker_parent, WEB_ATTACK)
+func spawn_web_ray_to_marker(n: Node2D) -> void:
+	web_marker_queue = n.get_children()
+	current_web_index = 0
+	current_web_count = 0
+	is_web_sequence_active = true
+	web_attk_timer = 0.0
 	
+
+func update_web_sequence() -> void:
+	if not is_web_sequence_active:
+		return
+	
+	if web_attk_timer > 0.0:
+		return
+	
+	if current_web_index >= web_marker_queue.size():
+		return
+	
+	var marker := web_marker_queue[current_web_index] as Node2D
+	current_web_index += 1
+	
+	start_web_ray(marker, WEB_ATTACK)
+	
+	if current_web_index < web_marker_queue.size():
+		web_attk_timer = WEB_DELAY
+		
+
 func start_web_ray(n: Node2D, scene: PackedScene):
+
+	is_attacking = true
+	
 	if n == null:
 		print("No target acquired") #play anim here
 		return
 
 	var web_ray_scene = scene.instantiate()
-	var y_offset = web_ray_scene.h_offset
+	#var y_offset = web_ray_scene.h_offset
 	
 	web_ray_scene.global_position = Vector2(n.global_position.x, 
 									n.global_position.y) 
-	web_ray_scene.scale = Vector2(2.5, 1.0)
+	web_ray_scene.scale = Vector2(1.0, 1.0)
+	web_ray_scene.global_rotation = n.global_rotation
+	web_ray_scene.z_index = 10 - current_web_count
+	web_ray_scene.get_node("MainSprite").z_index = 9 - current_web_count
+	web_ray_scene.get_node("MainSprite2").z_index = 8 - current_web_count
+
 	
 	var parent_node = get_tree().current_scene.get_node("Projectiles")
 	parent_node.add_child(web_ray_scene)
+	print(web_ray_scene.sprite_one.z_index, " Current first sprite z index")
+	print(web_ray_scene.sprite_two.z_index, " Current second sprite z index")
 
-	can_skill = false
-	web_ray_scene.web_attack_done.connect(end_web_combo)
+	web_attk_timer = 0.08
+	current_web_count += 1
+	
+	if current_web_count >= MAX_WEB_COUNT:
+		web_ray_scene.web_attack_done.connect(end_web_combo)
 
 #endregion
 
 func end_web_combo() -> void:
 	
-	is_busy = false
 	is_attacking = false
-	attk_c_timer = 0.0
 	p_action_state = PlayerActionState.NONE
 	
 	force_move_animation()
@@ -1018,6 +1071,8 @@ func reduce_timer(delta: float) -> void:
 	invulnerable_timer = set_timer(invulnerable_timer, delta)
 	if invulnerable_timer <= 0.0:
 		is_invulnerable = false
+	
+	web_attk_timer = set_timer(web_attk_timer, delta)
 	
 	d_timer = set_timer(d_timer, delta)
 	

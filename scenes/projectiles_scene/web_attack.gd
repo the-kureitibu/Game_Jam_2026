@@ -43,15 +43,18 @@ signal web_attack_done
 
 #region Processes
 func _ready() -> void:
-	z_index = 10
+
 	sprite_one.rotation = deg_to_rad(90.0)
+	
 
 	
 	if player_target == null:
 		push_error("Player does not Exist")
 	
 	hitbox.set_deferred("disabled", true)
-	get_tree().call_group("sprites", "hide")
+	var ray_sprites = get_tree().get_nodes_in_group("sprites")
+	for sprite in ray_sprites:
+			sprite.hide()
 	
 	can_enable_vis = true
 	
