@@ -45,16 +45,16 @@ signal web_attack_done
 func _ready() -> void:
 
 	sprite_one.rotation = deg_to_rad(90.0)
-	
 
 	
 	if player_target == null:
 		push_error("Player does not Exist")
 	
 	hitbox.set_deferred("disabled", true)
-	var ray_sprites = get_tree().get_nodes_in_group("sprites")
-	for sprite in ray_sprites:
-			sprite.hide()
+
+	for sprite in web_sprites:
+		sprite.hide()
+		sprite.modulate.a = 0.0
 	
 	can_enable_vis = true
 	
@@ -114,7 +114,7 @@ func reveal_sprite(sprite: AnimatedSprite2D, delay: float) -> void:
 	
 	if current_stacks >= MAX_STACK:
 		hitbox.set_deferred("disabled", false)
-		delay_timer = 1.5
+		delay_timer = 0.06
 		
 
 #endregion
@@ -129,7 +129,7 @@ func start_alpha_fade_in_sequence() -> void:
 	backwards_array.reverse()
 
 	for item in backwards_array:
-		await fade_in_to_trans_sprite(item, 0.3)
+		await fade_in_to_trans_sprite(item, 0.1)
 	
 	web_attack_done.emit()
 	queue_free()

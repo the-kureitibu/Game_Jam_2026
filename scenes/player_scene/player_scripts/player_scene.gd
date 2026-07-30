@@ -1026,9 +1026,6 @@ func start_web_ray(n: Node2D, scene: PackedScene):
 	web_ray_scene.scale = Vector2(1.0, 1.0)
 	web_ray_scene.global_rotation = n.global_rotation
 	web_ray_scene.z_index = 10 - current_web_count
-	web_ray_scene.get_node("MainSprite").z_index = 9 - current_web_count
-	web_ray_scene.get_node("MainSprite2").z_index = 8 - current_web_count
-
 	
 	var parent_node = get_tree().current_scene.get_node("Projectiles")
 	parent_node.add_child(web_ray_scene)

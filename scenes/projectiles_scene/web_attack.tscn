@@ -46,3 +46,5 @@ animation = &"spawn_web"
 
 [node name="HitBox" type="CollisionShape2D" parent="." unique_id=32465962]
 shape = SubResource("RectangleShape2D_251um")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2025768545]
