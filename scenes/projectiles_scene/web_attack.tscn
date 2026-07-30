@@ -1,17 +1,17 @@
 [gd_scene format=3 uid="uid://uuj3gtoup3kt"]
 
 [ext_resource type="Script" uid="uid://d4lnfwnytdtg6" path="res://scenes/projectiles_scene/web_attack.gd" id="1_fpllg"]
-[ext_resource type="Texture2D" uid="uid://nipyn2bh241d" path="res://assets/sprites/projectiles/skills.png" id="2_q4j5e"]
+[ext_resource type="Texture2D" uid="uid://br1p7if38hf1m" path="res://assets/sprites/projectiles/skills2.png" id="2_fpllg"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6n66r"]
-atlas = ExtResource("2_q4j5e")
+[sub_resource type="AtlasTexture" id="AtlasTexture_q4j5e"]
+atlas = ExtResource("2_fpllg")
 region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_exkrl"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_6n66r")
+"texture": SubResource("AtlasTexture_q4j5e")
 }],
 "loop": true,
 "name": &"spawn_web",
@@ -46,5 +46,3 @@ animation = &"spawn_web"
 
 [node name="HitBox" type="CollisionShape2D" parent="." unique_id=32465962]
 shape = SubResource("RectangleShape2D_251um")
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1266791028]

@@ -84,9 +84,9 @@ func stack_chaining(sprite: AnimatedSprite2D, anim_name: StringName, frame_num: 
 	var target_pos: Vector2 = Vector2.ZERO
 	
 	y_offset  = float(sprite_h)
-	print(y_offset)
+
 	target_pos = Vector2(0, -y_offset) * multiplier
-	print(y_offset)
+
 	sprite.position = target_pos
 	sprite.rotation = deg_to_rad(90.0)
 

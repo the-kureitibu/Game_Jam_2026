@@ -121,6 +121,11 @@ const WEB_ATTACK = preload("res://scenes/projectiles_scene/web_attack.tscn")
 @onready var magic_ball_marker: Marker2D = $MagicBallMarker
 @onready var m_ball_marker_base_x = abs(magic_ball_marker.position.x)
 
+@onready var web_markers_parent: Node2D = $WebAttackParent
+@onready var web_marker1: Marker2D = $WebAttackParent/WebMarker1
+@onready var web_marker2: Marker2D = $WebAttackParent/WebMarker2
+@onready var web_marker3: Marker2D = $WebAttackParent/WebMarker3
+
 const MAX_TARGET := 1
 
 #endregion
@@ -216,6 +221,8 @@ func _draw() -> void:
 #region Processes 
 
 func _ready() -> void:
+	print(web_markers_parent.global_position)
+	print(web_marker1.global_position)
 
 	SignalHub.blocking_anim_done.connect(end_blocking_state)
 
@@ -947,8 +954,20 @@ func find_nearest_target() -> void:
 		
 	
 	nearest_enemy = closest_target
-	start_web_ray(nearest_enemy, WEB_ATTACK)
+	move_markers_to_target(nearest_enemy)
+	#start_web_ray(nearest_enemy, WEB_ATTACK)
 
+func move_markers_to_target(n: Node2D) -> void:
+	print(web_markers_parent.global_position)
+	
+	var marker_parent = web_markers_parent
+	marker_parent.global_position = n.global_position
+	
+	print(marker_parent.global_position)
+
+	
+	start_web_ray(marker_parent, WEB_ATTACK)
+	
 func start_web_ray(n: Node2D, scene: PackedScene):
 	if n == null:
 		print("No target acquired") #play anim here

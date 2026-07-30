@@ -891,6 +891,14 @@ libraries/ = SubResource("AnimationLibrary_epsfl")
 [node name="MagicBallMarker" type="Marker2D" parent="." unique_id=2044724167]
 position = Vector2(51, -45)
 
+[node name="WebAttackParent" type="Node2D" parent="." unique_id=891147778]
+
+[node name="WebMarker1" type="Marker2D" parent="WebAttackParent" unique_id=1957893970]
+
+[node name="WebMarker2" type="Marker2D" parent="WebAttackParent" unique_id=1005877535]
+
+[node name="WebMarker3" type="Marker2D" parent="WebAttackParent" unique_id=2137516308]
+
 [connection signal="animation_finished" from="SpiderSprite" to="." method="_on_spider_sprite_animation_finished"]
 [connection signal="animation_finished" from="MainSprite" to="." method="_on_main_sprite_animation_finished"]
 [connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]
