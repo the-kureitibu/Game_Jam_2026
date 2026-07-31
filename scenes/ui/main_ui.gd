@@ -37,8 +37,6 @@ func _ready() -> void:
 	dec_ini_p_stats()
 	con_to_signals()
 	
-
-
 func con_to_signals() -> void: 
 	if player == null:
 		push_error("Player is null")

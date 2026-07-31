@@ -70,8 +70,6 @@ const MAX_RAGE: float = 100.0
 		p_form_state = value
 		tmp_send_ini_state.emit("p_form", p_form_state)
 
-var p_direction: float = 0.0
-var can_dash: bool
 
 #endregion 
 
@@ -89,6 +87,14 @@ var can_dash: bool
 @onready var jump_velocity := -jump_gravity * time_to_apex
 var is_on_air := false
 var facing_dir := 1
+
+var p_direction: float = 0.0
+var can_dash: bool = true
+var dash_timer := 0.0
+var dash_duration := 0.2
+var dash_speed := 400.0
+var is_dashing := false
+
 
 #endregion
 
@@ -167,7 +173,6 @@ const UP_DIRECTION: Vector2 = Vector2.UP
 
 @export var invulnerable_timer: float = 0.0
 @export var attk_c_timer: float = 0.0
-@export var d_timer: float = 0.0
 @export var r_timer: float = 0.0:
 	set(value):
 		if r_timer == value:
@@ -264,12 +269,19 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	#queue_redraw()
 	#p_sprite.play("idle") - animation never runs without this
-	
 
+	if is_dashing:
+		dash_timer = set_timer(dash_timer, delta)
+		if dash_timer <= 0.0:
+			is_dashing = false
+			can_dash = true
 
 	reduce_timer(delta)
 	apply_gravity(delta)
+	handle_dashing()
 	player_move()
+	move_and_slide()
+
 	start_attack()
 	handle_hitbox_pos()
 	handle_skill_one()
@@ -281,6 +293,8 @@ func _physics_process(delta: float) -> void:
 	update_move_state()
 	update_rage_timer(delta)
 	update_rage_cooling(delta)
+	
+	
 
 #endregion
 
@@ -298,11 +312,16 @@ func dec_ini_stats() -> void:
 #region Base movement
 
 func player_move() -> void:
+	if is_dashing:
+		velocity.x = facing_dir * dash_speed
+		return
+
 	if is_transforming:
 		return
 	
 	if is_busy:
 		return
+	
 	
 	if is_blocking:
 		return
@@ -316,6 +335,7 @@ func player_move() -> void:
 	p_direction = Input.get_axis("left", "right")
 
 	velocity.x = p_direction * p_speed
+
 	if velocity.x > 0:
 		facing_dir = 1
 	elif velocity.x < 0:
@@ -329,7 +349,6 @@ func player_move() -> void:
 			
 		magic_ball_marker.position.x = m_ball_marker_base_x * p_direction
 	
-	move_and_slide()
 
 
 func player_jump() -> void:
@@ -359,7 +378,29 @@ func apply_gravity(delta) -> void:
 		
 	velocity.y += current_gravity * delta
 
+func handle_dashing() -> void:
+	if is_busy:
+		return
+	
+	if !can_dash:
+		return
 
+	if !Input.is_action_just_pressed("dash"):
+		return
+	start_dashing()
+
+func start_dashing() -> void:
+
+	if !can_dash:
+		return
+	
+	if is_dashing:
+		return
+
+	can_dash = false
+	is_dashing = true
+	dash_timer = dash_duration
+	velocity.x = facing_dir * dash_speed
 
 #endregion
 
@@ -444,7 +485,7 @@ func start_attack() -> void:
 		
 	if p_form_state == PlayerFormState.HUMAN_FORM:
 		start_attk_combo(1)
-	else: 
+	else:
 		handle_web_attack()
 
 func open_attack_window() -> void:
@@ -608,7 +649,7 @@ func update_rage_cooling(delta) -> void:
 		to_human_transform()
 
 func end_rage() -> void:
-	if !is_raging: 
+	if !is_raging:
 		return
 	
 	is_rage_cooling = false
@@ -876,8 +917,8 @@ func start_light_ray_skill(n: Node2D, scene: PackedScene):
 	var light_ray_scene = scene.instantiate()
 	var y_offset = light_ray_scene.h_offset
 	
-	light_ray_scene.global_position = Vector2(n.global_position.x, 
-									n.global_position.y + -y_offset) 
+	light_ray_scene.global_position = Vector2(n.global_position.x,
+		n.global_position.y + -y_offset)
 	light_ray_scene.scale = Vector2(2.5, 1.0)
 	
 	var parent_node = get_tree().current_scene.get_node("Projectiles")
@@ -913,7 +954,7 @@ func launch_magic_ball(scene: PackedScene, dir: int, pos: Vector2) -> void:
 	var signed_dir: Vector2 = Vector2.ZERO
 	if dir == -1:
 		signed_dir = Vector2.LEFT
-	else: 
+	else:
 		signed_dir = Vector2.RIGHT
 	
 	var magic_ball_scene = scene.instantiate()
@@ -1023,8 +1064,8 @@ func start_web_ray(n: Node2D, scene: PackedScene):
 	var web_ray_scene = scene.instantiate()
 	#var y_offset = web_ray_scene.h_offset
 	
-	web_ray_scene.global_position = Vector2(n.global_position.x, 
-									n.global_position.y) 
+	web_ray_scene.global_position = Vector2(n.global_position.x,
+		n.global_position.y)
 	web_ray_scene.scale = Vector2(1.0, 1.0)
 	web_ray_scene.global_rotation = n.global_rotation
 	web_ray_scene.z_index = 10 - current_web_count
@@ -1072,8 +1113,6 @@ func reduce_timer(delta: float) -> void:
 		is_invulnerable = false
 	
 	web_attk_timer = set_timer(web_attk_timer, delta)
-	
-	d_timer = set_timer(d_timer, delta)
 	
 
 	s1_timer = set_timer(s1_timer, delta)
