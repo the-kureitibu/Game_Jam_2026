@@ -2,9 +2,14 @@
 
 [ext_resource type="Script" uid="uid://bwv10yffg2ivy" path="res://scenes/ui/main_ui.gd" id="1_46cp5"]
 [ext_resource type="Texture2D" uid="uid://dr17g6n85lhut" path="res://assets/sprites/ui/hp2.png" id="1_hcnxy"]
+[ext_resource type="Script" uid="uid://rc0p3ykjd7ra" path="res://resources/player/player_stats.gd" id="2_b1beo"]
 [ext_resource type="Texture2D" uid="uid://chs8mkx8ou28n" path="res://assets/sprites/ui/hp1.png" id="2_l8t6x"]
 [ext_resource type="Texture2D" uid="uid://6ir1j62q4ug5" path="res://assets/sprites/ui/progress_bar.png" id="3_travt"]
 [ext_resource type="Texture2D" uid="uid://bk8t40ceaccyf" path="res://assets/sprites/ui/progress_fill.png" id="4_46cp5"]
+
+[sub_resource type="Resource" id="Resource_b1beo"]
+script = ExtResource("2_b1beo")
+metadata/_custom_type_script = "uid://rc0p3ykjd7ra"
 
 [node name="MainUI" type="Control" unique_id=1108660128]
 layout_mode = 3
@@ -14,9 +19,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_46cp5")
+p_stats = SubResource("Resource_b1beo")
 
 [node name="MainMargin" type="MarginContainer" parent="." unique_id=1253107719]
-custom_minimum_size = Vector2(250, 0)
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -34,13 +40,14 @@ nine_patch_stretch = true
 stretch_margin_left = 10
 stretch_margin_top = 40
 stretch_margin_right = 10
-texture_over = ExtResource("1_hcnxy")
+texture_under = ExtResource("1_hcnxy")
 texture_progress = ExtResource("2_l8t6x")
 
 [node name="RageBar" type="TextureProgressBar" parent="MainMargin/BaseVBox" unique_id=43224714]
+z_index = 1
 layout_mode = 2
 max_value = 0.0
 nine_patch_stretch = true
 stretch_margin_top = 30
-texture_over = ExtResource("3_travt")
+texture_under = ExtResource("3_travt")
 texture_progress = ExtResource("4_46cp5")

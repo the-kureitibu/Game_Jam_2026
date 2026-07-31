@@ -3,10 +3,17 @@ extends Control
 
 #region Base Vars
 
-var player_heath: int 
-var player_damage: int
-var rage_amount: int
+var p_health: float 
+var p_damage: int
+var p_rage_amount: float
 var rage_per_attk: int
+
+#endregion
+
+#region References
+
+@export var p_stats: PlayerStats
+
 
 #endregion
 
@@ -25,9 +32,11 @@ var rage_per_attk: int
 
 
 func _ready() -> void:
-	con_to_signals()
+	
+	update_ini_min_max()
 	dec_ini_p_stats()
-	update_ini_hud_labels()
+	con_to_signals()
+	
 
 
 func con_to_signals() -> void: 
@@ -45,20 +54,31 @@ func update_p_stats(s_name: String, s_value: Variant) -> void:
 	
 	match s_name:
 		"p_health":
-			health_bar.min_value = s_value
+			print("health in UI working?")
+			health_bar.value = s_value
 		"r_amount":
-			rage_bar.min_value = s_value
+			rage_bar.value = s_value
+			print("rage in UI working?")
 
 func dec_ini_p_stats() -> void:
+
 	if player == null:
-		push_error("Player does not Exist")
+		push_error("Player is null")
 		return
-			
-	player_heath = player.p_health
-	rage_amount = player.r_amount
-	rage_per_attk = player.r_per_attk
 
-func update_ini_hud_labels() -> void:
+	p_health = player.p_health
+	p_rage_amount = player.r_amount
+	
+	health_bar.value = p_health
+	print(health_bar.value)
+	rage_bar.value = p_rage_amount
+	print(rage_bar.value)
+	
 
-	health_bar.max_value = player_heath
-	rage_bar.max_value = rage_amount
+func update_ini_min_max() -> void:
+
+	health_bar.min_value = 0.0
+	health_bar.max_value = p_stats.player_health
+	
+	rage_bar.min_value = 0.0
+	rage_bar.max_value = p_stats.rage_amount

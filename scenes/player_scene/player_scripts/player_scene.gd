@@ -26,12 +26,14 @@ const MAX_RAGE: float = 100.0
 @export var stats: PlayerStats
 @export var p_health: int:
 	set(value):
-		if p_health == value:
+		var new_health = value
+		
+		if p_health == new_health:
 			return
 		
-		p_health = clamp(value, 0, MAX_HEALTH)
+		p_health = clamp(new_health, 0, MAX_HEALTH)
 		
-		stat_changed.emit("p_health", value)
+		stat_changed.emit("p_health", new_health)
 		
 @export var p_speed: float
 @export var p_damage: int:
