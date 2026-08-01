@@ -775,6 +775,35 @@ tracks/1/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MainSprite:modulate:a")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_5kvy6"]
+resource_name = "dashing"
+length = 0.3
+step = 0.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainSprite:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0033333302, 0.07, 0.14, 0.23, 0.28),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [1.0, 0.8, 0.4, 0.6, 1.0]
+}
 
 [sub_resource type="Animation" id="Animation_l2g17"]
 resource_name = "rage_transform"
@@ -835,6 +864,7 @@ tracks/1/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_epsfl"]
 _data = {
 &"RESET": SubResource("Animation_10rhv"),
+&"dashing": SubResource("Animation_5kvy6"),
 &"rage_transform": SubResource("Animation_l2g17"),
 &"to_human_transform": SubResource("Animation_epsfl")
 }

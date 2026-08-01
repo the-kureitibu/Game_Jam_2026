@@ -57,6 +57,18 @@ func play_anim(anim_node: Node, anim_name: StringName, force_restart := false) -
 		
 		anim_node.play(anim_name)
 		return
+	
+	if anim_node is AnimationPlayer:
+
+		if not anim_node.has_animation(anim_name):
+			push_error("Missing animation: %s" % anim_name)
+			return
+		
+		if not force_restart and anim_node.current_animation == anim_name and anim_node.is_playing():
+			return
+		
+		anim_node.play(anim_name)
+		return
 
 func death() -> void:
 	pass

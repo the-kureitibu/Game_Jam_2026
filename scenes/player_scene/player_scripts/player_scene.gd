@@ -92,7 +92,7 @@ var p_direction: float = 0.0
 var can_dash: bool = true
 var dash_timer := 0.0
 var dash_duration := 0.2
-var dash_speed := 400.0
+var dash_speed := 600.0
 var is_dashing := false
 
 
@@ -280,6 +280,7 @@ func _physics_process(delta: float) -> void:
 	apply_gravity(delta)
 	handle_dashing()
 	player_move()
+	is_air_dashing()
 	move_and_slide()
 
 	start_attack()
@@ -317,13 +318,16 @@ func player_move() -> void:
 		return
 
 	if is_transforming:
+		velocity.x = 0.0
 		return
 	
 	if is_busy:
+		velocity.x = 0.0
 		return
 	
 	
 	if is_blocking:
+		velocity.x = 0.0
 		return
 	
 	if is_on_floor():
@@ -352,6 +356,9 @@ func player_move() -> void:
 
 
 func player_jump() -> void:
+	if is_hurt:
+		return
+	
 	if !is_on_floor():
 		return
 	
@@ -363,8 +370,14 @@ func handle_air_state() -> void:
 		is_on_air = true
 
 func apply_gravity(delta) -> void:
+
 	if is_on_floor():
 		return
+	
+	if is_air_dashing():
+		velocity.y = 0.0
+		return
+	
 	
 	var current_gravity: float
 	
@@ -399,8 +412,17 @@ func start_dashing() -> void:
 
 	can_dash = false
 	is_dashing = true
+
 	dash_timer = dash_duration
 	velocity.x = facing_dir * dash_speed
+	
+	if p_form_state == PlayerFormState.HUMAN_FORM:
+		play_anim(anim_player, "dashing", true)
+	else:
+		play_anim(anim_player, "dashing", true)
+	
+func is_air_dashing() -> bool:
+	return is_dashing and !is_on_floor()
 
 #endregion
 
@@ -411,9 +433,11 @@ func start_block() -> void:
 		return
 	
 	if is_transforming:
+		velocity.x = 0.0
 		return
 	
 	if is_busy:
+		velocity.x = 0.0
 		return
 	
 	if is_attacking and !is_on_floor():
@@ -670,18 +694,22 @@ func end_combo() -> void:
 	reset_hit_box_pos()
 
 func force_move_animation() -> void:
+
+	var input_dir := Input.get_axis("left", "right")
+
 	
 	if !is_on_floor():
 		if p_form_state == PlayerFormState.HUMAN_FORM:
 			play_anim(p_sprite, "jump")
 		else:
 			play_anim(s_sprite, "walk")
-	elif abs(velocity.x) > 0.1:
+	elif  abs(input_dir) > 0.1:
 		if p_form_state == PlayerFormState.HUMAN_FORM:
 			play_anim(p_sprite, "walk")
 		else:
 			play_anim(s_sprite, "walk")
 	else:
+		p_move_state = PlayerMoveState.IDLE
 		if p_form_state == PlayerFormState.HUMAN_FORM:
 			play_anim(p_sprite, "idle")
 		else:
@@ -834,6 +862,20 @@ func match_spider_human_movement(f_state: PlayerBase.PlayerMoveState, sprt: Anim
 	
 
 func update_move_state() -> void:
+	if is_hurt:
+		return
+	
+	if is_transforming:
+		return
+	
+	if is_blocking:
+		return
+	
+	if is_air_dashing():
+		return
+	
+	if is_busy and p_action_state != PlayerActionState.NONE:
+		return
 	
 	if !is_on_floor():
 		change_move_state(PlayerMoveState.JUMP)
