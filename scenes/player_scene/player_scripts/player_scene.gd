@@ -274,6 +274,7 @@ func _physics_process(delta: float) -> void:
 		dash_timer = set_timer(dash_timer, delta)
 		if dash_timer <= 0.0:
 			is_dashing = false
+			hurt_box_col.set_deferred("disabled", false)
 			can_dash = true
 
 	reduce_timer(delta)
@@ -412,6 +413,7 @@ func start_dashing() -> void:
 
 	can_dash = false
 	is_dashing = true
+	hurt_box_col.set_deferred("disabled", true)
 
 	dash_timer = dash_duration
 	velocity.x = facing_dir * dash_speed
@@ -1164,6 +1166,9 @@ func reduce_timer(delta: float) -> void:
 
 #region Area2d Related 
 func _on_hurt_box_area_entered(area: Area2D) -> void:
+	if is_dashing:
+		return
+	
 	var from_enemy = area.get_tree().get_first_node_in_group("Enemy_target")
 	
 	if from_enemy:

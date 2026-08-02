@@ -24,6 +24,14 @@ enum EnemyMovementState {
 	SKILLING
 }
 
+enum MobStates {
+	IDLE, 
+	ATTACKING,
+	HURT,
+	DEATH
+}
+
+
 #endregion
 
 func set_timer(timer: float, delta: float) -> float:
