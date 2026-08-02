@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://boe26ixwk1fjm"]
 
 [ext_resource type="PackedScene" uid="uid://b4lmfhnv3qefn" path="res://scenes/environment_scene/floor_scene.tscn" id="1_kdr5h"]
+[ext_resource type="PackedScene" uid="uid://q3hyw88nqvk6" path="res://scenes/enemy_scene/mob_one.tscn" id="2_leimf"]
 
 [node name="TestRoom1" type="Node2D" unique_id=929027271]
 
@@ -18,5 +19,20 @@ position = Vector2(-48, 5)
 [node name="FloorScene4" parent="Floors" unique_id=2036410049 instance=ExtResource("1_kdr5h")]
 position = Vector2(96, 5)
 
+[node name="FloorScene8" parent="Floors" unique_id=1932316980 instance=ExtResource("1_kdr5h")]
+position = Vector2(145, 5)
+
+[node name="FloorScene9" parent="Floors" unique_id=802830746 instance=ExtResource("1_kdr5h")]
+position = Vector2(193, 5)
+
 [node name="FloorScene5" parent="Floors" unique_id=202838921 instance=ExtResource("1_kdr5h")]
 position = Vector2(-96, 5)
+
+[node name="FloorScene6" parent="Floors" unique_id=1286063252 instance=ExtResource("1_kdr5h")]
+position = Vector2(-145, 5)
+
+[node name="FloorScene7" parent="Floors" unique_id=241085936 instance=ExtResource("1_kdr5h")]
+position = Vector2(-193, 5)
+
+[node name="MobOne" parent="." unique_id=1148431991 instance=ExtResource("2_leimf")]
+position = Vector2(0, -12)

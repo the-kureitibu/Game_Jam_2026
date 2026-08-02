@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://68ons1oqd1ta" path="res://scenes/enemy_scene/enemy_scripts/mob_one.gd" id="1_r0rlw"]
 [ext_resource type="Texture2D" uid="uid://cy3jb7nl615sj" path="res://assets/sprites/enemies/snail/Hit (38x24).png" id="2_ioiux"]
 [ext_resource type="Texture2D" uid="uid://b6wm5ma7u4oyi" path="res://assets/sprites/enemies/snail/Walk (38x24).png" id="3_cd5s4"]
-[ext_resource type="PackedScene" uid="uid://boe26ixwk1fjm" path="res://scenes/test_rooms/test_room1.tscn" id="4_ioiux"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jc8b3"]
 atlas = ExtResource("2_ioiux")
@@ -144,30 +143,29 @@ sprite_frames = SubResource("SpriteFrames_oidxb")
 animation = &"walk"
 
 [node name="MainCol" type="CollisionShape2D" parent="." unique_id=479767348]
-position = Vector2(1, 4)
+position = Vector2(0, 4)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_nrq6o")
 
 [node name="HitBox" type="Area2D" parent="." unique_id=2138483376]
+collision_layer = 512
+collision_mask = 128
 
 [node name="HitBoxCol" type="CollisionShape2D" parent="HitBox" unique_id=1540954085]
-position = Vector2(1.9999999, 3)
-rotation = -1.5897467
+position = Vector2(2, 3.0000002)
+rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_6p4r1")
 debug_color = Color(0.6390699, 0.5211794, 0.1952098, 0.41960785)
 
 [node name="HurtBox" type="Area2D" parent="." unique_id=832948043]
+collision_layer = 64
+collision_mask = 256
 
 [node name="HurtBoxCol" type="CollisionShape2D" parent="HurtBox" unique_id=1349892074]
-position = Vector2(2, 3.0000002)
-rotation = 1.5750122
+position = Vector2(2, 2)
+rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_cmp17")
 debug_color = Color(0.825912, 0.3250735, 0.59496766, 0.41960785)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2788190]
-
-[node name="TestRoom1" parent="." unique_id=929027271 instance=ExtResource("4_ioiux")]
-position = Vector2(-120, 12)
-
-[node name="TestRoom2" parent="." unique_id=1180309438 instance=ExtResource("4_ioiux")]
-position = Vector2(120, 12)
+zoom = Vector2(2, 2)

@@ -14,8 +14,8 @@ var damage: float = 0.0
 
 var to_left_max_dis: float = abs(-100.0)
 var to_right_max_dis: float = abs(100.0)
-var to_left_target: Vector2 = Vector2(-100.0, 0)
-var to_right_target: Vector2 = Vector2(100.0, 0)
+var to_left_target: Vector2 = Vector2(-10.0, 0)
+var to_right_target: Vector2 = Vector2(10.0, 0)
 var to_right: bool = false
 var to_left: bool = false
 var left_dir: Vector2 = Vector2.LEFT
@@ -55,23 +55,75 @@ var facing_dir: int = 1
 
 #region Tests 
 func _draw() -> void:
+	
 	draw_circle(Vector2(0, 0), 200.0, Color.RED, false, -2.0)
+
 #endregion
 
 #region Processes
 
 func _ready() -> void:
 	starting_pos = global_position
+	print(self)
 	
 	print(starting_pos.distance_to(to_right_target), " starting pos distance to")
 	print(to_right_max_dis, " To right max dis")
 	
 func _physics_process(delta: float) -> void:
+	
+	try()
+	try2()
+	print(position.x)
 
+	#if global_position.x >= to_right_max_dis:
+		#velocity.x = -1 * speed
+	#else:
+		#velocity.x = facing_dir * speed
 
-	velocity.x = 1.0 * speed 
-		
 	move_and_slide()
+
+func try() -> void:
+	if reached_right:
+		return
+	
+	velocity.x = facing_dir * speed 
+	
+	if global_position.x >= to_right_max_dis:
+		reached_right = true
+	
+	
+
+#var is_traveling: bool = false
+
+
+func try2() -> void:
+	if !reached_right:
+		return
+		
+	var target := 0.0
+	
+	if abs(velocity.x) > 0.1:
+		target = to_right_max_dis
+	elif velocity.x < 0.0:
+		target = to_left_max_dis
+	
+	print("Target ", target)
+	var signed_dis = global_position.x - target
+	var signed_dir = sign(signed_dis)
+	var abs_dis = abs(signed_dis)
+	print("Abs distance ", abs_dis)
+	print("Signed dir ", signed_dir)
+	
+	if signed_dir >= abs_dis:
+		reached_right = true
+		facing_dir = -1
+
+	elif global_position.x >= to_left_max_dis:
+		reached_left = true
+		facing_dir = 1
+	
+	velocity.x = facing_dir * speed 
+
 
 func handle_movement(delta) -> void:
 	if mob_one_state == MobStates.ATTACKING or mob_one_state == MobStates.HURT:
