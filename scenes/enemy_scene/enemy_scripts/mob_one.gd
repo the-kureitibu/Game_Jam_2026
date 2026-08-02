@@ -7,25 +7,13 @@ var health: float = 0.0
 var speed: float = 60.0
 var damage: float = 0.0
 
-
 #endregion
 
 #region Movement related
 
-var to_left_max_dis: float = abs(-100.0)
-var to_right_max_dis: float = abs(100.0)
-var to_left_target: Vector2 = Vector2(-10.0, 0)
-var to_right_target: Vector2 = Vector2(10.0, 0)
-var to_right: bool = false
-var to_left: bool = false
-var left_dir: Vector2 = Vector2.LEFT
-var right_dir: Vector2 = Vector2.RIGHT
-
-var reached_right: bool = false
-var reached_left: bool = false
-var is_traveling: bool = false
-var starting_pos: Vector2 = Vector2.ZERO
-var facing_dir: int = 1
+var patrol_distance: float = 100.0
+var starting_pos: Vector2
+var patrol_dir: int = 1
 
 @onready var jump_height := 100.0
 @onready var time_to_apex := 0.35
@@ -54,118 +42,31 @@ var facing_dir: int = 1
 #endregion 
 
 #region Tests 
+
 func _draw() -> void:
 	
 	draw_circle(Vector2(0, 0), 200.0, Color.RED, false, -2.0)
 
 #endregion
 
-#region Processes
 
 func _ready() -> void:
 	starting_pos = global_position
-	print(self)
-	
-	print(starting_pos.distance_to(to_right_target), " starting pos distance to")
-	print(to_right_max_dis, " To right max dis")
-	
+
+
 func _physics_process(delta: float) -> void:
-	
-	try()
-	try2()
-	print(position.x)
-
-	#if global_position.x >= to_right_max_dis:
-		#velocity.x = -1 * speed
-	#else:
-		#velocity.x = facing_dir * speed
-
+	patrol_idle()
 	move_and_slide()
 
-func try() -> void:
-	if reached_right:
-		return
-	
-	velocity.x = facing_dir * speed 
-	
-	if global_position.x >= to_right_max_dis:
-		reached_right = true
-	
-	
 
-#var is_traveling: bool = false
-
-
-func try2() -> void:
-	if !reached_right:
-		return
-		
-	var target := 0.0
+func patrol_idle() -> void:
+	var right_limit := starting_pos.x + patrol_distance
+	var left_limit := starting_pos.x - patrol_distance
 	
-	if abs(velocity.x) > 0.1:
-		target = to_right_max_dis
-	elif velocity.x < 0.0:
-		target = to_left_max_dis
+	if global_position.x >= right_limit:
+		patrol_dir = -1
 	
-	print("Target ", target)
-	var signed_dis = global_position.x - target
-	var signed_dir = sign(signed_dis)
-	var abs_dis = abs(signed_dis)
-	print("Abs distance ", abs_dis)
-	print("Signed dir ", signed_dir)
+	elif global_position.x <= left_limit:
+		patrol_dir = 1
 	
-	if signed_dir >= abs_dis:
-		reached_right = true
-		facing_dir = -1
-
-	elif global_position.x >= to_left_max_dis:
-		reached_left = true
-		facing_dir = 1
-	
-	velocity.x = facing_dir * speed 
-
-
-func handle_movement(delta) -> void:
-	if mob_one_state == MobStates.ATTACKING or mob_one_state == MobStates.HURT:
-		return 
-	
-	start_idle_moving(delta)
-
-func start_idle_moving(delta) -> void:
-	print("Got here?")
-	#if !mob_one_state == MobStates.IDLE:
-		#return 
-	#
-
-	
-	#if facing_dir == 1 and !reached_right:
-		#print('second line worked')
-		#if starting_pos.distance_to(to_right_target) < to_right_max_dis:
-			#print(starting_pos.distance_to(to_right_target), " starting pos distance to")
-			#print(to_right_max_dis, " To right max dis")
-			#
-			#var signed_dist = global_position.distance_to(to_right_target)
-			#var signed_dir = sign(signed_dist)
-			#
-	#
-			
-		
-
-func decide_side() -> void:
-	var signed_dist = global_position.distance_to(to_right_target)
-	var signed_dir = sign(signed_dist)
-	
-	if signed_dist <= to_right_max_dis:
-		is_traveling = false
-		reached_right = true
-		#sprite flip
-		facing_dir = signed_dir
-
-	elif signed_dist <= to_left_max_dis:
-		is_traveling = false
-		reached_left = true
-		#sprite flip
-		facing_dir = signed_dir
-
-#endregion
-	
+	velocity.x = patrol_dir * speed
