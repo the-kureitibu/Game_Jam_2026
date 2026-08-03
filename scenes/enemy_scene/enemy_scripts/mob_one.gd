@@ -68,15 +68,25 @@ func _physics_process(delta: float) -> void:
 	check_target_nearby()
 
 func check_target_nearby() -> void:
-	var dis_to_player = t_player.global_position.x - target_x
-	var signed_dis = sign(dis_to_player)
-	print(patrol_dir, " :patrol dir")
-	print(signed_dis, " :signed dis")
+	if t_player == null:
+		return
 	
-	if patrol_dir == signed_dis and dis_to_player < target_x:
-		print("This worked")
-
+	var dis_to_player = t_player.global_position.x - global_position.x
+	var dir_to_player = sign(dis_to_player)
+	var abs_dis = abs(dis_to_player)
 	
+	var detection_range := 100.0
+	
+	print("patrol_dir: ", patrol_dir)
+	print("dir_to_player: ", dir_to_player)
+	print("abs_dis: ", abs_dis)
+	
+	if abs_dis <= detection_range and dir_to_player == patrol_dir:
+		print("Player is nearby and in patrol direction")
+		is_target_nearby = true
+	else:
+		is_target_nearby = false
+		
 
 func patrol_idle() -> void:
 	var distance_to_target := target_x - global_position.x
