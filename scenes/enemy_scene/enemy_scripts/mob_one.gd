@@ -7,6 +7,8 @@ var health: float = 0.0
 var speed: float = 60.0
 var damage: float = 0.0
 var target_x: float = 0.0
+var is_attacking: bool = false
+
 
 #endregion
 
@@ -17,7 +19,7 @@ var starting_x: float
 var patrol_dir: int = 1
 var is_target_nearby: bool = false
 
-@onready var jump_height := 100.0
+@onready var jump_height := 70.0
 @onready var time_to_apex := 0.35
 @onready var time_to_fall := 0.25
 @onready var apex_threshold := 35.0
@@ -33,6 +35,10 @@ var is_target_nearby: bool = false
 
 @onready var t_player: Node2D = get_tree().get_first_node_in_group("Player_target")
 
+#endregion
+
+#region Timers
+@onready var attk_timer := 0.0
 #endregion
 
 #region States
@@ -60,12 +66,16 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	queue_redraw()
-	patrol_idle()
 	apply_gravity(delta)
-	jump_to_target()
+	
+	if is_target_nearby and mob_one_state == MobStates.IDLE:
+		jump_to_target()
+	else:
+		patrol_idle()
 	
 	move_and_slide()
 	check_target_nearby()
+	update_attack_state(delta)
 
 func check_target_nearby() -> void:
 	if t_player == null:
@@ -76,45 +86,48 @@ func check_target_nearby() -> void:
 	var abs_dis = abs(dis_to_player)
 	
 	var detection_range := 100.0
-	
-	print("patrol_dir: ", patrol_dir)
-	print("dir_to_player: ", dir_to_player)
-	print("abs_dis: ", abs_dis)
-	
+
 	if abs_dis <= detection_range and dir_to_player == patrol_dir:
-		print("Player is nearby and in patrol direction")
 		is_target_nearby = true
 	else:
 		is_target_nearby = false
 		
 
 func patrol_idle() -> void:
+
 	var distance_to_target := target_x - global_position.x
 	patrol_dir = sign(distance_to_target)
-	print("Patrol dir in idle: ", patrol_dir)
 	
 	if abs(distance_to_target) <= 2.0:
 		if target_x > starting_x:
 			target_x = starting_x - patrol_distance
 		else:
 			target_x = starting_x + patrol_distance
-	#
-	#if is_target_nearby():
-		#velocity.x = 0.0 * speed
-	#else:
+	
 	velocity.x = patrol_dir * speed
-	#
+	
 
 func jump_to_target() -> void:
+
 	if t_player == null:
 		return 
 	
-	var dis_to_player = t_player.global_position.x - global_position.x
-	var signed_dir = sign(dis_to_player)
-	var abs_dis = abs(dis_to_player)
+	if not is_on_floor():
+		return
+
+	if mob_one_state == MobStates.ATTACKING: 
+		return
 	
-	if abs_dis < target_x:
-		velocity.y += 100.0
+	is_attacking = true
+	mob_one_state = MobStates.ATTACKING
+	var dis_to_player = t_player.global_position.x - global_position.x
+	var dir_to_player = sign(dis_to_player)
+	
+	velocity.x = dir_to_player * speed
+	velocity.y = jump_velocity
+	
+	attk_timer = 3.0
+
 
 
 func apply_gravity(delta) -> void:
@@ -129,7 +142,13 @@ func apply_gravity(delta) -> void:
 	else:
 		current_gravity = fall_gravity
 	
-	if abs(velocity.y) < apex_threshold:
-		current_gravity *= apex_gravity_multiplier
-		
 	velocity.y += current_gravity * delta
+
+func update_attack_state(delta) -> void:
+	if not is_attacking:
+		return
+	
+	attk_timer -= delta
+	if attk_timer <= 0.0:
+		is_attacking = false
+		mob_one_state = MobStates.IDLE
