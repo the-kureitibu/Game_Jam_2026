@@ -29,7 +29,9 @@ var is_target_nearby: bool = false
 
 @onready var jump_velocity := -jump_gravity * time_to_apex
 
-
+var jump_attack_speed_min := 120.0
+var jump_attack_speed_max := 360.0
+var landing_offset := 24.0
 
 #region References
 
@@ -68,7 +70,9 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 	apply_gravity(delta)
 	
-	if is_target_nearby and mob_one_state == MobStates.IDLE:
+	if mob_one_state == MobStates.ATTACKING:
+		pass
+	elif is_target_nearby:
 		jump_to_target()
 	else:
 		patrol_idle()
@@ -120,10 +124,27 @@ func jump_to_target() -> void:
 	
 	is_attacking = true
 	mob_one_state = MobStates.ATTACKING
+	
 	var dis_to_player = t_player.global_position.x - global_position.x
 	var dir_to_player = sign(dis_to_player)
 	
-	velocity.x = dir_to_player * speed
+	if dir_to_player == 0:
+		dir_to_player = patrol_dir
+		
+	# Land near the player, not exactly on center.
+	var target_landing_x = t_player.global_position.x - dir_to_player * landing_offset
+	var distance_to_landing = target_landing_x - global_position.x
+	
+	# Approximate total air time.
+	var estimated_air_time := time_to_apex + time_to_fall
+	
+	var needed_x_speed = distance_to_landing / estimated_air_time
+	needed_x_speed = clamp(needed_x_speed, -jump_attack_speed_max, jump_attack_speed_max)
+	
+	if abs(needed_x_speed) < jump_attack_speed_min:
+		needed_x_speed = dir_to_player * jump_attack_speed_min
+	
+	velocity.x = needed_x_speed
 	velocity.y = jump_velocity
 	
 	attk_timer = 3.0
@@ -149,6 +170,13 @@ func update_attack_state(delta) -> void:
 		return
 	
 	attk_timer -= delta
-	if attk_timer <= 0.0:
-		is_attacking = false
-		mob_one_state = MobStates.IDLE
+	
+	if is_on_floor() and velocity.y >= 0.0 and attk_timer <= 2.8:
+		end_attack()
+	elif attk_timer <= 0.0:
+		end_attack()
+
+
+func end_attack() -> void:
+	is_attacking = false
+	mob_one_state = MobStates.IDLE
