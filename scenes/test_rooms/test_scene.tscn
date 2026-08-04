@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dmce6111r1rt" path="res://scenes/ui/test_ui.tscn" id="4_anwaf"]
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="4_xbjce"]
 [ext_resource type="PackedScene" uid="uid://dn5srq6ttvo7w" path="res://scenes/ui/main_ui.tscn" id="7_gaevi"]
+[ext_resource type="PackedScene" uid="uid://q3hyw88nqvk6" path="res://scenes/enemy_scene/mob_one.tscn" id="8_m8j1c"]
 
 [node name="TestScene" type="Node" unique_id=345745939]
 metadata/_edit_vertical_guides_ = [-137.0]
@@ -37,5 +38,9 @@ position = Vector2(-109, -36)
 [node name="Projectiles" type="Node2D" parent="." unique_id=1609918380]
 
 [node name="TestEnemy2" parent="." unique_id=865536425 instance=ExtResource("4_5aiuk")]
+visible = false
 position = Vector2(282, -36)
 scale = Vector2(0.5, 0.5)
+
+[node name="MobOne" parent="." unique_id=1148431991 instance=ExtResource("8_m8j1c")]
+position = Vector2(249, -13)

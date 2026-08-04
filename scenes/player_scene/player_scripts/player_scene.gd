@@ -724,14 +724,14 @@ func force_move_animation() -> void:
 
 #region HurtBox
 
-func handle_hurt(damage: int) -> void:
+func handle_hurt(damage: float) -> void:
 	if is_invulnerable:
 		return
 	
 	start_hurt(damage)
 
 
-func start_hurt(damage: int) -> void:
+func start_hurt(damage: float) -> void:
 	is_busy = true
 	input_available = false
 	
@@ -1182,6 +1182,7 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 		return
 	
 	var from_enemy = area.get_tree().get_first_node_in_group("Enemy_target")
+	#change to is_in_group 
 	
 	if from_enemy:
 		var en_damage: int
@@ -1189,6 +1190,7 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 		if "hit" in from_enemy:
 			from_enemy.hit()
 			en_damage = from_enemy.hit()
+			print(en_damage)
 			handle_hurt(en_damage)
 
 func _on_hit_box_area_entered(area: Area2D) -> void:

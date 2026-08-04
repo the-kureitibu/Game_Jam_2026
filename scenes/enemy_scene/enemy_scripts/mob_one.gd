@@ -1,14 +1,42 @@
 extends EnemyBase
 
 #region Declared Vars
+
+#region Signals
+
+signal update_health(value: float)
+
+#endregion
+
 #region Base Vars
 
-var health: float = 0.0
 var speed: float = 60.0
-var damage: float = 0.0
 var target_x: float = 0.0
 var is_attacking: bool = false
+var MAX_HEALTH: float = 100.0
 
+var m_health: float = 100.0: 
+	set(value):
+		var new_health = value
+		
+		if m_health == new_health:
+			return
+		
+		m_health = clamp(new_health, 0.0, MAX_HEALTH)
+		
+		update_health.emit(new_health)
+		
+		
+var dmg: float = 10.0
+
+#endregion
+
+#region HitBox/HurtBox
+
+@onready var hit_box: CollisionShape2D = $HitBox/HitBoxCol
+@onready var hurt_box: CollisionShape2D = $HurtBox/HurtBoxCol
+
+var is_hurt: bool = false
 
 #endregion
 
@@ -36,6 +64,7 @@ var landing_offset := 24.0
 #region References
 
 @onready var t_player: Node2D = get_tree().get_first_node_in_group("Player_target")
+@onready var m_sprite: AnimatedSprite2D = $MainSprite
 
 #endregion
 
@@ -48,7 +77,6 @@ var landing_offset := 24.0
 
 #endregion
 
-#endregion
 #endregion 
 
 #region Tests 
@@ -59,7 +87,7 @@ func _draw() -> void:
 
 #endregion
 
-
+#region Processes
 func _ready() -> void:
 	starting_x = global_position.x
 	target_x = starting_x + patrol_distance
@@ -82,6 +110,9 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	update_attack_state(delta)
 
+#endregion
+
+#region Target and Movement
 func check_target_nearby() -> void:
 	if t_player == null:
 		return
@@ -110,7 +141,35 @@ func patrol_idle() -> void:
 			target_x = starting_x + patrol_distance
 	
 	velocity.x = patrol_dir * speed
+
+func handle_anim() -> void:
+	if velocity.x > 0.0 and mob_one_state == MobStates.IDLE:
+		play_anim(m_sprite, "walk")
+		
+	if is_hurt: 
+		play_anim(m_sprite, "hurt")
+
+func apply_gravity(delta) -> void:
+
+	if is_on_floor():
+		return
 	
+	var current_gravity: float
+	
+	if velocity.y < 0.0:
+		current_gravity = jump_gravity
+	else:
+		current_gravity = fall_gravity
+	
+	velocity.y += current_gravity * delta
+
+#endregion
+
+#region Attack 
+
+func hit() -> float:
+	
+	return dmg
 
 func jump_to_target() -> void:
 
@@ -150,22 +209,6 @@ func jump_to_target() -> void:
 	
 	attk_timer = 3.0
 
-
-
-func apply_gravity(delta) -> void:
-
-	if is_on_floor():
-		return
-	
-	var current_gravity: float
-	
-	if velocity.y < 0.0:
-		current_gravity = jump_gravity
-	else:
-		current_gravity = fall_gravity
-	
-	velocity.y += current_gravity * delta
-
 func update_attack_state(delta) -> void:
 	if not is_attacking:
 		return
@@ -183,7 +226,6 @@ func update_attack_movement() -> void:
 	# Once landed, stop sliding.
 	velocity.x = 0.0
 
-
 func end_attack() -> void:
 	is_attacking = false
 	mob_one_state = MobStates.IDLE
@@ -195,4 +237,49 @@ func reset_patrol_target() -> void:
 		target_x = starting_x - patrol_distance
 	else:
 		target_x = starting_x + patrol_distance
+
+#endregion
+
+
+#region HurtBox Handler
+
+func handle_hurt(dmg: float) -> void:
+	if is_hurt:
+		return
 	
+	start_hurt(dmg)
+	
+
+func start_hurt(dmg: float) -> void:
+	
+	is_hurt = true
+	m_health -= dmg
+
+func handle_death() -> void:
+	pass
+
+#endregion
+
+#region HurtBox and HitBox Signals
+
+func _on_hit_box_area_entered(area: Area2D) -> void:
+	var p_target = area.get_tree().get_first_node_in_group("Player_target")
+	
+	if p_target and "handle_hurt" in p_target:
+		p_target.handle_hurt(dmg)
+
+
+func _on_hurt_box_area_entered(area: Area2D) -> void:
+	pass # Replace with function body.
+
+#endregion
+
+
+#region Animation Signal
+
+func _on_main_sprite_animation_finished(anim: StringName) -> void:
+	
+	if anim == "hurt":
+		is_hurt = false
+	
+#endregion
