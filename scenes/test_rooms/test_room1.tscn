@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://boe26ixwk1fjm"]
 
 [ext_resource type="PackedScene" uid="uid://b4lmfhnv3qefn" path="res://scenes/environment_scene/floor_scene.tscn" id="1_kdr5h"]
-[ext_resource type="PackedScene" uid="uid://q3hyw88nqvk6" path="res://scenes/enemy_scene/mob_one.tscn" id="2_leimf"]
-[ext_resource type="PackedScene" uid="uid://dfiomxa4fli0f" path="res://scenes/player_scene/player_scene.tscn" id="3_avutn"]
 
 [node name="TestRoom1" type="Node2D" unique_id=929027271]
 
@@ -34,9 +32,3 @@ position = Vector2(-145, 5)
 
 [node name="FloorScene7" parent="Floors" unique_id=241085936 instance=ExtResource("1_kdr5h")]
 position = Vector2(-193, 5)
-
-[node name="MobOne" parent="." unique_id=1148431991 instance=ExtResource("2_leimf")]
-position = Vector2(0, -12)
-
-[node name="PlayerScene" parent="." unique_id=2131738871 instance=ExtResource("3_avutn")]
-position = Vector2(-187, -1)

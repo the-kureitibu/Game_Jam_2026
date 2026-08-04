@@ -14,7 +14,7 @@ var is_attacking: bool = false
 
 #region Movement related
 
-var patrol_distance: float = 100.0
+var patrol_distance: float = 50.0
 var starting_x: float
 var patrol_dir: int = 1
 var is_target_nearby: bool = false
@@ -68,17 +68,18 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	queue_redraw()
+	
+	check_target_nearby()
 	apply_gravity(delta)
 	
 	if mob_one_state == MobStates.ATTACKING:
-		pass
+		update_attack_movement()
 	elif is_target_nearby:
 		jump_to_target()
 	else:
 		patrol_idle()
 	
 	move_and_slide()
-	check_target_nearby()
 	update_attack_state(delta)
 
 func check_target_nearby() -> void:
@@ -171,12 +172,27 @@ func update_attack_state(delta) -> void:
 	
 	attk_timer -= delta
 	
-	if is_on_floor() and velocity.y >= 0.0 and attk_timer <= 2.8:
+	if attk_timer <= 0.0:
 		end_attack()
-	elif attk_timer <= 0.0:
-		end_attack()
+
+func update_attack_movement() -> void:
+	# Keep horizontal attack velocity while airborne.
+	if not is_on_floor():
+		return
+	
+	# Once landed, stop sliding.
+	velocity.x = 0.0
 
 
 func end_attack() -> void:
 	is_attacking = false
 	mob_one_state = MobStates.IDLE
+	velocity.x = 0.0
+	reset_patrol_target()
+
+func reset_patrol_target() -> void:
+	if global_position.x >= starting_x:
+		target_x = starting_x - patrol_distance
+	else:
+		target_x = starting_x + patrol_distance
+	

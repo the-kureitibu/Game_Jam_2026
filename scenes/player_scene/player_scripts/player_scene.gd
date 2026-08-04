@@ -19,19 +19,20 @@ var input_available: bool = true
 var is_invulnerable: bool = false
 
 
+
 const MAX_HEALTH: int = 200
 const MAX_DMG: int = 50
 const MAX_RAGE: float = 100.0
 
 @export var stats: PlayerStats
-@export var p_health: int:
+@export var p_health: float:
 	set(value):
 		var new_health = value
 		
 		if p_health == new_health:
 			return
 		
-		p_health = clamp(new_health, 0, MAX_HEALTH)
+		p_health = clamp(new_health, 0.0, MAX_HEALTH)
 		
 		stat_changed.emit("p_health", new_health)
 		
@@ -296,6 +297,7 @@ func _physics_process(delta: float) -> void:
 	update_rage_timer(delta)
 	update_rage_cooling(delta)
 	
+	handle_death()
 	
 
 #endregion
@@ -704,7 +706,7 @@ func force_move_animation() -> void:
 		if p_form_state == PlayerFormState.HUMAN_FORM:
 			play_anim(p_sprite, "jump")
 		else:
-			play_anim(s_sprite, "walk")
+			play_anim(s_sprite, "jump")
 	elif  abs(input_dir) > 0.1:
 		if p_form_state == PlayerFormState.HUMAN_FORM:
 			play_anim(p_sprite, "walk")
@@ -715,7 +717,7 @@ func force_move_animation() -> void:
 		if p_form_state == PlayerFormState.HUMAN_FORM:
 			play_anim(p_sprite, "idle")
 		else:
-			play_anim(s_sprite, "walk")
+			play_anim(s_sprite, "idle")
 
 		
 #endregion 
@@ -746,13 +748,23 @@ func start_hurt(damage: int) -> void:
 	else:
 		play_anim(s_sprite, "hurt")
 	
-	if not (p_health <= 0):
+	if p_health > 0.0:
 		p_health -= damage
-	else:
-		death()
+	#else:
+		#death()
 	
 	invulnerable_timer = stats.invul_timer
 
+func handle_death() -> void:
+	if p_health > 0.0:
+		return
+	
+	if p_action_state == PlayerActionState.DEAD:
+		return
+	
+	p_action_state = PlayerActionState.DEAD
+	death()
+	
 func end_hurt() -> void:
 	
 	input_available = true

@@ -33,7 +33,6 @@ position = Vector2(-109, -36)
 [node name="TestUi" parent="CanvasLayer" unique_id=1506350038 instance=ExtResource("4_anwaf")]
 
 [node name="MainUI" parent="CanvasLayer" unique_id=1108660128 instance=ExtResource("7_gaevi")]
-visible = false
 
 [node name="Projectiles" type="Node2D" parent="." unique_id=1609918380]
 

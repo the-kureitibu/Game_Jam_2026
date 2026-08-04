@@ -2,6 +2,12 @@ extends CharacterBody2D
 
 class_name PlayerBase
 
+#region Var helpers
+
+var is_dead: bool = false
+
+#endregion
+
 
 #region Enums States
 
@@ -71,4 +77,8 @@ func play_anim(anim_node: Node, anim_name: StringName, force_restart := false) -
 		return
 
 func death() -> void:
-	pass
+	if is_dead:
+		return
+		
+	is_dead = true
+	print("You dieded")
