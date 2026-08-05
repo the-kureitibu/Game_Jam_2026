@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://du2tfc1t68iwt"]
+
+[ext_resource type="Texture2D" uid="uid://drbhay1ylegtp" path="res://assets/sprites/ui/title2.1.png" id="1_ihgl4"]
+[ext_resource type="Texture2D" uid="uid://ggpanj5gstu0" path="res://assets/sprites/ui/title2.2.png" id="2_kolwf"]
+[ext_resource type="Texture2D" uid="uid://4v8a0smmavgw" path="res://assets/sprites/ui/title2.3.png" id="3_adf7y"]
+[ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="4_kolwf"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ihgl4"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kolwf"]
+texture = ExtResource("4_kolwf")
+region_rect = Rect2(275, 178, 90, 27)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_adf7y"]
+texture = ExtResource("4_kolwf")
+region_rect = Rect2(275, 212, 90, 25)
+
+[node name="StartScreen" type="Control" unique_id=409765200]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMargin" type="MarginContainer" parent="." unique_id=47320756]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleOne" type="TextureRect" parent="MainMargin" unique_id=3639355]
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("1_ihgl4")
+
+[node name="TitleTwo" type="TextureRect" parent="MainMargin" unique_id=1469157420]
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_kolwf")
+
+[node name="TitleThree" type="TextureRect" parent="MainMargin" unique_id=1809590967]
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("3_adf7y")
+
+[node name="ButtonContainer" type="VBoxContainer" parent="MainMargin" unique_id=1290754003]
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/separation = 4
+
+[node name="StartButton" type="Button" parent="MainMargin/ButtonContainer" unique_id=1727140401]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_ihgl4")
+text = "To Isekai"
+
+[node name="ExitButton" type="Button" parent="MainMargin/ButtonContainer" unique_id=1161681274]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_kolwf")
+theme_override_styles/hover = SubResource("StyleBoxTexture_adf7y")
+text = "Exit Game"
+
+[node name="Control" type="Control" parent="MainMargin/ButtonContainer" unique_id=1829791155]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 8
