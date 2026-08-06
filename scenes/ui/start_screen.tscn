@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://du2tfc1t68iwt"]
 
+[ext_resource type="Script" uid="uid://bvmn6d2iw727f" path="res://scenes/ui/start_screen.gd" id="1_adf7y"]
 [ext_resource type="Texture2D" uid="uid://drbhay1ylegtp" path="res://assets/sprites/ui/title2.1.png" id="1_ihgl4"]
 [ext_resource type="Texture2D" uid="uid://ggpanj5gstu0" path="res://assets/sprites/ui/title2.2.png" id="2_kolwf"]
 [ext_resource type="Texture2D" uid="uid://4v8a0smmavgw" path="res://assets/sprites/ui/title2.3.png" id="3_adf7y"]
@@ -22,6 +23,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_adf7y")
 
 [node name="MainMargin" type="MarginContainer" parent="." unique_id=47320756]
 layout_mode = 1
