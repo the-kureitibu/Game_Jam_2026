@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://bpngkfp5040dk" path="res://scenes/levels_scene/tutorial_level.gd" id="1_54a4i"]
 [ext_resource type="PackedScene" uid="uid://dfiomxa4fli0f" path="res://scenes/player_scene/player_scene.tscn" id="2_i3167"]
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="3_mhp1y"]
+[ext_resource type="Texture2D" uid="uid://br4j26k18rpl2" path="res://assets/sprites/environment/misc.png" id="5_btjhv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_btjhv"]
 size = Vector2(76, 307)
@@ -19,6 +20,18 @@ load_path = "res://.godot/imported/misc.png-852b720128486bb2abebb4c253862912.cte
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hbdyc"]
 load_path = "res://.godot/imported/misc.png-852b720128486bb2abebb4c253862912.ctex"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t00yd"]
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hbdyc"]
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pjum0"]
+radius = 4.1231055
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vxa0g"]
+radius = 4.0
 
 [node name="TutorialLevel" type="Node2D" unique_id=1895036127]
 script = ExtResource("1_54a4i")
@@ -45,20 +58,84 @@ shape = SubResource("RectangleShape2D_btjhv")
 position = Vector2(157, -29.999998)
 scale = Vector2(1.2916666, 1.2916666)
 texture = SubResource("CompressedTexture2D_54a4i")
+region_enabled = true
+region_rect = Rect2(0, 0, 24, 24)
 
 [node name="TutorialSkill" type="Sprite2D" parent="." unique_id=496535922]
 position = Vector2(210, -30)
 scale = Vector2(1.2916666, 1.2916666)
 texture = SubResource("CompressedTexture2D_btjhv")
+region_enabled = true
+region_rect = Rect2(0, 0, 24, 24)
 
 [node name="TutorialJump" type="Sprite2D" parent="." unique_id=764063052]
 position = Vector2(269.00003, -30.000015)
 scale = Vector2(1.2916666, 1.2916666)
 texture = SubResource("CompressedTexture2D_t00yd")
+region_enabled = true
+region_rect = Rect2(0, 0, 24, 24)
 
 [node name="TutorialRage" type="Sprite2D" parent="." unique_id=994249510]
 position = Vector2(416.00003, -110)
 scale = Vector2(1.2916666, 1.2916666)
 texture = SubResource("CompressedTexture2D_hbdyc")
+region_enabled = true
+region_rect = Rect2(0, 0, 24, 24)
+
+[node name="ArrowOne" type="Sprite2D" parent="." unique_id=1534947874]
+position = Vector2(159, -49)
+scale = Vector2(0.5, 0.467)
+texture = ExtResource("5_btjhv")
+region_enabled = true
+region_rect = Rect2(24, 0, 24, 24)
+
+[node name="ArrowTwo" type="Sprite2D" parent="." unique_id=1142890945]
+position = Vector2(212, -49)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_btjhv")
+region_enabled = true
+region_rect = Rect2(24, 0, 24, 24)
+
+[node name="ArrowThree" type="Sprite2D" parent="." unique_id=214612636]
+position = Vector2(271, -49)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_btjhv")
+region_enabled = true
+region_rect = Rect2(24, 0, 24, 24)
+
+[node name="ArrowFour" type="Sprite2D" parent="." unique_id=984230838]
+position = Vector2(418, -132)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_btjhv")
+region_enabled = true
+region_rect = Rect2(24, 0, 24, 24)
+
+[node name="ArrowOneArea" type="Area2D" parent="." unique_id=828043199]
+
+[node name="ArrowOneCol" type="CollisionShape2D" parent="ArrowOneArea" unique_id=609440821]
+position = Vector2(159, -48)
+shape = SubResource("CircleShape2D_t00yd")
+
+[node name="ArrowTwoArea" type="Area2D" parent="." unique_id=1720245353]
+
+[node name="ArrowTwoCol" type="CollisionShape2D" parent="ArrowTwoArea" unique_id=564534966]
+position = Vector2(212, -48)
+shape = SubResource("CircleShape2D_hbdyc")
+
+[node name="ArrowThreeArea" type="Area2D" parent="." unique_id=908478901]
+
+[node name="ArrowThreeCol" type="CollisionShape2D" parent="ArrowThreeArea" unique_id=210275225]
+position = Vector2(271, -49)
+shape = SubResource("CircleShape2D_pjum0")
+
+[node name="ArrowFourArea" type="Area2D" parent="." unique_id=702545249]
+
+[node name="ArrowFourCol" type="CollisionShape2D" parent="ArrowFourArea" unique_id=2059936542]
+position = Vector2(418, -131)
+shape = SubResource("CircleShape2D_vxa0g")
 
 [connection signal="body_entered" from="ExitArea" to="." method="_on_exit_area_body_entered"]
+[connection signal="body_entered" from="ArrowOneArea" to="." method="_on_arrow_one_area_body_entered"]
+[connection signal="body_entered" from="ArrowTwoArea" to="." method="_on_arrow_two_area_body_entered"]
+[connection signal="body_entered" from="ArrowThreeArea" to="." method="_on_arrow_three_area_body_entered"]
+[connection signal="body_entered" from="ArrowFourArea" to="." method="_on_arrow_four_area_body_entered"]
