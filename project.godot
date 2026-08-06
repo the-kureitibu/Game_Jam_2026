@@ -99,6 +99,7 @@ dash={
 2d_physics/layer_8="p_hurtbox"
 2d_physics/layer_9="p_hitbox"
 2d_physics/layer_10="en_hitbox"
+2d_physics/layer_11="exit_area"
 
 [physics]
 

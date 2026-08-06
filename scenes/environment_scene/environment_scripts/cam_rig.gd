@@ -3,7 +3,7 @@ extends Node2D
 @onready var p_target = get_tree().get_first_node_in_group("Player_target")
 @onready var cam: Camera2D = $Cam
 @onready var follow_speed := 20.0
-@onready var cam_limit = p_target.grab_cam_limits
+#@onready var cam_limit = p_target.grab_cam_limits
 @onready var boss_target = get_tree().get_first_node_in_group("Boss_target")
 
 @onready var zoom_out_distance := 250
@@ -24,9 +24,9 @@ extends Node2D
 
 func _ready() -> void:
 	
-
-	
 	cam.make_current()
+	
+	determine_level_scene(level_finder)
 	
 	if p_target == null:
 		push_error("Player does not exist")
@@ -92,6 +92,8 @@ func determine_level_scene(lvl_name: Variant) -> void:
 	match lvl_name:
 		"TutorialLevel":
 			handle_cam_limits(0, 640, 63, -400)
+			is_tutorial_level = true
+			cam.offset = Vector2(0, -20.0)
 		"GrassLandLevel":
 			pass
 		"BossLevel":
