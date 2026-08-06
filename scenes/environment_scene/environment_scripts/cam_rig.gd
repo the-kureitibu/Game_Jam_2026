@@ -5,14 +5,26 @@ extends Node2D
 @onready var follow_speed := 20.0
 @onready var cam_limit = p_target.grab_cam_limits
 @onready var boss_target = get_tree().get_first_node_in_group("Boss_target")
-@onready var is_boss_room := false
 
 @onready var zoom_out_distance := 250
+
+#region Level Types
+
+@onready var level_finder = get_tree().current_scene.name
+
+@onready var is_tutorial_level: bool = false
+@onready var is_grassland_level: bool = false
+@onready var is_demonrealm_level: bool = false
+@onready var is_boss_room_level: bool = false
+
+
+#endregion
+
 
 
 func _ready() -> void:
 	
-	#is_boss_room = true
+
 	
 	cam.make_current()
 	
@@ -20,7 +32,7 @@ func _ready() -> void:
 		push_error("Player does not exist")
 		return
 
-	if is_boss_room:
+	if is_boss_room_level:
 		if boss_target == null:
 			print("Boss does not exist")
 			return
@@ -38,11 +50,11 @@ func _physics_process(delta: float) -> void:
 		push_error("Player does not exist")
 		return
 		
-	if is_boss_room and p_target and boss_target:
+	if is_boss_room_level and p_target and boss_target:
 		var current_midpoint = get_boss_room_midpoint()
 		global_position = global_position.lerp(current_midpoint, weight)
 		handle_camera_zoom(delta)
-	elif p_target and !is_boss_room:
+	elif p_target and !is_boss_room_level:
 		global_position = global_position.lerp(p_target.global_position, weight)
 		
 	#handle_cam_limits()
@@ -51,7 +63,7 @@ func get_boss_room_midpoint() -> Vector2:
 	return (p_target.global_position + boss_target.global_position) * 0.5
 
 func handle_camera_zoom(delta) -> void:
-	if !is_boss_room:
+	if !is_boss_room_level:
 		return
 	
 	var distance = p_target.global_position.distance_to(boss_target.global_position)
@@ -61,17 +73,28 @@ func handle_camera_zoom(delta) -> void:
 	else:
 		cam.zoom = cam.zoom.lerp(Vector2(1.0, 1.0), 5.0 * delta)
 	
-func handle_cam_limits() -> void:
+func handle_cam_limits(limit_l: int, limit_r: int, 
+			limit_b: int, limit_t: int, ) -> void:
+	
 	if p_target == null:
 		return
 	
-	if !is_boss_room:
-		cam.limit_left = int(p_target.grab_cam_limits()["cam_l_limit"])
-		cam.limit_right = int(p_target.grab_cam_limits()["cam_r_limit"])
-		cam.limit_bottom = int(p_target.grab_cam_limits()["cam_b_limit"])
-		cam.limit_top = int(p_target.grab_cam_limits()["cam_t_limit"])
-	else:
-		cam.limit_left = -30
-		cam.limit_right = 30
-		cam.limit_bottom = 20
-		cam.limit_top = -40
+	cam.limit_left = limit_l
+	cam.limit_right = limit_r
+	cam.limit_bottom = limit_b
+	cam.limit_top = limit_t
+
+func determine_level_scene(lvl_name: Variant) -> void:
+	
+	if p_target == null:
+		return
+	
+	match lvl_name:
+		"TutorialLevel":
+			handle_cam_limits(0, 640, 63, -400)
+		"GrassLandLevel":
+			pass
+		"BossLevel":
+			pass
+		"DemonRealmLevel":
+			pass
