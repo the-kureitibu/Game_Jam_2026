@@ -1,5 +1,8 @@
 [gd_scene format=3 uid="uid://bfsff145cw0w7"]
 
+[ext_resource type="Texture2D" uid="uid://dnog4lnhjsi7c" path="res://assets/sprites/ui/Sprite sheets/Setting menu.png" id="1_qhee8"]
+[ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="2_wttie"]
+
 [node name="TutorialUIs" type="Control" unique_id=986002305]
 layout_mode = 3
 anchors_preset = 15
@@ -7,3 +10,88 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MainMargin" type="MarginContainer" parent="." unique_id=66385108]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelOneMainContainer" type="MarginContainer" parent="MainMargin" unique_id=1152068288]
+custom_minimum_size = Vector2(350, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin/PanelOneMainContainer" unique_id=1065519349]
+layout_mode = 2
+
+[node name="BG" type="NinePatchRect" parent="MainMargin/PanelOneMainContainer/MainVBox" unique_id=1449765454]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_qhee8")
+region_rect = Rect2(139, 12, 106, 122)
+
+[node name="ImageVBContainer" type="VBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG" unique_id=887385723]
+custom_minimum_size = Vector2(280, 180)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -140.0
+offset_top = 10.0
+offset_right = 140.0
+offset_bottom = 210.0
+grow_horizontal = 2
+
+[node name="BackDrop" type="NinePatchRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer" unique_id=194562435]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2_wttie")
+region_rect = Rect2(293, 101, 38, 38)
+patch_margin_left = 7
+patch_margin_top = 9
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="MainImages" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=436567597]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 145.0
+offset_bottom = -10.0
+grow_vertical = 2
+
+[node name="MainImages2" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1220292940]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -130.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="TextVBContainer" type="VBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG" unique_id=1330394920]
+custom_minimum_size = Vector2(280, 80)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -90.0
+offset_right = 140.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
