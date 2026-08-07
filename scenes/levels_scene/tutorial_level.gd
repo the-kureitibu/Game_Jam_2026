@@ -21,9 +21,23 @@ extends Node2D
 @onready var arrow_three_col: CollisionShape2D = $ArrowThreeArea/ArrowThreeCol
 @onready var arrow_four_col: CollisionShape2D = $ArrowFourArea/ArrowFourCol
 
-
 #endregion
 
+#region Arrow Arrays 
+
+var arrow_float_amount := 10.0
+var arrow_float_duration := 0.8
+
+@onready var arrows: Array = [
+	arrow_one,
+	arrow_two,
+	arrow_three,
+	arrow_four
+]
+
+var arrow_original_positions: Dictionary = {}
+
+#endregion
 
 #endregion
 
@@ -32,17 +46,23 @@ extends Node2D
 
 
 func _ready() -> void:
-	pass
+	for arrow in arrows:
+		arrow_original_positions[arrow] = arrow.position
+	
+	animate_arrows()
 
 
+#func _process(delta: float) -> void:
+	#animate_arrows()
+
+
+#region Area Signals
 
 func _on_exit_area_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 
 	if player:
 		print("Move to main scene")
-
-#region Area Signals
 
 func _on_arrow_one_area_body_entered(body: Node2D) -> void:
 	pass # Replace with function body.
@@ -58,5 +78,21 @@ func _on_arrow_three_area_body_entered(body: Node2D) -> void:
 
 func _on_arrow_four_area_body_entered(body: Node2D) -> void:
 	pass # Replace with function body.
+
+#endregion
+
+#region Arrow Animations
+
+func animate_arrows() -> void:
+	
+	for arrow in arrows:
+		var original_pos: Vector2 = arrow_original_positions[arrow]
+		var up_pos := original_pos + Vector2(0.0, -arrow_float_amount)
+		
+		var tween := create_tween()
+		tween.set_loops()
+		tween.tween_property(arrow, "position", up_pos, arrow_float_duration)
+		tween.tween_property(arrow, "position", original_pos, arrow_float_duration)
+
 
 #endregion
