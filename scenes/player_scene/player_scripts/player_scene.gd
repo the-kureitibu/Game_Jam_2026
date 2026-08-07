@@ -228,13 +228,13 @@ func grab_cam_limits() -> Dictionary:
 
 #region Test and Draw 
 
-func _draw() -> void:
-	var sp_texture = p_sprite.sprite_frames.get_frame_texture("idle", 0)
-	var sp_height = sp_texture.get_height() / -2.0
-	var y_offset = sp_height
-	
-	var draw_pos: Vector2 = Vector2(0, y_offset)
-	draw_circle(draw_pos, 180.0, Color.RED, false, 2.0)
+#func _draw() -> void:
+	#var sp_texture = p_sprite.sprite_frames.get_frame_texture("idle", 0)
+	#var sp_height = sp_texture.get_height() / -2.0
+	#var y_offset = sp_height
+	#
+	#var draw_pos: Vector2 = Vector2(0, y_offset)
+	#draw_circle(draw_pos, 180.0, Color.RED, false, 2.0)
 
 #endregion
 

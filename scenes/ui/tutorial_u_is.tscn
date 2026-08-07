@@ -2,6 +2,15 @@
 
 [ext_resource type="Texture2D" uid="uid://dnog4lnhjsi7c" path="res://assets/sprites/ui/Sprite sheets/Setting menu.png" id="1_qhee8"]
 [ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="2_wttie"]
+[ext_resource type="Texture2D" uid="uid://pcfoldek1vu" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui1.png" id="3_w4rq1"]
+[ext_resource type="Texture2D" uid="uid://c3ljd118caoep" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui2.png" id="4_53qnl"]
+[ext_resource type="Texture2D" uid="uid://baoy0niylfxhe" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui6.png" id="4_gjb1v"]
+[ext_resource type="Texture2D" uid="uid://b1wtn8uos2j1h" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui3.png" id="6_8g1ap"]
+[ext_resource type="Texture2D" uid="uid://p4rbmd0y2x4f" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui4.png" id="7_by0sy"]
+[ext_resource type="Texture2D" uid="uid://bfuv4lon3yjtm" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui5.png" id="8_3fg10"]
+[ext_resource type="Texture2D" uid="uid://coxmlak6xb26a" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui7.png" id="9_yb575"]
+[ext_resource type="Texture2D" uid="uid://bcuqlc57oe4fe" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui8.png" id="10_u3yq3"]
+[ext_resource type="Texture2D" uid="uid://3ib5ax5j34yv" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui9.png" id="11_q7fx2"]
 
 [node name="TutorialUIs" type="Control" unique_id=986002305]
 layout_mode = 3
@@ -56,30 +65,158 @@ patch_margin_top = 9
 patch_margin_right = 8
 patch_margin_bottom = 8
 
-[node name="MainImages" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=436567597]
-custom_minimum_size = Vector2(120, 0)
+[node name="MainAttkImage" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=436567597]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = 10.0
+offset_left = 15.0
 offset_top = 10.0
-offset_right = 145.0
+offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="MainImages2" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1220292940]
-custom_minimum_size = Vector2(120, 0)
+[node name="AttackImage" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainAttkImage" unique_id=468417362]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_w4rq1")
+expand_mode = 2
+
+[node name="MainComboImage" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=722472652]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
+anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = -130.0
+offset_left = 15.0
 offset_top = 10.0
-offset_right = -10.0
+offset_right = 265.0
 offset_bottom = -10.0
-grow_horizontal = 0
 grow_vertical = 2
+
+[node name="ComboImage" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainComboImage" unique_id=268133726]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("4_gjb1v")
+expand_mode = 2
+
+[node name="MainSkl1Image" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1948765123]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 265.0
+offset_bottom = -10.0
+grow_vertical = 2
+
+[node name="Skl1Image" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainSkl1Image" unique_id=2108881225]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("4_53qnl")
+expand_mode = 2
+
+[node name="MainSkl2Image" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1096233482]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 265.0
+offset_bottom = -10.0
+grow_vertical = 2
+
+[node name="Skl2Image" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainSkl2Image" unique_id=380564628]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("6_8g1ap")
+expand_mode = 2
+
+[node name="MainJumpImage" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=330610996]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 265.0
+offset_bottom = -10.0
+grow_vertical = 2
+
+[node name="JumpImage" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainJumpImage" unique_id=1155928848]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("7_by0sy")
+expand_mode = 2
+
+[node name="MainBlockImage" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1688532511]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 265.0
+offset_bottom = -10.0
+grow_vertical = 2
+
+[node name="BlockImage" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainBlockImage" unique_id=178705809]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("8_3fg10")
+expand_mode = 2
+
+[node name="MainRAttkImage" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1428126206]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 265.0
+offset_bottom = -10.0
+grow_vertical = 2
+
+[node name="RAttkImage" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainRAttkImage" unique_id=869226441]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("9_yb575")
+expand_mode = 2
+
+[node name="MainRSkl1Image" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1159349343]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 265.0
+offset_bottom = -10.0
+grow_vertical = 2
+
+[node name="RSkl1Image" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainRSkl1Image" unique_id=1832500550]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("10_u3yq3")
+expand_mode = 2
+
+[node name="MainRSkl2Image" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=898491083]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 265.0
+offset_bottom = -10.0
+grow_vertical = 2
+
+[node name="RSkl2Image" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainRSkl2Image" unique_id=766398467]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("11_q7fx2")
+expand_mode = 2
 
 [node name="TextVBContainer" type="VBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG" unique_id=1330394920]
 custom_minimum_size = Vector2(280, 80)

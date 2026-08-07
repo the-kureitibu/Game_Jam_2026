@@ -80,10 +80,10 @@ var landing_offset := 24.0
 #endregion 
 
 #region Tests 
-
-func _draw() -> void:
-	
-	draw_circle(Vector2(0, 0), 100.0, Color.RED, false, -2.0)
+#
+#func _draw() -> void:
+	#
+	#draw_circle(Vector2(0, 0), 100.0, Color.RED, false, -2.0)
 
 #endregion
 
@@ -95,7 +95,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	queue_redraw()
+	#queue_redraw()
 	
 	check_target_nearby()
 	apply_gravity(delta)
