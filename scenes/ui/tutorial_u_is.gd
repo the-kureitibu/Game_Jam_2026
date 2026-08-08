@@ -24,6 +24,7 @@ extends Control
 
 #region Arrow buttons
 
+@onready var arrow_navs_panel: VBoxContainer = $MainMargin/ArrowNavsContainer
 @onready var arrow_left: Button = $MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer/ArrowLeftButton
 @onready var arrow_right: Button = $MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer2/ArrowRightButton
 
@@ -39,7 +40,11 @@ extends Control
 	rage_skill_panel
 ]
 
+#endregion
 
+#region Identifiers
+
+@onready var current_index := 0
 
 #endregion
 
@@ -74,9 +79,12 @@ extends Control
 #endregion 
 
 func _ready() -> void:
-	for panel in panel_arrays:
-		panel.visible = false
-
+	#arrow_navs_panel.visible = false
+	#
+	#for panel in panel_arrays:
+		#panel.visible = false
+	open_attk_tutorial_panel()
+	
 
 func _process(delta: float) -> void:
 	pass
@@ -85,15 +93,37 @@ func _process(delta: float) -> void:
 #region Open Panels 
 
 func open_attk_tutorial_panel() -> void:
-	pass
+	panel_ini_helper(attk_tutorial_panel, arrow_navs_panel, 
+					text_label_one, "attack_panel", current_index)
 	
 func open_jump_block_panel() -> void:
-	pass
+	panel_ini_helper(jump_block_panel, arrow_navs_panel, 
+				text_label_two, "block_jump_panel", current_index)
 
 func open_rage_panel() -> void:
-	pass
+	panel_ini_helper(rage_panel, arrow_navs_panel, 
+				text_label_three, "rage_panel", current_index)
 
 func open_rage_skill_panel() -> void:
-	pass
+	panel_ini_helper(rage_skill_panel, arrow_navs_panel, 
+				text_label_four, "rage_skill_panel", current_index)
+
+
+func panel_ini_helper(panel: MarginContainer, arrow_panel: VBoxContainer, 
+				label: Label, dict_item: String, index: int) -> void:
+
+	panel.visible = true 
+	arrow_panel.visible = true
+	
+	var dict_helper = text_collect.keys()
+	var desired_key_item = dict_helper[0]
+	
+	var current_panel_dict = text_collect[desired_key_item]
+	var inner_keys = current_panel_dict.keys()
+	var current_inner_key = inner_keys[index]
+	
+	label.text = current_panel_dict[current_inner_key]
+	print(label.text)
+
 
 #endregion
