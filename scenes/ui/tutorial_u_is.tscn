@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://bfsff145cw0w7"]
 
+[ext_resource type="Script" uid="uid://c2i7s2gq43hu4" path="res://scenes/ui/tutorial_u_is.gd" id="1_8g1ap"]
 [ext_resource type="Texture2D" uid="uid://dnog4lnhjsi7c" path="res://assets/sprites/ui/Sprite sheets/Setting menu.png" id="1_qhee8"]
 [ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="2_wttie"]
 [ext_resource type="Texture2D" uid="uid://pcfoldek1vu" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui1.png" id="3_w4rq1"]
@@ -8,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b1wtn8uos2j1h" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui3.png" id="6_8g1ap"]
 [ext_resource type="Texture2D" uid="uid://p4rbmd0y2x4f" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui4.png" id="7_by0sy"]
 [ext_resource type="Texture2D" uid="uid://bfuv4lon3yjtm" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui5.png" id="8_3fg10"]
+[ext_resource type="FontFile" uid="uid://d0t2mm6f2pqd6" path="res://assets/sprites/ui/fonts/pixelFont-7-8x14-sproutLands.ttf" id="8_by0sy"]
 [ext_resource type="Texture2D" uid="uid://coxmlak6xb26a" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui7.png" id="9_yb575"]
 [ext_resource type="Texture2D" uid="uid://bcuqlc57oe4fe" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui8.png" id="10_u3yq3"]
 [ext_resource type="Texture2D" uid="uid://3ib5ax5j34yv" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui9.png" id="11_q7fx2"]
@@ -19,6 +21,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_8g1ap")
 
 [node name="MainMargin" type="MarginContainer" parent="." unique_id=66385108]
 layout_mode = 1
@@ -28,22 +31,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelOneMainContainer" type="MarginContainer" parent="MainMargin" unique_id=1152068288]
+[node name="BasicAttackPanel" type="MarginContainer" parent="MainMargin" unique_id=1152068288]
 custom_minimum_size = Vector2(350, 300)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="MainVBox" type="VBoxContainer" parent="MainMargin/PanelOneMainContainer" unique_id=1065519349]
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin/BasicAttackPanel" unique_id=1065519349]
 layout_mode = 2
 
-[node name="BG" type="NinePatchRect" parent="MainMargin/PanelOneMainContainer/MainVBox" unique_id=1449765454]
+[node name="BG" type="NinePatchRect" parent="MainMargin/BasicAttackPanel/MainVBox" unique_id=1449765454]
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("1_qhee8")
 region_rect = Rect2(139, 12, 106, 122)
 
-[node name="ImageVBContainer" type="VBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG" unique_id=887385723]
+[node name="ImageVBContainer" type="VBoxContainer" parent="MainMargin/BasicAttackPanel/MainVBox/BG" unique_id=887385723]
 custom_minimum_size = Vector2(280, 180)
 layout_mode = 1
 anchors_preset = 5
@@ -55,7 +58,7 @@ offset_right = 140.0
 offset_bottom = 210.0
 grow_horizontal = 2
 
-[node name="BackDrop" type="NinePatchRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer" unique_id=194562435]
+[node name="BackDrop" type="NinePatchRect" parent="MainMargin/BasicAttackPanel/MainVBox/BG/ImageVBContainer" unique_id=194562435]
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("2_wttie")
@@ -65,7 +68,7 @@ patch_margin_top = 9
 patch_margin_right = 8
 patch_margin_bottom = 8
 
-[node name="MainAttkImage" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=436567597]
+[node name="MainAttkImage" type="HBoxContainer" parent="MainMargin/BasicAttackPanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=436567597]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -76,13 +79,14 @@ offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="AttackImage" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainAttkImage" unique_id=468417362]
+[node name="AttackImage" type="TextureRect" parent="MainMargin/BasicAttackPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainAttkImage" unique_id=468417362]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("3_w4rq1")
 expand_mode = 2
 
-[node name="MainComboImage" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=722472652]
+[node name="MainComboImage" type="HBoxContainer" parent="MainMargin/BasicAttackPanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=722472652]
+visible = false
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -93,13 +97,14 @@ offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="ComboImage" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainComboImage" unique_id=268133726]
+[node name="ComboImage" type="TextureRect" parent="MainMargin/BasicAttackPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainComboImage" unique_id=268133726]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("4_gjb1v")
 expand_mode = 2
 
-[node name="MainSkl1Image" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1948765123]
+[node name="MainSkl1Image" type="HBoxContainer" parent="MainMargin/BasicAttackPanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1948765123]
+visible = false
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -110,13 +115,14 @@ offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="Skl1Image" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainSkl1Image" unique_id=2108881225]
+[node name="Skl1Image" type="TextureRect" parent="MainMargin/BasicAttackPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainSkl1Image" unique_id=2108881225]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("4_53qnl")
 expand_mode = 2
 
-[node name="MainSkl2Image" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1096233482]
+[node name="MainSkl2Image" type="HBoxContainer" parent="MainMargin/BasicAttackPanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1096233482]
+visible = false
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -127,13 +133,74 @@ offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="Skl2Image" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainSkl2Image" unique_id=380564628]
+[node name="Skl2Image" type="TextureRect" parent="MainMargin/BasicAttackPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainSkl2Image" unique_id=380564628]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("6_8g1ap")
 expand_mode = 2
 
-[node name="MainJumpImage" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=330610996]
+[node name="TextVBContainer" type="VBoxContainer" parent="MainMargin/BasicAttackPanel/MainVBox/BG" unique_id=1330394920]
+custom_minimum_size = Vector2(280, 80)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -90.0
+offset_right = 140.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="MainMargin/BasicAttackPanel/MainVBox/BG/TextVBContainer" unique_id=443047416]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_by0sy")
+theme_override_font_sizes/font_size = 16
+text = "asdadasdasd"
+
+[node name="BlockJumpPanel" type="MarginContainer" parent="MainMargin" unique_id=961554357]
+visible = false
+custom_minimum_size = Vector2(350, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin/BlockJumpPanel" unique_id=1151907387]
+layout_mode = 2
+
+[node name="BG" type="NinePatchRect" parent="MainMargin/BlockJumpPanel/MainVBox" unique_id=282965549]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_qhee8")
+region_rect = Rect2(139, 12, 106, 122)
+
+[node name="ImageVBContainer" type="VBoxContainer" parent="MainMargin/BlockJumpPanel/MainVBox/BG" unique_id=1675838752]
+custom_minimum_size = Vector2(280, 180)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -140.0
+offset_top = 10.0
+offset_right = 140.0
+offset_bottom = 210.0
+grow_horizontal = 2
+
+[node name="BackDrop" type="NinePatchRect" parent="MainMargin/BlockJumpPanel/MainVBox/BG/ImageVBContainer" unique_id=1238423744]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2_wttie")
+region_rect = Rect2(293, 101, 38, 38)
+patch_margin_left = 7
+patch_margin_top = 9
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="MainJumpImage" type="HBoxContainer" parent="MainMargin/BlockJumpPanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=671629607]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -144,13 +211,13 @@ offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="JumpImage" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainJumpImage" unique_id=1155928848]
+[node name="JumpImage" type="TextureRect" parent="MainMargin/BlockJumpPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainJumpImage" unique_id=1495831376]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("7_by0sy")
 expand_mode = 2
 
-[node name="MainBlockImage" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1688532511]
+[node name="MainBlockImage" type="HBoxContainer" parent="MainMargin/BlockJumpPanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1524992464]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -161,13 +228,66 @@ offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="BlockImage" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainBlockImage" unique_id=178705809]
+[node name="BlockImage" type="TextureRect" parent="MainMargin/BlockJumpPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainBlockImage" unique_id=673607724]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("8_3fg10")
 expand_mode = 2
 
-[node name="MainRAttkImage" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1428126206]
+[node name="TextVBContainer" type="VBoxContainer" parent="MainMargin/BlockJumpPanel/MainVBox/BG" unique_id=1795054288]
+custom_minimum_size = Vector2(280, 80)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -90.0
+offset_right = 140.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="RagePanel" type="MarginContainer" parent="MainMargin" unique_id=969124218]
+visible = false
+custom_minimum_size = Vector2(350, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin/RagePanel" unique_id=1648511546]
+layout_mode = 2
+
+[node name="BG" type="NinePatchRect" parent="MainMargin/RagePanel/MainVBox" unique_id=1441755717]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_qhee8")
+region_rect = Rect2(139, 12, 106, 122)
+
+[node name="ImageVBContainer" type="VBoxContainer" parent="MainMargin/RagePanel/MainVBox/BG" unique_id=1632225216]
+custom_minimum_size = Vector2(280, 180)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -140.0
+offset_top = 10.0
+offset_right = 140.0
+offset_bottom = 210.0
+grow_horizontal = 2
+
+[node name="BackDrop" type="NinePatchRect" parent="MainMargin/RagePanel/MainVBox/BG/ImageVBContainer" unique_id=187107523]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2_wttie")
+region_rect = Rect2(293, 101, 38, 38)
+patch_margin_left = 7
+patch_margin_top = 9
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="MainRAttkImage" type="HBoxContainer" parent="MainMargin/RagePanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=220717293]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -178,13 +298,66 @@ offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="RAttkImage" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainRAttkImage" unique_id=869226441]
+[node name="RAttkImage" type="TextureRect" parent="MainMargin/RagePanel/MainVBox/BG/ImageVBContainer/BackDrop/MainRAttkImage" unique_id=242074847]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("9_yb575")
 expand_mode = 2
 
-[node name="MainRSkl1Image" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1159349343]
+[node name="TextVBContainer" type="VBoxContainer" parent="MainMargin/RagePanel/MainVBox/BG" unique_id=356610917]
+custom_minimum_size = Vector2(280, 80)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -90.0
+offset_right = 140.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="RageSkillPanel" type="MarginContainer" parent="MainMargin" unique_id=2054394906]
+visible = false
+custom_minimum_size = Vector2(350, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin/RageSkillPanel" unique_id=1225231862]
+layout_mode = 2
+
+[node name="BG" type="NinePatchRect" parent="MainMargin/RageSkillPanel/MainVBox" unique_id=1983711231]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_qhee8")
+region_rect = Rect2(139, 12, 106, 122)
+
+[node name="ImageVBContainer" type="VBoxContainer" parent="MainMargin/RageSkillPanel/MainVBox/BG" unique_id=2052009685]
+custom_minimum_size = Vector2(280, 180)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -140.0
+offset_top = 10.0
+offset_right = 140.0
+offset_bottom = 210.0
+grow_horizontal = 2
+
+[node name="BackDrop" type="NinePatchRect" parent="MainMargin/RageSkillPanel/MainVBox/BG/ImageVBContainer" unique_id=1386290355]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2_wttie")
+region_rect = Rect2(293, 101, 38, 38)
+patch_margin_left = 7
+patch_margin_top = 9
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="MainRSkl1Image" type="HBoxContainer" parent="MainMargin/RageSkillPanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1337715191]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -195,13 +368,13 @@ offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="RSkl1Image" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainRSkl1Image" unique_id=1832500550]
+[node name="RSkl1Image" type="TextureRect" parent="MainMargin/RageSkillPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainRSkl1Image" unique_id=941055642]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("10_u3yq3")
 expand_mode = 2
 
-[node name="MainRSkl2Image" type="HBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=898491083]
+[node name="MainRSkl2Image" type="HBoxContainer" parent="MainMargin/RageSkillPanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=430460395]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -212,13 +385,13 @@ offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="RSkl2Image" type="TextureRect" parent="MainMargin/PanelOneMainContainer/MainVBox/BG/ImageVBContainer/BackDrop/MainRSkl2Image" unique_id=766398467]
+[node name="RSkl2Image" type="TextureRect" parent="MainMargin/RageSkillPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainRSkl2Image" unique_id=351914777]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("11_q7fx2")
 expand_mode = 2
 
-[node name="TextVBContainer" type="VBoxContainer" parent="MainMargin/PanelOneMainContainer/MainVBox/BG" unique_id=1330394920]
+[node name="TextVBContainer" type="VBoxContainer" parent="MainMargin/RageSkillPanel/MainVBox/BG" unique_id=832341604]
 custom_minimum_size = Vector2(280, 80)
 layout_mode = 1
 anchors_preset = 7
