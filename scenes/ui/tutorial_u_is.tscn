@@ -14,6 +14,31 @@
 [ext_resource type="Texture2D" uid="uid://bcuqlc57oe4fe" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui8.png" id="10_u3yq3"]
 [ext_resource type="Texture2D" uid="uid://3ib5ax5j34yv" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui9.png" id="11_q7fx2"]
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_by0sy"]
+texture = ExtResource("2_wttie")
+region_rect = Rect2(420, 82, 7, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3fg10"]
+texture = ExtResource("2_wttie")
+region_rect = Rect2(436, 82, 7, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yb575"]
+texture = ExtResource("2_wttie")
+texture_margin_left = 3.0
+region_rect = Rect2(436, 82, 7, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u3yq3"]
+texture = ExtResource("2_wttie")
+region_rect = Rect2(421, 66, 7, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q7fx2"]
+texture = ExtResource("2_wttie")
+region_rect = Rect2(437, 66, 7, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_thq42"]
+texture = ExtResource("2_wttie")
+region_rect = Rect2(437, 66, 7, 12)
+
 [node name="TutorialUIs" type="Control" unique_id=986002305]
 layout_mode = 3
 anchors_preset = 15
@@ -154,16 +179,16 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="Label" type="Label" parent="MainMargin/BasicAttackPanel/MainVBox/BG/TextVBContainer" unique_id=443047416]
+[node name="Label1" type="Label" parent="MainMargin/BasicAttackPanel/MainVBox/BG/TextVBContainer" unique_id=443047416]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("8_by0sy")
 theme_override_font_sizes/font_size = 16
-text = "asdadasdasd"
+autowrap_mode = 2
 
 [node name="BlockJumpPanel" type="MarginContainer" parent="MainMargin" unique_id=961554357]
-visible = false
 custom_minimum_size = Vector2(350, 300)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -249,8 +274,16 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
 
+[node name="Label2" type="Label" parent="MainMargin/BlockJumpPanel/MainVBox/BG/TextVBContainer" unique_id=1514908058]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_by0sy")
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 2
+
 [node name="RagePanel" type="MarginContainer" parent="MainMargin" unique_id=969124218]
-visible = false
 custom_minimum_size = Vector2(350, 300)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -319,8 +352,16 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
 
+[node name="Label3" type="Label" parent="MainMargin/RagePanel/MainVBox/BG/TextVBContainer" unique_id=803501218]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_by0sy")
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 2
+
 [node name="RageSkillPanel" type="MarginContainer" parent="MainMargin" unique_id=2054394906]
-visible = false
 custom_minimum_size = Vector2(350, 300)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -405,3 +446,48 @@ offset_right = 140.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="Label4" type="Label" parent="MainMargin/RageSkillPanel/MainVBox/BG/TextVBContainer" unique_id=253470719]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_by0sy")
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 2
+
+[node name="ArrowNavsContainer" type="VBoxContainer" parent="MainMargin" unique_id=1703331459]
+custom_minimum_size = Vector2(420, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMargin/ArrowNavsContainer" unique_id=345307521]
+custom_minimum_size = Vector2(420, 25)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMargin/ArrowNavsContainer/HBoxContainer" unique_id=1435312943]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+
+[node name="ArrowLeftButton" type="Button" parent="MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer" unique_id=1931266973]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_by0sy")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3fg10")
+theme_override_styles/hover = SubResource("StyleBoxTexture_yb575")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainMargin/ArrowNavsContainer/HBoxContainer" unique_id=633856599]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+
+[node name="ArrowRightButton" type="Button" parent="MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer2" unique_id=1746349807]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_styles/normal = SubResource("StyleBoxTexture_u3yq3")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_q7fx2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_thq42")

@@ -13,6 +13,36 @@ extends Control
 
 #endregion
 
+#region Text Panels Labels
+
+@onready var text_label_one: Label = $MainMargin/BasicAttackPanel/MainVBox/BG/TextVBContainer/Label1
+@onready var text_label_two: Label = $MainMargin/BlockJumpPanel/MainVBox/BG/TextVBContainer/Label2
+@onready var text_label_three: Label = $MainMargin/RagePanel/MainVBox/BG/TextVBContainer/Label3
+@onready var text_label_four: Label = $MainMargin/RageSkillPanel/MainVBox/BG/TextVBContainer/Label4
+
+#endregion
+
+#region Arrow buttons
+
+@onready var arrow_left: Button = $MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer/ArrowLeftButton
+@onready var arrow_right: Button = $MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer2/ArrowRightButton
+
+#endregion
+
+
+#region Arrays 
+
+@onready var panel_arrays: Array = [
+	attk_tutorial_panel,
+	jump_block_panel,
+	rage_panel,
+	rage_skill_panel
+]
+
+
+
+#endregion
+
 #region Texts 
 
 @onready var text_collect: Dictionary = {
@@ -29,8 +59,7 @@ extends Control
 	},
 	
 	"rage_panel": {
-		"rage_tut": "Normal attacks and combo accumulates rage. 
-					Rage changes main attack"
+		"rage_tut": "Normal attacks and combo brings Aminya closer to true Spidor form. Rage changes main attack combos"
 	},
 	
 	"rage_skill_panel": {
@@ -40,17 +69,31 @@ extends Control
 	}
 }
 
-
 #endregion
-
 
 #endregion 
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	for panel in panel_arrays:
+		panel.visible = false
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+
+#region Open Panels 
+
+func open_attk_tutorial_panel() -> void:
+	pass
+	
+func open_jump_block_panel() -> void:
+	pass
+
+func open_rage_panel() -> void:
+	pass
+
+func open_rage_skill_panel() -> void:
+	pass
+
+#endregion
