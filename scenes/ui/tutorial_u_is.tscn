@@ -8,8 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://baoy0niylfxhe" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui6.png" id="4_gjb1v"]
 [ext_resource type="Texture2D" uid="uid://b1wtn8uos2j1h" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui3.png" id="6_8g1ap"]
 [ext_resource type="Texture2D" uid="uid://p4rbmd0y2x4f" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui4.png" id="7_by0sy"]
-[ext_resource type="Texture2D" uid="uid://bfuv4lon3yjtm" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui5.png" id="8_3fg10"]
 [ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="8_by0sy"]
+[ext_resource type="Texture2D" uid="uid://ba5t3eknpll07" path="res://assets/sprites/player/block_v2.png" id="9_by0sy"]
 [ext_resource type="Texture2D" uid="uid://coxmlak6xb26a" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui7.png" id="9_yb575"]
 [ext_resource type="Texture2D" uid="uid://bcuqlc57oe4fe" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui8.png" id="10_u3yq3"]
 [ext_resource type="Texture2D" uid="uid://3ib5ax5j34yv" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui9.png" id="11_q7fx2"]
@@ -254,13 +254,14 @@ offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="JumpImage" type="TextureRect" parent="MainMargin/BlockJumpPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainJumpImage" unique_id=1495831376]
+[node name="BlockImage" type="TextureRect" parent="MainMargin/BlockJumpPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainJumpImage" unique_id=673607724]
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("7_by0sy")
+texture = ExtResource("9_by0sy")
 expand_mode = 2
 
 [node name="MainBlockImage" type="HBoxContainer" parent="MainMargin/BlockJumpPanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1524992464]
+visible = false
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -271,10 +272,10 @@ offset_right = 265.0
 offset_bottom = -10.0
 grow_vertical = 2
 
-[node name="BlockImage" type="TextureRect" parent="MainMargin/BlockJumpPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainBlockImage" unique_id=673607724]
+[node name="JumpImage" type="TextureRect" parent="MainMargin/BlockJumpPanel/MainVBox/BG/ImageVBContainer/BackDrop/MainBlockImage" unique_id=1495831376]
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("8_3fg10")
+texture = ExtResource("7_by0sy")
 expand_mode = 2
 
 [node name="TextVBContainer" type="VBoxContainer" parent="MainMargin/BlockJumpPanel/MainVBox/BG" unique_id=1795054288]
@@ -446,6 +447,7 @@ texture = ExtResource("10_u3yq3")
 expand_mode = 2
 
 [node name="MainRSkl2Image" type="HBoxContainer" parent="MainMargin/RageSkillPanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=430460395]
+visible = false
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -528,19 +530,19 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_u3yq3")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_q7fx2")
 theme_override_styles/hover = SubResource("StyleBoxTexture_thq42")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainMargin" unique_id=1233488794]
+[node name="ExitButtonContainer" type="MarginContainer" parent="MainMargin" unique_id=1233488794]
 custom_minimum_size = Vector2(370, 320)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMargin/MarginContainer" unique_id=1490092494]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMargin/ExitButtonContainer" unique_id=1490092494]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="ExitButton" type="Button" parent="MainMargin/MarginContainer/VBoxContainer" unique_id=1538709441]
+[node name="ExitButton" type="Button" parent="MainMargin/ExitButtonContainer/VBoxContainer" unique_id=1538709441]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxTexture_c4ne1")
@@ -549,4 +551,4 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_wqi4e")
 
 [connection signal="pressed" from="MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer/ArrowLeftButton" to="." method="_on_arrow_left_button_pressed"]
 [connection signal="pressed" from="MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer2/ArrowRightButton" to="." method="_on_arrow_right_button_pressed"]
-[connection signal="pressed" from="MainMargin/MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="MainMargin/ExitButtonContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
