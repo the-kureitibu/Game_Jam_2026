@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b1wtn8uos2j1h" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui3.png" id="6_8g1ap"]
 [ext_resource type="Texture2D" uid="uid://p4rbmd0y2x4f" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui4.png" id="7_by0sy"]
 [ext_resource type="Texture2D" uid="uid://bfuv4lon3yjtm" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui5.png" id="8_3fg10"]
-[ext_resource type="FontFile" uid="uid://d0t2mm6f2pqd6" path="res://assets/sprites/ui/fonts/pixelFont-7-8x14-sproutLands.ttf" id="8_by0sy"]
+[ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="8_by0sy"]
 [ext_resource type="Texture2D" uid="uid://coxmlak6xb26a" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui7.png" id="9_yb575"]
 [ext_resource type="Texture2D" uid="uid://bcuqlc57oe4fe" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui8.png" id="10_u3yq3"]
 [ext_resource type="Texture2D" uid="uid://3ib5ax5j34yv" path="res://assets/sprites/ui/tutorial_uis/tutorial_ui9.png" id="11_q7fx2"]
@@ -39,6 +39,18 @@ region_rect = Rect2(437, 66, 7, 12)
 texture = ExtResource("2_wttie")
 region_rect = Rect2(437, 66, 7, 12)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c4ne1"]
+texture = ExtResource("2_wttie")
+region_rect = Rect2(837, 132, 22, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6a34c"]
+texture = ExtResource("2_wttie")
+region_rect = Rect2(869, 134, 22, 22)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wqi4e"]
+texture = ExtResource("2_wttie")
+region_rect = Rect2(869, 134, 22, 22)
+
 [node name="TutorialUIs" type="Control" unique_id=986002305]
 layout_mode = 3
 anchors_preset = 15
@@ -57,7 +69,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="BasicAttackPanel" type="MarginContainer" parent="MainMargin" unique_id=1152068288]
-visible = false
 custom_minimum_size = Vector2(350, 300)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -180,11 +191,16 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
 
+[node name="Spacing" type="Control" parent="MainMargin/BasicAttackPanel/MainVBox/BG/TextVBContainer" unique_id=53016931]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
 [node name="Label1" type="Label" parent="MainMargin/BasicAttackPanel/MainVBox/BG/TextVBContainer" unique_id=443047416]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/font = ExtResource("8_by0sy")
 theme_override_font_sizes/font_size = 16
 autowrap_mode = 2
@@ -276,11 +292,16 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
 
+[node name="Spacing2" type="Control" parent="MainMargin/BlockJumpPanel/MainVBox/BG/TextVBContainer" unique_id=510812779]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
 [node name="Label2" type="Label" parent="MainMargin/BlockJumpPanel/MainVBox/BG/TextVBContainer" unique_id=1514908058]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/font = ExtResource("8_by0sy")
 theme_override_font_sizes/font_size = 16
 autowrap_mode = 2
@@ -355,11 +376,16 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
 
+[node name="Spacing3" type="Control" parent="MainMargin/RagePanel/MainVBox/BG/TextVBContainer" unique_id=670092688]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
 [node name="Label3" type="Label" parent="MainMargin/RagePanel/MainVBox/BG/TextVBContainer" unique_id=803501218]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/font = ExtResource("8_by0sy")
 theme_override_font_sizes/font_size = 16
 autowrap_mode = 2
@@ -451,11 +477,16 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
 
+[node name="Spacing4" type="Control" parent="MainMargin/RageSkillPanel/MainVBox/BG/TextVBContainer" unique_id=286864988]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
 [node name="Label4" type="Label" parent="MainMargin/RageSkillPanel/MainVBox/BG/TextVBContainer" unique_id=253470719]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/font = ExtResource("8_by0sy")
 theme_override_font_sizes/font_size = 16
 autowrap_mode = 2
@@ -496,3 +527,26 @@ size_flags_horizontal = 8
 theme_override_styles/normal = SubResource("StyleBoxTexture_u3yq3")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_q7fx2")
 theme_override_styles/hover = SubResource("StyleBoxTexture_thq42")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMargin" unique_id=1233488794]
+custom_minimum_size = Vector2(370, 320)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMargin/MarginContainer" unique_id=1490092494]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="ExitButton" type="Button" parent="MainMargin/MarginContainer/VBoxContainer" unique_id=1538709441]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxTexture_c4ne1")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6a34c")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wqi4e")
+
+[connection signal="pressed" from="MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer/ArrowLeftButton" to="." method="_on_arrow_left_button_pressed"]
+[connection signal="pressed" from="MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer2/ArrowRightButton" to="." method="_on_arrow_right_button_pressed"]
+[connection signal="pressed" from="MainMargin/MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

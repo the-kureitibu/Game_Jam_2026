@@ -45,6 +45,11 @@ extends Control
 #region Identifiers
 
 @onready var current_index := 0
+var is_attk_tutorial_panel := false
+var is_jump_block_panel := false
+var is_rage_panel := false
+var is_rage_skill_panel := false
+
 
 #endregion
 
@@ -59,7 +64,7 @@ extends Control
 	},
 	"block_jump_panel": {
 
-		"jump_tut": "Press SpaceBar to jump",
+		"jump_tut": "Press Space Bar to jump",
 		"block_tut": "Press Right Mouse button to block",
 	},
 	
@@ -83,8 +88,10 @@ func _ready() -> void:
 	#
 	#for panel in panel_arrays:
 		#panel.visible = false
-	open_attk_tutorial_panel()
-	
+	#open_attk_tutorial_panel()
+	#open_jump_block_panel()
+	#open_rage_panel()
+	open_rage_skill_panel()
 
 func _process(delta: float) -> void:
 	pass
@@ -93,37 +100,63 @@ func _process(delta: float) -> void:
 #region Open Panels 
 
 func open_attk_tutorial_panel() -> void:
+	is_attk_tutorial_panel = true
+	
 	panel_ini_helper(attk_tutorial_panel, arrow_navs_panel, 
-					text_label_one, "attack_panel", current_index)
+					text_label_one, 0, current_index)
 	
 func open_jump_block_panel() -> void:
+	is_jump_block_panel = true
+
 	panel_ini_helper(jump_block_panel, arrow_navs_panel, 
-				text_label_two, "block_jump_panel", current_index)
+				text_label_two, 1, current_index)
 
 func open_rage_panel() -> void:
+	is_rage_panel = true
+	
 	panel_ini_helper(rage_panel, arrow_navs_panel, 
-				text_label_three, "rage_panel", current_index)
+				text_label_three, 2, current_index)
 
 func open_rage_skill_panel() -> void:
+	is_rage_skill_panel = true
+	
 	panel_ini_helper(rage_skill_panel, arrow_navs_panel, 
-				text_label_four, "rage_skill_panel", current_index)
+				text_label_four, 3, current_index)
 
 
 func panel_ini_helper(panel: MarginContainer, arrow_panel: VBoxContainer, 
-				label: Label, dict_item: String, index: int) -> void:
+				label: Label, main_dict_item: int, index: int) -> void:
 
 	panel.visible = true 
 	arrow_panel.visible = true
 	
 	var dict_helper = text_collect.keys()
-	var desired_key_item = dict_helper[0]
+	var desired_key_item = dict_helper[main_dict_item]
 	
 	var current_panel_dict = text_collect[desired_key_item]
 	var inner_keys = current_panel_dict.keys()
 	var current_inner_key = inner_keys[index]
 	
 	label.text = current_panel_dict[current_inner_key]
-	print(label.text)
+
+#endregion
+
+#region Button Navigations
 
 
+func _on_arrow_left_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_arrow_right_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+#endregion
+
+#region Exit Button
+
+func _on_exit_button_pressed() -> void:
+	pass # Replace with function body.
+	
 #endregion
