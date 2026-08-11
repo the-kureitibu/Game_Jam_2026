@@ -143,11 +143,11 @@ var is_panel_open := false
 #endregion 
 
 func _ready() -> void:
-	arrow_navs_panel.visible = false
-	
-	for panel in panel_arrays:
-		panel.visible = false
-	#open_attk_tutorial_panel()
+	#arrow_navs_panel.visible = false
+	#
+	#for panel in panel_arrays:
+		#panel.visible = false
+	open_attk_tutorial_panel()
 	#open_jump_block_panel()
 	#open_rage_panel()
 	#open_rage_skill_panel()
@@ -156,7 +156,7 @@ func _process(delta: float) -> void:
 	pass
 
 
-#region Open Panels 
+#region Initial Open Panels 
 
 func open_attk_tutorial_panel() -> void:
 	if is_panel_open:
@@ -225,13 +225,15 @@ func panel_ini_helper(panel: MarginContainer, arrow_panel: VBoxContainer,
 	var current_inner_key = inner_keys[index]
 	
 	label.text = current_panel_dict[current_inner_key]
+	
+	#current_index += 1
 
-#endregion
+#endregion -- Initial Open Panels 
 
 #region Button Navigations
 
-
 func button_nav_text_helper(label: Label, main_dict_item: int, index: int) -> void:
+	print("Did button nav run? ")
 
 	var dict_helper = text_collect.keys()
 	var desired_key_item = dict_helper[main_dict_item]
@@ -241,21 +243,36 @@ func button_nav_text_helper(label: Label, main_dict_item: int, index: int) -> vo
 	var current_inner_key = inner_keys[index]
 	
 	label.text = current_panel_dict[current_inner_key]
+	print("last label text: ", label.text)
 
 func _on_arrow_left_button_pressed() -> void:
+	print("press working?")
+	print(is_attk_tutorial_panel, " attk? ")
+	current_index -= 1
 	
-	var _index: int = 0
+	_test()
 	
-	_index += 1 
+	
+	print(current_index, " Current index at end")
 
-	current_index = _index
+func _test() -> void:
+	#var _index: int = 0
+
+	#current_index = _index
+	#print("current index at start: ", current_index)
+
 
 	if is_attk_tutorial_panel:
+		max_index = 3
+		
+		button_index_helper()
+		
 		current_panel = attk_tutorial_panel
 		current_image_array = panel_one_images
 		current_image_panel = current_image_array[current_index]
-		max_index = 3
+		
 		button_nav_text_helper(text_label_one, 0, current_index)
+
 		
 	elif is_jump_block_panel:
 		current_panel = jump_block_panel
@@ -263,19 +280,25 @@ func _on_arrow_left_button_pressed() -> void:
 		current_image_panel = current_image_array[current_index]
 		max_index = 1
 		button_nav_text_helper(text_label_one, 1, current_index)
-		
+
 	elif is_rage_panel:
 		current_panel = rage_panel
 		current_image_panel = main_r_attk_image
 		max_index = 0
 		button_nav_text_helper(text_label_one, 2, current_index)
-		
+
 	elif is_rage_skill_panel:
 		current_panel = rage_skill_panel 
 		current_image_array = panel_four_images
 		current_image_panel = current_image_array[current_index]
 		max_index = 1
 		button_nav_text_helper(text_label_one, 3, current_index)
+
+func button_index_helper() -> void:
+	if current_index > max_index:
+		current_index = 0
+	elif current_index < 0 or current_index == -1:
+		current_index = max_index
 
 
 func _on_arrow_right_button_pressed() -> void:
