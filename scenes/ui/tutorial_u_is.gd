@@ -30,6 +30,13 @@ extends Control
 
 #endregion
 
+#region Exit button
+
+@onready var exit_button: Button = $MainMargin/ExitButtonContainer/VBoxContainer/ExitButton
+
+
+#endregion 
+
 
 #region Arrays 
 
@@ -82,6 +89,10 @@ extends Control
 @onready var panel_two_images: Array = [
  	main_jump_image,
 	main_block_image
+]
+
+@onready var panel_three_images: Array = [
+	main_r_attk_image
 ]
 
 @onready var panel_four_images: Array = [
@@ -137,7 +148,10 @@ var is_panel_open := false
 @onready var current_image_array: Array
 @onready var current_image_panel: HBoxContainer
 @onready var max_index: int = 0
-	
+@onready var test_arr: Array = []
+
+
+
 #endregion
 
 #endregion 
@@ -147,10 +161,10 @@ func _ready() -> void:
 	#
 	#for panel in panel_arrays:
 		#panel.visible = false
-	open_attk_tutorial_panel()
+	#open_attk_tutorial_panel()
 	#open_jump_block_panel()
 	#open_rage_panel()
-	#open_rage_skill_panel()
+	open_rage_skill_panel()
 
 func _process(delta: float) -> void:
 	pass
@@ -170,6 +184,9 @@ func open_attk_tutorial_panel() -> void:
 	
 	panel_ini_helper(attk_tutorial_panel, arrow_navs_panel, 
 					text_label_one, 0, current_index)
+	
+	test_arr = panel_one_images.duplicate()
+	print(test_arr, " :before")
 	
 func open_jump_block_panel() -> void:
 	if is_panel_open:
@@ -233,7 +250,6 @@ func panel_ini_helper(panel: MarginContainer, arrow_panel: VBoxContainer,
 #region Button Navigations
 
 func button_nav_text_helper(label: Label, main_dict_item: int, index: int) -> void:
-	print("Did button nav run? ")
 
 	var dict_helper = text_collect.keys()
 	var desired_key_item = dict_helper[main_dict_item]
@@ -243,56 +259,58 @@ func button_nav_text_helper(label: Label, main_dict_item: int, index: int) -> vo
 	var current_inner_key = inner_keys[index]
 	
 	label.text = current_panel_dict[current_inner_key]
-	print("last label text: ", label.text)
 
 func _on_arrow_left_button_pressed() -> void:
-	print("press working?")
-	print(is_attk_tutorial_panel, " attk? ")
+
 	current_index -= 1
 	
-	_test()
+	switch_image_and_label()
+
+
+func _on_arrow_right_button_pressed() -> void:
+	current_index += 1
 	
+	switch_image_and_label()
 	
-	print(current_index, " Current index at end")
-
-func _test() -> void:
-	#var _index: int = 0
-
-	#current_index = _index
-	#print("current index at start: ", current_index)
-
+func switch_image_and_label() -> void:
 
 	if is_attk_tutorial_panel:
+		
 		max_index = 3
 		
 		button_index_helper()
 		
-		current_panel = attk_tutorial_panel
-		current_image_array = panel_one_images
-		current_image_panel = current_image_array[current_index]
-		
+		button_image_helper(attk_tutorial_panel, panel_one_images)
+
 		button_nav_text_helper(text_label_one, 0, current_index)
 
 		
 	elif is_jump_block_panel:
-		current_panel = jump_block_panel
-		current_image_array = panel_two_images
-		current_image_panel = current_image_array[current_index]
 		max_index = 1
-		button_nav_text_helper(text_label_one, 1, current_index)
+		
+		button_index_helper()
+		
+		button_image_helper(jump_block_panel, panel_two_images)
+
+		button_nav_text_helper(text_label_two, 1, current_index)
 
 	elif is_rage_panel:
-		current_panel = rage_panel
-		current_image_panel = main_r_attk_image
 		max_index = 0
-		button_nav_text_helper(text_label_one, 2, current_index)
+		
+		button_index_helper()
+		
+		button_image_helper(rage_panel, panel_three_images)
+
+		button_nav_text_helper(text_label_three, 2, current_index)
 
 	elif is_rage_skill_panel:
-		current_panel = rage_skill_panel 
-		current_image_array = panel_four_images
-		current_image_panel = current_image_array[current_index]
 		max_index = 1
-		button_nav_text_helper(text_label_one, 3, current_index)
+		
+		button_index_helper()
+		
+		button_image_helper(rage_skill_panel, panel_four_images)
+		
+		button_nav_text_helper(text_label_four, 3, current_index)
 
 func button_index_helper() -> void:
 	if current_index > max_index:
@@ -300,10 +318,15 @@ func button_index_helper() -> void:
 	elif current_index < 0 or current_index == -1:
 		current_index = max_index
 
-
-func _on_arrow_right_button_pressed() -> void:
-	pass # Replace with function body.
-
+func button_image_helper(panel: MarginContainer, image_array: Array) -> void:
+	current_panel = panel
+	current_image_array = image_array
+	current_image_panel = current_image_array[current_index]
+	
+	for array in image_array:
+		array.visible = false
+		
+	current_image_panel.visible = true
 
 #endregion
 
@@ -314,6 +337,9 @@ func _on_exit_button_pressed() -> void:
 	
 	for panel in panel_arrays:
 		panel.visible = false
+	
+	arrow_navs_panel.visible = false
+	exit_button.visible = false
 
 	current_index = 0
 	is_attk_tutorial_panel = false
@@ -321,5 +347,6 @@ func _on_exit_button_pressed() -> void:
 	is_rage_panel = false
 	is_rage_skill_panel = false
 	is_panel_open = false
+
 
 #endregion
