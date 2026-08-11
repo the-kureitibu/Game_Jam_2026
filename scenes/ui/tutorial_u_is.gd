@@ -131,6 +131,15 @@ var is_panel_open := false
 
 #endregion
 
+#region Button helpers
+
+@onready var current_panel: MarginContainer
+@onready var current_image_array: Array
+@onready var current_image_panel: HBoxContainer
+@onready var max_index: int = 0
+	
+#endregion
+
 #endregion 
 
 func _ready() -> void:
@@ -222,31 +231,51 @@ func panel_ini_helper(panel: MarginContainer, arrow_panel: VBoxContainer,
 #region Button Navigations
 
 
+func button_nav_text_helper(label: Label, main_dict_item: int, index: int) -> void:
+
+	var dict_helper = text_collect.keys()
+	var desired_key_item = dict_helper[main_dict_item]
+	
+	var current_panel_dict = text_collect[desired_key_item]
+	var inner_keys = current_panel_dict.keys()
+	var current_inner_key = inner_keys[index]
+	
+	label.text = current_panel_dict[current_inner_key]
+
 func _on_arrow_left_button_pressed() -> void:
 	
-	var current_panel: MarginContainer
-	var current_image_array: Array
-	var current_image_panel: HBoxContainer
 	var _index: int = 0
 	
+	_index += 1 
+
+	current_index = _index
 
 	if is_attk_tutorial_panel:
 		current_panel = attk_tutorial_panel
 		current_image_array = panel_one_images
-		current_image_panel = current_image_array[_index]
+		current_image_panel = current_image_array[current_index]
+		max_index = 3
+		button_nav_text_helper(text_label_one, 0, current_index)
+		
 	elif is_jump_block_panel:
 		current_panel = jump_block_panel
 		current_image_array = panel_two_images
-		current_image_panel = current_image_array[_index]
+		current_image_panel = current_image_array[current_index]
+		max_index = 1
+		button_nav_text_helper(text_label_one, 1, current_index)
+		
 	elif is_rage_panel:
 		current_panel = rage_panel
 		current_image_panel = main_r_attk_image
+		max_index = 0
+		button_nav_text_helper(text_label_one, 2, current_index)
+		
 	elif is_rage_skill_panel:
 		current_panel = rage_skill_panel 
 		current_image_array = panel_four_images
-		current_image_panel = current_image_array[_index]
-
-
+		current_image_panel = current_image_array[current_index]
+		max_index = 1
+		button_nav_text_helper(text_label_one, 3, current_index)
 
 
 func _on_arrow_right_button_pressed() -> void:
