@@ -14,6 +14,8 @@ extends Node2D
 @onready var arrow_three: Sprite2D = $ArrowThree
 @onready var arrow_four: Sprite2D = $ArrowFour
 
+@onready var tutorial_u_is: Control = $UILayer/TutorialUIs
+
 #region Collision Shapes
 
 @onready var arrow_one_col: CollisionShape2D = $ArrowOneArea/ArrowOneCol
@@ -22,6 +24,16 @@ extends Node2D
 @onready var arrow_four_col: CollisionShape2D = $ArrowFourArea/ArrowFourCol
 
 #endregion
+
+#region Signals
+
+var is_in_arrow_one: bool = false
+var is_in_arrow_two: bool = false
+var is_in_arrow_three: bool = false
+var is_in_arrow_four: bool = false
+
+#endregion 
+
 
 #region Arrow Arrays 
 
@@ -52,34 +64,75 @@ func _ready() -> void:
 	animate_arrows()
 
 
+
 #func _process(delta: float) -> void:
 	#animate_arrows()
+
+
+#region Test Region
+
+func _unhandled_input(event: InputEvent) -> void:
+
+	if event.is_action_pressed("up"):
+		if is_in_arrow_one:
+			tutorial_u_is.open_attk_tutorial_panel()
+		elif is_in_arrow_two:
+			tutorial_u_is.open_jump_block_panel()
+		elif is_in_arrow_three:
+			tutorial_u_is.open_rage_panel()
+		elif is_in_arrow_four: 	
+			tutorial_u_is.open_rage_skill_panel()
+		
+	
+
+#endregion
 
 
 #region Area Signals
 
 func _on_exit_area_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
-
-	if player:
-		print("Move to main scene")
+	
+	print("Exited Map")
 
 func _on_arrow_one_area_body_entered(body: Node2D) -> void:
-	pass # Replace with function body.
+
+	var player = body.get_tree().get_first_node_in_group("Player_target")
+
+	if player:
+		is_in_arrow_one = true
 
 
 func _on_arrow_two_area_body_entered(body: Node2D) -> void:
-	pass # Replace with function body.
+	
+	var player = body.get_tree().get_first_node_in_group("Player_target")
+
+	if player:
+		is_in_arrow_two = true
 
 
 func _on_arrow_three_area_body_entered(body: Node2D) -> void:
-	pass # Replace with function body.
+	var player = body.get_tree().get_first_node_in_group("Player_target")
+
+	if player:
+		is_in_arrow_three = true
 
 
 func _on_arrow_four_area_body_entered(body: Node2D) -> void:
-	pass # Replace with function body.
+	
+	var player = body.get_tree().get_first_node_in_group("Player_target")
+
+	if player:
+		is_in_arrow_four = true
+
+
 
 #endregion
+
+#region test Signals
+
+#endregion
+
 
 #region Arrow Animations
 
@@ -94,5 +147,28 @@ func animate_arrows() -> void:
 		tween.tween_property(arrow, "position", up_pos, arrow_float_duration)
 		tween.tween_property(arrow, "position", original_pos, arrow_float_duration)
 
+
+#endregion
+
+#region Area Body Exited
+
+
+func _on_arrow_one_area_body_exited(body: Node2D) -> void:
+
+	is_in_arrow_one = false
+
+
+func _on_arrow_two_area_body_exited(body: Node2D) -> void:
+	
+	is_in_arrow_two = false
+
+
+func _on_arrow_three_area_body_exited(body: Node2D) -> void:
+	
+	is_in_arrow_three = false
+
+func _on_arrow_four_area_body_exited(body: Node2D) -> void:
+	
+	is_in_arrow_four = false
 
 #endregion

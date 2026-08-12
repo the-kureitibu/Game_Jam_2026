@@ -157,20 +157,24 @@ var is_panel_open := false
 #endregion 
 
 func _ready() -> void:
-	#arrow_navs_panel.visible = false
-	#
-	#for panel in panel_arrays:
-		#panel.visible = false
+	
+	arrow_navs_panel.visible = false
+	
+	for panel in panel_arrays:
+		panel.visible = false
+		
+	exit_button.visible = false
 	#open_attk_tutorial_panel()
 	#open_jump_block_panel()
 	#open_rage_panel()
-	open_rage_skill_panel()
-
-func _process(delta: float) -> void:
-	pass
+	#open_rage_skill_panel()
 
 
 #region Initial Open Panels 
+
+func test_func() -> void:
+	print("Func worked")
+
 
 func open_attk_tutorial_panel() -> void:
 	if is_panel_open:
@@ -184,9 +188,7 @@ func open_attk_tutorial_panel() -> void:
 	
 	panel_ini_helper(attk_tutorial_panel, arrow_navs_panel, 
 					text_label_one, 0, current_index)
-	
-	test_arr = panel_one_images.duplicate()
-	print(test_arr, " :before")
+
 	
 func open_jump_block_panel() -> void:
 	if is_panel_open:
@@ -195,6 +197,7 @@ func open_jump_block_panel() -> void:
 	if is_jump_block_panel:
 		return
 		
+
 	is_panel_open = true 
 	is_jump_block_panel = true
 
@@ -207,7 +210,7 @@ func open_rage_panel() -> void:
 	
 	if is_rage_panel:
 		return
-		
+
 	is_panel_open = true 
 	is_rage_panel = true
 	
@@ -220,7 +223,8 @@ func open_rage_skill_panel() -> void:
 	
 	if is_rage_skill_panel:
 		return
-		
+	
+	
 	is_panel_open = true 
 	is_rage_skill_panel = true
 	
@@ -233,6 +237,7 @@ func panel_ini_helper(panel: MarginContainer, arrow_panel: VBoxContainer,
 
 	panel.visible = true 
 	arrow_panel.visible = true
+	exit_button.visible = true
 	
 	var dict_helper = text_collect.keys()
 	var desired_key_item = dict_helper[main_dict_item]
@@ -243,7 +248,6 @@ func panel_ini_helper(panel: MarginContainer, arrow_panel: VBoxContainer,
 	
 	label.text = current_panel_dict[current_inner_key]
 	
-	#current_index += 1
 
 #endregion -- Initial Open Panels 
 

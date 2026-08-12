@@ -61,6 +61,7 @@ grow_vertical = 2
 script = ExtResource("1_8g1ap")
 
 [node name="MainMargin" type="MarginContainer" parent="." unique_id=66385108]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -548,6 +549,72 @@ size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxTexture_c4ne1")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_6a34c")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wqi4e")
+
+[node name="TextTutorial" type="MarginContainer" parent="." unique_id=1695768984]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextTutorial" unique_id=1305329491]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextTutorial/VBoxContainer" unique_id=1838955901]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+
+[node name="HSpacer" type="Control" parent="TextTutorial/VBoxContainer/HBoxContainer" unique_id=815213477]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextTutorial/VBoxContainer/HBoxContainer" unique_id=1466874005]
+custom_minimum_size = Vector2(80, 75)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="VSpace" type="Control" parent="TextTutorial/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1140741944]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="TextTutorial/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=649820329]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/font = ExtResource("8_by0sy")
+theme_override_font_sizes/font_size = 32
+text = "w"
+
+[node name="Label" type="Label" parent="TextTutorial/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=250592694]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/font = ExtResource("8_by0sy")
+theme_override_font_sizes/font_size = 32
+text = "a s d"
+
+[node name="Control" type="Control" parent="TextTutorial/VBoxContainer/HBoxContainer" unique_id=865535262]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextTutorial/VBoxContainer/HBoxContainer" unique_id=847500733]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TextTutorial/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=291011732]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/font = ExtResource("8_by0sy")
+theme_override_font_sizes/font_size = 32
+text = "To move"
 
 [connection signal="pressed" from="MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer/ArrowLeftButton" to="." method="_on_arrow_left_button_pressed"]
 [connection signal="pressed" from="MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer2/ArrowRightButton" to="." method="_on_arrow_right_button_pressed"]

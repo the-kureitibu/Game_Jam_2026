@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dfiomxa4fli0f" path="res://scenes/player_scene/player_scene.tscn" id="2_i3167"]
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="3_mhp1y"]
 [ext_resource type="Texture2D" uid="uid://br4j26k18rpl2" path="res://assets/sprites/environment/misc.png" id="5_btjhv"]
+[ext_resource type="PackedScene" uid="uid://bfsff145cw0w7" path="res://scenes/ui/tutorial_u_is.tscn" id="6_t00yd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_btjhv"]
 size = Vector2(76, 307)
@@ -134,8 +135,16 @@ shape = SubResource("CircleShape2D_pjum0")
 position = Vector2(418, -131)
 shape = SubResource("CircleShape2D_vxa0g")
 
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=2132063985]
+
+[node name="TutorialUIs" parent="UILayer" unique_id=986002305 instance=ExtResource("6_t00yd")]
+
 [connection signal="body_entered" from="ExitArea" to="." method="_on_exit_area_body_entered"]
 [connection signal="body_entered" from="ArrowOneArea" to="." method="_on_arrow_one_area_body_entered"]
+[connection signal="body_exited" from="ArrowOneArea" to="." method="_on_arrow_one_area_body_exited"]
 [connection signal="body_entered" from="ArrowTwoArea" to="." method="_on_arrow_two_area_body_entered"]
+[connection signal="body_exited" from="ArrowTwoArea" to="." method="_on_arrow_two_area_body_exited"]
 [connection signal="body_entered" from="ArrowThreeArea" to="." method="_on_arrow_three_area_body_entered"]
+[connection signal="body_exited" from="ArrowThreeArea" to="." method="_on_arrow_three_area_body_exited"]
 [connection signal="body_entered" from="ArrowFourArea" to="." method="_on_arrow_four_area_body_entered"]
+[connection signal="body_exited" from="ArrowFourArea" to="." method="_on_arrow_four_area_body_exited"]
