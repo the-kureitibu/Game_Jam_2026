@@ -72,7 +72,7 @@ func _ready() -> void:
 #region Test Region
 
 func _unhandled_input(event: InputEvent) -> void:
-
+	
 	if event.is_action_pressed("up"):
 		if is_in_arrow_one:
 			tutorial_u_is.open_attk_tutorial_panel()
@@ -101,6 +101,7 @@ func _on_arrow_one_area_body_entered(body: Node2D) -> void:
 
 	if player:
 		is_in_arrow_one = true
+
 
 
 func _on_arrow_two_area_body_entered(body: Node2D) -> void:
@@ -156,6 +157,7 @@ func animate_arrows() -> void:
 func _on_arrow_one_area_body_exited(body: Node2D) -> void:
 
 	is_in_arrow_one = false
+
 
 
 func _on_arrow_two_area_body_exited(body: Node2D) -> void:

@@ -10,6 +10,8 @@ extends Control
 @onready var jump_block_panel: MarginContainer = $MainMargin/BlockJumpPanel
 @onready var rage_panel: MarginContainer = $MainMargin/RagePanel
 @onready var rage_skill_panel: MarginContainer = $MainMargin/RageSkillPanel
+@onready var text_tutorial: MarginContainer = $TextTutorial
+
 
 #endregion
 
@@ -120,7 +122,7 @@ var is_panel_open := false
 	"attack_panel": {
 		"attk_tut": "Press Left Mouse button to attack",
 		"combo_tut": "Press Left Mouse repeatedly to start combo",
-		"skill_one_tut": "Press 'E' key to launch skill one",
+		"skill_one_tut": "Press 'E' key to launch skill one. Must have target nearby",
 		"skill_two_tut": "Press 'T' key to launch skill two"
 	},
 	"block_jump_panel": {
@@ -135,7 +137,7 @@ var is_panel_open := false
 	
 	"rage_skill_panel": {
 
-		"skill_one_rage_tut": "Press 'E' key to launch skill one during Rage mode",
+		"skill_one_rage_tut": "Press 'E' key to launch skill one during Rage mode. Must have target nearby",
 		"skill_two_rage_tut": "Press 'T' key to launch skill two during Rage mode", 
 	}
 }
@@ -164,11 +166,8 @@ func _ready() -> void:
 		panel.visible = false
 		
 	exit_button.visible = false
-	#open_attk_tutorial_panel()
-	#open_jump_block_panel()
-	#open_rage_panel()
-	#open_rage_skill_panel()
-
+	
+	pulse_control(text_tutorial)
 
 #region Initial Open Panels 
 
@@ -177,14 +176,19 @@ func test_func() -> void:
 
 
 func open_attk_tutorial_panel() -> void:
+	print("did this run")
+	
 	if is_panel_open:
 		return
 	
 	if is_attk_tutorial_panel:
 		return
-		
+	
+
 	is_panel_open = true 
+	print("panel open? ", is_panel_open)
 	is_attk_tutorial_panel = true
+	print("attk tutorial open? ", is_attk_tutorial_panel)
 	
 	panel_ini_helper(attk_tutorial_panel, arrow_navs_panel, 
 					text_label_one, 0, current_index)
@@ -224,7 +228,7 @@ func open_rage_skill_panel() -> void:
 	if is_rage_skill_panel:
 		return
 	
-	
+
 	is_panel_open = true 
 	is_rage_skill_panel = true
 	
@@ -236,6 +240,9 @@ func panel_ini_helper(panel: MarginContainer, arrow_panel: VBoxContainer,
 				label: Label, main_dict_item: int, index: int) -> void:
 
 	panel.visible = true 
+	print("panel ", panel)
+	print("panel visible? ", panel.visible)
+	
 	arrow_panel.visible = true
 	exit_button.visible = true
 	
@@ -354,3 +361,10 @@ func _on_exit_button_pressed() -> void:
 
 
 #endregion
+
+func pulse_control(control: Control) -> void:
+	var tween := create_tween()
+	tween.set_loops()
+	
+	tween.tween_property(control, "modulate", Color(1.35, 1.35, 1.35, 1.0), 0.45)
+	tween.tween_property(control, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.45)

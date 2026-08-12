@@ -111,6 +111,8 @@ texture = ExtResource("5_btjhv")
 region_enabled = true
 region_rect = Rect2(24, 0, 24, 24)
 
+[node name="Projectiles" type="Node2D" parent="." unique_id=806986223]
+
 [node name="ArrowOneArea" type="Area2D" parent="." unique_id=828043199]
 
 [node name="ArrowOneCol" type="CollisionShape2D" parent="ArrowOneArea" unique_id=609440821]
