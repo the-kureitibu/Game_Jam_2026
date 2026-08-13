@@ -63,6 +63,8 @@ extends Control
 #region Base Vars
 
 @onready var is_dialogue_start: bool = false
+var has_started_dialogue := false
+var is_video_ending: bool = false
 
 #endregion -- Base Vars
 
@@ -78,9 +80,10 @@ func _ready() -> void:
 	
 func _process(delta: float) -> void:
 	
-	if video_stream_player.is_playing():
+	if video_stream_player.is_playing() and not is_video_ending:
 		vid_end_time -= delta
 		if vid_end_time <= 0.0:
+			is_video_ending = true
 			fade_in_and_end_vid()
 
 	handle_dialogue_seq()
@@ -133,10 +136,13 @@ func handle_dialogue_seq() -> void:
 	if !is_dialogue_start:
 		return
 	
+	if has_started_dialogue:
+		return
+	
+	has_started_dialogue = true
+	
 	first_label_container.visible = false
 	video_stream_player.visible = false
-	
-	await get_tree().create_timer(2.0).timeout
 	
 	dialogue_seq_helper(speaker_one_collect, current_index, left_text_label, left_text_container)
 	
