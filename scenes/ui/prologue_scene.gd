@@ -14,6 +14,12 @@ extends Control
 
 #endregion -- References
 
+#region Timers 
+
+@onready var vid_end_time: float = 28.0
+
+#endregion -- Timers
+
 #region Text Dictionaries
 
 @onready var text_collection: Dictionary = {
@@ -36,12 +42,89 @@ extends Control
 
 #endregion -- Text Dictionaries
 
+#region Dialogue Related
 
-# Called when the node enters the scene tree for the first time.
+@onready var current_index: int = 0
+@onready var text_collect_keys = text_collection.keys()
+@onready var speaker_one_collect = text_collect_keys[0]
+@onready var speaker_two_collect = text_collect_keys[1]
+
+#endregion -- Dialogue Related
+
+
+
 func _ready() -> void:
-	pass # Replace with function body.
+	first_label_container.modulate.a = 0.0
+	video_stream_player.modulate.a = 0.0
+	
+	
+	fade_out_and_start()
+	print(text_collection[speaker_one_collect].keys()[0])
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	
+	if video_stream_player.is_playing():
+		vid_end_time -= delta
+		if vid_end_time <= 0.0:
+			fade_in_and_end_vid()
+
+
+#region First Sequence
+
+func fade_out_and_start() -> void:
+	var tween = create_tween()
+	tween.tween_property(first_label_container, "modulate:a", 1.0, 1.5)
+
+	await  tween.finished
+	
+	fade_out_and_start_vid()
+
+func fade_out_and_start_vid() -> void:
+	var tween = create_tween()
+	video_stream_player.play()
+	
+	tween.tween_property(video_stream_player, "modulate:a", 1.0, 2.0)
+
+	await tween.finished
+	
+	pulse_control(prev_label)
+	
+	
+func pulse_control(control: Control) -> void:
+	var tween := create_tween()
+	tween.set_loops()
+	
+	tween.tween_property(control, "modulate:a", 0.0, 1.0)
+	tween.tween_property(control, "modulate:a", 1.0, 2.5)
+	
+	#tween.tween_property(control, "modulate", Color(1.35, 1.35, 1.35, 1.0), 0.45)
+	#tween.tween_property(control, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.45)
+
+func fade_in_and_end_vid() -> void:
+	var tween = create_tween().set_parallel(true)
+	
+	tween.tween_property(first_label_container, "modulate:a", 0.0, 2.0)
+	tween.tween_property(video_stream_player, "modulate:a", 0.0, 2.0)
+	
+	await tween.finished
+
+	start_dialogue_seq()
+
+#endregion -- First Sequence
+
+func handle_dialogue_seq() -> void:
 	pass
+
+func start_dialogue_seq() -> void:
+	
+	var s_one_keys = text_collection[speaker_one_collect].keys()
+	speaker_one_collect = text_collect_keys[0]
+	print(text_collection[speaker_one_collect][0])
+	
+	
+
+	
+	#if first_label_container.modulate.a == 0.0 and video_stream_player.modulate.a == 0.0:
+		#first_label_container.visible = false
+		#video_stream_player.visible = false
