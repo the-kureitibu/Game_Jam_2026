@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://dhf42wvw35ekf"]
+
+[ext_resource type="VideoStream" uid="uid://jn0yc7e8s8rn" path="res://assets/video/ami_vid_final.ogv" id="1_8de3f"]
+[ext_resource type="Script" uid="uid://b4ve4oqg6r707" path="res://scenes/ui/prologue_scene.gd" id="1_m3ugl"]
+[ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="3_bh3r2"]
+
+[node name="PrologueScene" type="Control" unique_id=1931346612]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_m3ugl")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1183690549]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("1_8de3f")
+volume_db = 1.9500003
+autoplay = true
+expand = true
+
+[node name="MainLabelContainer" type="MarginContainer" parent="." unique_id=1226073885]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="MainLabelContainer" unique_id=1730051658]
+layout_mode = 2
+
+[node name="FirstLabelContainer" type="VBoxContainer" parent="MainLabelContainer/PanelContainer" unique_id=849706432]
+visible = false
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="Control" type="Control" parent="MainLabelContainer/PanelContainer/FirstLabelContainer" unique_id=2130116617]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="PrevLabel" type="RichTextLabel" parent="MainLabelContainer/PanelContainer/FirstLabelContainer" unique_id=2050993130]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("3_bh3r2")
+text = "Previously......"
+
+[node name="RightTextContainer" type="VBoxContainer" parent="MainLabelContainer/PanelContainer" unique_id=356941982]
+custom_minimum_size = Vector2(640, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="VSpacer" type="Control" parent="MainLabelContainer/PanelContainer/RightTextContainer" unique_id=1428934862]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainLabelContainer/PanelContainer/RightTextContainer" unique_id=615503739]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 3
+
+[node name="RightTextLabel" type="RichTextLabel" parent="MainLabelContainer/PanelContainer/RightTextContainer/HBoxContainer" unique_id=1412446988]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("3_bh3r2")
+text = "Previously......"
+horizontal_alignment = 2
+
+[node name="HSpacer" type="Control" parent="MainLabelContainer/PanelContainer/RightTextContainer/HBoxContainer" unique_id=1380944606]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+
+[node name="LeftTextContainer" type="VBoxContainer" parent="MainLabelContainer/PanelContainer" unique_id=1102416124]
+custom_minimum_size = Vector2(640, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="VSpacer" type="Control" parent="MainLabelContainer/PanelContainer/LeftTextContainer" unique_id=1780321146]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainLabelContainer/PanelContainer/LeftTextContainer" unique_id=575844876]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="HSpacer" type="Control" parent="MainLabelContainer/PanelContainer/LeftTextContainer/HBoxContainer" unique_id=8155827]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+
+[node name="LeftTextLabel" type="RichTextLabel" parent="MainLabelContainer/PanelContainer/LeftTextContainer/HBoxContainer" unique_id=1238973226]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("3_bh3r2")
+text = "Previously......"
