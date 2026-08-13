@@ -16,6 +16,7 @@ extends Node2D
 @onready var is_grassland_level: bool = false
 @onready var is_demonrealm_level: bool = false
 @onready var is_boss_room_level: bool = false
+@onready var is_michael_room: bool = false
 
 
 #endregion
@@ -57,7 +58,7 @@ func _physics_process(delta: float) -> void:
 	elif p_target and !is_boss_room_level:
 		global_position = global_position.lerp(p_target.global_position, weight)
 		
-	#handle_cam_limits()
+
 
 func get_boss_room_midpoint() -> Vector2:
 	return (p_target.global_position + boss_target.global_position) * 0.5
@@ -94,9 +95,19 @@ func determine_level_scene(lvl_name: Variant) -> void:
 			handle_cam_limits(0, 640, 63, -400)
 			is_tutorial_level = true
 			cam.offset = Vector2(0, -20.0)
+			
 		"GrassLandLevel":
-			pass
-		"BossLevel":
-			pass
+			handle_cam_limits(0, 8291, 88, -1050)
+			is_grassland_level = true
+		
+		"BossRoom":
+			handle_cam_limits(0, 1584, 88, -434)
+			is_boss_room_level = true
+			
 		"DemonRealmLevel":
-			pass
+			handle_cam_limits(0, 2399, 766, -620)
+			is_demonrealm_level = true
+			
+		"MichaelRoom":
+			handle_cam_limits(0, 833, 63, -465)
+			is_michael_room = true

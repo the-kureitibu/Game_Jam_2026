@@ -11,8 +11,8 @@ extends Control
 
 #region Button Rects
 
-@onready var button_start: Button = $MainMargin/ButtonContainer/StartButton
-@onready var button_exit: Button = $MainMargin/ButtonContainer/ExitButton
+@onready var button_start: Button = $MainMargin/ButtonContainer/HBoxContainer/StartButton
+@onready var button_exit: Button = $MainMargin/ButtonContainer/HBoxContainer/ExitButton
 
 #endregion
 
