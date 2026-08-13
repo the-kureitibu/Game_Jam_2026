@@ -51,6 +51,20 @@ extends Control
 
 #endregion -- Dialogue Related
 
+#region Container Array
+
+@onready var labels_cont_array: Array = [
+	right_text_container,
+	left_text_container
+]
+
+#endregion -- Container Array
+
+#region Base Vars
+
+@onready var is_dialogue_start: bool = false
+
+#endregion -- Base Vars
 
 
 func _ready() -> void:
@@ -59,9 +73,9 @@ func _ready() -> void:
 	
 	
 	fade_out_and_start()
-	print(text_collection[speaker_one_collect].keys()[0])
-
-
+	
+	
+	
 func _process(delta: float) -> void:
 	
 	if video_stream_player.is_playing():
@@ -69,6 +83,7 @@ func _process(delta: float) -> void:
 		if vid_end_time <= 0.0:
 			fade_in_and_end_vid()
 
+	handle_dialogue_seq()
 
 #region First Sequence
 
@@ -104,27 +119,41 @@ func pulse_control(control: Control) -> void:
 func fade_in_and_end_vid() -> void:
 	var tween = create_tween().set_parallel(true)
 	
-	tween.tween_property(first_label_container, "modulate:a", 0.0, 2.0)
-	tween.tween_property(video_stream_player, "modulate:a", 0.0, 2.0)
+	tween.tween_property(first_label_container, "modulate:a", 0.0, 3.0)
+	tween.tween_property(video_stream_player, "modulate:a", 0.0, 3.0)
 	
 	await tween.finished
 
-	start_dialogue_seq()
+	is_dialogue_start = true
+
 
 #endregion -- First Sequence
 
 func handle_dialogue_seq() -> void:
-	pass
+	if !is_dialogue_start:
+		return
+	
+	first_label_container.visible = false
+	video_stream_player.visible = false
+	
+	await get_tree().create_timer(2.0).timeout
+	
+	dialogue_seq_helper(speaker_one_collect, current_index, left_text_label, left_text_container)
+	
+	
+func dialogue_seq_helper(sp_collect: Variant, _index: int, label: RichTextLabel, container: VBoxContainer) -> void:
+	print("Made it here?")
+	
+	var speaker_keys = text_collection[sp_collect]
+	var speaker_inner_keys = speaker_keys.keys()
+	var speaker_one_cur_keys = speaker_inner_keys[current_index]
 
-func start_dialogue_seq() -> void:
+	for cont in labels_cont_array:
+		cont.visible = false
+		
+	container.visible = true
+	label.text = speaker_keys[speaker_one_cur_keys]
 	
-	var s_one_keys = text_collection[speaker_one_collect].keys()
-	speaker_one_collect = text_collect_keys[0]
-	print(text_collection[speaker_one_collect][0])
-	
-	
-
-	
-	#if first_label_container.modulate.a == 0.0 and video_stream_player.modulate.a == 0.0:
-		#first_label_container.visible = false
-		#video_stream_player.visible = false
+	print("Container: ", container)
+	print("Container Visible: ", container.visible)
+	print("Label: ", label.text)
