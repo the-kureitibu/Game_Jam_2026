@@ -125,3 +125,37 @@ theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
 theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/normal_font = ExtResource("3_bh3r2")
 text = "Previously......"
+
+[node name="NexTextContainer" type="HBoxContainer" parent="MainLabelContainer/PanelContainer" unique_id=643716942]
+visible = false
+custom_minimum_size = Vector2(250, 20)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="LeftTextLabel2" type="RichTextLabel" parent="MainLabelContainer/PanelContainer/NexTextContainer" unique_id=1820149361]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_colors/default_color = Color(0.9509199, 0.6195214, 0.74134755, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("3_bh3r2")
+text = "Click Right Arrow to next "
+
+[node name="SkipTextContainer" type="HBoxContainer" parent="MainLabelContainer/PanelContainer" unique_id=821049118]
+visible = false
+custom_minimum_size = Vector2(250, 20)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="LeftTextLabel2" type="RichTextLabel" parent="MainLabelContainer/PanelContainer/SkipTextContainer" unique_id=1874476305]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_colors/default_color = Color(0.9509199, 0.6195214, 0.74134755, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("3_bh3r2")
+text = "Click Left Arrow to skip "

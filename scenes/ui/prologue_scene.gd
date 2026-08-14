@@ -12,6 +12,11 @@ extends Control
 @onready var right_text_label: RichTextLabel = $MainLabelContainer/PanelContainer/RightTextContainer/HBoxContainer/RightTextLabel
 @onready var left_text_label: RichTextLabel = $MainLabelContainer/PanelContainer/LeftTextContainer/HBoxContainer/LeftTextLabel
 
+@onready var nex_text_container: HBoxContainer = $MainLabelContainer/PanelContainer/NexTextContainer
+@onready var skip_text_container: HBoxContainer = $MainLabelContainer/PanelContainer/SkipTextContainer
+
+
+
 #endregion -- References
 
 #region Timers 
@@ -64,40 +69,36 @@ extends Control
 
 @onready var is_dialogue_start: bool = false
 var has_started_dialogue := false
+var has_ended_dialogue := false
 var is_video_ending: bool = false
-#var is_busy: bool = false
+var speaker_turn := 0
+var is_skipped: bool = false
 
 #endregion -- Base Vars
 
-
-#Input works, work on the lines 
-
-
+#region Processes 
 func _ready() -> void:
 	first_label_container.modulate.a = 0.0
 	video_stream_player.modulate.a = 0.0
 	
 	
 	fade_out_and_start()
-	
-	var speaker_keys = text_collection[speaker_one_collect]
-	var speaker_inner_keys = speaker_keys.keys()
-	var speaker_one_cur_keys = speaker_inner_keys[current_index]
-	text_collection.erase(speaker_one_cur_keys)
-	print(speaker_inner_keys)
-	
-	
-	
+
 	
 func _process(delta: float) -> void:
 	
-	if video_stream_player.is_playing() and not is_video_ending:
-		vid_end_time -= delta
-		if vid_end_time <= 0.0:
-			is_video_ending = true
-			fade_in_and_end_vid()
+	if !Input.is_action_just_pressed("skip"):
+		if video_stream_player.is_playing() and not is_video_ending:
+			vid_end_time -= delta
+			if vid_end_time <= 0.0:
+				is_video_ending = true
+				fade_in_and_end_vid()
+	else:
+		start_skip()
 
 	handle_dialogue_seq()
+
+#endregion  -- Processes 
 
 #region First Sequence
 
@@ -107,7 +108,16 @@ func fade_out_and_start() -> void:
 
 	await  tween.finished
 	
+	skip_text_container.visible = true
+	pulse_control(skip_text_container)
+	
 	fade_out_and_start_vid()
+	
+	
+	
+	if is_skipped:
+		tween.kill()
+	
 
 func fade_out_and_start_vid() -> void:
 	var tween = create_tween()
@@ -119,6 +129,8 @@ func fade_out_and_start_vid() -> void:
 	
 	pulse_control(prev_label)
 	
+	if is_skipped:
+		tween.kill()
 	
 func pulse_control(control: Control) -> void:
 	var tween := create_tween()
@@ -126,9 +138,6 @@ func pulse_control(control: Control) -> void:
 	
 	tween.tween_property(control, "modulate:a", 0.0, 1.0)
 	tween.tween_property(control, "modulate:a", 1.0, 2.5)
-	
-	#tween.tween_property(control, "modulate", Color(1.35, 1.35, 1.35, 1.0), 0.45)
-	#tween.tween_property(control, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.45)
 
 func fade_in_and_end_vid() -> void:
 	var tween = create_tween().set_parallel(true)
@@ -136,33 +145,40 @@ func fade_in_and_end_vid() -> void:
 	tween.tween_property(first_label_container, "modulate:a", 0.0, 3.0)
 	tween.tween_property(video_stream_player, "modulate:a", 0.0, 3.0)
 	
+	if is_skipped:
+		tween.kill()
+	
 	await tween.finished
-
+		
 	is_dialogue_start = true
 
 
 #endregion -- First Sequence
 
-#func _input(event: InputEvent) -> void:
-	#if event.is_action_pressed("right"):
-		#print("Press works?")
-		#
+#region Start Sequence 
+
 func _unhandled_input(event: InputEvent) -> void:
 	if !has_started_dialogue:
 		return
 	
 	if event.is_action_pressed("next"):
-		print("Am I pressing?")
-		print("Right Visible: ", right_text_container.visible)
-		print("Left Visible: ", left_text_container.visible)
-		
-		if right_text_container.visible == false:
-			dialogue_seq_helper(speaker_one_collect, current_index, right_text_label, right_text_container)
-		elif left_text_container.visible == false:
-			dialogue_seq_helper(speaker_two_collect, current_index, left_text_label, left_text_container)
-		
-		current_index += 1 
-		print("Current index: ", current_index)
+		advance_dialogue()
+
+func advance_dialogue() -> void:
+	if has_ended_dialogue:
+		return
+	
+	if speaker_turn == 0:
+		dialogue_seq_helper(speaker_one_collect, current_index, right_text_label, right_text_container)
+		speaker_turn = 1
+	else:
+		dialogue_seq_helper(speaker_two_collect, current_index, left_text_label, left_text_container)
+		speaker_turn = 0
+		current_index += 1
+
+	if current_index == 4 and speaker_turn == 1:
+		has_ended_dialogue = true
+		print("Done interaction")
 
 func handle_dialogue_seq() -> void:
 	if !is_dialogue_start:
@@ -172,12 +188,16 @@ func handle_dialogue_seq() -> void:
 		return
 	
 	has_started_dialogue = true
-	print("has started dialogue?: ", has_started_dialogue)
-	
+
 	first_label_container.visible = false
 	video_stream_player.visible = false
 	
+	speaker_turn = 1
+	
 	dialogue_seq_helper(speaker_one_collect, current_index, right_text_label, right_text_container)
+	nex_text_container.visible = true
+	pulse_control(nex_text_container)
+
 	
 	
 func dialogue_seq_helper(sp_collect: Variant, _index: int, label: RichTextLabel, container: VBoxContainer) -> void:
@@ -191,6 +211,23 @@ func dialogue_seq_helper(sp_collect: Variant, _index: int, label: RichTextLabel,
 		
 	container.visible = true
 	label.text = speaker_keys[speaker_one_cur_keys]
-	#print("Inner keys before remove: ", speaker_inner_keys)
-	#speaker_keys.erase(speaker_one_cur_keys)
-	#print("Inner keys after remove: ", speaker_inner_keys)
+
+#endregion -- Start Sequence 
+
+#region Skip Functions
+
+func start_skip() -> void:
+	if is_skipped:
+		return
+	
+	is_skipped = true
+	is_video_ending = true
+	if !is_dialogue_start:
+		is_dialogue_start = true
+	skip_text_container.visible = false
+	
+	handle_dialogue_seq()
+	
+
+
+#endregion  -- Skip Functions
