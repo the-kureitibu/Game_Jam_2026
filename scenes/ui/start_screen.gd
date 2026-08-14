@@ -7,14 +7,15 @@ extends Control
 @onready var title_mid: TextureRect = $MainMargin/TitleTwo
 @onready var title_bot: TextureRect = $MainMargin/TitleThree
 
-#endregion
+#endregion -- Texture Rects
+
 
 #region Button Rects
 
 @onready var button_start: Button = $MainMargin/ButtonContainer/HBoxContainer/StartButton
 @onready var button_exit: Button = $MainMargin/ButtonContainer/HBoxContainer/ExitButton
 
-#endregion
+#endregion -- Button Rects 
 
 #region Arrays 
 
@@ -29,14 +30,30 @@ extends Control
 	button_exit
 ]
 
+#endregion  -- Arrays 
 
-#endregion
-#endregion
+#region References
 
+@onready var video_stream_player: VideoStreamPlayer = $VideoStreamPlayer
+const prologue_scene = preload("res://scenes/ui/prologue_scene.tscn")
+
+
+#endregion -- References 
+
+#endregion -- Base Vars
+
+#region Processes 
 func _ready() -> void:
 	hide_title_screen_parts()
 	await reveal_title_sequence()
 	start_pulse_loop()
+	start_vid_bg()
+	
+func _process(delta: float) -> void:
+	pass
+
+#endregion -- Processes 
+
 
 func hide_title_screen_parts() -> void:
 	for item in title_parts:
@@ -45,6 +62,8 @@ func hide_title_screen_parts() -> void:
 	for button in buttons:
 		button.modulate.a = 0.0
 		button.disabled = true
+	
+	video_stream_player.modulate.a = 0.0
 
 
 func reveal_title_sequence() -> void:
@@ -70,7 +89,6 @@ func reveal_control(control: Control, x_offset: float, duration: float) -> void:
 	tween.parallel().tween_property(control, "modulate:a", 1.0, duration)
 	
 	await tween.finished
-	
 
 func start_pulse_loop() -> void:
 	for item in title_parts:
@@ -79,7 +97,6 @@ func start_pulse_loop() -> void:
 	for button in buttons:
 		pulse_control(button)
 		
-
 func pulse_control(control: Control) -> void:
 	var tween := create_tween()
 	tween.set_loops()
@@ -87,5 +104,22 @@ func pulse_control(control: Control) -> void:
 	tween.tween_property(control, "modulate", Color(1.35, 1.35, 1.35, 1.0), 0.45)
 	tween.tween_property(control, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.45)
 
-func _process(delta: float) -> void:
-	pass
+func start_vid_bg() -> void:
+	
+	var tween = create_tween()
+	video_stream_player.play()
+	
+	tween.tween_property(video_stream_player, "modulate:a", 0.529, 2.0)
+	
+	
+
+#region Buttons Actions
+
+func _on_start_button_pressed() -> void:
+	get_tree().change_scene_to_packed(prologue_scene)
+
+func _on_exit_button_pressed() -> void:
+	get_tree().quit()
+
+
+#endregion -- Buttons Actions

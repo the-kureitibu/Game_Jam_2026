@@ -34,7 +34,7 @@ grow_vertical = 2
 script = ExtResource("1_adf7y")
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=594843061]
-modulate = Color(1, 1, 1, 0.5529412)
+modulate = Color(1, 1, 1, 0.5294118)
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -42,7 +42,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 stream = ExtResource("2_a1ei0")
-autoplay = true
 expand = true
 loop = true
 
@@ -107,3 +106,6 @@ text = "Exit Game"
 [node name="VSpacer" type="Control" parent="MainMargin/ButtonContainer" unique_id=517842414]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
+
+[connection signal="pressed" from="MainMargin/ButtonContainer/HBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MainMargin/ButtonContainer/HBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
