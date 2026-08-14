@@ -225,7 +225,10 @@ func start_skip() -> void:
 	if !is_dialogue_start:
 		is_dialogue_start = true
 	skip_text_container.visible = false
+	if video_stream_player.is_playing():
+		video_stream_player.stop()
 	
+	print("Is video still playing?: ", video_stream_player.is_playing())
 	handle_dialogue_seq()
 	
 
