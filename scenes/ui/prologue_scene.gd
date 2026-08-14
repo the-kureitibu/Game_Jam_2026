@@ -65,8 +65,12 @@ extends Control
 @onready var is_dialogue_start: bool = false
 var has_started_dialogue := false
 var is_video_ending: bool = false
+#var is_busy: bool = false
 
 #endregion -- Base Vars
+
+
+#Input works, work on the lines 
 
 
 func _ready() -> void:
@@ -75,6 +79,13 @@ func _ready() -> void:
 	
 	
 	fade_out_and_start()
+	
+	var speaker_keys = text_collection[speaker_one_collect]
+	var speaker_inner_keys = speaker_keys.keys()
+	var speaker_one_cur_keys = speaker_inner_keys[current_index]
+	text_collection.erase(speaker_one_cur_keys)
+	print(speaker_inner_keys)
+	
 	
 	
 	
@@ -132,6 +143,27 @@ func fade_in_and_end_vid() -> void:
 
 #endregion -- First Sequence
 
+#func _input(event: InputEvent) -> void:
+	#if event.is_action_pressed("right"):
+		#print("Press works?")
+		#
+func _unhandled_input(event: InputEvent) -> void:
+	if !has_started_dialogue:
+		return
+	
+	if event.is_action_pressed("next"):
+		print("Am I pressing?")
+		print("Right Visible: ", right_text_container.visible)
+		print("Left Visible: ", left_text_container.visible)
+		
+		if right_text_container.visible == false:
+			dialogue_seq_helper(speaker_one_collect, current_index, right_text_label, right_text_container)
+		elif left_text_container.visible == false:
+			dialogue_seq_helper(speaker_two_collect, current_index, left_text_label, left_text_container)
+		
+		current_index += 1 
+		print("Current index: ", current_index)
+
 func handle_dialogue_seq() -> void:
 	if !is_dialogue_start:
 		return
@@ -140,15 +172,15 @@ func handle_dialogue_seq() -> void:
 		return
 	
 	has_started_dialogue = true
+	print("has started dialogue?: ", has_started_dialogue)
 	
 	first_label_container.visible = false
 	video_stream_player.visible = false
 	
-	dialogue_seq_helper(speaker_one_collect, current_index, left_text_label, left_text_container)
+	dialogue_seq_helper(speaker_one_collect, current_index, right_text_label, right_text_container)
 	
 	
 func dialogue_seq_helper(sp_collect: Variant, _index: int, label: RichTextLabel, container: VBoxContainer) -> void:
-	print("Made it here?")
 	
 	var speaker_keys = text_collection[sp_collect]
 	var speaker_inner_keys = speaker_keys.keys()
@@ -159,7 +191,6 @@ func dialogue_seq_helper(sp_collect: Variant, _index: int, label: RichTextLabel,
 		
 	container.visible = true
 	label.text = speaker_keys[speaker_one_cur_keys]
-	
-	print("Container: ", container)
-	print("Container Visible: ", container.visible)
-	print("Label: ", label.text)
+	#print("Inner keys before remove: ", speaker_inner_keys)
+	#speaker_keys.erase(speaker_one_cur_keys)
+	#print("Inner keys after remove: ", speaker_inner_keys)
