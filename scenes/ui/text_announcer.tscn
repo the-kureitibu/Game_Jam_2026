@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://boawqpjrwwe8t"]
+
+[ext_resource type="Script" uid="uid://cyd5iofbvxy80" path="res://scenes/ui/text_announcer.gd" id="1_nhm4q"]
+[ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="1_no8ro"]
+
+[node name="TextAnnouncer" type="CanvasLayer" unique_id=1303895714]
+script = ExtResource("1_nhm4q")
+
+[node name="MainControl" type="Control" parent="." unique_id=1434453080]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 3
+anchor_left = 0.5
+anchor_top = 0.2
+anchor_right = 0.5
+anchor_bottom = 0.2
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+
+[node name="MainMargin" type="MarginContainer" parent="MainControl" unique_id=35954899]
+layout_mode = 0
+offset_right = 350.0
+offset_bottom = 50.0
+
+[node name="TextLabel" type="RichTextLabel" parent="MainControl/MainMargin" unique_id=685132318]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.9970253, 0.55746365, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.16448733, 0.093594514, 0.014197476, 1)
+theme_override_fonts/normal_font = ExtResource("1_no8ro")
+theme_override_font_sizes/normal_font_size = 32
+horizontal_alignment = 1

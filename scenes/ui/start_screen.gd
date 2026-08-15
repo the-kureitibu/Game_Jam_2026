@@ -35,8 +35,7 @@ extends Control
 #region References
 
 @onready var video_stream_player: VideoStreamPlayer = $VideoStreamPlayer
-const prologue_scene = preload("res://scenes/ui/prologue_scene.tscn")
-const transition_scene = preload("res://scenes/ui/transition_scene.tscn")
+const PROLOGUE_SCENE = preload("res://scenes/ui/prologue_scene.tscn")
 
 #endregion -- References 
 
@@ -120,7 +119,7 @@ func start_vid_bg() -> void:
 
 func _on_start_button_pressed() -> void:
 	
-	GameManager.change_scene_with_transition(prologue_scene)
+	GameManager.change_scene_with_transition(PROLOGUE_SCENE)
 
 
 

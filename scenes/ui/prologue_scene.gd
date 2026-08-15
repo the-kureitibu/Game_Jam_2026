@@ -15,8 +15,7 @@ extends Control
 @onready var nex_text_container: HBoxContainer = $MainLabelContainer/PanelContainer/NexTextContainer
 @onready var skip_text_container: HBoxContainer = $MainLabelContainer/PanelContainer/SkipTextContainer
 
-const transition_scene = preload("res://scenes/ui/transition_scene.tscn")
-const tutorial_scene = preload("res://scenes/levels_scene/tutorial_level.tscn")
+const TUTORIAL_SCENE = preload("res://scenes/levels_scene/tutorial_level.tscn")
 
 #endregion -- References
 
@@ -208,14 +207,13 @@ func handle_dialogue_seq() -> void:
 
 	first_label_container.visible = false
 	video_stream_player.visible = false
-	
+	skip_text_container.visible = false
 
 	speaker_turn = 1
 	
 	dialogue_seq_helper(speaker_one_collect, current_index, right_text_label, right_text_container)
 	nex_text_container.visible = true
 	pulse_control(nex_text_container)
-
 	
 	
 func dialogue_seq_helper(sp_collect: Variant, _index: int, label: RichTextLabel, container: VBoxContainer) -> void:
@@ -248,16 +246,12 @@ func start_skip() -> void:
 	
 	handle_dialogue_seq()
 	
-
-
 #endregion  -- Skip Functions
 
 
 #region Transitions 
 
-
 func move_to_tutorial_scene() -> void:
-	GameManager.change_scene_with_transition(tutorial_scene)
-
+	GameManager.change_scene_with_transition(TUTORIAL_SCENE)
 
 #endregion -- Transitions 

@@ -113,6 +113,8 @@ func handle_follow_player(delta: float) -> void:
 	
 	if abs(distance_x) < follow_stop_distance: 
 		velocity.x = 0.0
+	elif abs(distance_x) >= 200.0:
+		snap_to_front_pos()
 	else:
 		velocity.x = sign(distance_x) * to_target_speed 
 	
@@ -157,7 +159,22 @@ func snap_to_guard_pos() -> void:
 	global_position.x = target_pos.x #automatically snap regardless
 	velocity.x = 0.0
 	main_sprite.flip_h = p_facing_dir < 0
+
+func snap_to_front_pos() -> void:
+	if t_player == null:
+		return
 	
+	var p_facing_dir: int = 1
+	
+	if "facing_dir" in t_player:
+		p_facing_dir = t_player.facing_dir
+	
+	var target_pos := t_player.global_position + (follow_offset * p_facing_dir)
+	
+	global_position = target_pos #automatically snap regardless
+	velocity.x = 0.0
+	main_sprite.flip_h = p_facing_dir < 0
+
 func handle_blocking_shape() -> void:
 	pass
 

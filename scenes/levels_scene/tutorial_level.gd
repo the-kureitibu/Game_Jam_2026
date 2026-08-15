@@ -16,7 +16,8 @@ extends Node2D
 
 @onready var tutorial_u_is: Control = $UILayer/TutorialUIs
 
-const transition_scene = preload("res://scenes/ui/transition_scene.tscn")
+const GRASS_LAND_SCENE = preload("res://scenes/levels_scene/grass_land_level.tscn")
+
 @onready var ui_layer: CanvasLayer = $UILayer
 
 
@@ -94,7 +95,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif is_in_arrow_four: 	
 			tutorial_u_is.open_rage_skill_panel()
 
-
 #endregion
 
 
@@ -103,7 +103,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_exit_area_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 	
-	print("Exited Map")
+	if player:
+		GameManager.change_scene_with_transition(GRASS_LAND_SCENE)
 
 func _on_arrow_one_area_body_entered(body: Node2D) -> void:
 
