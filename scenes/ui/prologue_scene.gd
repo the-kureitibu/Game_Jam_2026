@@ -15,6 +15,7 @@ extends Control
 @onready var nex_text_container: HBoxContainer = $MainLabelContainer/PanelContainer/NexTextContainer
 @onready var skip_text_container: HBoxContainer = $MainLabelContainer/PanelContainer/SkipTextContainer
 
+const transition_scene = preload("res://scenes/ui/transition_scene.tscn")
 
 
 #endregion -- References
@@ -73,16 +74,26 @@ var has_ended_dialogue := false
 var is_video_ending: bool = false
 var speaker_turn := 0
 var is_skipped: bool = false
+var can_start_scene: bool = false
 
 #endregion -- Base Vars
 
 #region Processes 
+
+func _enter_tree() -> void:
+	SignalHub.transition_done.connect(fade_out_and_start)
+
 func _ready() -> void:
+	_fade_out_trans()
+	
+	#SignalHub.transition_done.connect(fade_out_and_start)
+	
 	first_label_container.modulate.a = 0.0
 	video_stream_player.modulate.a = 0.0
+
 	
-	
-	fade_out_and_start()
+	#if can_start_scene:
+		#fade_out_and_start()
 
 	
 func _process(delta: float) -> void:
@@ -178,7 +189,6 @@ func advance_dialogue() -> void:
 
 	if current_index == 4 and speaker_turn == 1:
 		has_ended_dialogue = true
-		print("Done interaction")
 
 func handle_dialogue_seq() -> void:
 	if !is_dialogue_start:
@@ -228,9 +238,24 @@ func start_skip() -> void:
 	if video_stream_player.is_playing():
 		video_stream_player.stop()
 	
-	print("Is video still playing?: ", video_stream_player.is_playing())
 	handle_dialogue_seq()
 	
 
 
 #endregion  -- Skip Functions
+
+
+#region Transitions 
+
+func _fade_out_trans() -> void:
+	var trans_scene = transition_scene.instantiate()
+	
+	if trans_scene == null:
+		push_error("Transitions Does not Exist")
+	
+	get_tree().root.add_child(trans_scene)
+
+	trans_scene._fade_out()
+
+
+#endregion -- Transitions 

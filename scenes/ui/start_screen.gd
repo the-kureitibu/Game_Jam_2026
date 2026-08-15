@@ -36,7 +36,7 @@ extends Control
 
 @onready var video_stream_player: VideoStreamPlayer = $VideoStreamPlayer
 const prologue_scene = preload("res://scenes/ui/prologue_scene.tscn")
-
+const transition_scene = preload("res://scenes/ui/transition_scene.tscn")
 
 #endregion -- References 
 
@@ -44,6 +44,8 @@ const prologue_scene = preload("res://scenes/ui/prologue_scene.tscn")
 
 #region Processes 
 func _ready() -> void:
+	SignalHub.transition_done.connect(change_to_next_scene)
+	
 	hide_title_screen_parts()
 	await reveal_title_sequence()
 	start_pulse_loop()
@@ -116,8 +118,19 @@ func start_vid_bg() -> void:
 #region Buttons Actions
 
 func _on_start_button_pressed() -> void:
-	get_tree().change_scene_to_packed(prologue_scene)
+	
+	var trans_scene = transition_scene.instantiate()
+	
+	if trans_scene == null:
+		push_error("Transitions Does not Exist")
+	
+	get_tree().root.add_child(trans_scene)
 
+	trans_scene._fade_to()
+
+func change_to_next_scene() -> void:
+	get_tree().change_scene_to_packed(prologue_scene)
+	
 func _on_exit_button_pressed() -> void:
 	get_tree().quit()
 
