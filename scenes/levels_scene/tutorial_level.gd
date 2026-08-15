@@ -17,6 +17,7 @@ extends Node2D
 @onready var tutorial_u_is: Control = $UILayer/TutorialUIs
 
 const transition_scene = preload("res://scenes/ui/transition_scene.tscn")
+@onready var ui_layer: CanvasLayer = $UILayer
 
 
 
@@ -61,19 +62,18 @@ var arrow_original_positions: Dictionary = {}
 #endregion --  Base Vars
 
 #region Processes
-#
-#func _enter_tree() -> void:
-	#SignalHub.transition_done.connect()
+
+func _enter_tree() -> void:
+	GameManager.game_scene_state = GameManager.GameLevelStates.TUTORIAL_SCENE
+	
+	if not SignalHub.transition_done.is_connected(start_ui_and_arrows):
+		SignalHub.transition_done.connect(start_ui_and_arrows)
 
 func _ready() -> void:
-	_fade_out_trans()
-	
+
 	for arrow in arrows:
 		arrow_original_positions[arrow] = arrow.position
 	
-	animate_arrows()
-
-
 
 #func _process(delta: float) -> void:
 	#animate_arrows()
@@ -93,8 +93,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			tutorial_u_is.open_rage_panel()
 		elif is_in_arrow_four: 	
 			tutorial_u_is.open_rage_skill_panel()
-		
-	
+
 
 #endregion
 
@@ -147,6 +146,10 @@ func _on_arrow_four_area_body_entered(body: Node2D) -> void:
 
 
 #region Arrow Animations
+func start_ui_and_arrows() -> void:
+	ui_layer.visible = true
+	
+	animate_arrows()
 
 func animate_arrows() -> void:
 	
@@ -186,14 +189,5 @@ func _on_arrow_four_area_body_exited(body: Node2D) -> void:
 
 #region Transitions
 
-func _fade_out_trans() -> void:
-	var trans_scene = transition_scene.instantiate()
-	
-	if trans_scene == null:
-		push_error("Transitions Does not Exist")
-	
-	get_tree().root.add_child(trans_scene)
-
-	trans_scene._fade_out()
 
 #endregion -- Transitions

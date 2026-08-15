@@ -16,5 +16,6 @@ signal update_p_stats(v_name: String, value: int)
 signal transition_to_prologue
 signal transition_to_tutorial
 signal transition_to_grassland
+signal transition_done
 
 #endregion

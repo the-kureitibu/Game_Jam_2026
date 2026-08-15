@@ -12,19 +12,15 @@ func _ready() -> void:
 	pass
 	
 
-func _fade_to() -> void:
+func transition_to_scene(scene_path: PackedScene) -> void:
 	animation_player.play("fade_to")
 	await animation_player.animation_finished
 	
-	SignalHub.transition_done.emit()
+	get_tree().change_scene_to_packed(scene_path)
+	await get_tree().process_frame
 	
-	queue_free()
-
-func _fade_out() -> void:
 	animation_player.play("fade_out")
-	
 	await animation_player.animation_finished
 	
 	SignalHub.transition_done.emit()
-	
 	queue_free()

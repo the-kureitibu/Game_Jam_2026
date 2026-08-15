@@ -16,7 +16,7 @@ extends Control
 @onready var skip_text_container: HBoxContainer = $MainLabelContainer/PanelContainer/SkipTextContainer
 
 const transition_scene = preload("res://scenes/ui/transition_scene.tscn")
-const tutorial_scene = preload("res://scenes/ui/tutorial_u_is.tscn")
+const tutorial_scene = preload("res://scenes/levels_scene/tutorial_level.tscn")
 
 #endregion -- References
 
@@ -83,23 +83,19 @@ signal dialogue_ended
 #region Processes 
 
 func _enter_tree() -> void:
-	SignalHub.transition_done.connect(fade_out_and_start)
+	GameManager.game_scene_state = GameManager.GameLevelStates.PROLOGUE_SCENE
+
+	if not SignalHub.transition_done.is_connected(fade_out_and_start):
+		SignalHub.transition_done.connect(fade_out_and_start)
 
 func _ready() -> void:
-	_fade_out_trans()
-	
-	#SignalHub.transition_done.connect(fade_out_and_start)
+	print(GameManager.GameLevelStates.keys()[GameManager.game_scene_state])
 	
 	first_label_container.modulate.a = 0.0
 	video_stream_player.modulate.a = 0.0
 
 	dialogue_ended.connect(move_to_tutorial_scene)
 	
-	SignalHub.transition_done.connect(change_to_next_scene)
-	
-	#if can_start_scene:
-		#fade_out_and_start()
-
 	
 func _process(delta: float) -> void:
 	
@@ -129,10 +125,9 @@ func fade_out_and_start() -> void:
 	
 	fade_out_and_start_vid()
 	
-	
-	
 	if is_skipped:
 		tween.kill()
+		skip_text_container.visible = false
 	
 
 func fade_out_and_start_vid() -> void:
@@ -199,16 +194,10 @@ func advance_dialogue() -> void:
 			speaker_turn = 0
 			current_index += 1
 
-#
-	#if current_index == 5 and speaker_turn == 1:
-
 
 
 func handle_dialogue_seq() -> void:
-	if skip_text_container.visible == true:
-		skip_text_container.visible = false
-	
-	
+
 	if !is_dialogue_start:
 		return
 	
@@ -266,31 +255,9 @@ func start_skip() -> void:
 
 #region Transitions 
 
-func _fade_out_trans() -> void:
-	var trans_scene = transition_scene.instantiate()
-	
-	if trans_scene == null:
-		push_error("Transitions Does not Exist")
-	
-	get_tree().root.add_child(trans_scene)
-
-	trans_scene._fade_out()
-
 
 func move_to_tutorial_scene() -> void:
-	var trans_scene = transition_scene.instantiate()
-	
-	if trans_scene == null:
-		push_error("Transitions Does not Exist")
-	
-	get_tree().root.add_child(trans_scene)
-	
-	trans_scene._fade_to()
-	#
-	#get_tree().change_scene_to_packed(tutorial_scene)
+	GameManager.change_scene_with_transition(tutorial_scene)
 
-func change_to_next_scene() -> void:
-	get_tree().change_scene_to_packed(tutorial_scene)
-	
 
 #endregion -- Transitions 

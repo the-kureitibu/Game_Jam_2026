@@ -172,6 +172,7 @@ position = Vector2(418, -131)
 shape = SubResource("CircleShape2D_vxa0g")
 
 [node name="UILayer" type="CanvasLayer" parent="." unique_id=2132063985]
+visible = false
 
 [node name="TutorialUIs" parent="UILayer" unique_id=986002305 instance=ExtResource("6_t00yd")]
 

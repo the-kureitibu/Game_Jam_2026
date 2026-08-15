@@ -44,8 +44,9 @@ const transition_scene = preload("res://scenes/ui/transition_scene.tscn")
 
 #region Processes 
 func _ready() -> void:
-	SignalHub.transition_to_prologue.connect(change_to_next_scene)
-	
+	print(GameManager.GameLevelStates.keys()[GameManager.game_scene_state])
+
+
 	hide_title_screen_parts()
 	await reveal_title_sequence()
 	start_pulse_loop()
@@ -119,18 +120,10 @@ func start_vid_bg() -> void:
 
 func _on_start_button_pressed() -> void:
 	
-	var trans_scene = transition_scene.instantiate()
-	
-	if trans_scene == null:
-		push_error("Transitions Does not Exist")
-	
-	get_tree().root.add_child(trans_scene)
+	GameManager.change_scene_with_transition(prologue_scene)
 
-	trans_scene._fade_to()
 
-func change_to_next_scene() -> void:
-	get_tree().change_scene_to_packed(prologue_scene)
-	
+
 func _on_exit_button_pressed() -> void:
 	get_tree().quit()
 
