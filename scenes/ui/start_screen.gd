@@ -44,7 +44,7 @@ const transition_scene = preload("res://scenes/ui/transition_scene.tscn")
 
 #region Processes 
 func _ready() -> void:
-	SignalHub.transition_done.connect(change_to_next_scene)
+	SignalHub.transition_to_prologue.connect(change_to_next_scene)
 	
 	hide_title_screen_parts()
 	await reveal_title_sequence()

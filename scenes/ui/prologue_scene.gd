@@ -16,7 +16,7 @@ extends Control
 @onready var skip_text_container: HBoxContainer = $MainLabelContainer/PanelContainer/SkipTextContainer
 
 const transition_scene = preload("res://scenes/ui/transition_scene.tscn")
-
+const tutorial_scene = preload("res://scenes/ui/tutorial_u_is.tscn")
 
 #endregion -- References
 
@@ -76,6 +76,8 @@ var speaker_turn := 0
 var is_skipped: bool = false
 var can_start_scene: bool = false
 
+signal dialogue_ended
+
 #endregion -- Base Vars
 
 #region Processes 
@@ -91,6 +93,9 @@ func _ready() -> void:
 	first_label_container.modulate.a = 0.0
 	video_stream_player.modulate.a = 0.0
 
+	dialogue_ended.connect(move_to_tutorial_scene)
+	
+	SignalHub.transition_done.connect(change_to_next_scene)
 	
 	#if can_start_scene:
 		#fade_out_and_start()
@@ -179,18 +184,31 @@ func advance_dialogue() -> void:
 	if has_ended_dialogue:
 		return
 	
+	var max_index := 4
+	
 	if speaker_turn == 0:
 		dialogue_seq_helper(speaker_one_collect, current_index, right_text_label, right_text_container)
 		speaker_turn = 1
 	else:
-		dialogue_seq_helper(speaker_two_collect, current_index, left_text_label, left_text_container)
-		speaker_turn = 0
-		current_index += 1
+		if current_index >= max_index:
+			has_ended_dialogue = true
+			dialogue_ended.emit()
+			
+		else:
+			dialogue_seq_helper(speaker_two_collect, current_index, left_text_label, left_text_container)
+			speaker_turn = 0
+			current_index += 1
 
-	if current_index == 4 and speaker_turn == 1:
-		has_ended_dialogue = true
+#
+	#if current_index == 5 and speaker_turn == 1:
+
+
 
 func handle_dialogue_seq() -> void:
+	if skip_text_container.visible == true:
+		skip_text_container.visible = false
+	
+	
 	if !is_dialogue_start:
 		return
 	
@@ -202,6 +220,7 @@ func handle_dialogue_seq() -> void:
 	first_label_container.visible = false
 	video_stream_player.visible = false
 	
+
 	speaker_turn = 1
 	
 	dialogue_seq_helper(speaker_one_collect, current_index, right_text_label, right_text_container)
@@ -257,5 +276,21 @@ func _fade_out_trans() -> void:
 
 	trans_scene._fade_out()
 
+
+func move_to_tutorial_scene() -> void:
+	var trans_scene = transition_scene.instantiate()
+	
+	if trans_scene == null:
+		push_error("Transitions Does not Exist")
+	
+	get_tree().root.add_child(trans_scene)
+	
+	trans_scene._fade_to()
+	#
+	#get_tree().change_scene_to_packed(tutorial_scene)
+
+func change_to_next_scene() -> void:
+	get_tree().change_scene_to_packed(tutorial_scene)
+	
 
 #endregion -- Transitions 

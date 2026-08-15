@@ -16,6 +16,10 @@ extends Node2D
 
 @onready var tutorial_u_is: Control = $UILayer/TutorialUIs
 
+const transition_scene = preload("res://scenes/ui/transition_scene.tscn")
+
+
+
 #region Collision Shapes
 
 @onready var arrow_one_col: CollisionShape2D = $ArrowOneArea/ArrowOneCol
@@ -23,7 +27,7 @@ extends Node2D
 @onready var arrow_three_col: CollisionShape2D = $ArrowThreeArea/ArrowThreeCol
 @onready var arrow_four_col: CollisionShape2D = $ArrowFourArea/ArrowFourCol
 
-#endregion
+#endregion --  Collision Shapes
 
 #region Signals
 
@@ -32,7 +36,7 @@ var is_in_arrow_two: bool = false
 var is_in_arrow_three: bool = false
 var is_in_arrow_four: bool = false
 
-#endregion 
+#endregion -- Signals
 
 
 #region Arrow Arrays 
@@ -49,15 +53,21 @@ var arrow_float_duration := 0.8
 
 var arrow_original_positions: Dictionary = {}
 
-#endregion
+#endregion --  Arrow Arrays
 
-#endregion
+#endregion --  References
 
 
-#endregion
+#endregion --  Base Vars
 
+#region Processes
+#
+#func _enter_tree() -> void:
+	#SignalHub.transition_done.connect()
 
 func _ready() -> void:
+	_fade_out_trans()
+	
 	for arrow in arrows:
 		arrow_original_positions[arrow] = arrow.position
 	
@@ -68,6 +78,7 @@ func _ready() -> void:
 #func _process(delta: float) -> void:
 	#animate_arrows()
 
+#endregion  -- Processes
 
 #region Test Region
 
@@ -158,8 +169,6 @@ func _on_arrow_one_area_body_exited(body: Node2D) -> void:
 
 	is_in_arrow_one = false
 
-
-
 func _on_arrow_two_area_body_exited(body: Node2D) -> void:
 	
 	is_in_arrow_two = false
@@ -174,3 +183,17 @@ func _on_arrow_four_area_body_exited(body: Node2D) -> void:
 	is_in_arrow_four = false
 
 #endregion
+
+#region Transitions
+
+func _fade_out_trans() -> void:
+	var trans_scene = transition_scene.instantiate()
+	
+	if trans_scene == null:
+		push_error("Transitions Does not Exist")
+	
+	get_tree().root.add_child(trans_scene)
+
+	trans_scene._fade_out()
+
+#endregion -- Transitions
