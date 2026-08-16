@@ -48,6 +48,18 @@ var is_on_air := false
 func _enter_tree() -> void:
 	if not is_in_group("Player_two"):
 		add_to_group("Player_two")
+		
+	if not SignalHub.transition_done.is_connected(revive_and_restart_stage):
+		SignalHub.transition_done.connect(revive_and_restart_stage)
+
+func revive_and_restart_stage() -> void:
+	t_player = get_tree().get_first_node_in_group("Player_target")
+	
+	if t_player.p_action_state != PlayerActionState.DEAD:
+		return
+	
+	global_position = GameManager.player_two_spawn_p
+
 
 func _ready() -> void:
 	t_player = get_tree().get_first_node_in_group("Player_target")

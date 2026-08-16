@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dfiomxa4fli0f" path="res://scenes/player_scene/player_scene.tscn" id="2_r653l"]
 [ext_resource type="PackedScene" uid="uid://wxyw3dr3fl1b" path="res://scenes/player_scene/player_two_scene.tscn" id="4_tj5l5"]
 [ext_resource type="PackedScene" uid="uid://dn5srq6ttvo7w" path="res://scenes/ui/main_ui.tscn" id="6_krmoe"]
+[ext_resource type="PackedScene" uid="uid://q3hyw88nqvk6" path="res://scenes/enemy_scene/mob_one.tscn" id="7_q7slo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tj5l5"]
 size = Vector2(47, 497)
@@ -38,5 +39,8 @@ shape = SubResource("RectangleShape2D_tj5l5")
 [node name="MainUICanvas" type="CanvasLayer" parent="." unique_id=175239495]
 
 [node name="MainUI" parent="MainUICanvas" unique_id=1108660128 instance=ExtResource("6_krmoe")]
+
+[node name="MobOne" parent="." unique_id=1148431991 instance=ExtResource("7_q7slo")]
+position = Vector2(2137, -316)
 
 [connection signal="body_entered" from="TransitionArea" to="." method="_on_transition_area_body_entered"]

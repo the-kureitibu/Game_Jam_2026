@@ -3,12 +3,17 @@ extends Node
 #Add game start, game tutorial and stuff 
 
 
-#region Pplayer1 and Player2
+#region Player1 and Player2
 signal blocking_anim_done
 
 signal player_died
-
 #endregion
+
+#region Stage/Level Related
+
+signal stage_restart
+
+#endregion  -- Stage/Level Related
 
 #region UI related
 signal set_ini_a_state(player_action_state)
