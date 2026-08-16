@@ -9,8 +9,7 @@ extends Node
 
 const TRANSITION_SCENE = preload("res://scenes/ui/transition_scene.tscn")
 const TEXT_ANNOUNCER = preload("res://scenes/ui/text_announcer.tscn")
-
-var current_scene: Node
+var current_scene_path: String = ""
 
 
 #endregion -- References
@@ -52,7 +51,8 @@ func _ready() -> void:
 	
 	
 	SignalHub.player_died.connect(player_death)
-	SignalHub.stage_restart.connect(transition_to_start)
+	SignalHub.stage_restart.connect(change_scene_with_transition.bind("res://scenes/levels_scene/grass_land_level.tscn"))
+	print("Scene captured: ", current_scene_path)
 	
 #endregion -- Processes
 
@@ -73,15 +73,16 @@ func announce_level_scene() -> void:
 			
 	
 
-func change_scene_with_transition(scene_path: PackedScene) -> void:
+func change_scene_with_transition(scene_path: String) -> void:
 	var trans_scene = TRANSITION_SCENE.instantiate()
 	get_tree().root.add_child(trans_scene)
+	
+	if scene_path == null:
+		print("Current scene file on transition: ", current_scene_path)
+	else:
+		print(scene_path)
+	
 	trans_scene.transition_to_scene(scene_path)
-
-func transition_to_start() -> void:
-	var trans_scene = TRANSITION_SCENE.instantiate()
-	get_tree().root.add_child(trans_scene)
-	trans_scene.transition_to_scene(current_scene)
 
 
 #endregion -- Levels Start
@@ -102,10 +103,10 @@ func capture_save_points() -> void:
 		player_one_spawn_p = player_one.global_position
 		player_two_spawn_p = player_two.global_position
 		
-		current_scene = get_tree().current_scene
+		current_scene_path = get_tree().current_scene.scene_file_path
+		print("Current scene file on start: ", current_scene_path)
 
 #endregion -- Save Points
-
 
 
 #region Player Related
@@ -119,12 +120,6 @@ func player_death() -> void:
 	announcer_scene.announce_death("You've Failed, Spidor")
 
 #endregion --  Restart Stage  
-
-#func restart_stage() -> void:
-	#var announcer_scene = TEXT_ANNOUNCER.instantiate()
-	#get_tree().root.add_child(announcer_scene)
-	#
-	#announcer_scene.announce_death("You've Failed, Spidor")
 
 
 

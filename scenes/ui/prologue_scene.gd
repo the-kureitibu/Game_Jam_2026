@@ -15,7 +15,7 @@ extends Control
 @onready var nex_text_container: HBoxContainer = $MainLabelContainer/PanelContainer/NexTextContainer
 @onready var skip_text_container: HBoxContainer = $MainLabelContainer/PanelContainer/SkipTextContainer
 
-const TUTORIAL_SCENE = preload("res://scenes/levels_scene/tutorial_level.tscn")
+const TUTORIAL_SCENE: String ="res://scenes/levels_scene/tutorial_level.tscn"
 
 #endregion -- References
 

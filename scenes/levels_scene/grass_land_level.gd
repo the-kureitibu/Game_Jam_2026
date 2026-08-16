@@ -5,7 +5,7 @@ extends Node2D
 @onready var player_one: CharacterBody2D = $PlayerScene
 @onready var player_two: CharacterBody2D = $PlayerTwoScene
 
-const DEMON_REALM_SCENE = preload("res://scenes/levels_scene/demon_realm_level.tscn")
+const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 
 
 #endregion --  References 

@@ -16,7 +16,7 @@ extends Node2D
 
 @onready var tutorial_u_is: Control = $UILayer/TutorialUIs
 
-const GRASS_LAND_SCENE = preload("res://scenes/levels_scene/grass_land_level.tscn")
+const GRASS_LAND_SCENE: String = "res://scenes/levels_scene/grass_land_level.tscn"
 
 @onready var ui_layer: CanvasLayer = $UILayer
 

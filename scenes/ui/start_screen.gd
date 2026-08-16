@@ -35,7 +35,7 @@ extends Control
 #region References
 
 @onready var video_stream_player: VideoStreamPlayer = $VideoStreamPlayer
-const PROLOGUE_SCENE = preload("res://scenes/ui/prologue_scene.tscn")
+const PROLOGUE_SCENE: String = "res://scenes/ui/prologue_scene.tscn"
 
 #endregion -- References 
 
