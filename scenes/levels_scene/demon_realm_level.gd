@@ -6,7 +6,7 @@ extends Node2D
 @onready var player_two: CharacterBody2D = $PlayerTwoScene
 @onready var current_path = get_tree().current_scene.scene_file_path
 
-#const DEMON_REALM_SCENE = preload("res://scenes/levels_scene/demon_realm_level.tscn")
+const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 
 #endregion --  References 
 
@@ -36,14 +36,10 @@ func _ready() -> void:
 
 
 
-
 func _on_transition_previous_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 	
-	#if player:
-		#GameManager.change_scene_with_transition(DEMON_REALM_SCENE)
-	#
-	
-	SignalHub.back_to_previous_stage.emit()
+	if player:
+		SignalHub.back_to_previous_stage.emit()
 
 #endregion -- Transitions 

@@ -12,6 +12,8 @@ const TEXT_ANNOUNCER = preload("res://scenes/ui/text_announcer.tscn")
 var current_scene_path: String = ""
 var previous_scene_path: String = ""
 
+
+
 #endregion -- References
 
 #region Game Enums
@@ -33,6 +35,9 @@ enum GameLevelStates {
 
 var player_one_spawn_p: Vector2 = Vector2.ZERO
 var player_two_spawn_p: Vector2 = Vector2.ZERO
+var player_one_prev_spawn: Vector2 = Vector2.ZERO
+var player_two_prev_spawn: Vector2 = Vector2.ZERO
+
 
 
 #endregion -- Spawn Points
@@ -52,7 +57,7 @@ func _ready() -> void:
 	SignalHub.player_died.connect(player_death)
 	SignalHub.stage_restart.connect(restart_current_stage)
 	SignalHub.back_to_previous_stage.connect(back_to_previous_stage)
-	
+
 #endregion -- Processes
 
 #region Levels Start
@@ -78,6 +83,7 @@ func change_scene_with_transition(scene_path: String) -> void:
 	
 
 func change_scene_to_previous(scene_path: String, p1_spawn: Vector2, p2_spawn: Vector2) -> void:
+
 	var trans_scene = TRANSITION_SCENE.instantiate()
 	get_tree().root.add_child(trans_scene)
 	trans_scene.transition_to_previous_stage(scene_path, p1_spawn, p2_spawn)
@@ -89,7 +95,7 @@ func back_to_previous_stage() -> void:
 	
 	await get_tree().process_frame
 	
-	change_scene_to_previous(current_scene_path, player_one_spawn_p, player_two_spawn_p)
+	change_scene_to_previous(previous_scene_path, player_one_prev_spawn, player_two_prev_spawn)
 
 func restart_current_stage() -> void:
 	if current_scene_path == "":
@@ -115,9 +121,10 @@ func capture_save_points(scene_path: String, p1_spawn: Vector2, p2_spawn: Vector
 
 func capture_last_points(scene_path: String, p1_spawn: Vector2, p2_spawn: Vector2) -> void:
 
-	player_one_spawn_p = p1_spawn
-	player_two_spawn_p = p2_spawn
+	player_two_prev_spawn = p2_spawn
+	player_one_prev_spawn = p1_spawn
 	previous_scene_path = scene_path
+
 
 #endregion -- Save Points
 
