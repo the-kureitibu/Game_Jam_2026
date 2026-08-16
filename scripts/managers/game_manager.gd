@@ -10,7 +10,7 @@ extends Node
 const TRANSITION_SCENE = preload("res://scenes/ui/transition_scene.tscn")
 const TEXT_ANNOUNCER = preload("res://scenes/ui/text_announcer.tscn")
 var current_scene_path: String = ""
-
+var previous_scene_path: String = ""
 
 #endregion -- References
 
@@ -51,6 +51,7 @@ func _ready() -> void:
 	
 	SignalHub.player_died.connect(player_death)
 	SignalHub.stage_restart.connect(restart_current_stage)
+	SignalHub.back_to_previous_stage.connect(back_to_previous_stage)
 	
 #endregion -- Processes
 
@@ -69,13 +70,26 @@ func announce_level_scene() -> void:
 		GameLevelStates.BOSS_LEVEL:
 			announcer_scene.announce("Demon Castle")
 			
-	
 
 func change_scene_with_transition(scene_path: String) -> void:
 	var trans_scene = TRANSITION_SCENE.instantiate()
 	get_tree().root.add_child(trans_scene)
 	trans_scene.transition_to_scene(scene_path)
+	
 
+func change_scene_to_previous(scene_path: String, p1_spawn: Vector2, p2_spawn: Vector2) -> void:
+	var trans_scene = TRANSITION_SCENE.instantiate()
+	get_tree().root.add_child(trans_scene)
+	trans_scene.transition_to_previous_stage(scene_path, p1_spawn, p2_spawn)
+
+func back_to_previous_stage() -> void:
+	if current_scene_path == "":
+		push_error("No current_scene_path registered. Cannot restart stage.")
+		return
+	
+	await get_tree().process_frame
+	
+	change_scene_to_previous(current_scene_path, player_one_spawn_p, player_two_spawn_p)
 
 func restart_current_stage() -> void:
 	if current_scene_path == "":
@@ -85,6 +99,7 @@ func restart_current_stage() -> void:
 	await get_tree().process_frame
 	
 	change_scene_with_transition(current_scene_path)
+
 
 #endregion -- Levels Start
 
@@ -96,6 +111,13 @@ func capture_save_points(scene_path: String, p1_spawn: Vector2, p2_spawn: Vector
 	player_one_spawn_p = p1_spawn
 	player_two_spawn_p = p2_spawn
 	current_scene_path = scene_path
+
+
+func capture_last_points(scene_path: String, p1_spawn: Vector2, p2_spawn: Vector2) -> void:
+
+	player_one_spawn_p = p1_spawn
+	player_two_spawn_p = p2_spawn
+	previous_scene_path = scene_path
 
 #endregion -- Save Points
 

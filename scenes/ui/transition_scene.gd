@@ -12,7 +12,28 @@ func _ready() -> void:
 	pass
 	
 
-#unload current scene 
+func transition_to_previous_stage(scene_path: String, p1_spawn: Vector2, p2_spawn: Vector2) -> void:
+	animation_player.play("fade_to")
+	await animation_player.animation_finished
+	
+	get_tree().change_scene_to_file(scene_path)
+	await get_tree().process_frame
+	
+	var player_one = get_tree().get_first_node_in_group("Player_target")
+	var player_two = get_tree().get_first_node_in_group("Player_target")
+	
+	if player_one and player_two:
+		player_one.global_position = p1_spawn
+		player_two.global_position = p2_spawn
+	
+	animation_player.play("fade_out")
+	await animation_player.animation_finished
+	
+	SignalHub.transition_done.emit()
+	queue_free()
+
+
+
 
 func transition_to_scene(scene_path: String) -> void:
 	animation_player.play("fade_to")
@@ -26,23 +47,3 @@ func transition_to_scene(scene_path: String) -> void:
 	
 	SignalHub.transition_done.emit()
 	queue_free()
-#
-#func transition_to_stage_start(scene_path: PackedScene) -> void:
-	#var running_scene = get_tree().current_scene
-	#var packed_scene = PackedScene.new()
-	#var cur_scene = packed_scene.pack(running_scene)
-	#
-	#if cur_scene == scene_path:
-		#scene_path.unload_current_scene()
-#
-	#animation_player.play("fade_to")
-	#await animation_player.animation_finished
-	#
-	#get_tree().change_scene_to_packed(scene_path)
-	#await get_tree().process_frame
-	#
-	#animation_player.play("fade_out")
-	#await animation_player.animation_finished
-	#
-	#SignalHub.transition_done.emit()
-	#queue_free()

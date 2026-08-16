@@ -12,6 +12,7 @@ signal player_died
 #region Stage/Level Related
 
 signal stage_restart
+signal back_to_previous_stage
 
 #endregion  -- Stage/Level Related
 

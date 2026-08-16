@@ -30,10 +30,21 @@ func _ready() -> void:
 
 #region Transitions 
 
+func capture_last_position() -> void:
+	var player1_last_pos = player_one.global_position
+	var player2_last_pos = player_two.global_position
+	
+	GameManager.capture_last_points(
+		current_path,
+		player1_last_pos,
+		player2_last_pos
+	)
+
 func _on_transition_area_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 	
 	if player:
+		capture_last_position()
 		GameManager.change_scene_with_transition(DEMON_REALM_SCENE)
 
 #endregion -- Transitions 
