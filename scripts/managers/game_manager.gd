@@ -10,6 +10,9 @@ extends Node
 const TRANSITION_SCENE = preload("res://scenes/ui/transition_scene.tscn")
 const TEXT_ANNOUNCER = preload("res://scenes/ui/text_announcer.tscn")
 
+var current_scene: Node
+
+
 #endregion -- References
 
 #region Game Enums
@@ -27,16 +30,29 @@ enum GameLevelStates {
 	
 #endregion -- Game Enums
 
+#region Spawn Points
+
+var player_one_spawn_p: Vector2 = Vector2.ZERO
+var player_two_spawn_p: Vector2 = Vector2.ZERO
+
+
+#endregion -- Spawn Points
 
 #endregion -- Base Vars 
 
+#region Processes
 func _ready() -> void:
 	if (game_scene_state != GameLevelStates.START_SCENE or 
 		game_scene_state != GameLevelStates.PROLOGUE_SCENE or 
 		game_scene_state != GameLevelStates.TUTORIAL_SCENE):
 		
 		SignalHub.transition_done.connect(announce_level_scene)
+		
+	SignalHub.player_died.connect(player_death)
+	
+#endregion -- Processes
 
+#region Levels Start
 func announce_level_scene() -> void:
 	var announcer_scene = TEXT_ANNOUNCER.instantiate()
 	get_tree().root.add_child(announcer_scene)
@@ -56,3 +72,30 @@ func change_scene_with_transition(scene_path: PackedScene) -> void:
 	var trans_scene = TRANSITION_SCENE.instantiate()
 	get_tree().root.add_child(trans_scene)
 	trans_scene.transition_to_scene(scene_path)
+
+#endregion -- Levels Start
+
+#region Save Points
+
+func capture_save_points() -> void:
+	var player_one = get_tree().get_first_node_in_group("Player_target")
+	var player_two = get_tree().get_first_node_in_group("Player_two")
+	
+	if player_one and player_two == null:
+		print("Players does not exist")
+		return
+	
+	player_one_spawn_p = player_one.global_position
+	player_two_spawn_p = player_two.global_position
+	
+	current_scene = get_tree().current_scene
+
+#endregion -- Save Points
+
+
+#region Player Related
+
+func player_death() -> void:
+	print("Player died")
+
+#endregion Player Related 

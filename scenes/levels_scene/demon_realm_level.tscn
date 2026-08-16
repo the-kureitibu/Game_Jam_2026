@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://wxyw3dr3fl1b" path="res://scenes/player_scene/player_two_scene.tscn" id="3_pw7ci"]
 [ext_resource type="PackedScene" uid="uid://dfiomxa4fli0f" path="res://scenes/player_scene/player_scene.tscn" id="4_yn3f5"]
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="5_pw7ci"]
+[ext_resource type="PackedScene" uid="uid://dn5srq6ttvo7w" path="res://scenes/ui/main_ui.tscn" id="6_yn3f5"]
 
 [node name="DemonRealmLevel" type="Node2D" unique_id=2026558242]
 script = ExtResource("1_vpuk8")
@@ -24,3 +25,7 @@ position = Vector2(113, -1)
 [node name="Projectiles" type="Node2D" parent="." unique_id=2140482391]
 
 [node name="CamRig" parent="." unique_id=819861590 instance=ExtResource("5_pw7ci")]
+
+[node name="MainUICanvas" type="CanvasLayer" parent="." unique_id=423780292]
+
+[node name="MainUI" parent="MainUICanvas" unique_id=1108660128 instance=ExtResource("6_yn3f5")]

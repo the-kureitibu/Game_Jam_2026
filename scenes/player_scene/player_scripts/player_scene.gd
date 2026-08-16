@@ -359,6 +359,9 @@ func player_move() -> void:
 
 
 func player_jump() -> void:
+	if p_action_state == PlayerActionState.DEAD:
+		return
+		
 	if is_hurt:
 		return
 	
@@ -395,6 +398,9 @@ func apply_gravity(delta) -> void:
 	velocity.y += current_gravity * delta
 
 func handle_dashing() -> void:
+	if p_action_state == PlayerActionState.DEAD:
+		return
+		
 	if is_busy:
 		return
 	
@@ -763,6 +769,7 @@ func handle_death() -> void:
 		return
 	
 	p_action_state = PlayerActionState.DEAD
+	play_anim(p_sprite, "death")
 	death()
 	
 func end_hurt() -> void:
@@ -851,6 +858,9 @@ func reset_hit_box_pos() -> void:
 #region Player States 
 
 func change_move_state(new_state: PlayerMoveState) -> void:
+	if p_action_state == PlayerActionState.DEAD:
+		return
+	
 	if is_attacking and p_form_state == PlayerFormState.HUMAN_FORM:
 		return
 
@@ -866,16 +876,23 @@ func change_move_state(new_state: PlayerMoveState) -> void:
 
 func match_spider_human_movement(f_state: PlayerBase.PlayerMoveState, sprt: AnimatedSprite2D,
 	jump: StringName, walk: StringName, idle: StringName) -> void:
-		match f_state:
-			PlayerMoveState.JUMP:
-				play_anim(sprt, jump)
-			PlayerMoveState.RUN:
-				play_anim(sprt, walk)
-			PlayerMoveState.IDLE:
-				play_anim(sprt, idle)
+	
+	if p_action_state == PlayerActionState.DEAD:
+		return
+	
+	match f_state:
+		PlayerMoveState.JUMP:
+			play_anim(sprt, jump)
+		PlayerMoveState.RUN:
+			play_anim(sprt, walk)
+		PlayerMoveState.IDLE:
+			play_anim(sprt, idle)
 	
 
 func update_move_state() -> void:
+	if p_action_state == PlayerActionState.DEAD:
+		return
+	
 	if is_hurt:
 		return
 	
@@ -912,6 +929,9 @@ func change_action_state(new_state) -> void:
 
 #region Light Ray Skill
 func handle_skill_one() -> void:
+	if p_action_state == PlayerActionState.DEAD:
+		return
+	
 	if !can_skill:
 		return
 	
@@ -987,6 +1007,9 @@ func start_light_ray_skill(n: Node2D, scene: PackedScene):
 #region Magic Ball Skill
 
 func handle_skill_two() -> void:
+	if p_action_state == PlayerActionState.DEAD:
+		return
+	
 	if !can_skill:
 		return
 	
@@ -1029,12 +1052,16 @@ func launch_magic_ball(scene: PackedScene, dir: int, pos: Vector2) -> void:
 
 #region Web Attack 
 func handle_web_attack() -> void:
+	if p_action_state == PlayerActionState.DEAD:
+		return
+	
 	if !p_form_state == PlayerFormState.SPIDER_FORM:
 		return
 
 	start_web_attack()
 
 func start_web_attack() -> void:
+	
 	
 	if p_form_state == PlayerFormState.HUMAN_FORM:
 		return
@@ -1150,7 +1177,7 @@ func end_web_combo() -> void:
 func end_skill() -> void:
 	is_skilling = false
 	can_skill = true
-	print("Skill ended")
+
 
 
 #endregion

@@ -54,6 +54,34 @@ region = Rect2(1152, 206, 128, 103)
 atlas = ExtResource("3_10rhv")
 region = Rect2(1280, 206, 128, 103)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_b54vq"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(0, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k7jet"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(128, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7tr8q"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(256, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dl0n2"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(384, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_muwob"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(512, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80tua"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(640, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nhrfk"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(768, 470, 128, 94)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_cv311"]
 atlas = ExtResource("3_10rhv")
 region = Rect2(0, 412, 128, 103)
@@ -249,6 +277,32 @@ animations = [{
 "loop": false,
 "name": &"attack",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b54vq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k7jet")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7tr8q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dl0n2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_muwob")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_80tua")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nhrfk")
+}],
+"loop": true,
+"name": &"death",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -636,7 +690,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_upndm")
 }],
-"loop": true,
+"loop": false,
 "name": &"death",
 "speed": 6.0
 }, {
@@ -882,13 +936,14 @@ p_proj_sprite = NodePath("CrossProjectile")
 visible = false
 position = Vector2(0, -51)
 sprite_frames = SubResource("SpriteFrames_xpk8o")
-animation = &"attack"
-frame = 10
-frame_progress = 1.0
+animation = &"death"
+frame_progress = 0.08192039
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")
-animation = &"hurt"
+animation = &"death"
+frame = 6
+frame_progress = 1.0
 offset = Vector2(0, -45)
 
 [node name="CrossProjectile" parent="." unique_id=148571568 instance=ExtResource("5_10rhv")]

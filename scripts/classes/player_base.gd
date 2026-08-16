@@ -79,6 +79,8 @@ func play_anim(anim_node: Node, anim_name: StringName, force_restart := false) -
 func death() -> void:
 	if is_dead:
 		return
-		
+
 	is_dead = true
+	
+	SignalHub.player_died.emit()
 	print("You dieded")
