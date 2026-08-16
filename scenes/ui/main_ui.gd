@@ -14,7 +14,6 @@ var rage_per_attk: int
 
 @export var p_stats: PlayerStats
 
-
 #endregion
 
 #region HUD Labels
@@ -52,11 +51,9 @@ func update_p_stats(s_name: String, s_value: Variant) -> void:
 	
 	match s_name:
 		"p_health":
-			print("health in UI working?")
 			health_bar.value = s_value
 		"r_amount":
 			rage_bar.value = s_value
-			print("rage in UI working?")
 
 func dec_ini_p_stats() -> void:
 
@@ -68,9 +65,8 @@ func dec_ini_p_stats() -> void:
 	p_rage_amount = player.r_amount
 	
 	health_bar.value = p_health
-	print(health_bar.value)
 	rage_bar.value = p_rage_amount
-	print(rage_bar.value)
+
 	
 
 func update_ini_min_max() -> void:

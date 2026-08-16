@@ -83,4 +83,3 @@ func death() -> void:
 	is_dead = true
 	
 	SignalHub.player_died.emit()
-	print("You dieded")

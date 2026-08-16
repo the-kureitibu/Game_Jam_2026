@@ -41,18 +41,16 @@ var player_two_spawn_p: Vector2 = Vector2.ZERO
 
 #region Processes
 func _ready() -> void:
+
 	if (game_scene_state != GameLevelStates.START_SCENE or 
 		game_scene_state != GameLevelStates.PROLOGUE_SCENE or 
 		game_scene_state != GameLevelStates.TUTORIAL_SCENE):
-		
-		capture_save_points()
 		
 		SignalHub.transition_done.connect(announce_level_scene)
 	
 	
 	SignalHub.player_died.connect(player_death)
-	SignalHub.stage_restart.connect(change_scene_with_transition.bind("res://scenes/levels_scene/grass_land_level.tscn"))
-	print("Scene captured: ", current_scene_path)
+	SignalHub.stage_restart.connect(restart_current_stage)
 	
 #endregion -- Processes
 
@@ -76,35 +74,28 @@ func announce_level_scene() -> void:
 func change_scene_with_transition(scene_path: String) -> void:
 	var trans_scene = TRANSITION_SCENE.instantiate()
 	get_tree().root.add_child(trans_scene)
-	
-	if scene_path == null:
-		print("Current scene file on transition: ", current_scene_path)
-	else:
-		print(scene_path)
-	
 	trans_scene.transition_to_scene(scene_path)
 
+
+func restart_current_stage() -> void:
+	if current_scene_path == "":
+		push_error("No current_scene_path registered. Cannot restart stage.")
+		return
+	
+	await get_tree().process_frame
+	
+	change_scene_with_transition(current_scene_path)
 
 #endregion -- Levels Start
 
 
-
 #region Save Points
 
-func capture_save_points() -> void:
-	var player_one = get_tree().get_first_node_in_group("Player_target")
-	var player_two = get_tree().get_first_node_in_group("Player_two")
-	
-	if player_one and player_two == null:
-		print("Players does not exist")
-		return
-	
-	if player_one and player_two:
-		player_one_spawn_p = player_one.global_position
-		player_two_spawn_p = player_two.global_position
-		
-		current_scene_path = get_tree().current_scene.scene_file_path
-		print("Current scene file on start: ", current_scene_path)
+func capture_save_points(scene_path: String, p1_spawn: Vector2, p2_spawn: Vector2) -> void:
+
+	player_one_spawn_p = p1_spawn
+	player_two_spawn_p = p2_spawn
+	current_scene_path = scene_path
 
 #endregion -- Save Points
 

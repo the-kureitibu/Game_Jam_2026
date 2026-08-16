@@ -4,6 +4,8 @@ extends Node2D
 
 @onready var player_one: CharacterBody2D = $PlayerScene
 @onready var player_two: CharacterBody2D = $PlayerTwoScene
+@onready var current_path = get_tree().current_scene.scene_file_path
+
 
 const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 
@@ -15,9 +17,16 @@ func _enter_tree() -> void:
 	GameManager.game_scene_state = GameManager.GameLevelStates.GRASSLAND_SCENE
 	
 func _ready() -> void:
+	
+	
 	player_one.global_position = $PlayerScene.global_position
 	player_two.global_position = $PlayerTwoScene.global_position
 	
+	GameManager.capture_save_points(
+		current_path,
+		player_one.global_position,
+		player_two.global_position
+	)
 
 #region Transitions 
 

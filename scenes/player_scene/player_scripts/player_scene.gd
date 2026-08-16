@@ -239,16 +239,6 @@ func grab_cam_limits() -> Dictionary:
 #endregion
 
 #region Processes 
-func _enter_tree() -> void:
-	
-	if not SignalHub.transition_done.is_connected(revive_and_restart_stage):
-		SignalHub.transition_done.connect(revive_and_restart_stage)
-
-func revive_and_restart_stage() -> void:
-	if p_action_state != PlayerActionState.DEAD:
-		return
-	
-	global_position = GameManager.player_one_spawn_p
 
 func _ready() -> void:
 
@@ -575,6 +565,9 @@ func start_attk_combo(combo_count: int) -> void:
 
 func _on_main_sprite_animation_finished() -> void:
 	
+	if p_action_state == PlayerActionState.DEAD:
+		death()
+	
 	if is_hurt and p_action_state == PlayerActionState.HURT:
 		end_hurt()
 
@@ -780,7 +773,7 @@ func handle_death() -> void:
 	
 	p_action_state = PlayerActionState.DEAD
 	play_anim(p_sprite, "death")
-	death()
+
 	
 func end_hurt() -> void:
 	

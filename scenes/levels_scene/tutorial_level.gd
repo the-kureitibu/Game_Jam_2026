@@ -104,7 +104,9 @@ func _on_exit_area_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 	
 	if player:
+		ui_layer.visible = false
 		GameManager.change_scene_with_transition(GRASS_LAND_SCENE)
+		
 
 func _on_arrow_one_area_body_entered(body: Node2D) -> void:
 
