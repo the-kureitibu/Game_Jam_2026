@@ -36,6 +36,7 @@ Boss_Projectile=""
 Terrain=""
 Block=""
 Player_two=""
+text_announcer=""
 
 [input]
 

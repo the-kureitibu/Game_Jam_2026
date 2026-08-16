@@ -62,6 +62,8 @@ func _ready() -> void:
 
 #region Levels Start
 func announce_level_scene() -> void:
+	clear_announcers()
+	
 	var announcer_scene = TEXT_ANNOUNCER.instantiate()
 	get_tree().root.add_child(announcer_scene)
 	
@@ -75,6 +77,11 @@ func announce_level_scene() -> void:
 		GameLevelStates.BOSS_LEVEL:
 			announcer_scene.announce("Demon Castle")
 			
+
+func clear_announcers() -> void:
+	for announcer in get_tree().get_nodes_in_group("text_announcer"):
+		if is_instance_valid(announcer):
+			announcer.queue_free()
 
 func change_scene_with_transition(scene_path: String) -> void:
 	var trans_scene = TRANSITION_SCENE.instantiate()
