@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://degrrqeqbbpiq"]
+
+[ext_resource type="Script" uid="uid://d3nixb4e70d7c" path="res://scenes/environment_scene/one_way_flatform.gd" id="1_f3ipw"]
+[ext_resource type="Texture2D" uid="uid://clyfio4q2f8y6" path="res://assets/sprites/environment/all ground sprite1.png" id="2_qasq4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p35cc"]
+size = Vector2(32, 10)
+
+[node name="OneWayFlatform" type="StaticBody2D" unique_id=191475518]
+collision_layer = 16
+collision_mask = 35
+script = ExtResource("1_f3ipw")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1127516450]
+texture = ExtResource("2_qasq4")
+region_enabled = true
+region_rect = Rect2(264, 5, 31, 10)
+
+[node name="MainCol" type="CollisionShape2D" parent="." unique_id=1997151029]
+shape = SubResource("RectangleShape2D_p35cc")
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=1269121836]
+rotation = 3.1415927
+target_position = Vector2(0, 25)
+collision_mask = 129

@@ -8,13 +8,14 @@
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="4_xbjce"]
 [ext_resource type="PackedScene" uid="uid://dn5srq6ttvo7w" path="res://scenes/ui/main_ui.tscn" id="7_gaevi"]
 [ext_resource type="PackedScene" uid="uid://q3hyw88nqvk6" path="res://scenes/enemy_scene/mob_one.tscn" id="8_m8j1c"]
+[ext_resource type="PackedScene" uid="uid://degrrqeqbbpiq" path="res://scenes/environment_scene/one_way_flatform.tscn" id="9_7qp3u"]
 
 [node name="TestScene" type="Node" unique_id=345745939]
 metadata/_edit_vertical_guides_ = [-137.0]
 metadata/_edit_horizontal_guides_ = [14.0]
 
 [node name="PlayerScene" parent="." unique_id=2131738871 instance=ExtResource("1_awkfx")]
-position = Vector2(120, -1)
+position = Vector2(124, -182)
 
 [node name="TestRoom1" parent="." unique_id=929027271 instance=ExtResource("2_ujilw")]
 
@@ -44,3 +45,7 @@ scale = Vector2(0.5, 0.5)
 
 [node name="MobOne" parent="." unique_id=1148431991 instance=ExtResource("8_m8j1c")]
 position = Vector2(249, -13)
+
+[node name="OneWayFlatform" parent="." unique_id=191475518 instance=ExtResource("9_7qp3u")]
+position = Vector2(294, 5)
+scale = Vector2(1.5, 1)
