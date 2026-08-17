@@ -26,7 +26,7 @@ enum GameLevelStates {
 	GRASSLAND_SCENE,
 	DEMON_REALM,
 	BOSS_LEVEL,
-	SECRET_SANCTUARY
+	MICHAEL_ROOM
 }
 	
 #endregion -- Game Enums
@@ -72,8 +72,8 @@ func announce_level_scene() -> void:
 			announcer_scene.announce("Grass Land")
 		GameLevelStates.DEMON_REALM:
 			announcer_scene.announce("Demon Realm")
-		GameLevelStates.SECRET_SANCTUARY:
-			announcer_scene.announce("Secret Sanctuary")
+		GameLevelStates.MICHAEL_ROOM:
+			announcer_scene.announce("Forgotten Sanctuary")
 		GameLevelStates.BOSS_LEVEL:
 			announcer_scene.announce("Demon Castle")
 			

@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://5h43rxafpysg"]
+
+[ext_resource type="Texture2D" uid="uid://blwtl28sw0yf" path="res://assets/sprites/player/bucko2026_2.png" id="1_wfqjo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_06b2g"]
+atlas = ExtResource("1_wfqjo")
+region = Rect2(512, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nl6wa"]
+atlas = ExtResource("1_wfqjo")
+region = Rect2(640, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b4fti"]
+atlas = ExtResource("1_wfqjo")
+region = Rect2(768, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a5645"]
+atlas = ExtResource("1_wfqjo")
+region = Rect2(896, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ypnq"]
+atlas = ExtResource("1_wfqjo")
+region = Rect2(1024, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uu1lg"]
+atlas = ExtResource("1_wfqjo")
+region = Rect2(1152, 128, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0xhyq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_06b2g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nl6wa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b4fti")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a5645")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ypnq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uu1lg")
+}],
+"loop": true,
+"name": &"gate",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d4p6i"]
+size = Vector2(44, 128)
+
+[node name="MichaelGate" type="StaticBody2D" unique_id=2023774198]
+collision_layer = 16
+collision_mask = 33
+
+[node name="Gate" type="AnimatedSprite2D" parent="." unique_id=1906471082]
+sprite_frames = SubResource("SpriteFrames_0xhyq")
+animation = &"gate"
+
+[node name="Col" type="CollisionShape2D" parent="." unique_id=78982702]
+position = Vector2(3, 0)
+shape = SubResource("RectangleShape2D_d4p6i")
+debug_color = Color(0.7925032, 0.36584538, 0.5814125, 0.41960785)
