@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://5h43rxafpysg"]
 
+[ext_resource type="Script" uid="uid://dukpejkfskaqa" path="res://scenes/environment_scene/michael_gate.gd" id="1_06b2g"]
 [ext_resource type="Texture2D" uid="uid://blwtl28sw0yf" path="res://assets/sprites/player/bucko2026_2.png" id="1_wfqjo"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_06b2g"]
@@ -47,7 +48,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_uu1lg")
 }],
-"loop": true,
+"loop": false,
 "name": &"gate",
 "speed": 5.0
 }]
@@ -55,9 +56,13 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d4p6i"]
 size = Vector2(44, 128)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wfqjo"]
+size = Vector2(24, 127)
+
 [node name="MichaelGate" type="StaticBody2D" unique_id=2023774198]
 collision_layer = 16
 collision_mask = 33
+script = ExtResource("1_06b2g")
 
 [node name="Gate" type="AnimatedSprite2D" parent="." unique_id=1906471082]
 sprite_frames = SubResource("SpriteFrames_0xhyq")
@@ -67,3 +72,23 @@ animation = &"gate"
 position = Vector2(3, 0)
 shape = SubResource("RectangleShape2D_d4p6i")
 debug_color = Color(0.7925032, 0.36584538, 0.5814125, 0.41960785)
+
+[node name="InputArea" type="Area2D" parent="." unique_id=1534289150]
+collision_layer = 16
+
+[node name="Area2D" type="CollisionShape2D" parent="InputArea" unique_id=1049898918]
+position = Vector2(-21, 0.5)
+shape = SubResource("RectangleShape2D_wfqjo")
+
+[node name="LineEdit" type="LineEdit" parent="." unique_id=1678198413]
+offset_left = -34.0
+offset_top = 23.0
+offset_right = 34.5
+offset_bottom = 54.0
+scale = Vector2(0.5, 0.5)
+placeholder_text = "Key"
+
+[connection signal="animation_finished" from="Gate" to="." method="_on_gate_animation_finished"]
+[connection signal="body_entered" from="InputArea" to="." method="_on_input_area_body_entered"]
+[connection signal="body_exited" from="InputArea" to="." method="_on_input_area_body_exited"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]

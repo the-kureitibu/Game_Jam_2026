@@ -50,9 +50,6 @@ size = Vector2(118, 118)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mdped"]
 size = Vector2(71, 485)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0te7u"]
-size = Vector2(78, 257)
-
 [node name="MichaelRoom" type="Node2D" unique_id=582702604]
 script = ExtResource("1_dn0hc")
 metadata/_edit_horizontal_guides_ = [66.0, -465.0, 137.0]
@@ -79,16 +76,6 @@ shape = SubResource("RectangleShape2D_iqpki")
 position = Vector2(1724, -242)
 shape = SubResource("RectangleShape2D_mdped")
 
-[node name="GateArea" type="Area2D" parent="." unique_id=119098]
-
-[node name="GateCol" type="CollisionShape2D" parent="GateArea" unique_id=262670001]
-position = Vector2(201, -128.5)
-shape = SubResource("RectangleShape2D_0te7u")
-
-[node name="MichaelGate" parent="GateArea" unique_id=2023774198 instance=ExtResource("4_mqwip")]
-position = Vector2(202.00002, -128)
-scale = Vector2(1.5, 2)
-
 [node name="PlayerScene" parent="." unique_id=2131738871 instance=ExtResource("4_6dhsh")]
 position = Vector2(36, -2)
 
@@ -96,3 +83,7 @@ position = Vector2(36, -2)
 position = Vector2(103, -2)
 
 [node name="CamRig" parent="." unique_id=819861590 instance=ExtResource("6_iqpki")]
+
+[node name="MichaelGate" parent="." unique_id=2023774198 instance=ExtResource("4_mqwip")]
+position = Vector2(202.00002, -128)
+scale = Vector2(1.5, 2)
