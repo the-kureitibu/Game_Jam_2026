@@ -24,3 +24,11 @@ signal update_p_stats(v_name: String, value: int)
 signal transition_done
 
 #endregion
+
+
+#region Flatforms
+
+signal is_in_flatform
+signal not_in_flatform
+
+#endregion -- Flatforms

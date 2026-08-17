@@ -5,7 +5,7 @@ extends StaticBody2D
 @onready var main_col: CollisionShape2D = $MainCol
 @onready var ray_cast_2d: RayCast2D = $RayCast2D
 @onready var player = get_tree().get_first_node_in_group("Player_target")
-
+@onready var enable_timer := 0.0
 
 
 func _ready() -> void:
@@ -14,12 +14,26 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	
-	
+	if enable_timer > 0.0:
+		enable_timer -= delta
+		if enable_timer <= 0.0:
+			
+			if main_col.disabled:
+				main_col.set_deferred("disabled", false)
+				enable_timer = 0.5
+
 	if ray_cast_2d.is_colliding():
 		var collider = ray_cast_2d.get_collider()
 		
 		if collider.name != 'PlayerScene':
 			return
 		else:
-			if Input.is_action_just_pressed("down") and Input.is_action_just_pressed("right"):
-				print("worked")
+			SignalHub.is_in_flatform.emit()
+			enable_timer = 0.5
+
+
+			if Input.is_action_pressed("down") and Input.is_action_pressed("jump"):
+				main_col.set_deferred("disabled", true)
+	else:
+		if enable_timer > 0.0:
+			SignalHub.not_in_flatform.emit()

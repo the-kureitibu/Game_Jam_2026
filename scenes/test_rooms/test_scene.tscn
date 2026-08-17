@@ -15,7 +15,7 @@ metadata/_edit_vertical_guides_ = [-137.0]
 metadata/_edit_horizontal_guides_ = [14.0]
 
 [node name="PlayerScene" parent="." unique_id=2131738871 instance=ExtResource("1_awkfx")]
-position = Vector2(124, -182)
+position = Vector2(81, -13)
 
 [node name="TestRoom1" parent="." unique_id=929027271 instance=ExtResource("2_ujilw")]
 
@@ -47,5 +47,5 @@ scale = Vector2(0.5, 0.5)
 position = Vector2(249, -13)
 
 [node name="OneWayFlatform" parent="." unique_id=191475518 instance=ExtResource("9_7qp3u")]
-position = Vector2(294, 5)
+position = Vector2(28, -94)
 scale = Vector2(1.5, 1)

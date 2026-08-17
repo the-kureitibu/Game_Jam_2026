@@ -22,4 +22,3 @@ shape = SubResource("RectangleShape2D_p35cc")
 [node name="RayCast2D" type="RayCast2D" parent="." unique_id=1269121836]
 rotation = 3.1415927
 target_position = Vector2(0, 25)
-collision_mask = 129

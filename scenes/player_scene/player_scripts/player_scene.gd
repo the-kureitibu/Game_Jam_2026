@@ -17,6 +17,7 @@ var is_rage_cooling: bool = false
 var is_transforming: bool = false
 var input_available: bool = true
 var is_invulnerable: bool = false
+var is_in_flatform: bool = false
 
 
 
@@ -265,6 +266,8 @@ func _ready() -> void:
 	
 	attk_c_timer = stats.attk_combo_timer
 
+	SignalHub.is_in_flatform.connect(in_flatform)
+	SignalHub.not_in_flatform.connect(not_in_flatform)
 
 
 func _physics_process(delta: float) -> void:
@@ -368,8 +371,17 @@ func player_jump() -> void:
 	if !is_on_floor():
 		return
 	
+	if is_in_flatform:
+		return
+	
 	if Input.is_action_just_pressed("jump"):
 		velocity.y = jump_velocity
+
+func in_flatform() -> void:
+	is_in_flatform = true
+
+func not_in_flatform() -> void:
+	is_in_flatform = false
 
 func handle_air_state() -> void:
 	if !is_on_floor():
