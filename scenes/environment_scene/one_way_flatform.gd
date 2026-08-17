@@ -35,5 +35,4 @@ func _process(delta: float) -> void:
 			if Input.is_action_pressed("down") and Input.is_action_pressed("jump"):
 				main_col.set_deferred("disabled", true)
 	else:
-		if enable_timer > 0.0:
-			SignalHub.not_in_flatform.emit()
+		SignalHub.not_in_flatform.emit()

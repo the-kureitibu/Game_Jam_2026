@@ -87,6 +87,8 @@ const MAX_RAGE: float = 100.0
 @onready var fall_gravity := (2.0 * jump_height) / pow(time_to_fall, 2.0)
 
 @onready var jump_velocity := -jump_gravity * time_to_apex
+var max_fall_speed := 450.0
+
 var is_on_air := false
 var facing_dir := 1
 
@@ -395,7 +397,7 @@ func apply_gravity(delta) -> void:
 	if is_air_dashing():
 		velocity.y = 0.0
 		return
-	
+
 	
 	var current_gravity: float
 	
@@ -408,7 +410,8 @@ func apply_gravity(delta) -> void:
 		current_gravity *= apex_gravity_multiplier
 		
 	velocity.y += current_gravity * delta
-
+	velocity.y = min(velocity.y, max_fall_speed)
+	
 func handle_dashing() -> void:
 	if p_action_state == PlayerActionState.DEAD:
 		return
