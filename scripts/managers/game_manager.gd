@@ -59,6 +59,11 @@ func _ready() -> void:
 	SignalHub.back_to_previous_stage.connect(back_to_previous_stage)
 	SignalHub.michael_blessing_get.connect(make_player_immortal)
 
+func _process(delta: float) -> void:
+	if get_tree().paused:
+		print("Tree is paused")
+	
+
 #endregion -- Processes
 
 #region Levels Start

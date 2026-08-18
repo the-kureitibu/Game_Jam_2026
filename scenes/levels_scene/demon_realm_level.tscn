@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="5_pw7ci"]
 [ext_resource type="PackedScene" uid="uid://dn5srq6ttvo7w" path="res://scenes/ui/main_ui.tscn" id="6_yn3f5"]
 [ext_resource type="PackedScene" uid="uid://degrrqeqbbpiq" path="res://scenes/environment_scene/one_way_flatform.tscn" id="7_5p1l5"]
+[ext_resource type="PackedScene" uid="uid://q3hyw88nqvk6" path="res://scenes/enemy_scene/mob_one.tscn" id="8_dw7j5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yn3f5"]
 size = Vector2(77, 624)
@@ -70,6 +71,9 @@ shape = SubResource("RectangleShape2D_5p1l5")
 [node name="ToBossCastle" type="Area2D" parent="." unique_id=1997679252]
 
 [node name="ExitToBoss" type="CollisionShape2D" parent="ToBossCastle" unique_id=1855718845]
+
+[node name="MobOne" parent="." unique_id=1148431991 instance=ExtResource("8_dw7j5")]
+position = Vector2(269, -13)
 
 [connection signal="body_entered" from="TransitionPrevious" to="." method="_on_transition_previous_body_entered"]
 [connection signal="body_entered" from="ToMichael" to="." method="_on_to_michael_body_entered"]

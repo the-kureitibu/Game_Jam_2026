@@ -96,7 +96,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	#queue_redraw()
-	
+
 	check_target_nearby()
 	apply_gravity(delta)
 	
@@ -130,6 +130,9 @@ func check_target_nearby() -> void:
 		
 
 func patrol_idle() -> void:
+	if get_tree().paused:
+		velocity.x = 0
+		return
 
 	var distance_to_target := target_x - global_position.x
 	patrol_dir = sign(distance_to_target)
@@ -150,6 +153,9 @@ func handle_anim() -> void:
 		play_anim(m_sprite, "hurt")
 
 func apply_gravity(delta) -> void:
+	if get_tree().paused:
+		velocity.y = 0
+		return
 
 	if is_on_floor():
 		return
@@ -172,6 +178,12 @@ func hit() -> float:
 	return dmg
 
 func jump_to_target() -> void:
+	if get_tree().paused:
+		velocity.y = 0
+		velocity.x = 0
+		
+		return
+
 
 	if t_player == null:
 		return 
@@ -219,7 +231,10 @@ func update_attack_state(delta) -> void:
 		end_attack()
 
 func update_attack_movement() -> void:
-	# Keep horizontal attack velocity while airborne.
+	if get_tree().paused:
+		velocity.y = 0
+		return
+	
 	if not is_on_floor():
 		return
 	

@@ -605,7 +605,8 @@ func _on_main_sprite_animation_finished() -> void:
 			death()
 	
 	if p_action_state == PlayerActionState.REVIVE:
-		adjust_health_and_state()
+		if p_sprite.animation == "revive":
+			adjust_health_and_state()
 	
 	if is_hurt and p_action_state == PlayerActionState.HURT:
 		end_hurt()
@@ -987,21 +988,31 @@ func start_revive() -> void:
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	
+	print("START REVIVE")
 	p_action_state = PlayerActionState.REVIVE
 	p_form_state = PlayerFormState.HUMAN_FORM
 	
 	play_anim(p_sprite, "revive")
 	summon_michael(MICHAEL)
-	
+
+	#make it so that only triggers after michael is done
+
 	await get_tree().process_frame
 	
 	get_tree().paused = true
+	print("PAUSED TREE: ", get_tree().paused)
+	
+	
+
 
 func summon_michael(scene: PackedScene) -> void:
 	var mic_scene = scene.instantiate()
 	mic_scene.captured_pos = michael_marker.global_position
+	add_child(mic_scene)
+	
 
 func adjust_health_and_state() -> void:
+	print("ADJUST HEALTH START")
 	p_health = stats.player_health
 	r_amount = 0.0
 	
@@ -1010,6 +1021,8 @@ func adjust_health_and_state() -> void:
 	await get_tree().process_frame
 	
 	get_tree().paused = false
+	print("UNPAUSED TREE: ", get_tree().paused)
+
 
 #endregion -- Handle Player Revive 
 
