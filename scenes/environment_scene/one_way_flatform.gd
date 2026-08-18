@@ -33,6 +33,9 @@ func _process(delta: float) -> void:
 
 
 			if Input.is_action_pressed("down") and Input.is_action_pressed("jump"):
-				main_col.set_deferred("disabled", true)
+				if GameManager.is_immortal:
+					return
+				else:
+					main_col.set_deferred("disabled", true)
 	else:
 		SignalHub.not_in_flatform.emit()

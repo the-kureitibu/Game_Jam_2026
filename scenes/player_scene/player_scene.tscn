@@ -586,6 +586,46 @@ region = Rect2(256, 188, 128, 94)
 atlas = ExtResource("4_gdmn6")
 region = Rect2(384, 188, 128, 94)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_04x73"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(768, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5mfow"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(640, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_117gq"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(512, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_asigb"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(384, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vr2kx"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(256, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_513cc"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(128, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1k8b"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(0, 470, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q1gic"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(256, 376, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hi16s"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(128, 376, 128, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibjc2"]
+atlas = ExtResource("4_gdmn6")
+region = Rect2(0, 376, 128, 94)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_ob0tm"]
 atlas = ExtResource("4_gdmn6")
 region = Rect2(0, 94, 128, 94)
@@ -761,6 +801,41 @@ animations = [{
 }],
 "loop": false,
 "name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_04x73")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5mfow")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_117gq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_asigb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vr2kx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_513cc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r1k8b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q1gic")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hi16s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ibjc2")
+}],
+"loop": false,
+"name": &"revive",
 "speed": 5.0
 }, {
 "frames": [{
@@ -941,8 +1016,8 @@ frame_progress = 0.08192039
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")
-animation = &"death"
-frame = 6
+animation = &"revive"
+frame = 9
 frame_progress = 1.0
 offset = Vector2(0, -45)
 

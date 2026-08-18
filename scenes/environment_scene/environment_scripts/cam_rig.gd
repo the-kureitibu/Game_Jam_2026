@@ -105,7 +105,7 @@ func determine_level_scene(lvl_name: Variant) -> void:
 			is_boss_room_level = true
 			
 		"DemonRealmLevel":
-			handle_cam_limits(0, 2399, 2000, -620)
+			handle_cam_limits(0, 2399, 2200, -620)
 			is_demonrealm_level = true
 			
 		"MichaelRoom":

@@ -57,6 +57,7 @@ func _ready() -> void:
 	SignalHub.player_died.connect(player_death)
 	SignalHub.stage_restart.connect(restart_current_stage)
 	SignalHub.back_to_previous_stage.connect(back_to_previous_stage)
+	SignalHub.michael_blessing_get.connect(make_player_immortal)
 
 #endregion -- Processes
 
@@ -137,6 +138,10 @@ func capture_last_points(scene_path: String, p1_spawn: Vector2, p2_spawn: Vector
 
 
 #region Player Related
+
+func make_player_immortal() -> void:
+	is_immortal = true
+
 
 #region Restart Stage  
 

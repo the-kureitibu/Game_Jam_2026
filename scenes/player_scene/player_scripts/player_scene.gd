@@ -581,7 +581,10 @@ func start_attk_combo(combo_count: int) -> void:
 func _on_main_sprite_animation_finished() -> void:
 	
 	if p_action_state == PlayerActionState.DEAD:
-		death()
+		if GameManager.is_immortal:
+			handle_revive()
+		else:
+			death()
 	
 	if is_hurt and p_action_state == PlayerActionState.HURT:
 		end_hurt()
@@ -940,6 +943,9 @@ func change_action_state(new_state) -> void:
 	
 	p_action_state = new_state
 	print(p_action_state)
+
+func handle_revive() -> void:
+	pass
 
 #endregion 
 

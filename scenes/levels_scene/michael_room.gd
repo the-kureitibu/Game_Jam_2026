@@ -9,6 +9,7 @@ var max_statue_frame := 3
 
 
 const MICHAEL_SCENE = preload("res://scenes/player_scene/michael.tscn")
+const DEMON_REALM: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 
 #region -- References
 
@@ -44,6 +45,12 @@ func _on_statue_hurt_box_area_entered(area: Area2D) -> void:
 		update_statue_sprite(michael_statue, cur_statue_frame)
 	else:
 		print("Not Hitbox: ")
+
+func _on_exit_area_body_entered(body: Node2D) -> void:
+	var player = body.get_tree().get_first_node_in_group("Player_target")
+
+	if player:
+		GameManager.change_scene_with_transition(DEMON_REALM)
 
 #endregion -- Area Signals
 
