@@ -13,7 +13,17 @@ const DEMON_REALM: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 
 #region -- References
 
+
+
 #region Functions
+
+#region Processes
+
+func _enter_tree() -> void:
+	GameManager.game_scene_state = GameManager.GameLevelStates.MICHAEL_ROOM
+
+
+#endregion -- Processes
 
 #region Statue related
 
