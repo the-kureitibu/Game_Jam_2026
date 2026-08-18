@@ -274,6 +274,7 @@ func _ready() -> void:
 
 	SignalHub.is_in_flatform.connect(in_flatform)
 	SignalHub.not_in_flatform.connect(not_in_flatform)
+	SignalHub.revival_complete.connect(unpause_after_revive)
 
 
 func _physics_process(delta: float) -> void:
@@ -604,9 +605,8 @@ func _on_main_sprite_animation_finished() -> void:
 		else:
 			death()
 	
-	if p_action_state == PlayerActionState.REVIVE:
-		if p_sprite.animation == "revive":
-			adjust_health_and_state()
+	if p_sprite.animation == "revive":
+		adjust_health_and_state()
 	
 	if is_hurt and p_action_state == PlayerActionState.HURT:
 		end_hurt()
@@ -991,11 +991,10 @@ func start_revive() -> void:
 	print("START REVIVE")
 	p_action_state = PlayerActionState.REVIVE
 	p_form_state = PlayerFormState.HUMAN_FORM
+	print(PlayerActionState.keys()[p_action_state])
 	
 	play_anim(p_sprite, "revive")
 	summon_michael(MICHAEL)
-
-	#make it so that only triggers after michael is done
 
 	await get_tree().process_frame
 	
@@ -1012,14 +1011,26 @@ func summon_michael(scene: PackedScene) -> void:
 	
 
 func adjust_health_and_state() -> void:
-	print("ADJUST HEALTH START")
-	p_health = stats.player_health
-	r_amount = 0.0
-	
-	p_action_state = PlayerActionState.NONE
 	
 	await get_tree().process_frame
 	
+	print("ADJUST HEALTH START")
+	p_action_state = PlayerActionState.NONE
+	p_health = stats.player_health
+	r_amount = 0.0
+	
+	is_hurt = false
+	is_busy = false
+	is_invulnerable = false
+	input_available = true
+	is_attacking = false
+	is_skilling = false
+	is_blocking = false
+	is_dashing = false
+	
+	
+
+func unpause_after_revive() -> void:
 	get_tree().paused = false
 	print("UNPAUSED TREE: ", get_tree().paused)
 

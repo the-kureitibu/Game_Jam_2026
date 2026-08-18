@@ -836,7 +836,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"revive",
-"speed": 5.0
+"speed": 3.0
 }, {
 "frames": [{
 "duration": 1.0,

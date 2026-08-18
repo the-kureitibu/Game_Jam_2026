@@ -28,6 +28,7 @@ signal transition_done
 #region Michael Related
 
 signal michael_blessing_get
+signal revival_complete
 
 #endregion Michael Related
 
