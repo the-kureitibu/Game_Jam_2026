@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bt17ugadsdqv" path="res://scenes/environment_scene/environment_scripts/cam_rig.gd" id="1_vijl8"]
 
 [node name="CamRig" type="Node2D" unique_id=819861590]
+process_mode = 3
 script = ExtResource("1_vijl8")
 
 [node name="Cam" type="Camera2D" parent="." unique_id=805998542]

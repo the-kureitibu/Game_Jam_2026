@@ -12,6 +12,7 @@ script = ExtResource("2_b1beo")
 metadata/_custom_type_script = "uid://rc0p3ykjd7ra"
 
 [node name="MainUI" type="Control" unique_id=1108660128]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

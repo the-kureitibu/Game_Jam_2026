@@ -128,6 +128,8 @@ var p_action_state: PlayerBase.PlayerActionState = PlayerActionState.NONE:
 const LIGHT_RAY = preload("res://scenes/projectiles_scene/light_ray_skill.tscn")
 const MAGIC_BALL = preload("res://scenes/projectiles_scene/magic_ball_skill.tscn")
 const WEB_ATTACK = preload("res://scenes/projectiles_scene/web_attack.tscn")
+const MICHAEL = preload("res://scenes/player_scene/michael.tscn")
+
 
 @onready var nearest_enemy: Node2D
 @onready var magic_ball_marker: Marker2D = $MagicBallMarker
@@ -137,6 +139,8 @@ const WEB_ATTACK = preload("res://scenes/projectiles_scene/web_attack.tscn")
 @onready var web_marker1: Marker2D = $WebAttackParent/WebMarker1
 @onready var web_marker2: Marker2D = $WebAttackParent/WebMarker2
 @onready var web_marker3: Marker2D = $WebAttackParent/WebMarker3
+@onready var michael_marker: Marker2D = $MichaelMarker
+
 
 const MAX_TARGET := 1
 
@@ -321,6 +325,9 @@ func dec_ini_stats() -> void:
 #region Base movement
 
 func player_move() -> void:
+	if p_action_state == PlayerActionState.REVIVE:
+		return
+	
 	if is_dashing:
 		velocity.x = facing_dir * dash_speed
 		return
@@ -364,6 +371,9 @@ func player_move() -> void:
 
 
 func player_jump() -> void:
+	if p_action_state == PlayerActionState.REVIVE:
+		return
+	
 	if p_action_state == PlayerActionState.DEAD:
 		return
 		
@@ -413,6 +423,9 @@ func apply_gravity(delta) -> void:
 	velocity.y = min(velocity.y, max_fall_speed)
 	
 func handle_dashing() -> void:
+	if p_action_state == PlayerActionState.REVIVE:
+		return
+	
 	if p_action_state == PlayerActionState.DEAD:
 		return
 		
@@ -454,6 +467,9 @@ func is_air_dashing() -> bool:
 
 #region Attack Related 
 func start_block() -> void:
+	if p_action_state == PlayerActionState.REVIVE:
+		return
+	
 	if is_skilling:
 		return
 	
@@ -508,6 +524,9 @@ func end_blocking() -> void:
 	force_move_animation()
 
 func start_attack() -> void:
+	if p_action_state == PlayerActionState.REVIVE:
+		return
+	
 	if is_skilling:
 		return
 	
@@ -544,7 +563,6 @@ func close_attack_window() -> void:
 	attack_window_open = false
 
 func start_attk_combo(combo_count: int) -> void:
-
 	if has_attk_mid_air:
 		return
 	
@@ -585,6 +603,9 @@ func _on_main_sprite_animation_finished() -> void:
 			handle_revive()
 		else:
 			death()
+	
+	if p_action_state == PlayerActionState.REVIVE:
+		adjust_health_and_state()
 	
 	if is_hurt and p_action_state == PlayerActionState.HURT:
 		end_hurt()
@@ -635,6 +656,9 @@ func accumulate_rage() -> void:
 
 
 func handle_rage() -> void:
+	if p_action_state == PlayerActionState.REVIVE:
+		return
+	
 	if r_amount < MAX_RAGE:
 		return
 
@@ -642,6 +666,7 @@ func handle_rage() -> void:
 
 
 func rage_transform() -> void:
+
 	
 	if is_raging or is_transforming:
 		return
@@ -667,6 +692,8 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		end_rage()
 
 func to_human_transform() -> void:
+	if p_action_state == PlayerActionState.REVIVE:
+		return
 	
 	if is_transforming:
 		return
@@ -944,8 +971,48 @@ func change_action_state(new_state) -> void:
 	p_action_state = new_state
 	print(p_action_state)
 
+#region Handle Player Revive 
+
 func handle_revive() -> void:
-	pass
+	if !p_action_state == PlayerActionState.DEAD:
+		return
+	
+	if !GameManager.is_immortal:
+		return
+	
+	start_revive()
+	
+
+func start_revive() -> void:
+	if p_action_state == PlayerActionState.REVIVE:
+		return
+	
+	p_action_state = PlayerActionState.REVIVE
+	p_form_state = PlayerFormState.HUMAN_FORM
+	
+	play_anim(p_sprite, "revive")
+	summon_michael(MICHAEL)
+	
+	await get_tree().process_frame
+	
+	get_tree().paused = true
+
+func summon_michael(scene: PackedScene) -> void:
+	var mic_scene = scene.instantiate()
+	mic_scene.captured_pos = michael_marker.global_position
+
+func adjust_health_and_state() -> void:
+	p_health = stats.player_health
+	r_amount = 0.0
+	
+	p_action_state = PlayerActionState.NONE
+	
+	await get_tree().process_frame
+	
+	get_tree().paused = false
+
+#endregion -- Handle Player Revive 
+
 
 #endregion 
 
