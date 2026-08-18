@@ -7,6 +7,9 @@ var cur_statue_frame := 0
 var max_statue_frame := 3
 @onready var michael_marker: Marker2D = $MichaelMarker
 
+
+const MICHAEL_SCENE = preload("res://scenes/player_scene/michael.tscn")
+
 #region -- References
 
 #region Functions
@@ -17,9 +20,19 @@ func update_statue_sprite(sprite: AnimatedSprite2D, target_frame: int) -> void:
 	sprite.frame = target_frame
 	
 	if sprite.frame == max_statue_frame:
-		print("Summon Michael")
+		summon_michael(MICHAEL_SCENE)
 
 #endregion -- Statue related
+
+#region Michael Scene Instantiate
+
+func summon_michael(scene: PackedScene) -> void:
+	var mic_scene = scene.instantiate()
+	mic_scene.captured_pos = michael_marker.global_position
+	add_child(mic_scene)
+	
+#endregion Michael Scene Instantiate
+
 
 #region Area Signals
 

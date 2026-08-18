@@ -3,6 +3,26 @@
 [ext_resource type="Script" uid="uid://cpkg685fwyuqg" path="res://scenes/player_scene/michael.gd" id="1_khb41"]
 [ext_resource type="Texture2D" uid="uid://blwtl28sw0yf" path="res://assets/sprites/player/bucko2026_2.png" id="2_3oqes"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_3oqes"]
+atlas = ExtResource("2_3oqes")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c2y2g"]
+atlas = ExtResource("2_3oqes")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehwd5"]
+atlas = ExtResource("2_3oqes")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw8y2"]
+atlas = ExtResource("2_3oqes")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ywy03"]
+atlas = ExtResource("2_3oqes")
+region = Rect2(1280, 0, 128, 128)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_8uar1"]
 atlas = ExtResource("2_3oqes")
 region = Rect2(0, 0, 128, 128)
@@ -27,28 +47,28 @@ region = Rect2(512, 0, 128, 128)
 atlas = ExtResource("2_3oqes")
 region = Rect2(640, 0, 128, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_c2y2g"]
-atlas = ExtResource("2_3oqes")
-region = Rect2(768, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ehwd5"]
-atlas = ExtResource("2_3oqes")
-region = Rect2(896, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_aw8y2"]
-atlas = ExtResource("2_3oqes")
-region = Rect2(1024, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ywy03"]
-atlas = ExtResource("2_3oqes")
-region = Rect2(1152, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ftwvc"]
-atlas = ExtResource("2_3oqes")
-region = Rect2(1280, 0, 128, 128)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_gypmm"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3oqes")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c2y2g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ehwd5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw8y2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ywy03")
+}],
+"loop": false,
+"name": &"fade",
+"speed": 3.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8uar1")
@@ -67,21 +87,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_kc1bh")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_c2y2g")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ehwd5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_aw8y2")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ywy03")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ftwvc")
 }],
 "loop": false,
 "name": &"summon",
@@ -93,6 +98,4 @@ script = ExtResource("1_khb41")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=2095539839]
 sprite_frames = SubResource("SpriteFrames_gypmm")
-animation = &"summon"
-frame = 10
-frame_progress = 1.0
+animation = &"fade"

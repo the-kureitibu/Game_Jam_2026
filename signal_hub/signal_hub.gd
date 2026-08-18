@@ -25,8 +25,13 @@ signal transition_done
 
 #endregion
 
+#region Michael Related
 
-#region Flatforms
+signal michael_blessing_get
+
+#endregion Michael Related
+
+#region Platforms
 
 signal is_in_flatform
 signal not_in_flatform

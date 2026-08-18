@@ -11,7 +11,7 @@ const TRANSITION_SCENE = preload("res://scenes/ui/transition_scene.tscn")
 const TEXT_ANNOUNCER = preload("res://scenes/ui/text_announcer.tscn")
 var current_scene_path: String = ""
 var previous_scene_path: String = ""
-
+var is_immortal: bool = false
 
 
 #endregion -- References

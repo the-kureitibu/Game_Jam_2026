@@ -91,5 +91,6 @@ position = Vector2(202.00002, -128)
 scale = Vector2(1.5, 2)
 
 [node name="MichaelMarker" type="Marker2D" parent="." unique_id=80447405]
+position = Vector2(894, -131)
 
 [connection signal="area_entered" from="StatueHurtBox" to="." method="_on_statue_hurt_box_area_entered"]
