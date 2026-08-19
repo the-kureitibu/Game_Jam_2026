@@ -73,7 +73,8 @@ shape = SubResource("RectangleShape2D_5p1l5")
 [node name="ExitToBoss" type="CollisionShape2D" parent="ToBossCastle" unique_id=1855718845]
 
 [node name="MobOne" parent="." unique_id=1148431991 instance=ExtResource("8_dw7j5")]
-position = Vector2(269, -13)
+position = Vector2(269, -30)
+scale = Vector2(2.5, 2.5)
 
 [connection signal="body_entered" from="TransitionPrevious" to="." method="_on_transition_previous_body_entered"]
 [connection signal="body_entered" from="ToMichael" to="." method="_on_to_michael_body_entered"]

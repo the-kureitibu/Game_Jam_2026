@@ -37,6 +37,7 @@ Terrain=""
 Block=""
 Player_two=""
 text_announcer=""
+Mob=""
 
 [input]
 

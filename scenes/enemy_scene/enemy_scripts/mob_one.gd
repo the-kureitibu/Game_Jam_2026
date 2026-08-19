@@ -65,6 +65,8 @@ var landing_offset := 24.0
 
 @onready var t_player: Node2D = get_tree().get_first_node_in_group("Player_target")
 @onready var m_sprite: AnimatedSprite2D = $MainSprite
+@onready var monster_health_bar: Control = $MonsterHealthBar
+
 
 #endregion
 
@@ -92,6 +94,8 @@ func _ready() -> void:
 	starting_x = global_position.x
 	target_x = starting_x + patrol_distance
 	patrol_dir = 1
+	
+	monster_health_bar.declare_initial_stats(m_health)
 
 
 func _physics_process(delta: float) -> void:
@@ -107,7 +111,9 @@ func _physics_process(delta: float) -> void:
 	else:
 		patrol_idle()
 	
+	
 	move_and_slide()
+	handle_anim()
 	update_attack_state(delta)
 
 #endregion
@@ -258,17 +264,17 @@ func reset_patrol_target() -> void:
 
 #region HurtBox Handler
 
-func handle_hurt(dmg: float) -> void:
+func handle_hurt(damage: float) -> void:
 	if is_hurt:
 		return
 	
-	start_hurt(dmg)
+	start_hurt(damage)
 	
 
-func start_hurt(dmg: float) -> void:
+func start_hurt(damage: float) -> void:
 	
 	is_hurt = true
-	m_health -= dmg
+	m_health -= damage
 
 func handle_death() -> void:
 	pass
@@ -285,16 +291,22 @@ func _on_hit_box_area_entered(area: Area2D) -> void:
 
 
 func _on_hurt_box_area_entered(area: Area2D) -> void:
-	pass # Replace with function body.
+	var p_target = area.get_tree().get_first_node_in_group("Player_target")
+	
+	if p_target and "hit" in p_target:
+		var p_dmg = p_target.hit()
+		handle_hurt(p_dmg)
+
 
 #endregion
 
 
 #region Animation Signal
 
-func _on_main_sprite_animation_finished(anim: StringName) -> void:
-	
-	if anim == "hurt":
+func _on_main_sprite_animation_finished() -> void:
+	if m_sprite.animation == "hurt":
 		is_hurt = false
-	
+		mob_one_state = MobStates.IDLE
+		
+
 #endregion
