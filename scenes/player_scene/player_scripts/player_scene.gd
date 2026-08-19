@@ -988,7 +988,6 @@ func start_revive() -> void:
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	
-	print("START REVIVE")
 	p_action_state = PlayerActionState.REVIVE
 	p_form_state = PlayerFormState.HUMAN_FORM
 	print(PlayerActionState.keys()[p_action_state])
@@ -999,7 +998,6 @@ func start_revive() -> void:
 	await get_tree().process_frame
 	
 	get_tree().paused = true
-	print("PAUSED TREE: ", get_tree().paused)
 	
 	
 
@@ -1014,7 +1012,6 @@ func adjust_health_and_state() -> void:
 	
 	await get_tree().process_frame
 	
-	print("ADJUST HEALTH START")
 	p_action_state = PlayerActionState.NONE
 	p_health = stats.player_health
 	r_amount = 0.0
@@ -1032,7 +1029,6 @@ func adjust_health_and_state() -> void:
 
 func unpause_after_revive() -> void:
 	get_tree().paused = false
-	print("UNPAUSED TREE: ", get_tree().paused)
 
 
 #endregion -- Handle Player Revive 

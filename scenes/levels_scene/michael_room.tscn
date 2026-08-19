@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://5h43rxafpysg" path="res://scenes/environment_scene/michael_gate.tscn" id="4_mqwip"]
 [ext_resource type="PackedScene" uid="uid://wxyw3dr3fl1b" path="res://scenes/player_scene/player_two_scene.tscn" id="5_mqwip"]
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="6_iqpki"]
+[ext_resource type="Texture2D" uid="uid://dnog4lnhjsi7c" path="res://assets/sprites/ui/Sprite sheets/Setting menu.png" id="8_fos4h"]
+[ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="9_o7jhk"]
+[ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="10_pg22n"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dn0hc"]
 atlas = ExtResource("2_gokco")
@@ -49,6 +52,18 @@ size = Vector2(118, 118)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mdped"]
 size = Vector2(71, 485)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fos4h"]
+texture = ExtResource("9_o7jhk")
+region_rect = Rect2(837, 132, 22, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o7jhk"]
+texture = ExtResource("9_o7jhk")
+region_rect = Rect2(869, 134, 22, 22)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pg22n"]
+texture = ExtResource("9_o7jhk")
+region_rect = Rect2(869, 134, 22, 22)
 
 [node name="MichaelRoom" type="Node2D" unique_id=582702604]
 script = ExtResource("1_dn0hc")
@@ -93,5 +108,113 @@ scale = Vector2(1.5, 2)
 [node name="MichaelMarker" type="Marker2D" parent="." unique_id=80447405]
 position = Vector2(894, -131)
 
+[node name="TutorialPopup" type="CanvasLayer" parent="." unique_id=1785220311]
+
+[node name="TopControl" type="Control" parent="TutorialPopup" unique_id=146087106]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BasePanel" type="MarginContainer" parent="TutorialPopup/TopControl" unique_id=1053338529]
+z_index = 1
+custom_minimum_size = Vector2(350, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -175.0
+offset_top = -150.0
+offset_right = 175.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MainVBox" type="VBoxContainer" parent="TutorialPopup/TopControl/BasePanel" unique_id=1327428372]
+layout_mode = 2
+
+[node name="BG" type="NinePatchRect" parent="TutorialPopup/TopControl/BasePanel/MainVBox" unique_id=1751938261]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("8_fos4h")
+region_rect = Rect2(139, 12, 106, 122)
+
+[node name="ImageVBContainer" type="VBoxContainer" parent="TutorialPopup/TopControl/BasePanel/MainVBox/BG" unique_id=284969072]
+custom_minimum_size = Vector2(280, 250)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -140.0
+offset_top = 10.0
+offset_right = 140.0
+offset_bottom = 210.0
+grow_horizontal = 2
+
+[node name="BackDrop" type="NinePatchRect" parent="TutorialPopup/TopControl/BasePanel/MainVBox/BG/ImageVBContainer" unique_id=1358822654]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("9_o7jhk")
+region_rect = Rect2(293, 101, 38, 38)
+patch_margin_left = 7
+patch_margin_top = 9
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="MainPanel" type="HBoxContainer" parent="TutorialPopup/TopControl/BasePanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=1337762072]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 265.0
+offset_bottom = -10.0
+grow_vertical = 2
+
+[node name="TextVBContainer" type="VBoxContainer" parent="TutorialPopup/TopControl/BasePanel/MainVBox/BG/ImageVBContainer/BackDrop/MainPanel" unique_id=1714527241]
+custom_minimum_size = Vector2(250, 80)
+layout_mode = 2
+
+[node name="Label1" type="Label" parent="TutorialPopup/TopControl/BasePanel/MainVBox/BG/ImageVBContainer/BackDrop/MainPanel/TextVBContainer" unique_id=707589972]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/font = ExtResource("10_pg22n")
+theme_override_font_sizes/font_size = 18
+text = "Thou hast received my blessing, and lo, the selfsame hand that traced the sign of grace upon thy brow doth now unseal the eternal fount.
+
+-archangel Michael (Bucko)"
+autowrap_mode = 2
+
+[node name="ExitButtonContainer" type="MarginContainer" parent="TutorialPopup/TopControl/BasePanel" unique_id=593579747]
+z_index = 1
+custom_minimum_size = Vector2(370, 320)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TutorialPopup/TopControl/BasePanel/ExitButtonContainer" unique_id=1851650111]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="ExitButton" type="Button" parent="TutorialPopup/TopControl/BasePanel/ExitButtonContainer/VBoxContainer" unique_id=1158819854]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxTexture_fos4h")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_o7jhk")
+theme_override_styles/hover = SubResource("StyleBoxTexture_pg22n")
+
 [connection signal="area_entered" from="StatueHurtBox" to="." method="_on_statue_hurt_box_area_entered"]
 [connection signal="body_entered" from="ExitArea" to="." method="_on_exit_area_body_entered"]
+[connection signal="pressed" from="TutorialPopup/TopControl/BasePanel/ExitButtonContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

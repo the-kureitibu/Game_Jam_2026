@@ -45,7 +45,7 @@ func fade_and_exit(tw: Tween) -> void:
 	
 	if !GameManager.is_immortal:
 		SignalHub.michael_blessing_get.emit()
-	
+		SignalHub.show_michael_tutorial.emit()
 
 	SignalHub.revival_complete.emit()
 	

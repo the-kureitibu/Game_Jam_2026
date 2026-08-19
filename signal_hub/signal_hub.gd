@@ -29,6 +29,7 @@ signal transition_done
 
 signal michael_blessing_get
 signal revival_complete
+signal show_michael_tutorial
 
 #endregion Michael Related
 
