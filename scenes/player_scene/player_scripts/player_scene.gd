@@ -245,6 +245,12 @@ func grab_cam_limits() -> Dictionary:
 
 #endregion
 
+#region Skills related
+@onready var ray_skill_damage: float = 30.0
+@onready var magic_ball_skill_damage: float = 25.0
+
+#endregion -- Skills related
+
 #region Processes 
 
 func _ready() -> void:

@@ -70,7 +70,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jspbb"]
 size = Vector2(10, 64)
 
-[node name="LightRaySkill" type="Area2D" unique_id=1384102649]
+[node name="LightRaySkill" type="Area2D" unique_id=1384102649 groups=["player_projectile"]]
+collision_layer = 256
+collision_mask = 64
 script = ExtResource("1_d2dq4")
 
 [node name="S_1" type="AnimatedSprite2D" parent="." unique_id=611349243 groups=["sprites"]]
@@ -102,4 +104,5 @@ animation = &"ray_attk"
 position = Vector2(0, 32)
 shape = SubResource("RectangleShape2D_jspbb")
 
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="animation_finished" from="S_1" to="." method="_on_s_1_animation_finished"]

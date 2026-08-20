@@ -25,7 +25,7 @@ func con_to_signals() -> void:
 func update_mob_health(value: float) -> void:
 	
 	texture_progress_bar.value = value
-	print(texture_progress_bar.value)
+	print("in Update health bar: ", texture_progress_bar.value)
 
 
 #region Processes

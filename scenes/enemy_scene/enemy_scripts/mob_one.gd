@@ -99,12 +99,16 @@ func _ready() -> void:
 	
 
 	monster_health_bar.declare_initial_stats(m_health)
+	
 
 
 
 func _physics_process(delta: float) -> void:
 	#queue_redraw()
 
+	if m_health <= 0.0:
+		handle_death()
+		
 	check_target_nearby()
 	apply_gravity(delta)
 	
@@ -140,6 +144,10 @@ func check_target_nearby() -> void:
 		
 
 func patrol_idle() -> void:
+	if mob_one_state == MobStates.DEATH:
+		velocity.x = 0
+		return
+	
 	if get_tree().paused:
 		velocity.x = 0
 		return
@@ -156,6 +164,9 @@ func patrol_idle() -> void:
 	velocity.x = patrol_dir * speed
 
 func handle_anim() -> void:
+	if mob_one_state == MobStates.DEATH:
+		return
+	
 	if velocity.x > 0.0 and mob_one_state == MobStates.IDLE:
 		play_anim(m_sprite, "walk")
 		
@@ -188,6 +199,10 @@ func hit() -> float:
 	return dmg
 
 func jump_to_target() -> void:
+	if mob_one_state == MobStates.DEATH:
+		velocity.x = 0
+		return
+	
 	if get_tree().paused:
 		velocity.y = 0
 		velocity.x = 0
@@ -232,6 +247,10 @@ func jump_to_target() -> void:
 	attk_timer = 3.0
 
 func update_attack_state(delta) -> void:
+	if mob_one_state == MobStates.DEATH:
+		velocity.x = 0
+		return
+	
 	if not is_attacking:
 		return
 	
@@ -241,6 +260,10 @@ func update_attack_state(delta) -> void:
 		end_attack()
 
 func update_attack_movement() -> void:
+	if mob_one_state == MobStates.DEATH:
+		velocity.x = 0
+		return
+	
 	if get_tree().paused:
 		velocity.y = 0
 		return
@@ -281,7 +304,22 @@ func start_hurt(damage: float) -> void:
 	m_health -= damage
 
 func handle_death() -> void:
-	pass
+	
+	if mob_one_state == MobStates.DEATH:
+		return
+	
+	mob_one_state = MobStates.DEATH
+	play_anim(m_sprite, "death")
+	
+
+func start_death() -> void:
+	
+	var tween = create_tween()
+	tween.tween_property(m_sprite, "modulate:a", 0.0, 1.5)
+	
+	await tween.finished
+	
+	queue_free()
 
 #endregion
 
@@ -296,11 +334,22 @@ func _on_hit_box_area_entered(area: Area2D) -> void:
 
 func _on_hurt_box_area_entered(area: Area2D) -> void:
 	var p_target = area.get_tree().get_first_node_in_group("Player_target")
+	var p_projectile = area.get_tree().get_first_node_in_group("player_projectile")
 	
-	if p_target and "hit" in p_target:
-		var p_dmg = p_target.hit()
+	if p_target or p_projectile and "hit" in p_target or p_projectile:
+		var p_dmg: float
+		
+		if p_target:
+			p_dmg = p_target.hit()
+		if p_projectile:
+			p_dmg = p_projectile.hit()
+		
+
 		handle_hurt(p_dmg)
 
+	#elif p_projectile and "hit" in p_projectile:
+		#var p_dmg = p_projectile.hit()
+		#handle_hurt(p_dmg)
 
 #endregion
 
@@ -311,6 +360,8 @@ func _on_main_sprite_animation_finished() -> void:
 	if m_sprite.animation == "hurt":
 		is_hurt = false
 		mob_one_state = MobStates.IDLE
-		
+	
+	if m_sprite.animation == "death":
+		start_death()
 
 #endregion

@@ -9,6 +9,16 @@ var max_travel_dist: float = 150.0
 
 signal launched_done
 
+#region References 
+
+@onready var player_target = get_tree().get_first_node_in_group("Player_target")
+
+#endregion
+
+func _enter_tree() -> void:
+	if !is_in_group("player_projectile"):
+		add_to_group("player_projectile")
+
 func _ready() -> void:
 	m_sprite.play("launch")
 	
@@ -52,3 +62,9 @@ func _on_main_sprite_animation_finished() -> void:
 	launched_done.emit()
 	queue_free()
 	
+
+func hit() -> int:
+	if player_target == null:
+		push_error("Player does not exist")
+	
+	return player_target.magic_ball_skill_damage

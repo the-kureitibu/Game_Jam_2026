@@ -43,7 +43,14 @@ signal light_ray_done
 #endregion
 
 #region Processes
+
+func _enter_tree() -> void:
+	if !is_in_group("player_projectile"):
+		add_to_group("player_projectile")
+
 func _ready() -> void:
+	
+	print("In projectile?: ", is_in_group("player_projectile"))
 	z_index = 10
 	
 	if player_target == null:
@@ -188,3 +195,9 @@ func _on_s_1_animation_finished() -> void:
 	start_alpha_fade_in_sequence()
 	
 #endregion
+
+func hit() -> int:
+	if player_target == null:
+		push_error("Player does not exist")
+	
+	return player_target.ray_skill_damage

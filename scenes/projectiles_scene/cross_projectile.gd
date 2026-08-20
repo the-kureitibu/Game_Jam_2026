@@ -7,6 +7,8 @@ extends Area2D
 
 
 func _ready() -> void:
+	
+	
 	hit_box.set_deferred("disabled", true)
 	main_sprite.visible = false
 	hit_box.visible = false
