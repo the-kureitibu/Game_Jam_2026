@@ -123,7 +123,7 @@ var is_panel_open := false
 		"attk_tut": "Press Left Mouse button to attack",
 		"combo_tut": "Press Left Mouse repeatedly to start combo",
 		"skill_one_tut": "Press 'E' key to launch skill one. Must have target nearby",
-		"skill_two_tut": "Press 'T' key to launch skill two"
+		"skill_two_tut": "Press 'R' key to launch skill two"
 	},
 	"block_jump_panel": {
 
@@ -138,7 +138,7 @@ var is_panel_open := false
 	"rage_skill_panel": {
 
 		"skill_one_rage_tut": "Press 'E' key to launch skill one during Rage mode. Must have target nearby",
-		"skill_two_rage_tut": "Press 'T' key to launch skill two during Rage mode", 
+		"skill_two_rage_tut": "Press 'R' key to launch skill two during Rage mode", 
 	}
 }
 

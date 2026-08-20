@@ -15,11 +15,9 @@ var mob_health: float = 0.0
 func con_to_signals() -> void: 
 	#var parent = get_tree().current_scene.name
 	#
-	if owner:
-		match owner.name:
-			"MobOne":
-				owner.update_health.connect(update_mob_health)
-				
+	if owner.is_in_group("Mob"):
+		print(owner.is_in_group("Mob"), " is in Mob group")
+		owner.update_health.connect(update_mob_health)
 
 
 func update_mob_health(value: float) -> void:
@@ -32,7 +30,7 @@ func update_mob_health(value: float) -> void:
 
 func _ready() -> void:
 	con_to_signals()
-	
+
 
 func _process(delta: float) -> void:
 	pass

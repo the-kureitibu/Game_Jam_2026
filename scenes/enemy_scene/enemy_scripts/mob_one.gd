@@ -108,7 +108,9 @@ func _physics_process(delta: float) -> void:
 
 	if m_health <= 0.0:
 		handle_death()
-		
+	
+	handle_anim()
+	
 	check_target_nearby()
 	apply_gravity(delta)
 	
@@ -121,8 +123,9 @@ func _physics_process(delta: float) -> void:
 	
 	
 	move_and_slide()
-	handle_anim()
 	update_attack_state(delta)
+	
+	
 
 #endregion
 
@@ -160,6 +163,10 @@ func patrol_idle() -> void:
 			target_x = starting_x - patrol_distance
 		else:
 			target_x = starting_x + patrol_distance
+	
+	if patrol_dir != 0:
+		m_sprite.flip_h = patrol_dir > 0
+
 	
 	velocity.x = patrol_dir * speed
 

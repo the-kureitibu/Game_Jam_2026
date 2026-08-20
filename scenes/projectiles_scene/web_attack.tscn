@@ -21,7 +21,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_251um"]
 size = Vector2(32, 64)
 
-[node name="WebAttack" type="Area2D" unique_id=830659441]
+[node name="WebAttack" type="Area2D" unique_id=830659441 groups=["player_projectile"]]
+collision_layer = 256
+collision_mask = 64
 script = ExtResource("1_fpllg")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=879461333 groups=["sprites"]]
@@ -46,5 +48,3 @@ animation = &"spawn_web"
 
 [node name="HitBox" type="CollisionShape2D" parent="." unique_id=32465962]
 shape = SubResource("RectangleShape2D_251um")
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=2025768545]

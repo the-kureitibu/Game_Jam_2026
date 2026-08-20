@@ -936,7 +936,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_l2g17"]
 resource_name = "rage_transform"
-length = 1.0333333
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1012,7 +1011,7 @@ p_proj_sprite = NodePath("CrossProjectile")
 visible = false
 position = Vector2(0, -51)
 sprite_frames = SubResource("SpriteFrames_xpk8o")
-animation = &"death"
+animation = &"idle"
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")

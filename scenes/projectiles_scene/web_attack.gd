@@ -42,6 +42,12 @@ signal web_attack_done
 #endregion
 
 #region Processes
+
+func _enter_tree() -> void:
+	if !is_in_group("player_projectile"):
+		add_to_group("player_projectile")
+
+
 func _ready() -> void:
 
 	sprite_one.rotation = deg_to_rad(90.0)
@@ -141,3 +147,10 @@ func fade_in_to_trans_sprite(sprite: AnimatedSprite2D, delay: float) -> void:
 	await tween.finished
 	
 #endregion
+
+
+func hit() -> int:
+	if player_target == null:
+		push_error("Player does not exist")
+	
+	return player_target.rage_web_damage

@@ -248,6 +248,7 @@ func grab_cam_limits() -> Dictionary:
 #region Skills related
 @onready var ray_skill_damage: float = 30.0
 @onready var magic_ball_skill_damage: float = 25.0
+@onready var rage_web_damage: float = 35.0
 
 #endregion -- Skills related
 
@@ -645,15 +646,12 @@ func _on_spider_sprite_animation_finished() -> void:
 
 func accumulate_rage() -> void:
 	if p_form_state == PlayerFormState.SPIDER_FORM:
-		print("Player is Spider form")
 		return
 	
 	if p_action_state == PlayerActionState.RAGE_TRANSFORM:
-		print("Player is rage transforming")
 		return
 	
 	if is_raging:
-		print("Player raging. ", is_raging)
 		return
 	
 	if r_amount < MAX_RAGE:
@@ -674,7 +672,6 @@ func handle_rage() -> void:
 
 func rage_transform() -> void:
 
-	
 	if is_raging or is_transforming:
 		return
 	
@@ -976,7 +973,6 @@ func change_action_state(new_state) -> void:
 		return
 	
 	p_action_state = new_state
-	print(p_action_state)
 
 #region Handle Player Revive 
 
@@ -996,7 +992,6 @@ func start_revive() -> void:
 	
 	p_action_state = PlayerActionState.REVIVE
 	p_form_state = PlayerFormState.HUMAN_FORM
-	print(PlayerActionState.keys()[p_action_state])
 	
 	play_anim(p_sprite, "revive")
 	summon_michael(MICHAEL)
@@ -1220,6 +1215,8 @@ func find_nearest_target() -> void:
 	move_markers_to_target(nearest_enemy)
 
 func move_markers_to_target(n: Node2D) -> void:
+	if n == null:
+		return
 
 	var marker_parent = web_markers_parent
 	marker_parent.global_position = n.global_position
@@ -1272,8 +1269,6 @@ func start_web_ray(n: Node2D, scene: PackedScene):
 	
 	var parent_node = get_tree().current_scene.get_node("Projectiles")
 	parent_node.add_child(web_ray_scene)
-	print(web_ray_scene.sprite_one.z_index, " Current first sprite z index")
-	print(web_ray_scene.sprite_two.z_index, " Current second sprite z index")
 
 	web_attk_timer = 0.08
 	current_web_count += 1
@@ -1334,15 +1329,12 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 		if "hit" in from_enemy:
 			from_enemy.hit()
 			en_damage = from_enemy.hit()
-			print(en_damage)
 			handle_hurt(en_damage)
 
 func _on_hit_box_area_entered(area: Area2D) -> void:
 	var from_area = area.get_tree().get_first_node_in_group("Enemy_target")
-	print(from_area)
 	
 	if from_area:
-		print(from_area.name)
 		accumulate_rage()
 
 
