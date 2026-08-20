@@ -37,7 +37,8 @@ var player_one_spawn_p: Vector2 = Vector2.ZERO
 var player_two_spawn_p: Vector2 = Vector2.ZERO
 var player_one_prev_spawn: Vector2 = Vector2.ZERO
 var player_two_prev_spawn: Vector2 = Vector2.ZERO
-
+var player_saved_health: float = 0.0
+var player_saved_rage: float = 0.0
 
 
 #endregion -- Spawn Points
@@ -93,7 +94,7 @@ func change_scene_with_transition(scene_path: String) -> void:
 	var trans_scene = TRANSITION_SCENE.instantiate()
 	get_tree().root.add_child(trans_scene)
 	trans_scene.transition_to_scene(scene_path)
-	
+
 
 func change_scene_to_previous(scene_path: String, p1_spawn: Vector2, p2_spawn: Vector2) -> void:
 
@@ -137,6 +138,11 @@ func capture_last_points(scene_path: String, p1_spawn: Vector2, p2_spawn: Vector
 	player_two_prev_spawn = p2_spawn
 	player_one_prev_spawn = p1_spawn
 	previous_scene_path = scene_path
+
+
+func capture_player_stats(p_health: float, p_rage: float) -> void:
+	player_saved_health = p_health
+	player_saved_rage = p_rage
 
 
 #endregion -- Save Points

@@ -25,6 +25,9 @@ func transition_to_previous_stage(scene_path: String, p1_spawn: Vector2, p2_spaw
 	if player_one and player_two:
 		player_one.global_position = p1_spawn
 		player_two.global_position = p2_spawn
+		
+		player_one.p_health = GameManager.player_saved_health
+		player_one.r_amount = GameManager.player_saved_rage
 	
 	animation_player.play("fade_out")
 	await animation_player.animation_finished

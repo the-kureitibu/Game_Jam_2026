@@ -47,3 +47,6 @@ position = Vector2(130, -1)
 [node name="MainUI" parent="MainUI" unique_id=1108660128 instance=ExtResource("5_vilxs")]
 
 [node name="CamRig" parent="." unique_id=819861590 instance=ExtResource("6_el1n2")]
+
+[connection signal="body_entered" from="ToDemonRealm" to="." method="_on_to_demon_realm_body_entered"]
+[connection signal="body_entered" from="ToBossRoom" to="." method="_on_to_boss_room_body_entered"]

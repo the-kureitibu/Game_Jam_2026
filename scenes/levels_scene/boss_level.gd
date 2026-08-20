@@ -1,1 +1,66 @@
 extends Node2D
+
+#region References 
+
+@onready var player_one: CharacterBody2D = $PlayerScene
+@onready var player_two: CharacterBody2D = $PlayerTwoScene
+@onready var current_path = get_tree().current_scene.scene_file_path
+@onready var main_ui: CanvasLayer = $MainUI
+
+const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.tscn"
+const BOSS_ROOM_SCENE: String = "res://scenes/enemy_scene/enemy_boss.tscn"
+
+#endregion --  References 
+
+
+func _enter_tree() -> void:
+	GameManager.game_scene_state = GameManager.GameLevelStates.BOSS_LEVEL
+	
+	
+func _ready() -> void:
+	player_one.global_position = $PlayerScene.global_position
+	player_two.global_position = $PlayerTwoScene.global_position
+	
+	player_one.p_health = GameManager.player_saved_health
+	player_one.r_amount = GameManager.player_saved_rage
+	
+	
+	GameManager.capture_save_points(
+		current_path,
+		player_one.global_position,
+		player_two.global_position
+	)
+
+
+#region Transitions 
+
+func capture_last_position() -> void:
+	var player1_last_pos = player_one.global_position
+	var player2_last_pos = player_two.global_position
+	
+	GameManager.capture_last_points(
+		current_path,
+		player1_last_pos,
+		player2_last_pos
+	)
+	
+	GameManager.capture_player_stats(player_one.p_health, player_one.r_amount)
+
+func _on_to_demon_realm_body_entered(body: Node2D) -> void:
+	var player = body.get_tree().get_first_node_in_group("Player_target")
+	
+	if player:
+		GameManager.capture_player_stats(player_one.p_health, player_one.r_amount)
+		SignalHub.back_to_previous_stage.emit()
+
+
+func _on_to_boss_room_body_entered(body: Node2D) -> void:
+	var player = body.get_tree().get_first_node_in_group("Player_target")
+	
+	if player:
+		capture_last_position()
+		main_ui.visible = false
+		GameManager.change_scene_with_transition(BOSS_ROOM_SCENE)
+
+
+#endregion -- Transitions 

@@ -11,22 +11,28 @@ const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.t
 const MICHAEL_ROOM_SCENE: String = "res://scenes/levels_scene/michael_room.tscn"
 const BOSS_CASTLE_SCENE: String = "res://scenes/levels_scene/boss_level.tscn"
 
+
 #endregion --  References 
 
 
 func _enter_tree() -> void:
 	GameManager.game_scene_state = GameManager.GameLevelStates.DEMON_REALM
 	
+	
 func _ready() -> void:
 	player_one.global_position = $PlayerScene.global_position
 	player_two.global_position = $PlayerTwoScene.global_position
+	
+	player_one.p_health = GameManager.player_saved_health
+	player_one.r_amount = GameManager.player_saved_rage
+	
 	
 	GameManager.capture_save_points(
 		current_path,
 		player_one.global_position,
 		player_two.global_position
 	)
-	
+
 
 #region Transitions 
 
@@ -39,11 +45,15 @@ func capture_last_position() -> void:
 		player1_last_pos,
 		player2_last_pos
 	)
+	
+	GameManager.capture_player_stats(player_one.p_health, player_one.r_amount)
 
 func _on_transition_previous_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 	
 	if player:
+		GameManager.capture_player_stats(player_one.p_health, player_one.r_amount)
+
 		SignalHub.back_to_previous_stage.emit()
 
 
@@ -60,6 +70,7 @@ func _on_to_boss_castle_body_entered(body: Node2D) -> void:
 	
 	if player:
 		capture_last_position()
+		main_ui_canvas.visible = false
 		GameManager.change_scene_with_transition(BOSS_CASTLE_SCENE)
 
 
