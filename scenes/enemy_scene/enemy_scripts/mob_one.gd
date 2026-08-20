@@ -91,11 +91,15 @@ var landing_offset := 24.0
 
 #region Processes
 func _ready() -> void:
+	add_to_group("Enemy_target")
+	
 	starting_x = global_position.x
 	target_x = starting_x + patrol_distance
 	patrol_dir = 1
 	
+
 	monster_health_bar.declare_initial_stats(m_health)
+
 
 
 func _physics_process(delta: float) -> void:

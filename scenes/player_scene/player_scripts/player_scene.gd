@@ -1333,8 +1333,10 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 
 func _on_hit_box_area_entered(area: Area2D) -> void:
 	var from_area = area.get_tree().get_first_node_in_group("Enemy_target")
+	print(from_area)
 	
 	if from_area:
+		print(from_area.name)
 		accumulate_rage()
 
 
