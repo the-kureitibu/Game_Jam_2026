@@ -129,6 +129,9 @@ var b_max_speed := 100.0
 func draw_speed_limit() -> void:
 	pass
 
+func _enter_tree() -> void:
+	p_target = get_tree().get_first_node_in_group("Player_target")
+
 func _ready() -> void:
 	if p_target == null:
 		push_error("Player does not exist")

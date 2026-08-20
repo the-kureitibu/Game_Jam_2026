@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bpikylkfktl86"]
+
+[ext_resource type="Script" uid="uid://btb2i3nrm5jgn" path="res://scenes/ui/pre_boss_dialogue.gd" id="1_wblsy"]
+[ext_resource type="Texture2D" uid="uid://dyfp4egs5sa07" path="res://assets/sprites/ui/thumbnails/Amiya_thumbnail.png" id="2_1mw16"]
+[ext_resource type="Texture2D" uid="uid://bjdvl7ixj5q1c" path="res://assets/sprites/ui/thumbnails/boss_thumbnail.png" id="3_7w6qw"]
+
+[node name="PreBossDialogue" type="Control" unique_id=1773973912]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wblsy")
+
+[node name="MainMargin" type="MarginContainer" parent="." unique_id=801287527]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ImageVBox" type="VBoxContainer" parent="MainMargin" unique_id=1617859749]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMargin/ImageVBox" unique_id=1095557280]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AmiyaImage" type="TextureRect" parent="MainMargin/ImageVBox/HBoxContainer" unique_id=481080970]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+texture = ExtResource("2_1mw16")
+
+[node name="BossImage" type="TextureRect" parent="MainMargin/ImageVBox/HBoxContainer" unique_id=279137467]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+texture = ExtResource("3_7w6qw")
+
+[node name="PanelContainer" type="PanelContainer" parent="MainMargin" unique_id=507730581]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 8
