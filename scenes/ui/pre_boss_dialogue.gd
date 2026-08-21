@@ -40,7 +40,7 @@ const MAX_INDEX: int = 3
 
 var dialogue_lines: Array[Dictionary] = [
 	{
-		"speaker": "Amiya",
+		"speaker": "Amiya Aranha",
 		"name": "Amiya Aranha",
 		"text": [
 			"Wait, Bucko.",
@@ -104,7 +104,10 @@ func _ready() -> void:
 	#set_initial_labels(speaker_one_collect, 0)
 	
 	#var speaker_keys = text_collect_keys[speaker_one_collect]
-	pass		
+
+	dialogue_helper(0, "left", current_index)
+	#
+	#next_text_label.text = names_and_text_collection[3]
 	#pulse_control(next_text_label)
 
 
@@ -115,20 +118,34 @@ func _process(delta: float) -> void:
 
 #region Advancing Dialogue
 
-func set_initial_labels(arr_index: int, sp_index: int) -> void:
-	var speaker_collection = dialogue_lines[arr_index]
-	var speaker_inner_keys = speaker_collection[sp_index]
+func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx: String = "text", sp_name: String = "speaker") -> void:
+		
+	var main_collection = dialogue_lines[main_index]
+	var speaker_text_collection = main_collection[sp_text_indx]
 	
-	#need the text instead, and text[text_index]... so main_arr[index] > sp_index["text"]> text["text_index"]
-	#var speaker_one_cur_keys = speaker_inner_keys[_index]
-	#
-	next_text_label.text = names_and_text_collection[3]
-	player_name_label.text = names_and_text_collection[1]
-	amiya_bucko_image.texture = load(amiya_thumbnail_path)
-	#boss_name_label.text = names_and_text_collection[0]
-	#dialogue_text_label.text = speaker_keys[speaker_one_cur_keys]
-	#
+	var speaker_name = main_collection[sp_name]
+	print(speaker_name)
 
+	match speaker_name:
+		"Amiya Aranha":
+			player_name_label.text = "Amiya Aranha"
+			amiya_bucko_image.texture = load(amiya_thumbnail_path)
+		"Boss":
+			boss_name_label.text = "Boss"
+			boss_image.texture = load(boss_thumbnail_path)
+		"Bucko":
+			player_name_label.text = "Bucko"
+			amiya_bucko_image.texture = load(bucko_thumbnail_path)
+	
+	match side:
+		"left":
+			dialogue_text_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		"right":
+			dialogue_text_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	
+	
+	dialogue_text_label.text = speaker_text_collection[cur_index]
+	
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("right"):
