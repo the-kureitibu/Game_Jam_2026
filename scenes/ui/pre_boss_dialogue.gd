@@ -4,9 +4,9 @@ extends Control
 
 #region References 
 
-@onready var amiya_thumbnail_path: String = "res://.godot/imported/Amiya_thumbnail.png-834829f972c9de96a3dafc59ae82382c.ctex"
-@onready var bucko_thumbnail_path: String = "res://.godot/imported/bucko_thumbnail.png-5ed1b9fb6710ac235db47d0570e2fcb5.ctex"
-@onready var boss_thumbnail_path: String = "res://.godot/imported/boss_thumbnail.png-93fa4ed20e720671d14ced4192a2be80.ctex"
+@onready var amiya_thumbnail_path: String = "res://.godot/imported/Amiya_thumbnail.png"
+@onready var bucko_thumbnail_path: String = "res://.godot/imported/bucko_thumbnail.png"
+@onready var boss_thumbnail_path: String = "res://.godot/imported/boss_thumbnail.png"
 
 @onready var amiya_bucko_image: TextureRect = $MainMargin/ImageVBox/HBoxContainer/AmiyaBuckoImage
 @onready var boss_image: TextureRect = $MainMargin/ImageVBox/HBoxContainer/BossImage
@@ -38,22 +38,40 @@ const MAX_INDEX: int = 3
 
 #region Dialogue and Image Collection
 
-@onready var prelogue_text_collect: Dictionary = {
-	"Amiya": {
-		"seq_0": "Wait, Bucko.",
-		"seq_1": "Salaryman Satou of the four heavenly kings… despite wearing weird clothes, it is said that his power rivals the demon lord. Take caution, Bucko.",
-		"seq_2": "....",
-		"seq_3": "(pfft)"
+var dialogue_lines: Array[Dictionary] = [
+	{
+		"speaker": "Amiya",
+		"name": "Amiya Aranha",
+		"text": [
+			"Wait, Bucko.",
+			"Salaryman Satou of the Four Heavenly Kings... despite wearing weird clothes, it is said that his power rivals the demon lord. Take caution, Bucko.",
+			"(pfft)"
+		],
+		"side": "left",
+		"image": amiya_thumbnail_path
 	},
-	"Bucko": {
-		"seq_1": "You dress weird."
+	{
+		"speaker": "Boss",
+		"name": "Salaryman Satou, four heavenly kings",
+		"text": [
+			"Oho…? Cleric Aminya Aranha… or should I say the hero party's saint.",
+			"Why don't you join us; and together, we will - ",
+			"....",
+			"Nevermind. I Satou shall bring you demise."
+		],
+		"side": "right",
+		"image": boss_thumbnail_path
 	},
-	"Boss": {
-		"seq_1": "Oho…? Cleric Aminya Aranha… or should I say the hero party's saint. Rumor has it that you're a powerful healer.",
-		"seq_2": "Why don't you join us; and together, we will -",
-		"seq_3": "Nevermind. I Satou, shall bring you demise."
+	{
+		"speaker": "Bucko",
+		"name": "Bucko",
+		"text": "You dress weird.",
+		"side": "left",
+		"image": bucko_thumbnail_path
 	}
-}
+]
+
+
 
 @onready var names_and_text_collection: Array = [
 	"Salaryman satou, four heavenly kings",
@@ -71,10 +89,10 @@ const MAX_INDEX: int = 3
 
 #region Speaker Text Collections
 
-@onready var text_collect_keys = prelogue_text_collect.keys()
-@onready var speaker_one_collect = text_collect_keys[0]
-@onready var speaker_two_collect = text_collect_keys[1]
-@onready var speaker_three_collect = text_collect_keys[2]
+#@onready var text_collect_keys = dialogue_lines.keys()
+#@onready var speaker_one_collect = text_collect_keys[0]
+#@onready var speaker_two_collect = text_collect_keys[1]
+#@onready var speaker_three_collect = text_collect_keys[2]
 
 #endregion -- Speaker Text Collections 
 
@@ -86,8 +104,7 @@ func _ready() -> void:
 	#set_initial_labels(speaker_one_collect, 0)
 	
 	#var speaker_keys = text_collect_keys[speaker_one_collect]
-	print(text_collect_keys[0])
-		
+	pass		
 	#pulse_control(next_text_label)
 
 
@@ -98,17 +115,19 @@ func _process(delta: float) -> void:
 
 #region Advancing Dialogue
 
-func set_initial_labels(sp_collect: Variant, _index: int) -> void:
-	var speaker_keys = text_collect_keys[sp_collect]
-	var speaker_inner_keys = speaker_keys.keys()
-	var speaker_one_cur_keys = speaker_inner_keys[_index]
+func set_initial_labels(arr_index: int, sp_index: int) -> void:
+	var speaker_collection = dialogue_lines[arr_index]
+	var speaker_inner_keys = speaker_collection[sp_index]
 	
+	#need the text instead, and text[text_index]... so main_arr[index] > sp_index["text"]> text["text_index"]
+	#var speaker_one_cur_keys = speaker_inner_keys[_index]
+	#
 	next_text_label.text = names_and_text_collection[3]
 	player_name_label.text = names_and_text_collection[1]
 	amiya_bucko_image.texture = load(amiya_thumbnail_path)
 	#boss_name_label.text = names_and_text_collection[0]
-	dialogue_text_label.text = speaker_keys[speaker_one_cur_keys]
-	
+	#dialogue_text_label.text = speaker_keys[speaker_one_cur_keys]
+	#
 
 
 func _unhandled_input(event: InputEvent) -> void:
