@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://bpikylkfktl86"]
 
 [ext_resource type="Script" uid="uid://btb2i3nrm5jgn" path="res://scenes/ui/pre_boss_dialogue.gd" id="1_wblsy"]
-[ext_resource type="Texture2D" uid="uid://dyfp4egs5sa07" path="res://assets/sprites/ui/thumbnails/Amiya_thumbnail.png" id="2_1mw16"]
-[ext_resource type="Texture2D" uid="uid://bjdvl7ixj5q1c" path="res://assets/sprites/ui/thumbnails/boss_thumbnail.png" id="3_7w6qw"]
+[ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="4_1mw16"]
 
 [node name="PreBossDialogue" type="Control" unique_id=1773973912]
 layout_mode = 3
@@ -30,18 +29,66 @@ size_flags_vertical = 4
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="AmiyaImage" type="TextureRect" parent="MainMargin/ImageVBox/HBoxContainer" unique_id=481080970]
+[node name="AmiyaBuckoImage" type="TextureRect" parent="MainMargin/ImageVBox/HBoxContainer" unique_id=481080970]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
-texture = ExtResource("2_1mw16")
 
 [node name="BossImage" type="TextureRect" parent="MainMargin/ImageVBox/HBoxContainer" unique_id=279137467]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 10
-texture = ExtResource("3_7w6qw")
 
 [node name="PanelContainer" type="PanelContainer" parent="MainMargin" unique_id=507730581]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_vertical = 8
+
+[node name="PlayerNameContainer" type="VBoxContainer" parent="MainMargin/PanelContainer" unique_id=618201880]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="PlayerNameLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/PlayerNameContainer" unique_id=299658424]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("4_1mw16")
+
+[node name="BossNameContainer" type="VBoxContainer" parent="MainMargin/PanelContainer" unique_id=185205949]
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="BossNameLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/BossNameContainer" unique_id=1858044037]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("4_1mw16")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMargin/PanelContainer" unique_id=2096819697]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="DialogueTextLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/VBoxContainer" unique_id=1213806933]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("4_1mw16")
+
+[node name="NextTextContainer" type="HBoxContainer" parent="MainMargin/PanelContainer/VBoxContainer" unique_id=1619936698]
+custom_minimum_size = Vector2(250, 20)
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="NextTextLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/VBoxContainer/NextTextContainer" unique_id=840708759]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("4_1mw16")
