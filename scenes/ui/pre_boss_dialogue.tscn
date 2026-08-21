@@ -43,52 +43,80 @@ custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="PlayerNameContainer" type="VBoxContainer" parent="MainMargin/PanelContainer" unique_id=618201880]
+[node name="MainHbox" type="HBoxContainer" parent="MainMargin/PanelContainer" unique_id=1833747083]
+layout_mode = 2
+
+[node name="Spacer1" type="Control" parent="MainMargin/PanelContainer/MainHbox" unique_id=689319882]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="PlayerNameContainer" type="VBoxContainer" parent="MainMargin/PanelContainer/MainHbox" unique_id=618201880]
 custom_minimum_size = Vector2(150, 30)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="PlayerNameLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/PlayerNameContainer" unique_id=299658424]
+[node name="PlayerNameLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/MainHbox/PlayerNameContainer" unique_id=299658424]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/default_color = Color(0.96298975, 0.7163942, 0.8028215, 1)
 theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/normal_font = ExtResource("4_1mw16")
+theme_override_font_sizes/normal_font_size = 18
 
-[node name="BossNameContainer" type="VBoxContainer" parent="MainMargin/PanelContainer" unique_id=185205949]
+[node name="BossNameContainer" type="VBoxContainer" parent="MainMargin/PanelContainer/MainHbox" unique_id=185205949]
 custom_minimum_size = Vector2(300, 40)
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 10
 size_flags_vertical = 0
 
-[node name="BossNameLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/BossNameContainer" unique_id=1858044037]
+[node name="BossNameLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/MainHbox/BossNameContainer" unique_id=1858044037]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/default_color = Color(0.96298975, 0.7163942, 0.8028215, 1)
 theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/normal_font = ExtResource("4_1mw16")
+horizontal_alignment = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMargin/PanelContainer" unique_id=2096819697]
+[node name="Spacer2" type="Control" parent="MainMargin/PanelContainer/MainHbox" unique_id=771859142]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="SecondHBox" type="HBoxContainer" parent="MainMargin/PanelContainer" unique_id=687620569]
+layout_mode = 2
+
+[node name="Spacer1" type="Control" parent="MainMargin/PanelContainer/SecondHBox" unique_id=1286183473]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMargin/PanelContainer/SecondHBox" unique_id=2096819697]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 8
 
-[node name="DialogueTextLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/VBoxContainer" unique_id=1213806933]
+[node name="DialogueTextLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/SecondHBox/VBoxContainer" unique_id=1213806933]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
 theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/normal_font = ExtResource("4_1mw16")
 
-[node name="NextTextContainer" type="HBoxContainer" parent="MainMargin/PanelContainer/VBoxContainer" unique_id=1619936698]
+[node name="Spacer2" type="Control" parent="MainMargin/PanelContainer/SecondHBox" unique_id=221334375]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="NextTextContainer" type="HBoxContainer" parent="MainMargin/PanelContainer" unique_id=1619936698]
 custom_minimum_size = Vector2(250, 20)
 layout_mode = 2
 size_flags_horizontal = 8
+size_flags_vertical = 8
 
-[node name="NextTextLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/VBoxContainer/NextTextContainer" unique_id=840708759]
+[node name="NextTextLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/NextTextContainer" unique_id=840708759]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/default_color = Color(0.9509199, 0.6195214, 0.74134755, 1)
 theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/normal_font = ExtResource("4_1mw16")

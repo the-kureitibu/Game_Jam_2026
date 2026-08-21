@@ -4,9 +4,9 @@ extends Control
 
 #region References 
 
-@onready var amiya_thumbnail_path: String = "res://.godot/imported/Amiya_thumbnail.png"
-@onready var bucko_thumbnail_path: String = "res://.godot/imported/bucko_thumbnail.png"
-@onready var boss_thumbnail_path: String = "res://.godot/imported/boss_thumbnail.png"
+@onready var amiya_thumbnail_path: String = "res://assets/sprites/ui/thumbnails/Amiya_thumbnail.png"
+@onready var bucko_thumbnail_path: String = "res://assets/sprites/ui/thumbnails/bucko_thumbnail.png"
+@onready var boss_thumbnail_path: String = "res://assets/sprites/ui/thumbnails/boss_thumbnail.png"
 
 @onready var amiya_bucko_image: TextureRect = $MainMargin/ImageVBox/HBoxContainer/AmiyaBuckoImage
 @onready var boss_image: TextureRect = $MainMargin/ImageVBox/HBoxContainer/BossImage
@@ -15,14 +15,14 @@ extends Control
 @onready var main_margin: MarginContainer = $MainMargin
 @onready var panel_container: PanelContainer = $MainMargin/PanelContainer
 
-@onready var player_name_container: VBoxContainer = $MainMargin/PanelContainer/PlayerNameContainer
-@onready var boss_name_container: VBoxContainer = $MainMargin/PanelContainer/BossNameContainer
-@onready var v_box_container: VBoxContainer = $MainMargin/PanelContainer/VBoxContainer
+@onready var player_name_container: VBoxContainer = $MainMargin/PanelContainer/MainHbox/PlayerNameContainer
+@onready var boss_name_container: VBoxContainer = $MainMargin/PanelContainer/MainHbox/BossNameContainer
+@onready var v_box_container: VBoxContainer = $MainMargin/PanelContainer/SecondHBox/VBoxContainer
 
-@onready var player_name_label: RichTextLabel = $MainMargin/PanelContainer/PlayerNameContainer/PlayerNameLabel
-@onready var boss_name_label: RichTextLabel = $MainMargin/PanelContainer/BossNameContainer/BossNameLabel
-@onready var dialogue_text_label: RichTextLabel = $MainMargin/PanelContainer/VBoxContainer/DialogueTextLabel
-@onready var next_text_label: RichTextLabel = $MainMargin/PanelContainer/VBoxContainer/NextTextContainer/NextTextLabel
+@onready var player_name_label: RichTextLabel = $MainMargin/PanelContainer/MainHbox/PlayerNameContainer/PlayerNameLabel
+@onready var boss_name_label: RichTextLabel = $MainMargin/PanelContainer/MainHbox/BossNameContainer/BossNameLabel
+@onready var dialogue_text_label: RichTextLabel = $MainMargin/PanelContainer/SecondHBox/VBoxContainer/DialogueTextLabel
+@onready var next_text_label: RichTextLabel = $MainMargin/PanelContainer/NextTextContainer/NextTextLabel
 
 #endregion -- References 
 
@@ -33,6 +33,9 @@ var current_speaker: int = 0
 
 const MAX_SPEAKER: int = 3
 const MAX_INDEX: int = 3
+
+var has_ended_dialogue: bool = false 
+var start_dialogue: bool = false
 
 #endregion -- Base
 
@@ -45,6 +48,7 @@ var dialogue_lines: Array[Dictionary] = [
 		"text": [
 			"Wait, Bucko.",
 			"Salaryman Satou of the Four Heavenly Kings... despite wearing weird clothes, it is said that his power rivals the demon lord. Take caution, Bucko.",
+			"....",
 			"(pfft)"
 		],
 		"side": "left",
@@ -72,7 +76,6 @@ var dialogue_lines: Array[Dictionary] = [
 ]
 
 
-
 @onready var names_and_text_collection: Array = [
 	"Salaryman satou, four heavenly kings",
 	"Amiya Aranha",
@@ -87,28 +90,18 @@ var dialogue_lines: Array[Dictionary] = [
 
 #endregion -- Dialogue Collection
 
-#region Speaker Text Collections
-
-#@onready var text_collect_keys = dialogue_lines.keys()
-#@onready var speaker_one_collect = text_collect_keys[0]
-#@onready var speaker_two_collect = text_collect_keys[1]
-#@onready var speaker_three_collect = text_collect_keys[2]
-
-#endregion -- Speaker Text Collections 
 
 #endregion -- Base Vars
 
 #region Processes
 
 func _ready() -> void:
-	#set_initial_labels(speaker_one_collect, 0)
-	
-	#var speaker_keys = text_collect_keys[speaker_one_collect]
 
-	dialogue_helper(0, "left", current_index)
-	#
-	#next_text_label.text = names_and_text_collection[3]
-	#pulse_control(next_text_label)
+	dialogue_helper(0, "left", 0)
+	
+	current_speaker = 1
+	next_text_label.text = names_and_text_collection[3]
+	pulse_control(next_text_label)
 
 
 func _process(delta: float) -> void:
@@ -118,13 +111,59 @@ func _process(delta: float) -> void:
 
 #region Advancing Dialogue
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("next"):
+		advance_dialogue()
+
+func advance_dialogue() -> void:
+	if has_ended_dialogue:
+		return
+
+	
+	if current_speaker == 1 and current_index == 0:
+		if !start_dialogue:
+			start_dialogue = true
+			
+			dialogue_helper(0, "left", 1)
+			current_speaker = 2
+			print("current speaker at initial: ", current_speaker)
+			print("current index at initial: ", current_index)
+		else:
+			dialogue_helper(0, "left", current_index)
+			current_speaker = 2
+			print("current speaker after initial: ", current_speaker)
+			print("current index after initial: ", current_index)
+			
+	elif current_speaker == 2:
+		if current_index == 0: 
+			dialogue_helper(1, "right", current_index)
+			current_speaker = 1
+			current_index += 1
+			print("current speaker after initial: ", current_speaker)
+			print("current index after initial: ", current_index)
+		elif current_index == 1: 
+			dialogue_helper(2, "right", current_index)
+			print("current speaker after initial: ", current_speaker)
+			print("current index after initial: ", current_index)
+		else:
+			dialogue_helper(1, "right", current_index)
+			current_speaker = 1
+			current_index += 1
+	
+
+	#else:
+		#if current_index >= max_index:
+			#has_ended_dialogue = true
+			##dialogue_ended.emit()
+
+
+
 func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx: String = "text", sp_name: String = "speaker") -> void:
 		
 	var main_collection = dialogue_lines[main_index]
 	var speaker_text_collection = main_collection[sp_text_indx]
 	
 	var speaker_name = main_collection[sp_name]
-	print(speaker_name)
 
 	match speaker_name:
 		"Amiya Aranha":
@@ -145,14 +184,6 @@ func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx
 	
 	
 	dialogue_text_label.text = speaker_text_collection[cur_index]
-	
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("right"):
-		pass
-
-func advance_dialogue() -> void:
-	pass
 
 
 #endregion -- Advancing Dialogue
