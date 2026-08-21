@@ -55,7 +55,7 @@ var dialogue_lines: Array[Dictionary] = [
 		"image": amiya_thumbnail_path
 	},
 	{
-		"speaker": "Boss",
+		"speaker": "Salaryman Satou, Four Heavenly Kings",
 		"name": "Salaryman Satou, four heavenly kings",
 		"text": [
 			"Oho…? Cleric Aminya Aranha… or should I say the hero party's saint.",
@@ -69,12 +69,25 @@ var dialogue_lines: Array[Dictionary] = [
 	{
 		"speaker": "Bucko",
 		"name": "Bucko",
-		"text": "You dress weird.",
+		"text": [
+			"You dress weird."
+			],
 		"side": "left",
 		"image": bucko_thumbnail_path
 	}
 ]
 
+@onready var dialogue_sequences: Array[Dictionary] = [
+	{"speaker": 0, "line": 0}, 
+	{"speaker": 0, "line": 1}, 
+	{"speaker": 1, "line": 0}, 
+	{"speaker": 0, "line": 2}, 
+	{"speaker": 1, "line": 1},
+	{"speaker": 2, "line": 0},
+	{"speaker": 0, "line": 3},
+	{"speaker": 1, "line": 2},
+	{"speaker": 1, "line": 3}
+]
 
 @onready var names_and_text_collection: Array = [
 	"Salaryman satou, four heavenly kings",
@@ -99,7 +112,7 @@ func _ready() -> void:
 
 	dialogue_helper(0, "left", 0)
 	
-	current_speaker = 1
+	current_index += 1 
 	next_text_label.text = names_and_text_collection[3]
 	pulse_control(next_text_label)
 
@@ -115,47 +128,33 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("next"):
 		advance_dialogue()
 
+func sequences_helper(curr_index: int, speaker: String = "speaker", line: String = "line", arr: Array = dialogue_sequences) -> Array:
+	var speaker_index = arr[curr_index][speaker] 
+	var line_index = arr[curr_index][line] 
+	
+	return [speaker_index, line_index]
+
 func advance_dialogue() -> void:
 	if has_ended_dialogue:
 		return
 
+	var sequence_index = sequences_helper(current_index)
+	var sequence_speaker_index = sequence_index[0]
+	var sequence_line_index = sequence_index[1]
 	
-	if current_speaker == 1 and current_index == 0:
-		if !start_dialogue:
-			start_dialogue = true
-			
-			dialogue_helper(0, "left", 1)
-			current_speaker = 2
-			print("current speaker at initial: ", current_speaker)
-			print("current index at initial: ", current_index)
-		else:
-			dialogue_helper(0, "left", current_index)
-			current_speaker = 2
-			print("current speaker after initial: ", current_speaker)
-			print("current index after initial: ", current_index)
-			
-	elif current_speaker == 2:
-		if current_index == 0: 
-			dialogue_helper(1, "right", current_index)
-			current_speaker = 1
-			current_index += 1
-			print("current speaker after initial: ", current_speaker)
-			print("current index after initial: ", current_index)
-		elif current_index == 1: 
-			dialogue_helper(2, "right", current_index)
-			print("current speaker after initial: ", current_speaker)
-			print("current index after initial: ", current_index)
-		else:
-			dialogue_helper(1, "right", current_index)
-			current_speaker = 1
-			current_index += 1
+	var side: String = ""
 	
-
-	#else:
-		#if current_index >= max_index:
-			#has_ended_dialogue = true
-			##dialogue_ended.emit()
-
+	match sequence_speaker_index:
+		0:
+			side = "left"
+		1:
+			side = "right"
+		2:
+			side = "left"
+	
+	dialogue_helper(sequence_speaker_index, side, sequence_line_index)
+	
+	current_index += 1
 
 
 func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx: String = "text", sp_name: String = "speaker") -> void:
@@ -169,8 +168,8 @@ func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx
 		"Amiya Aranha":
 			player_name_label.text = "Amiya Aranha"
 			amiya_bucko_image.texture = load(amiya_thumbnail_path)
-		"Boss":
-			boss_name_label.text = "Boss"
+		"Salaryman Satou, Four Heavenly Kings":
+			boss_name_label.text = "Salaryman Satou, Four Heavenly Kings"
 			boss_image.texture = load(boss_thumbnail_path)
 		"Bucko":
 			player_name_label.text = "Bucko"
@@ -184,7 +183,6 @@ func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx
 	
 	
 	dialogue_text_label.text = speaker_text_collection[cur_index]
-
 
 #endregion -- Advancing Dialogue
 

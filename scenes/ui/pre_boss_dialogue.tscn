@@ -65,7 +65,7 @@ theme_override_fonts/normal_font = ExtResource("4_1mw16")
 theme_override_font_sizes/normal_font_size = 18
 
 [node name="BossNameContainer" type="VBoxContainer" parent="MainMargin/PanelContainer/MainHbox" unique_id=185205949]
-custom_minimum_size = Vector2(300, 40)
+custom_minimum_size = Vector2(350, 40)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 0
