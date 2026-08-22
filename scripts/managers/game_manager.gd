@@ -26,7 +26,8 @@ enum GameLevelStates {
 	GRASSLAND_SCENE,
 	DEMON_REALM,
 	BOSS_LEVEL,
-	MICHAEL_ROOM
+	MICHAEL_ROOM,
+	BOSS_ROOM
 }
 	
 #endregion -- Game Enums
@@ -42,6 +43,13 @@ var player_saved_rage: float = 0.0
 
 
 #endregion -- Spawn Points
+
+#region Levels/Boss Fight 
+
+var is_pre_dialogue: bool = false
+var can_start_boss_fight: bool = false
+
+#endregion -- Levels/Boss Fight 
 
 #endregion -- Base Vars 
 
@@ -59,6 +67,8 @@ func _ready() -> void:
 	SignalHub.stage_restart.connect(restart_current_stage)
 	SignalHub.back_to_previous_stage.connect(back_to_previous_stage)
 	SignalHub.michael_blessing_get.connect(make_player_immortal)
+	SignalHub.pre_boss_fight_dialogue.connect(update_pre_boss_fight)
+	SignalHub.pre_fight_dialogue_done.connect(start_boss_fight)
 
 func _process(delta: float) -> void:
 	if get_tree().paused:
@@ -164,6 +174,14 @@ func player_death() -> void:
 
 #endregion --  Restart Stage  
 
+#region Boss Fight Related
 
+func update_pre_boss_fight() -> void:
+	is_pre_dialogue = true
+
+func start_boss_fight() -> void:
+	can_start_boss_fight = true
+
+#endregion -- Boss Fight Related 
 
 #endregion Player Related 

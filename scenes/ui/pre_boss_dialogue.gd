@@ -29,10 +29,8 @@ extends Control
 #region Base
 
 var current_index: int = 0
-var current_speaker: int = 0
 
-const MAX_SPEAKER: int = 3
-const MAX_INDEX: int = 3
+const MAX_INDEX: int = 9
 
 var has_ended_dialogue: bool = false 
 var start_dialogue: bool = false
@@ -138,6 +136,13 @@ func advance_dialogue() -> void:
 	if has_ended_dialogue:
 		return
 
+	if current_index == MAX_INDEX:
+		has_ended_dialogue = true
+		SignalHub.pre_fight_dialogue_done.emit()
+		
+		queue_free()
+		return
+	
 	var sequence_index = sequences_helper(current_index)
 	var sequence_speaker_index = sequence_index[0]
 	var sequence_line_index = sequence_index[1]
@@ -180,6 +185,7 @@ func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx
 			dialogue_text_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		"right":
 			dialogue_text_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	
 	
 	
 	dialogue_text_label.text = speaker_text_collection[cur_index]

@@ -13,7 +13,8 @@ signal player_died
 
 signal stage_restart
 signal back_to_previous_stage
-
+signal pre_boss_fight_dialogue
+signal pre_fight_dialogue_done
 
 #endregion  -- Stage/Level Related
 

@@ -333,6 +333,12 @@ func dec_ini_stats() -> void:
 #region Base movement
 
 func player_move() -> void:
+	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
+		and GameManager.can_start_boss_fight == false):
+			velocity.x = 0.0
+			return
+	
+	
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	
