@@ -30,6 +30,7 @@ var slowing_speed := 70.0
 
 const CHAIR_SCENE = preload("res://scenes/projectiles_scene/chair_skill.tscn")
 const BOOK_FALL_SCENE = preload("res://scenes/projectiles_scene/book_fall_skill.tscn")
+const DIRECTORY_SCENE = preload("res://scenes/projectiles_scene/directory_skill.tscn")
 
 var c_marker_dir: float
 
@@ -98,7 +99,9 @@ signal send_timers(timer: String, value: float)
 			return
 		
 		shots_timer = new_value
-		
+
+@onready var directory_summon_timer := 0.0
+@onready var channeling_skill_timer := 0.0
 
 #endregion
 
@@ -159,8 +162,7 @@ func _ready() -> void:
 	find_target()
 	
 	print("Number of shots ", chair_shots_fired)
-	#launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir)
-
+	#launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir
 	
 	
 func _physics_process(delta: float) -> void:
@@ -386,12 +388,24 @@ func slam_directory() -> void:
 	print("I slammed something")
 	end_skill()
 
-func summon_directory() -> void:
 
+func handle_directory_skill() -> void:
 	is_skilling = true
+	channeling_skill_timer = 5.0
+
+func start_summon_directory(scene: PackedScene) -> void:
+	var random_marker = skill_3_markers.pick_random()
+
+	var directory_scene = scene.instantiate()
+	directory_scene.marker_pos = random_marker.global_position
+	
+	var parent_scene = get_tree().current_scene
+	var target_node = parent_scene.get_node("Projectiles")
+	target_node.add_child(directory_scene)
 	
 	print("I slammed something")
 	end_skill()
+
 
 #endregion -- Summon Directories Skill
 

@@ -6,21 +6,46 @@ extends Area2D
 
 
 var dir: Vector2 = Vector2.UP 
-var upward_speed := 130.0
+var min_upward_speed := 40.0
+var max_upward_speed := 140.0
+var final_random_speed: float = 0.0
 var dmg := 20
+var marker_pos: Vector2 = Vector2.ZERO
+
 @onready var can_exit_tree: bool = false
 
-signal anim_done
+#region Processes
 
-#func _ready() -> void:
-	#m_sprite.play("fall")
-	#
-	#col_explode.set_deferred("disabled", true)
-	#b_sprite.visible = false
-#
+func _ready() -> void:
+	set_speed()
+	global_position = marker_pos
+	
+	print(final_random_speed)
+	
+func _physics_process(delta: float) -> void:
+	
+	position += dir * final_random_speed * delta
+
+#endregion -- Processes
+
+#region Initial Launch
 
 func start_spinning() -> void:
 	pass
+
+func get_random_speed(min_spd: float, max_spd: float) -> float:
+	var rand_float = randf_range(min_spd, max_spd)
+	
+	return rand_float
+	
+func set_speed() -> void:
+	var rand_speed = get_random_speed(min_upward_speed, max_upward_speed)
+	
+	final_random_speed = rand_speed
+
+#endregion -- Initial Launch
+
+
 #func match_explode_col_frames() -> void:
 	#
 	#match b_sprite.frame:
