@@ -116,6 +116,26 @@ var is_shooting := false
 
 #endregion
 
+#region Skill Arrays and Markers
+@onready var spawn_point_1: Marker2D = $Skill3Markers/SpawnPoint1
+@onready var spawn_point_2: Marker2D = $Skill3Markers/SpawnPoint2
+@onready var spawn_point_3: Marker2D = $Skill3Markers/SpawnPoint3
+@onready var spawn_point_4: Marker2D = $Skill3Markers/SpawnPoint4
+@onready var spawn_point_5: Marker2D = $Skill3Markers/SpawnPoint5
+@onready var spawn_point_6: Marker2D = $Skill3Markers/SpawnPoint6
+
+@onready var skill_3_markers: Array[Marker2D] = [
+	spawn_point_1,
+	spawn_point_2,
+	spawn_point_3,
+	spawn_point_4,
+	spawn_point_5,
+	spawn_point_6
+]
+
+
+#endregion -- Skill Arrays
+
 #region Target
 @onready var p_target = get_tree().get_first_node_in_group("Player_target")
 
@@ -291,6 +311,8 @@ func handle_boss_logic(delta: float) -> void:
 
 #region Skills
 
+#region Fall Book Skill
+
 func fall_book(scene: PackedScene, pos: Vector2) -> void:
 
 	is_skilling = true
@@ -305,7 +327,10 @@ func fall_book(scene: PackedScene, pos: Vector2) -> void:
 	if book_scene.is_inside_tree():
 		book_scene.anim_done.connect(end_skill)
 		print("Books scene connected?: ", book_scene.anim_done.is_connected(end_skill))
-		
+
+#endregion -- Fall Book Skill
+
+#region Chair Skill
 
 func start_chair_skill() -> void:
 
@@ -349,7 +374,11 @@ func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
 	shots_timer = 1.5
 	print("Shots timer refilled? ", shots_timer)
 	
-	
+
+#endregion -- Chair Skill
+
+#region Summon Directories Skill
+
 func slam_directory() -> void:
 
 	is_skilling = true
@@ -357,6 +386,14 @@ func slam_directory() -> void:
 	print("I slammed something")
 	end_skill()
 
+func summon_directory() -> void:
+
+	is_skilling = true
+	
+	print("I slammed something")
+	end_skill()
+
+#endregion -- Summon Directories Skill
 
 #endregion 
 

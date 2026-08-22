@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://blvw58402holh"]
+
+[ext_resource type="Script" uid="uid://bj6whwbby3n01" path="res://scenes/projectiles_scene/directory_skill.gd" id="1_5iqbb"]
+[ext_resource type="Texture2D" uid="uid://cidyv4r7kq1xt" path="res://assets/sprites/projectiles/boss_skill1.png" id="1_yof0g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5iqbb"]
+size = Vector2(27.85005, 40.49568)
+
+[node name="DirectorySkill" type="Area2D" unique_id=358297456 groups=["Enemy_target"]]
+collision_layer = 640
+script = ExtResource("1_5iqbb")
+
+[node name="MainSprite" type="Sprite2D" parent="." unique_id=458280190]
+texture = ExtResource("1_yof0g")
+region_enabled = true
+region_rect = Rect2(0, 0, 64, 64)
+
+[node name="HitBox" type="CollisionShape2D" parent="." unique_id=638013038]
+position = Vector2(-1.1145022, 9.681581)
+rotation = 1.2255995
+shape = SubResource("RectangleShape2D_5iqbb")

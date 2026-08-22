@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="5_ea7vf"]
 [ext_resource type="PackedScene" uid="uid://dn5srq6ttvo7w" path="res://scenes/ui/main_ui.tscn" id="7_1ll34"]
 
-[node name="BossRoom" type="Node2D" unique_id=481181433]
+[node name="BossRoom" type="Node2D" unique_id=481181433 groups=["Terrain"]]
 script = ExtResource("1_l7ur8")
 metadata/_edit_vertical_guides_ = [1584.0, -369.0, -254.0]
 metadata/_edit_horizontal_guides_ = [-434.0, 91.0]

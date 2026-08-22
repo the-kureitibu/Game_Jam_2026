@@ -2,12 +2,14 @@ extends Area2D
 
 @onready var m_sprite: AnimatedSprite2D = $Book
 @onready var b_sprite: AnimatedSprite2D = $Explode
+@onready var col_book: CollisionShape2D = $BookHitbox
+@onready var col_explode: CollisionShape2D = $ExplodeHitbox
+
 
 var dir: Vector2 = Vector2.DOWN 
 var fall_speed := 130.0
 var dmg := 20
-@onready var col_book: CollisionShape2D = $BookHitbox
-@onready var col_explode: CollisionShape2D = $ExplodeHitbox
+@onready var can_exit_tree: bool = false
 
 
 signal anim_done
@@ -52,6 +54,10 @@ func _physics_process(delta: float) -> void:
 	
 	if b_sprite.animation == "explode" and b_sprite.is_playing():
 		match_explode_col_frames()
+	
+	
+	if can_exit_tree:
+		queue_free()
 
 
 func _on_area_entered(area: Area2D) -> void:
@@ -87,4 +93,5 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _on_explode_animation_finished() -> void:
 	anim_done.emit()
-	queue_free()
+		
+	can_exit_tree = true 
