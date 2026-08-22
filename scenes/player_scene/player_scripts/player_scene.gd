@@ -1347,20 +1347,20 @@ func reduce_timer(delta: float) -> void:
 #endregion
 
 #region Area2d Related 
-func _on_hurt_box_area_entered(area: Area2D) -> void:
-	if is_dashing:
-		return
-	
-	var from_enemy = area.get_tree().get_first_node_in_group("Enemy_target")
-	#change to is_in_group 
-	
-	if from_enemy:
-		var en_damage: int
-		
-		if "hit" in from_enemy:
-			from_enemy.hit()
-			en_damage = from_enemy.hit()
-			handle_hurt(en_damage)
+#func _on_hurt_box_area_entered(area: Area2D) -> void:
+	#if is_dashing:
+		#return
+	#
+	#var from_enemy = area.get_tree().get_first_node_in_group("Enemy_target")
+	##change to is_in_group 
+	#
+	#if from_enemy:
+		#var en_damage: int
+		#
+		#if "hit" in from_enemy:
+			#from_enemy.hit()
+			#en_damage = from_enemy.hit()
+			#handle_hurt(en_damage)
 
 func _on_hit_box_area_entered(area: Area2D) -> void:
 	var from_area = area.get_tree().get_first_node_in_group("Enemy_target")

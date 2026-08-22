@@ -7,7 +7,8 @@
 size = Vector2(27.85005, 40.49568)
 
 [node name="DirectorySkill" type="Area2D" unique_id=358297456 groups=["Enemy_target"]]
-collision_layer = 640
+collision_layer = 512
+collision_mask = 128
 script = ExtResource("1_5iqbb")
 
 [node name="MainSprite" type="Sprite2D" parent="." unique_id=458280190]
@@ -19,3 +20,5 @@ region_rect = Rect2(0, 0, 64, 64)
 position = Vector2(-1.1145022, 9.681581)
 rotation = 1.2255995
 shape = SubResource("RectangleShape2D_5iqbb")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

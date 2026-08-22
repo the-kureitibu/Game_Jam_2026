@@ -102,6 +102,7 @@ signal send_timers(timer: String, value: float)
 
 @onready var directory_summon_timer := 0.0
 @onready var channeling_skill_timer := 0.0
+@onready var is_third_skill_running: bool = false
 
 #endregion
 
@@ -168,9 +169,13 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	handle_boss_logic(delta)
 	update_chair_skill(delta)
+	update_summon_directory(delta)
 	update_recovery(delta)
+
+	
 	
 	move_and_slide()
+	
 	
 	#if chase_timer > 0.0:
 		#print("Chase timer ", chase_timer)
@@ -391,9 +396,13 @@ func slam_directory() -> void:
 
 func handle_directory_skill() -> void:
 	is_skilling = true
+	is_third_skill_running = true
+	print("is_third_skill_running: ", is_third_skill_running)
 	channeling_skill_timer = 5.0
-
+	print("channeling_skill_timer: ", channeling_skill_timer)
+	
 func start_summon_directory(scene: PackedScene) -> void:
+	
 	var random_marker = skill_3_markers.pick_random()
 
 	var directory_scene = scene.instantiate()
@@ -403,8 +412,29 @@ func start_summon_directory(scene: PackedScene) -> void:
 	var target_node = parent_scene.get_node("Projectiles")
 	target_node.add_child(directory_scene)
 	
-	print("I slammed something")
-	end_skill()
+	directory_summon_timer = 0.3
+	print("I summoned directory")
+	print("directory_summon_timer: ", directory_summon_timer)
+
+func update_summon_directory(delta: float) -> void:
+	if !is_third_skill_running:
+		return
+	
+	if directory_summon_timer > 0.0:
+		directory_summon_timer -= delta
+		
+	if channeling_skill_timer > 0.0:
+		channeling_skill_timer -= delta
+	
+	if channeling_skill_timer > 0.0: #until there's a timer, summon every half a sec
+		if directory_summon_timer <= 0.0:
+			print("Made it before instantiate")
+			start_summon_directory(DIRECTORY_SCENE)
+
+	else:
+		is_third_skill_running = false
+		end_skill()
+
 
 
 #endregion -- Summon Directories Skill
@@ -440,7 +470,7 @@ func start_skill(num: int) -> void:
 		2:
 			start_chair_skill()
 		3:
-			slam_directory()
+			handle_directory_skill()
 		_:
 			is_skilling = false
 
