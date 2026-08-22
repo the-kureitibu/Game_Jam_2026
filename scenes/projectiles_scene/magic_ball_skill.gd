@@ -46,10 +46,10 @@ func handle_max_travel() -> void:
 
 
 func _on_area_entered(area: Area2D) -> void:
-	var enemy_target = get_tree().get_first_node_in_group("Enemy_target")
 	var boss_target = get_tree().get_first_node_in_group("Boss_target")
+	var enemy_target = get_tree().get_first_node_in_group("Enemy_target")
 	
-	if enemy_target or boss_target:
+	if boss_target or enemy_target :
 		if "hurt" in enemy_target or boss_target:
 			enemy_target.hurt()
 			boss_target.hurt()

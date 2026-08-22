@@ -161,6 +161,12 @@ func _physics_process(delta: float) -> void:
 #region Movement func
 
 func handle_movement() -> void:
+	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
+		and GameManager.can_start_boss_fight == false):
+		velocity.x = 0.0
+		return
+	
+	
 	if p_target == null:
 		return
 	
@@ -195,6 +201,11 @@ func pass_marker_dir(s_dir: int) -> void:
 #region Target related func 
 
 func chase_target(dir: float, abs_dis: float) -> void:
+	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
+		and GameManager.can_start_boss_fight == false):
+		velocity.x = 0.0
+		return
+	
 	
 	if is_skilling:
 		return
@@ -227,6 +238,11 @@ func find_target() -> float:
 #region Boss Logic
 
 func handle_boss_logic(delta: float) -> void:
+	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
+		and GameManager.can_start_boss_fight == false):
+		velocity.x = 0.0
+		return
+	
 	var signed_distance = find_target()
 	var signed_direction = sign(int(signed_distance))
 	var abs_distance = abs(signed_distance)
@@ -288,9 +304,11 @@ func fall_book(scene: PackedScene, pos: Vector2) -> void:
 	
 	if book_scene.is_inside_tree():
 		book_scene.anim_done.connect(end_skill)
+		print("Books scene connected?: ", book_scene.anim_done.is_connected(end_skill))
 		
 
 func start_chair_skill() -> void:
+
 	is_skilling = true
 	is_shooting = true
 	chair_shots_fired = 0
@@ -333,6 +351,7 @@ func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
 	
 	
 func slam_directory() -> void:
+
 	is_skilling = true
 	
 	print("I slammed something")
@@ -344,6 +363,7 @@ func slam_directory() -> void:
 #region Handle Skill
 
 func get_next_skill() -> int:
+	
 	print("BEFORE get_next_skill, bag: ", skill_bag)
 	if skill_bag.is_empty():
 		print("BAG EMPTY, REFILLING")
@@ -390,6 +410,8 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 #region End Actions
 
 func end_skill() -> void:
+	print("Did skill end after book?: ")
+	
 	is_skilling = false
 	is_shooting = false
 

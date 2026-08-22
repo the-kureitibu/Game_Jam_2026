@@ -335,8 +335,8 @@ func dec_ini_stats() -> void:
 func player_move() -> void:
 	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
 		and GameManager.can_start_boss_fight == false):
-			velocity.x = 0.0
-			return
+		velocity.x = 0.0
+		return
 	
 	
 	if p_action_state == PlayerActionState.REVIVE:
@@ -385,6 +385,12 @@ func player_move() -> void:
 
 
 func player_jump() -> void:
+	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
+		and GameManager.can_start_boss_fight == false):
+		velocity.x = 0.0
+		return
+	
+	
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	
@@ -437,6 +443,12 @@ func apply_gravity(delta) -> void:
 	velocity.y = min(velocity.y, max_fall_speed)
 	
 func handle_dashing() -> void:
+	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
+		and GameManager.can_start_boss_fight == false):
+		velocity.x = 0.0
+		return
+	
+	
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	
@@ -481,6 +493,12 @@ func is_air_dashing() -> bool:
 
 #region Attack Related 
 func start_block() -> void:
+	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
+		and GameManager.can_start_boss_fight == false):
+		velocity.x = 0.0
+		return
+	
+	
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	
@@ -538,6 +556,13 @@ func end_blocking() -> void:
 	force_move_animation()
 
 func start_attack() -> void:
+	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
+		and GameManager.can_start_boss_fight == false):
+		velocity.x = 0.0
+		return
+	
+	
+	
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	

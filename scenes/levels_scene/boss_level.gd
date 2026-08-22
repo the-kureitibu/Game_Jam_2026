@@ -8,7 +8,7 @@ extends Node2D
 @onready var main_ui: CanvasLayer = $MainUI
 
 const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.tscn"
-const BOSS_ROOM_SCENE: String = "res://scenes/enemy_scene/enemy_boss.tscn"
+const BOSS_ROOM_SCENE: String = "res://scenes/levels_scene/boss_room.tscn"
 
 #endregion --  References 
 
