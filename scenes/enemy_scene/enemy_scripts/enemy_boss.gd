@@ -18,6 +18,7 @@ var slowing_speed := 70.0
 #region References
 
 @onready var m_sprite: AnimatedSprite2D = $e_sprite
+@onready var d_sprite: AnimatedSprite2D = $d_sprite
 @onready var s_texture = m_sprite.sprite_frames.get_frame_texture("default", 0)
 @onready var s_height = s_texture.get_height() / - 2.0
 @onready var c_marker: Marker2D = $ChairMarker
@@ -26,6 +27,26 @@ var slowing_speed := 70.0
 
 @onready var c_marker_base_x = abs(c_marker.position.x)
 @onready var bf_marker_base_x = abs(bf_marker.position.x)
+
+signal update_health
+
+@onready var MAX_HEALTH: float = 200.0
+@onready var boss_health: float = 50.0: 
+	set(value):
+		var new_health = value
+		
+		if boss_health == new_health:
+			return
+		
+		boss_health = clamp(new_health, 0.0, MAX_HEALTH)
+		
+		update_health.emit(new_health)
+
+@onready var boss_state: EnemyBase.BossStates = BossStates.IDLE
+	#IDLE, 
+	#RECOVERY,
+	#SKILLING,
+	#DEATH
 
 
 const CHAIR_SCENE = preload("res://scenes/projectiles_scene/chair_skill.tscn")
@@ -167,6 +188,10 @@ func _ready() -> void:
 	
 	
 func _physics_process(delta: float) -> void:
+	
+	if boss_health <= 0.0:
+		handle_death()
+	
 	handle_boss_logic(delta)
 	update_chair_skill(delta)
 	update_summon_directory(delta)
@@ -228,6 +253,8 @@ func pass_marker_dir(s_dir: int) -> void:
 #region Target related func 
 
 func chase_target(dir: float, abs_dis: float) -> void:
+	boss_state = BossStates.CHASING
+
 	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
 		and GameManager.can_start_boss_fight == false):
 		velocity.x = 0.0
@@ -386,21 +413,12 @@ func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
 
 #region Summon Directories Skill
 
-func slam_directory() -> void:
-
-	is_skilling = true
-	
-	print("I slammed something")
-	end_skill()
-
 
 func handle_directory_skill() -> void:
 	is_skilling = true
 	is_third_skill_running = true
-	print("is_third_skill_running: ", is_third_skill_running)
 	channeling_skill_timer = 5.0
-	print("channeling_skill_timer: ", channeling_skill_timer)
-	
+
 func start_summon_directory(scene: PackedScene) -> void:
 	
 	var random_marker = skill_3_markers.pick_random()
@@ -413,8 +431,6 @@ func start_summon_directory(scene: PackedScene) -> void:
 	target_node.add_child(directory_scene)
 	
 	directory_summon_timer = 0.3
-	print("I summoned directory")
-	print("directory_summon_timer: ", directory_summon_timer)
 
 func update_summon_directory(delta: float) -> void:
 	if !is_third_skill_running:
@@ -428,7 +444,6 @@ func update_summon_directory(delta: float) -> void:
 	
 	if channeling_skill_timer > 0.0: #until there's a timer, summon every half a sec
 		if directory_summon_timer <= 0.0:
-			print("Made it before instantiate")
 			start_summon_directory(DIRECTORY_SCENE)
 
 	else:
@@ -463,6 +478,8 @@ func skill_needs_range(skill_num: int) -> bool:
 	
 func start_skill(num: int) -> void:
 	is_skilling = true
+	boss_state = BossStates.SKILLING
+	
 	
 	match num:
 		1:
@@ -491,7 +508,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 #region End Actions
 
 func end_skill() -> void:
-	print("Did skill end after book?: ")
+
 	
 	is_skilling = false
 	is_shooting = false
@@ -504,6 +521,8 @@ func end_skill() -> void:
 		chase_timer = 3.0
 
 func start_recovery() -> void:
+	boss_state = BossStates.RECOVERY
+	
 	is_recovering = true
 	recovery_timer = 3.0
 
@@ -530,3 +549,49 @@ func reduce_timer(delta: float) -> void:
 	
 
 #endregion
+
+#region Health Related 
+
+func handle_hurt(damage: float) -> void:
+	if is_hurt:
+		return
+	
+	start_hurt(damage)
+
+func start_hurt(damage: float) -> void:
+	
+	is_hurt = true
+	boss_health -= damage
+
+func handle_death() -> void:
+	
+	if boss_state == BossStates.DEATH:
+		return
+	
+	boss_state = BossStates.DEATH
+	print("boss dieded")
+	#play_anim(m_sprite, "death")
+	
+
+
+#endregion -- Health Related 
+
+#region Area Signals 
+
+func _on_hurtbox_area_entered(area: Area2D) -> void:
+	var player_target = area.get_tree().get_first_node_in_group("Player_target")
+	var p_projectile = area.get_tree().get_first_node_in_group("player_projectile")
+	
+	if player_target or p_projectile and "hit" in p_target or p_projectile:
+		var p_dmg: float
+		
+		if player_target:
+			p_dmg = player_target.hit()
+		if p_projectile:
+			p_dmg = p_projectile.hit()
+		
+		handle_hurt(p_dmg)
+
+
+
+#endregion -- Area Signals 

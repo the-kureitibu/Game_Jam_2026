@@ -4,7 +4,7 @@ extends Control
 
 var mob_health: float = 0.0
 @onready var texture_progress_bar: TextureProgressBar = $TextureProgressBar
-
+@export var boss_node: Node2D
 
 #endregion
 
@@ -12,30 +12,37 @@ var mob_health: float = 0.0
 
 #endregion
 
-func con_to_signals() -> void: 
-	#var parent = get_tree().current_scene.name
-	#
-	if owner.is_in_group("Mob"):
-		print(owner.is_in_group("Mob"), " is in Mob group")
-		owner.update_health.connect(update_mob_health)
-
-
-func update_mob_health(value: float) -> void:
-	
-	texture_progress_bar.value = value
-	print("in Update health bar: ", texture_progress_bar.value)
-
-
 #region Processes
 
 func _ready() -> void:
 	con_to_signals()
-
+	
+	if boss_node:
+		declare_initial_stats(boss_node.boss_health)
+		boss_node.update_health.connect(update_boss_health)
 
 func _process(delta: float) -> void:
 	pass
 
 #endregion
+
+func con_to_signals() -> void: 
+	
+	if owner.is_in_group("Mob"):
+		owner.update_health.connect(update_mob_health)
+	else:
+		return
+
+
+func update_mob_health(value: float) -> void:
+	
+	texture_progress_bar.value = value
+
+func update_boss_health(value: float) -> void:
+	
+	texture_progress_bar.value = value
+	print("in Update boss health bar: ", texture_progress_bar.value)
+
 
 func declare_initial_stats(health: float) -> void:
 

@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cetfn5r0cjj7c" path="res://scenes/enemy_scene/enemy_boss.tscn" id="4_l7ur8"]
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="5_ea7vf"]
 [ext_resource type="PackedScene" uid="uid://dn5srq6ttvo7w" path="res://scenes/ui/main_ui.tscn" id="7_1ll34"]
+[ext_resource type="PackedScene" uid="uid://t2g8yioc8y3a" path="res://scenes/ui/monster_health_bar.tscn" id="8_1ll34"]
 
 [node name="BossRoom" type="Node2D" unique_id=481181433 groups=["Terrain"]]
 script = ExtResource("1_l7ur8")
@@ -31,5 +32,13 @@ position = Vector2(622, -9)
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1048109508]
 
 [node name="MainUI" parent="CanvasLayer" unique_id=1108660128 instance=ExtResource("7_1ll34")]
+
+[node name="MonsterHealthBar" parent="CanvasLayer" unique_id=1802553802 node_paths=PackedStringArray("boss_node") instance=ExtResource("8_1ll34")]
+offset_left = 106.99999
+offset_top = 321.00003
+offset_right = 106.99999
+offset_bottom = 321.00003
+scale = Vector2(1.5, 0.3)
+boss_node = NodePath("../../EnemyBoss")
 
 [node name="Projectiles" type="Node2D" parent="." unique_id=552233184]

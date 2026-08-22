@@ -3,6 +3,21 @@
 [ext_resource type="Texture2D" uid="uid://dkt2pte0tirw2" path="res://assets/sprites/enemies/bucko2026_boss.png" id="1_m08xj"]
 [ext_resource type="Script" uid="uid://c580b1upu2c3" path="res://scenes/enemy_scene/enemy_scripts/enemy_boss.gd" id="1_pel0o"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_p55qm"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(0, 0, 128, 145)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kjeor"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p55qm")
+}],
+"loop": true,
+"name": &"demon",
+"speed": 5.0
+}]
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_pel0o"]
 atlas = ExtResource("1_m08xj")
 region = Rect2(128, 0, 128, 145)
@@ -103,6 +118,12 @@ collision_layer = 2
 collision_mask = 16
 script = ExtResource("1_pel0o")
 
+[node name="d_sprite" type="AnimatedSprite2D" parent="." unique_id=1116574413]
+visible = false
+sprite_frames = SubResource("SpriteFrames_kjeor")
+animation = &"demon"
+offset = Vector2(0, -68)
+
 [node name="e_sprite" type="AnimatedSprite2D" parent="." unique_id=290278967]
 position = Vector2(-4, 1.0086212)
 scale = Vector2(0.8, 0.8)
@@ -160,4 +181,5 @@ position = Vector2(-184, -1)
 [node name="SpawnPoint6" type="Marker2D" parent="Skill3Markers" unique_id=1238603978]
 position = Vector2(156, -1)
 
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

@@ -31,6 +31,14 @@ enum MobStates {
 	DEATH
 }
 
+enum BossStates {
+	IDLE, 
+	RECOVERY,
+	SKILLING,
+	CHASING,
+	DEATH
+}
+
 
 #endregion
 
