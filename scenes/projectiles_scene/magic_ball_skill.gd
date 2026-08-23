@@ -49,10 +49,13 @@ func _on_area_entered(area: Area2D) -> void:
 	var boss_target = get_tree().get_first_node_in_group("Boss_target")
 	var enemy_target = get_tree().get_first_node_in_group("Enemy_target")
 	
-	if boss_target or enemy_target :
-		if "hurt" in enemy_target or boss_target:
-			enemy_target.hurt()
+	if boss_target: 
+		if "hurt" in boss_target:
 			boss_target.hurt()
+	elif enemy_target:
+		if "hurt" in enemy_target:
+			enemy_target.hurt()
+
 
 func _on_main_sprite_animation_finished() -> void:
 	var tween = create_tween()

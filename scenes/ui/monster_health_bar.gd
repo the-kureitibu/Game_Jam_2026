@@ -45,7 +45,6 @@ func update_mob_health(value: float) -> void:
 func update_boss_health(value: float) -> void:
 	
 	texture_progress_bar.value = value
-	print("in Update boss health bar: ", texture_progress_bar.value)
 
 
 func declare_initial_stats(health: float) -> void:

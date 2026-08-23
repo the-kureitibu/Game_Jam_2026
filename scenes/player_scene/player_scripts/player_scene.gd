@@ -1094,7 +1094,12 @@ func handle_light_ray() -> void:
 	find_nearest_enemy()
 
 func find_nearest_enemy() -> void:
-	var targets = get_tree().get_nodes_in_group("Enemy_target")
+	var targets: Array
+	
+	if GameManager.can_start_boss_fight:
+		targets = get_tree().get_nodes_in_group("Boss_target")
+	else:
+		targets = get_tree().get_nodes_in_group("Enemy_target")
 
 	
 	var closest_target: Node2D = null

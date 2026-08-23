@@ -50,7 +50,6 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	
-	print("In projectile?: ", is_in_group("player_projectile"))
 	z_index = 10
 	
 	if player_target == null:

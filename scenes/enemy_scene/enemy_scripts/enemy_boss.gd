@@ -188,6 +188,7 @@ var b_max_speed := 100.0
 		update_health.emit(new_health)
 
 var is_phase_two: bool = false
+var is_first_death: bool = false
 
 #endregion -- Phase 2 Stats
 
@@ -213,15 +214,15 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if boss_state == BossStates.FIRST_DEATH:
 		velocity.x = 0.0
-		handle_anim(boss_state)
 		move_and_slide()
 		return
+
 	
 	if boss_health <= 0.0:
-		if !is_phase_two:
+		if !is_phase_two and !is_first_death:
+			is_first_death = true 
 			handle_first_death()
 			
-		handle_anim(boss_state)
 		move_and_slide()
 		return
 	
@@ -297,7 +298,7 @@ func play_boss_anim(anim_name: StringName, force: bool = false) -> void:
 
 
 func handle_anim(state: EnemyBase.BossStates) -> void:
-	
+
 	match state:
 		BossStates.IDLE:
 			play_boss_anim("idle")
@@ -308,8 +309,8 @@ func handle_anim(state: EnemyBase.BossStates) -> void:
 		BossStates.SKILLING:
 			play_boss_anim("skill")
 	
-		BossStates.FIRST_DEATH:
-			play_boss_anim("death", true)
+		#BossStates.FIRST_DEATH:
+			#play_boss_anim("death", true)
 
 		BossStates.HURT:
 			play_boss_anim("hurt", true)
@@ -667,20 +668,23 @@ func start_hurt(damage: float) -> void:
 
 func handle_first_death() -> void:
 	if boss_state == BossStates.FIRST_DEATH:
+		print("is this still running?")
 		return
 	
 	boss_state = BossStates.FIRST_DEATH
-	SignalHub.ready_for_second_phase.emit()
+	play_boss_anim("death")
 
-func handle_death() -> void:
 	
-	if boss_state == BossStates.FIRST_DEATH:
-		return
-	
-	boss_state = BossStates.FIRST_DEATH
-	SignalHub.ready_for_second_phase.emit()
-	#play_anim(m_sprite, "death")
-	
+
+#func handle_death() -> void:
+	#
+	#if boss_state == BossStates.FIRST_DEATH:
+		#return
+	#
+	#boss_state = BossStates.FIRST_DEATH
+	#SignalHub.ready_for_second_phase.emit()
+	##play_anim(m_sprite, "death")
+	#
 
 
 #endregion -- Health Related 
@@ -713,6 +717,9 @@ func _on_e_sprite_animation_finished() -> void:
 	if m_sprite.animation == "hurt":
 		end_hurt()
 	
+	if m_sprite.animation == "death":
+		end_first_death()
+	
 
 #endregion -- Animation Signals
 
@@ -726,5 +733,8 @@ func end_hurt() -> void:
 	boss_state = BossStates.IDLE
 	chase_timer = 1.0
 
-
+func end_first_death() -> void:
+	boss_state = BossStates.TRANSITION_TO_DEMON
+	SignalHub.ready_for_second_phase.emit()
+	
 #endregion -- Animation Ends

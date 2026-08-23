@@ -186,7 +186,10 @@ func update_pre_boss_fight() -> void:
 	is_pre_dialogue = true
 
 func update_boss_second_phase() -> void:
+	print("signal worked on manager?")
+	
 	is_second_phase_pre_dialogue = true
+	print("is_second_phase_pre_dialogue: ", is_second_phase_pre_dialogue)
 
 func start_boss_fight() -> void:
 	can_start_boss_fight = true
