@@ -586,9 +586,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2aams")
 }],
-"loop": false,
+"loop": true,
 "name": &"skill",
-"speed": 8.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -712,7 +712,7 @@ offset = Vector2(0, -68)
 position = Vector2(-4, 1.0086212)
 scale = Vector2(0.8, 0.8)
 sprite_frames = SubResource("SpriteFrames_p55qm")
-animation = &"walk"
+animation = &"death"
 offset = Vector2(0, -68)
 
 [node name="MainCol" type="CollisionShape2D" parent="." unique_id=1285489192]

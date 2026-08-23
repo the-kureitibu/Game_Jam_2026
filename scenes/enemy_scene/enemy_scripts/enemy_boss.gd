@@ -19,7 +19,7 @@ var slowing_speed := 70.0
 
 @onready var m_sprite: AnimatedSprite2D = $e_sprite
 @onready var d_sprite: AnimatedSprite2D = $d_sprite
-@onready var s_texture = m_sprite.sprite_frames.get_frame_texture("default", 0)
+@onready var s_texture = m_sprite.sprite_frames.get_frame_texture("walk", 0)
 @onready var s_height = s_texture.get_height() / - 2.0
 @onready var c_marker: Marker2D = $ChairMarker
 @onready var bf_marker: Marker2D = $BookFMarker
@@ -187,9 +187,24 @@ func _ready() -> void:
 	
 	
 func _physics_process(delta: float) -> void:
+	if boss_state == BossStates.DEATH:
+		velocity.x = 0.0
+		handle_anim(boss_state)
+		move_and_slide()
+		return
 	
 	if boss_health <= 0.0:
 		handle_death()
+		handle_anim(boss_state)
+		move_and_slide()
+		return
+	
+	if is_hurt:
+		velocity.x = 0.0
+		handle_anim(BossStates.HURT)
+		move_and_slide()
+		return
+	
 	
 	handle_boss_logic(delta)
 	update_chair_skill(delta)
@@ -241,22 +256,34 @@ func pass_marker_dir(s_dir: int) -> void:
 
 #region Animations 
 
-func handle_anim(state: EnemyBase.BossStates) -> void:
+func play_boss_anim(anim_name: StringName, force: bool = false) -> void:
+	if force:
+		m_sprite.play(anim_name)
+		return
 	
-	if velocity.x == 0:
-		play_anim(m_sprite, "idle")
+	if m_sprite.animation == anim_name and m_sprite.is_playing():
+		return
+	
+	m_sprite.play(anim_name)
+
+
+func handle_anim(state: EnemyBase.BossStates) -> void:
 	
 	match state:
 		BossStates.IDLE:
-			play_anim(m_sprite, "idle")
+			play_boss_anim("idle")
+
 		BossStates.CHASING:
-			play_anim(m_sprite, "walk")
+			play_boss_anim("walk")
+
 		BossStates.SKILLING:
-			play_anim(m_sprite, "skill")
+			play_boss_anim("skill")
+	
 		BossStates.DEATH:
-			play_anim(m_sprite, "skill")
+			play_boss_anim("death", true)
+
 		BossStates.HURT:
-			play_anim(m_sprite, "hurt")
+			play_boss_anim("hurt", true)
 
 
 #endregion -- Animations
@@ -266,17 +293,21 @@ func handle_anim(state: EnemyBase.BossStates) -> void:
 
 
 func chase_target(dir: float, abs_dis: float) -> void:
-	boss_state = BossStates.CHASING
 
 	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
 		and GameManager.can_start_boss_fight == false):
 		velocity.x = 0.0
 		return
 	
+	if is_hurt:
+		return
 	
 	if is_skilling:
 		return
-
+	
+	boss_state = BossStates.CHASING
+	
+	
 	var current_speed: float
 	
 	if abs_dis <= stopping_radius:
@@ -286,12 +317,10 @@ func chase_target(dir: float, abs_dis: float) -> void:
 
 	elif abs_dis < slowing_d_radius:
 		velocity.x = dir * slowing_speed
-		play_anim(m_sprite, "walk")
 		
 	else:
 		current_speed = b_speed * b_acceleration
 		velocity.x = dir * current_speed
-		play_anim(m_sprite, "walk")
 
 	
 func find_target() -> float:
@@ -492,6 +521,10 @@ func skill_needs_range(skill_num: int) -> bool:
 	return skill_num == 1 or skill_num == 3 or skill_num == 4
 	
 func start_skill(num: int) -> void:
+	
+	if is_hurt:
+		return
+	
 	is_skilling = true
 	boss_state = BossStates.SKILLING
 	
@@ -524,7 +557,6 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 func end_skill() -> void:
 
-	
 	is_skilling = false
 	is_shooting = false
 
@@ -571,9 +603,27 @@ func handle_hurt(damage: float) -> void:
 	if is_hurt:
 		return
 	
+	
 	start_hurt(damage)
 
 func start_hurt(damage: float) -> void:
+	if boss_state == BossStates.DEATH:
+		return
+	
+	is_hurt = true
+	is_skilling = false
+	is_shooting = false
+	is_third_skill_running = false
+	is_recovering = false
+	
+	pending_skill = 0
+	shots_timer = 0.0
+	directory_summon_timer = 0.0
+	channeling_skill_timer = 0.0
+	chair_shots_fired = 0
+	
+	velocity.x = 0.0
+	
 	boss_state = BossStates.HURT
 	
 	is_hurt = true
@@ -586,7 +636,6 @@ func handle_death() -> void:
 	
 	boss_state = BossStates.DEATH
 	SignalHub.ready_for_second_phase.emit()
-	print("boss dieded")
 	#play_anim(m_sprite, "death")
 	
 
@@ -619,8 +668,20 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 func _on_e_sprite_animation_finished() -> void:
 	
 	if m_sprite.animation == "hurt":
-		is_hurt = false
-	
+		end_hurt()
 	
 
 #endregion -- Animation Signals
+
+#region Animation Ends
+
+func end_hurt() -> void:
+	if boss_state == BossStates.DEATH:
+		return
+	
+	is_hurt = false
+	boss_state = BossStates.IDLE
+	chase_timer = 1.0
+
+
+#endregion -- Animation Ends

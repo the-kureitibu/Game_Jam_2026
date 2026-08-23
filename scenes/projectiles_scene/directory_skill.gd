@@ -22,7 +22,6 @@ func _ready() -> void:
 	set_speed()
 	global_position = marker_pos
 	
-	print(final_random_speed)
 	
 func _physics_process(delta: float) -> void:
 	
@@ -38,8 +37,6 @@ func _physics_process(delta: float) -> void:
 
 #region Initial Launch
 
-func start_spinning() -> void:
-	pass
 
 func get_random_speed(min_spd: float, max_spd: float) -> float:
 	var rand_float = randf_range(min_spd, max_spd)
@@ -65,35 +62,6 @@ func remove_from_tree() -> void:
 #endregion -- End Process
 
 
-
-
-
-#func _on_body_entered(body: Node2D) -> void:
-	#var movement_stopper = Vector2.ZERO
-	#var terrain_group = body.get_tree().get_first_node_in_group("Terrain")
-			#
-	#if not terrain_group:
-		#return 
-#
-	#if dir.y <= 0.0:
-		#return
-		#
-	#if terrain_group:
-#
-		#dir = movement_stopper
-		#
-		#b_sprite.visible = true
-		#col_explode.visible = true
-		#col_book.set_deferred("disabled", true)
-		#col_explode.set_deferred("disabled", false)
-		#b_sprite.play("explode")
-		#m_sprite.visible = false 
-#
-#
-#func _on_explode_animation_finished() -> void:
-	#anim_done.emit()
-		#
-	#can_exit_tree = true 
 
 func hit() -> float:
 	return dmg
