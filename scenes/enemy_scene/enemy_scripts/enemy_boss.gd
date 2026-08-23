@@ -42,13 +42,6 @@ signal update_health
 		
 		update_health.emit(new_health)
 
-@onready var boss_state: EnemyBase.BossStates = BossStates.IDLE
-	#IDLE, 
-	#RECOVERY,
-	#SKILLING,
-	#DEATH
-
-
 const CHAIR_SCENE = preload("res://scenes/projectiles_scene/chair_skill.tscn")
 const BOOK_FALL_SCENE = preload("res://scenes/projectiles_scene/book_fall_skill.tscn")
 const DIRECTORY_SCENE = preload("res://scenes/projectiles_scene/directory_skill.tscn")
@@ -168,8 +161,14 @@ var slowing_d_radius := 150.0
 var stopping_radius := 70.0
 var b_max_speed := 100.0
 
-
 #endregion
+
+#region States and Vars
+
+@onready var boss_form_state: EnemyBase.EnemyFormState = EnemyFormState.HUMAN_FORM
+@onready var boss_state: EnemyBase.BossStates = BossStates.IDLE
+
+#endregion -- States and Vars 
 
 func draw_speed_limit() -> void:
 	pass
@@ -196,19 +195,11 @@ func _physics_process(delta: float) -> void:
 	update_chair_skill(delta)
 	update_summon_directory(delta)
 	update_recovery(delta)
+	
+	handle_anim(boss_state)
 
-	
-	
 	move_and_slide()
 	
-	
-	#if chase_timer > 0.0:
-		#print("Chase timer ", chase_timer)
-	#
-	#if recovery_timer > 0.0:
-		#print("Recovery timer ", recovery_timer) # - this guy was named chase lmao
-
-
 
 #region Movement func
 
@@ -217,7 +208,6 @@ func handle_movement() -> void:
 		and GameManager.can_start_boss_fight == false):
 		velocity.x = 0.0
 		return
-	
 	
 	if p_target == null:
 		return
@@ -249,8 +239,31 @@ func pass_marker_dir(s_dir: int) -> void:
 	
 #endregion
 
+#region Animations 
+
+func handle_anim(state: EnemyBase.BossStates) -> void:
+	
+	if velocity.x == 0:
+		play_anim(m_sprite, "idle")
+	
+	match state:
+		BossStates.IDLE:
+			play_anim(m_sprite, "idle")
+		BossStates.CHASING:
+			play_anim(m_sprite, "walk")
+		BossStates.SKILLING:
+			play_anim(m_sprite, "skill")
+		BossStates.DEATH:
+			play_anim(m_sprite, "skill")
+		BossStates.HURT:
+			play_anim(m_sprite, "hurt")
+
+
+#endregion -- Animations
+
 
 #region Target related func 
+
 
 func chase_target(dir: float, abs_dis: float) -> void:
 	boss_state = BossStates.CHASING
@@ -267,16 +280,18 @@ func chase_target(dir: float, abs_dis: float) -> void:
 	var current_speed: float
 	
 	if abs_dis <= stopping_radius:
-		current_speed = 0
 		
+		current_speed = 0
 		velocity.x = current_speed
 
 	elif abs_dis < slowing_d_radius:
 		velocity.x = dir * slowing_speed
-	
+		play_anim(m_sprite, "walk")
+		
 	else:
 		current_speed = b_speed * b_acceleration
 		velocity.x = dir * current_speed
+		play_anim(m_sprite, "walk")
 
 	
 func find_target() -> float:
@@ -559,6 +574,7 @@ func handle_hurt(damage: float) -> void:
 	start_hurt(damage)
 
 func start_hurt(damage: float) -> void:
+	boss_state = BossStates.HURT
 	
 	is_hurt = true
 	boss_health -= damage
@@ -596,3 +612,15 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 
 
 #endregion -- Area Signals 
+
+
+#region Animation Signals 
+
+func _on_e_sprite_animation_finished() -> void:
+	
+	if m_sprite.animation == "hurt":
+		is_hurt = false
+	
+	
+
+#endregion -- Animation Signals

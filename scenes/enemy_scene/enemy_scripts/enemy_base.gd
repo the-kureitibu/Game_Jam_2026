@@ -36,6 +36,7 @@ enum BossStates {
 	RECOVERY,
 	SKILLING,
 	CHASING,
+	HURT,
 	DEATH
 }
 
