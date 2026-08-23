@@ -18,7 +18,11 @@ func _ready() -> void:
 	con_to_signals()
 	
 	if boss_node:
-		declare_initial_stats(boss_node.boss_health)
+		if GameManager.can_start_second_phase:
+			declare_initial_stats(boss_node.p2_boss_health)
+		else:
+			declare_initial_stats(boss_node.boss_health)
+		
 		boss_node.update_health.connect(update_boss_health)
 
 func _process(delta: float) -> void:

@@ -1,5 +1,10 @@
 extends EnemyBase
 
+#For tomorrow:
+#1. if health 0, and not second phase > first death 
+#2. sends signal to manager to trigger second phase dialogue 
+#3. Stage triggers dialogue 
+
 
 #region Base Variables
 
@@ -168,6 +173,25 @@ var b_max_speed := 100.0
 @onready var boss_form_state: EnemyBase.EnemyFormState = EnemyFormState.HUMAN_FORM
 @onready var boss_state: EnemyBase.BossStates = BossStates.IDLE
 
+#region Phase 2 Stats
+
+@onready var PHASE2_MAX_HEALTH: float = 200.0
+@onready var p2_boss_health: float = 50.0: 
+	set(value):
+		var new_health = value
+		
+		if p2_boss_health == new_health:
+			return
+		
+		p2_boss_health = clamp(new_health, 0.0, PHASE2_MAX_HEALTH)
+		
+		update_health.emit(new_health)
+
+var is_phase_two: bool = false
+
+#endregion -- Phase 2 Stats
+
+
 #endregion -- States and Vars 
 
 func draw_speed_limit() -> void:
@@ -187,14 +211,16 @@ func _ready() -> void:
 	
 	
 func _physics_process(delta: float) -> void:
-	if boss_state == BossStates.DEATH:
+	if boss_state == BossStates.FIRST_DEATH:
 		velocity.x = 0.0
 		handle_anim(boss_state)
 		move_and_slide()
 		return
 	
 	if boss_health <= 0.0:
-		handle_death()
+		if !is_phase_two:
+			handle_first_death()
+			
 		handle_anim(boss_state)
 		move_and_slide()
 		return
@@ -264,7 +290,10 @@ func play_boss_anim(anim_name: StringName, force: bool = false) -> void:
 	if m_sprite.animation == anim_name and m_sprite.is_playing():
 		return
 	
-	m_sprite.play(anim_name)
+	if !is_phase_two:
+		m_sprite.play(anim_name)
+	else:
+		d_sprite.play(anim_name)
 
 
 func handle_anim(state: EnemyBase.BossStates) -> void:
@@ -279,7 +308,7 @@ func handle_anim(state: EnemyBase.BossStates) -> void:
 		BossStates.SKILLING:
 			play_boss_anim("skill")
 	
-		BossStates.DEATH:
+		BossStates.FIRST_DEATH:
 			play_boss_anim("death", true)
 
 		BossStates.HURT:
@@ -607,7 +636,10 @@ func handle_hurt(damage: float) -> void:
 	start_hurt(damage)
 
 func start_hurt(damage: float) -> void:
-	if boss_state == BossStates.DEATH:
+	if boss_state == BossStates.FIRST_DEATH:
+		return
+	
+	if boss_state == BossStates.TRUE_DEATH:
 		return
 	
 	is_hurt = true
@@ -627,14 +659,25 @@ func start_hurt(damage: float) -> void:
 	boss_state = BossStates.HURT
 	
 	is_hurt = true
-	boss_health -= damage
+	
+	if is_phase_two:
+		p2_boss_health -= damage
+	else:
+		boss_health -= damage
+
+func handle_first_death() -> void:
+	if boss_state == BossStates.FIRST_DEATH:
+		return
+	
+	boss_state = BossStates.FIRST_DEATH
+	SignalHub.ready_for_second_phase.emit()
 
 func handle_death() -> void:
 	
-	if boss_state == BossStates.DEATH:
+	if boss_state == BossStates.FIRST_DEATH:
 		return
 	
-	boss_state = BossStates.DEATH
+	boss_state = BossStates.FIRST_DEATH
 	SignalHub.ready_for_second_phase.emit()
 	#play_anim(m_sprite, "death")
 	
@@ -676,7 +719,7 @@ func _on_e_sprite_animation_finished() -> void:
 #region Animation Ends
 
 func end_hurt() -> void:
-	if boss_state == BossStates.DEATH:
+	if boss_state == BossStates.FIRST_DEATH:
 		return
 	
 	is_hurt = false

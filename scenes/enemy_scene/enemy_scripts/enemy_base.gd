@@ -37,7 +37,8 @@ enum BossStates {
 	SKILLING,
 	CHASING,
 	HURT,
-	DEATH
+	FIRST_DEATH,
+	TRUE_DEATH
 }
 
 
