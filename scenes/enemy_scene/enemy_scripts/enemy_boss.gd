@@ -569,6 +569,7 @@ func handle_death() -> void:
 		return
 	
 	boss_state = BossStates.DEATH
+	SignalHub.ready_for_second_phase.emit()
 	print("boss dieded")
 	#play_anim(m_sprite, "death")
 	

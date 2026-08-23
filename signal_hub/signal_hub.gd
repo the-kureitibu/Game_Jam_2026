@@ -16,6 +16,10 @@ signal back_to_previous_stage
 signal pre_boss_fight_dialogue
 signal pre_fight_dialogue_done
 
+signal ready_for_second_phase
+signal mid_fight_dialogue_done
+
+
 #endregion  -- Stage/Level Related
 
 #region UI related

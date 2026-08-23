@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://c6r8jaw48uwkk"]
+
+[ext_resource type="Script" uid="uid://c4tr4kuu8enmi" path="res://scenes/ui/second_phase_dialogue.gd" id="1_8pnvb"]
+[ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="2_fubnx"]
+
+[node name="SecondPhaseDialogue" type="Control" unique_id=779469407]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8pnvb")
+
+[node name="MainMargin" type="MarginContainer" parent="." unique_id=2140152741]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ImageVBox" type="VBoxContainer" parent="MainMargin" unique_id=1304865423]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMargin/ImageVBox" unique_id=2124931299]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AmiyaBuckoImage" type="TextureRect" parent="MainMargin/ImageVBox/HBoxContainer" unique_id=1337208373]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+
+[node name="BossImage" type="TextureRect" parent="MainMargin/ImageVBox/HBoxContainer" unique_id=1512170330]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="MainMargin" unique_id=135472214]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="MainHbox" type="HBoxContainer" parent="MainMargin/PanelContainer" unique_id=1977985237]
+layout_mode = 2
+
+[node name="Spacer1" type="Control" parent="MainMargin/PanelContainer/MainHbox" unique_id=109635569]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="PlayerNameContainer" type="VBoxContainer" parent="MainMargin/PanelContainer/MainHbox" unique_id=2140198813]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="PlayerNameLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/MainHbox/PlayerNameContainer" unique_id=1821027518]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.96298975, 0.7163942, 0.8028215, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("2_fubnx")
+theme_override_font_sizes/normal_font_size = 18
+
+[node name="BossNameContainer" type="VBoxContainer" parent="MainMargin/PanelContainer/MainHbox" unique_id=164401276]
+custom_minimum_size = Vector2(350, 40)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+
+[node name="BossNameLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/MainHbox/BossNameContainer" unique_id=1838529023]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.96298975, 0.7163942, 0.8028215, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("2_fubnx")
+horizontal_alignment = 2
+
+[node name="Spacer2" type="Control" parent="MainMargin/PanelContainer/MainHbox" unique_id=584549448]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="SecondHBox" type="HBoxContainer" parent="MainMargin/PanelContainer" unique_id=309787380]
+layout_mode = 2
+
+[node name="Spacer1" type="Control" parent="MainMargin/PanelContainer/SecondHBox" unique_id=1428690168]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMargin/PanelContainer/SecondHBox" unique_id=1078618443]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+
+[node name="DialogueTextLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/SecondHBox/VBoxContainer" unique_id=149802514]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("2_fubnx")
+
+[node name="Spacer2" type="Control" parent="MainMargin/PanelContainer/SecondHBox" unique_id=920863541]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="NextTextContainer" type="HBoxContainer" parent="MainMargin/PanelContainer" unique_id=1514327033]
+custom_minimum_size = Vector2(250, 20)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="NextTextLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/NextTextContainer" unique_id=595578693]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.9509199, 0.6195214, 0.74134755, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("2_fubnx")

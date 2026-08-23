@@ -48,6 +48,8 @@ var player_saved_rage: float = 0.0
 
 var is_pre_dialogue: bool = false
 var can_start_boss_fight: bool = false
+var can_start_second_phase: bool = false
+var is_second_phase_pre_dialogue: bool = false
 
 #endregion -- Levels/Boss Fight 
 
@@ -69,6 +71,10 @@ func _ready() -> void:
 	SignalHub.michael_blessing_get.connect(make_player_immortal)
 	SignalHub.pre_boss_fight_dialogue.connect(update_pre_boss_fight)
 	SignalHub.pre_fight_dialogue_done.connect(start_boss_fight)
+	
+	SignalHub.ready_for_second_phase.connect(update_boss_second_phase)
+	SignalHub.mid_fight_dialogue_done.connect(start_boss_second_phase)
+	
 
 func _process(delta: float) -> void:
 	if get_tree().paused:
@@ -179,8 +185,14 @@ func player_death() -> void:
 func update_pre_boss_fight() -> void:
 	is_pre_dialogue = true
 
+func update_boss_second_phase() -> void:
+	is_second_phase_pre_dialogue = true
+
 func start_boss_fight() -> void:
 	can_start_boss_fight = true
+
+func start_boss_second_phase() -> void:
+	can_start_second_phase = true
 
 #endregion -- Boss Fight Related 
 
