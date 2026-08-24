@@ -703,12 +703,12 @@ collision_mask = 16
 script = ExtResource("1_pel0o")
 
 [node name="d_sprite" type="AnimatedSprite2D" parent="." unique_id=1116574413]
+visible = false
 sprite_frames = SubResource("SpriteFrames_kjeor")
 animation = &"to_demon_two"
 offset = Vector2(0, -68)
 
 [node name="e_sprite" type="AnimatedSprite2D" parent="." unique_id=290278967]
-position = Vector2(-4, 1.0086212)
 scale = Vector2(0.8, 0.8)
 sprite_frames = SubResource("SpriteFrames_p55qm")
 animation = &"death"

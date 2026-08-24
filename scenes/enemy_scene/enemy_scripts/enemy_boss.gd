@@ -26,6 +26,12 @@ var slowing_speed := 70.0
 @onready var d_sprite: AnimatedSprite2D = $d_sprite
 @onready var s_texture = m_sprite.sprite_frames.get_frame_texture("walk", 0)
 @onready var s_height = s_texture.get_height() / - 2.0
+@onready var main_col: CollisionShape2D = $MainCol
+@onready var hurt_col: CollisionShape2D = $Hurtbox/HurtCol
+
+
+
+
 @onready var c_marker: Marker2D = $ChairMarker
 @onready var bf_marker: Marker2D = $BookFMarker
 @onready var p_anim: AnimationPlayer = $AnimationPlayer

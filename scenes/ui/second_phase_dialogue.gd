@@ -10,6 +10,7 @@ extends Control
 @onready var boss_thumbnail2_path: String = "res://assets/sprites/ui/thumbnails/boss_thumbnailv1.png"
 @onready var boss_thumbnail3_path: String = "res://assets/sprites/ui/thumbnails/boss_thumbnailv3.png"
 @onready var boss_thumbnail4_path: String = "res://assets/sprites/ui/thumbnails/boss_thumbnailv4.png"
+@onready var boss_thumbnail4v1_path: String = "res://assets/sprites/ui/thumbnails/boss_thumbnailv4v2.png"
 
 
 
@@ -32,6 +33,8 @@ extends Control
 #region Boss Animation
 
 @onready var boss_anim_player: AnimatedSprite2D
+@onready var boss_main_collision: CollisionShape2D
+@onready var boss_main_hurt_box: CollisionShape2D
 @onready var boss_target = get_tree().get_first_node_in_group("Boss_target")
 
 #endregion -- Boss Animation
@@ -134,6 +137,8 @@ func _enter_tree() -> void:
 		boss_target = get_tree().get_first_node_in_group("Boss_target")
 	
 	boss_anim_player = boss_target.d_sprite
+	boss_main_collision = boss_target.main_col
+	boss_main_hurt_box = boss_target.hurt_col
 	
 	if !SignalHub.ready_for_second_phase.is_connected(update_boss_form):
 		SignalHub.ready_for_second_phase.connect(update_boss_form)
@@ -226,6 +231,12 @@ func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx
 			if cur_index == 0:
 				boss_name_label.text = "Salaryman Satou, Four Heavenly Kings"
 				boss_image.texture = load(boss_thumbnail1_path)
+			elif cur_index == 1:
+				boss_name_label.text = "Salaryman Satou, Demon Lord"
+				boss_image.texture = load(boss_thumbnail4_path)
+			elif cur_index == 2:
+				boss_name_label.text = "Salaryman Satou, Demon Lord"
+				boss_image.texture = load(boss_thumbnail4v1_path)
 			else:
 				boss_name_label.text = "Salaryman Satou, Demon Lord"
 				boss_image.texture = load(boss_thumbnail4_path)
@@ -251,26 +262,51 @@ func transition_to_demon_lord() -> void:
 	is_transition = true
 	boss_anim_player.visible = true 
 
-	boss_anim_player.play("to_demon_one")
+	handle_first_transform()
 	
 	SignalHub.is_needed_flip.emit()
+
+
+func pass_boss_col_shape_values(radius: float, height: float, pos: Vector2, col_shape: CollisionShape2D):
+
+	col_shape.shape.radius = radius
+	col_shape.shape.height = height
+	col_shape.position = pos 
 	
+func set_final_thumbnail() -> void:
+	boss_name_label.text = "Salaryman Satou, Demon Lord"
+	boss_image.texture = load(boss_thumbnail4v1_path)
+	
+	is_transition = false
+	transforming_done = true
+
+#region Transitions Animations Related
+
+func handle_first_transform() -> void:
+	boss_anim_player.play("to_demon_one")
 	await boss_anim_player.animation_finished
 	
+	handle_shape_and_offset()
+	
+	handle_last_transform()
+	
+	
+func handle_last_transform() -> void:
 	boss_anim_player.play("to_demon_two")
 	
 	await boss_anim_player.animation_finished
 	
 	set_final_thumbnail()
-
-
-func set_final_thumbnail() -> void:
-	boss_name_label.text = "Salaryman Satou, Demon Lord"
-	boss_image.texture = load(boss_thumbnail4_path)
 	
-	is_transition = false
-	transforming_done = true
+func handle_shape_and_offset() -> void:
+	
+	boss_anim_player.offset = Vector2(0, -100.0)
+	
+	pass_boss_col_shape_values(19, 160, Vector2(0, -102.0), boss_main_collision)
+	pass_boss_col_shape_values(19, 160, Vector2(0, -102.0), boss_main_hurt_box)
 
+
+#endregion -- Transitions Animation
 
 #endregion -- Advancing Dialogue
 
