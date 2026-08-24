@@ -3,6 +3,7 @@ extends Node2D
 #region References
 
 const PRE_FIGHT_DIALOGUE = preload("res://scenes/ui/pre_boss_dialogue.tscn")
+const PRE_SECOND_PHASE_DIALOGUE = preload("res://scenes/ui/second_phase_dialogue.tscn")
 
 #endregion -- References
 
@@ -14,19 +15,25 @@ func _enter_tree() -> void:
 		GameManager.game_scene_state = GameManager.GameLevelStates.BOSS_ROOM
 	
 	SignalHub.pre_boss_fight_dialogue.emit()
-	
+
 
 func _ready() -> void:
 	start_pre_fight_dialogue(PRE_FIGHT_DIALOGUE)
-	
-	print(GameManager.GameLevelStates.keys()[GameManager.game_scene_state]) 
-	print(GameManager.can_start_boss_fight)
-	
 
-func start_pre_fight_dialogue(scene: PackedScene) -> void:
-	var boss_room_scene = scene.instantiate()
-	$CanvasLayer.add_child(boss_room_scene)
+	SignalHub.ready_for_second_phase.connect(handle_second_phase_dialogue)
 
 #endregion -- Processes 
+
+func start_pre_fight_dialogue(scene: PackedScene) -> void:
+	var pre_fight_dialogue = scene.instantiate()
+	$CanvasLayer.add_child(pre_fight_dialogue)
+
+func handle_second_phase_dialogue() -> void:
+	start_second_phase_dialogue(PRE_SECOND_PHASE_DIALOGUE)
+
+func start_second_phase_dialogue(scene: PackedScene) -> void:
+	var second_phase_dialogue = scene.instantiate()
+	$CanvasLayer.add_child(second_phase_dialogue)
+
 
 #endregion -- Functions 

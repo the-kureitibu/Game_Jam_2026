@@ -735,6 +735,7 @@ func end_hurt() -> void:
 
 func end_first_death() -> void:
 	boss_state = BossStates.TRANSITION_TO_DEMON
+	m_sprite.visible = false
 	SignalHub.ready_for_second_phase.emit()
 	
 #endregion -- Animation Ends

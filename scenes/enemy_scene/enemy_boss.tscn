@@ -705,7 +705,7 @@ script = ExtResource("1_pel0o")
 [node name="d_sprite" type="AnimatedSprite2D" parent="." unique_id=1116574413]
 visible = false
 sprite_frames = SubResource("SpriteFrames_kjeor")
-animation = &"idle"
+animation = &"to_demon_one"
 offset = Vector2(0, -68)
 
 [node name="e_sprite" type="AnimatedSprite2D" parent="." unique_id=290278967]

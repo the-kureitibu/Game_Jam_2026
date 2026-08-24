@@ -52,6 +52,7 @@ var start_dialogue: bool = false
 #region Gate Keepers
 
 @onready var is_demon_lord: bool = false
+@onready var is_transition: bool = false
 
 #endregion -- Gate Keepers
 
@@ -131,7 +132,7 @@ func _enter_tree() -> void:
 	if !boss_target:
 		boss_target = get_tree().get_first_node_in_group("Boss_target")
 	
-	boss_anim_player = boss_target.p_anim
+	boss_anim_player = boss_target.d_sprite
 	
 	if !SignalHub.ready_for_second_phase.is_connected(update_boss_form):
 		SignalHub.ready_for_second_phase.connect(update_boss_form)
@@ -173,8 +174,15 @@ func sequences_helper(curr_index: int, speaker: String = "speaker", line: String
 	return [speaker_index, line_index]
 
 func advance_dialogue() -> void:
+	if current_index == 2:
+		transition_to_demon_lord()
+	
+	if is_transition:
+		return
+	
 	if has_ended_dialogue:
 		return
+
 
 	if current_index == MAX_INDEX:
 		has_ended_dialogue = true
@@ -214,8 +222,13 @@ func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx
 			player_name_label.text = "Amiya Aranha"
 			amiya_bucko_image.texture = load(amiya_thumbnail_path)
 		"Salaryman Satou, Four Heavenly Kings":
-			boss_name_label.text = "Salaryman Satou, Four Heavenly Kings"
-			boss_image.texture = load(boss_thumbnail1_path)
+			if cur_index == 0:
+				boss_name_label.text = "Salaryman Satou, Four Heavenly Kings"
+				boss_image.texture = load(boss_thumbnail1_path)
+				#change thumbnail, play anim
+			else:
+				boss_name_label.text = "Salaryman Satou, Demon Lord"
+				boss_image.texture = load(boss_thumbnail4_path)
 		"Bucko":
 			player_name_label.text = "Bucko"
 			amiya_bucko_image.texture = load(bucko_thumbnail_path)
@@ -226,9 +239,21 @@ func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx
 		"right":
 			dialogue_text_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	
-	
+
+
 	
 	dialogue_text_label.text = speaker_text_collection[cur_index]
+	
+func transition_to_demon_lord() -> void:
+	if is_transition:
+		return
+	
+	is_transition = true
+	boss_anim_player.visible = true 
+	
+	boss_anim_player.play()
+	
+
 
 #endregion -- Advancing Dialogue
 
