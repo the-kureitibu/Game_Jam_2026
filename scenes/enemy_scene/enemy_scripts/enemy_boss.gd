@@ -34,7 +34,7 @@ var slowing_speed := 70.0
 signal update_health
 
 @onready var MAX_HEALTH: float = 200.0
-@onready var boss_health: float = 50.0: 
+@onready var boss_health: float = 10.0: 
 	set(value):
 		var new_health = value
 		
@@ -134,6 +134,7 @@ var is_stunned := false
 var is_chasing := false
 var is_skilling := false
 var is_shooting := false
+var is_hurt_ongoing := false
 
 #endregion
 
@@ -208,6 +209,8 @@ func _ready() -> void:
 	SignalHub.is_needed_flip.connect(flip_to_target)
 	SignalHub.start_second_phase.connect(start_phase_two)
 	
+	if not d_sprite.animation_finished.is_connected(_on_d_sprite_animation_finished):
+		d_sprite.animation_finished.connect(_on_d_sprite_animation_finished)
 	
 func _physics_process(delta: float) -> void:
 	if boss_state == BossStates.FIRST_DEATH:
@@ -238,7 +241,7 @@ func _physics_process(delta: float) -> void:
 	
 	if is_hurt:
 		velocity.x = 0.0
-		handle_anim(BossStates.HURT)
+		handle_anim(boss_state)
 		move_and_slide()
 		return
 	
@@ -340,7 +343,8 @@ func handle_anim(state: EnemyBase.BossStates) -> void:
 			#play_boss_anim("death", true)
 
 		BossStates.HURT:
-			play_boss_anim("hurt", true)
+			pass
+
 
 
 #endregion -- Animations
@@ -660,12 +664,13 @@ func reduce_timer(delta: float) -> void:
 
 func handle_hurt(damage: float) -> void:
 	if is_hurt:
+		print("still hurt") #-- this never fired
 		return
-	
 	
 	start_hurt(damage)
 
 func start_hurt(damage: float) -> void:
+	
 	if boss_state == BossStates.FIRST_DEATH:
 		return
 	
@@ -692,6 +697,8 @@ func start_hurt(damage: float) -> void:
 		p2_boss_health -= damage
 	else:
 		boss_health -= damage
+		
+	play_boss_anim("hurt", true)
 
 func handle_first_death() -> void:
 	if boss_state == BossStates.FIRST_DEATH:
@@ -774,14 +781,21 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 
 func _on_e_sprite_animation_finished() -> void:
 	
-	if m_sprite.animation == "hurt":
-		end_hurt()
+	if boss_form_state == EnemyFormState.HUMAN_FORM:
+		if m_sprite.animation == "hurt":
+			print("animation finished, human hurt")
+			end_hurt()
 
-	if d_sprite.animation == "hurt":
-		end_hurt()
 	
 	if m_sprite.animation == "death":
 		end_first_death()
+	
+func _on_d_sprite_animation_finished() -> void:
+	
+	if d_sprite.animation == "hurt":
+		print("animation finished, demon hurt")
+		end_demon_hurt()
+
 	
 
 #endregion -- Animation Signals
@@ -793,6 +807,16 @@ func end_hurt() -> void:
 		return
 	
 	is_hurt = false
+	is_hurt_ongoing = false
+	boss_state = BossStates.IDLE
+	chase_timer = 1.0
+
+func end_demon_hurt() -> void:
+	if boss_state == BossStates.TRUE_DEATH:
+		return
+	
+	is_hurt = false
+	is_hurt_ongoing = false
 	boss_state = BossStates.IDLE
 	chase_timer = 1.0
 

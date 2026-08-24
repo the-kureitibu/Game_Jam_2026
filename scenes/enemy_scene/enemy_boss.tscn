@@ -868,6 +868,7 @@ position = Vector2(-184, -1)
 [node name="SpawnPoint6" type="Marker2D" parent="Skill3Markers" unique_id=1238603978]
 position = Vector2(156, -1)
 
+[connection signal="animation_finished" from="d_sprite" to="." method="_on_d_sprite_animation_finished"]
 [connection signal="animation_finished" from="e_sprite" to="." method="_on_e_sprite_animation_finished"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
