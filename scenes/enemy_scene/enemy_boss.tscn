@@ -845,6 +845,9 @@ position = Vector2(-76, -7)
 [node name="BookFMarker" type="Marker2D" parent="." unique_id=1141616924]
 position = Vector2(-51, -85)
 
+[node name="FrontalSMarker" type="Marker2D" parent="." unique_id=1972012819]
+position = Vector2(-49, -39)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1362673902]
 libraries/ = SubResource("AnimationLibrary_kjeor")
 

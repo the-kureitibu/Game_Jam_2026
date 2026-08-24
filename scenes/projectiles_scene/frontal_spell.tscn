@@ -34,7 +34,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_usibn")
 }],
-"loop": true,
+"loop": false,
 "name": &"attk",
 "speed": 5.0
 }]
@@ -43,6 +43,8 @@ animations = [{
 radius = 51.78803
 
 [node name="FrontalSpell" type="Area2D" unique_id=1822917589 groups=["Boss_Projectile"]]
+collision_layer = 512
+collision_mask = 128
 script = ExtResource("1_oa2cu")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=481903981]
@@ -51,3 +53,6 @@ animation = &"attk"
 
 [node name="MainCol" type="CollisionShape2D" parent="." unique_id=809875206]
 shape = SubResource("CircleShape2D_a52gl")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="animation_finished" from="MainSprite" to="." method="_on_main_sprite_animation_finished"]

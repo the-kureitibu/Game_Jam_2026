@@ -80,7 +80,7 @@ var dialogue_lines: Array[Dictionary] = [
 		"speaker": "Salaryman Satou, Four Heavenly Kings",
 		"name": "Salaryman Satou, four heavenly kings",
 		"text": [
-			"Oh no. Don't kill me yet.",
+			"Oh no. Don't kill me just yet.",
 			"Haha... そう Spidor. そう!!!",
 			"That's right.",
 			"No matter. I'll start with you and take care of the rats after."

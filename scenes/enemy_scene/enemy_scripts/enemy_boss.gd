@@ -26,10 +26,14 @@ var slowing_speed := 70.0
 
 @onready var c_marker: Marker2D = $ChairMarker
 @onready var bf_marker: Marker2D = $BookFMarker
+@onready var frontal_s_marker: Marker2D = $FrontalSMarker
+
 @onready var p_anim: AnimationPlayer = $AnimationPlayer
 
 @onready var c_marker_base_x = abs(c_marker.position.x)
 @onready var bf_marker_base_x = abs(bf_marker.position.x)
+@onready var frontal_s_marker_x = abs(frontal_s_marker.position.x)
+@onready var facing_dir: int = 0
 
 signal update_health
 
@@ -48,6 +52,8 @@ signal update_health
 const CHAIR_SCENE = preload("res://scenes/projectiles_scene/chair_skill.tscn")
 const BOOK_FALL_SCENE = preload("res://scenes/projectiles_scene/book_fall_skill.tscn")
 const DIRECTORY_SCENE = preload("res://scenes/projectiles_scene/directory_skill.tscn")
+const FRONTAL_SPELL = preload("res://scenes/projectiles_scene/frontal_spell.tscn")
+
 
 var c_marker_dir: float
 
@@ -56,7 +62,8 @@ var c_marker_dir: float
 #region Combo Base Variables
 
 var skill_bag: Array[int] = []
-var available_skills: Array[int] = [1, 2, 3, 4]
+var available_skills: Array[int] = [1, 2, 3]
+var available_skills_second_phase: Array[int] = [1, 2, 3, 4]
 var available_shots: Array[int] = [1, 2, 3]
 var chair_shots_fired := 0
 const MAX_CHAIR_SHOTS := 3
@@ -408,6 +415,8 @@ func handle_boss_logic(delta: float) -> void:
 	
 	if signed_direction != 0:
 		var boss_facing_dir = signed_direction
+		facing_dir = signed_direction
+		
 		if boss_form_state == EnemyFormState.HUMAN_FORM:
 			m_sprite.flip_h = signed_direction == 1
 		else:
@@ -415,6 +424,7 @@ func handle_boss_logic(delta: float) -> void:
 		
 		c_marker.position.x = c_marker_base_x * boss_facing_dir
 		bf_marker.position.x = bf_marker_base_x * boss_facing_dir
+		frontal_s_marker.position.x = frontal_s_marker_x * boss_facing_dir
 
 	if is_skilling:
 		velocity.x = 0
@@ -455,11 +465,18 @@ func handle_boss_logic(delta: float) -> void:
 
 #region Chase Attack Skill
 
-func chase_attack() -> void:
+func frontal_spell(scene: PackedScene, pos: Vector2, direct: int) -> void:
 	is_skilling = true
 	
 	boss_state = BossStates.CHASE_ATTACK
-
+	
+	var spell_scene = scene.instantiate()
+	spell_scene.target_pos = pos
+	#spell_scene.dir = direct
+	
+	var spell_parent = get_tree().current_scene.get_node("Projectiles")
+	spell_parent.add_child(spell_scene)
+	
 
 #endregion -- Chase Attack Skill
 
@@ -588,7 +605,11 @@ func get_next_skill() -> int:
 	return skill
 
 func refill_skill_bag() -> void:
-	skill_bag = available_skills.duplicate()
+	if !is_phase_two:
+		skill_bag = available_skills.duplicate()
+	else:
+		skill_bag = available_skills_second_phase.duplicate()
+		
 	skill_bag.shuffle()
 
 func skill_needs_range(skill_num: int) -> bool:
@@ -610,9 +631,11 @@ func start_skill(num: int) -> void:
 		3:
 			handle_directory_skill()
 		4:
-			chase_attack()
+			frontal_spell(FRONTAL_SPELL, frontal_s_marker.global_position, facing_dir)
 		_:
 			is_skilling = false
+	
+	
 
 
 
