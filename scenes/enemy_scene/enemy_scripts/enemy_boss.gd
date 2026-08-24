@@ -56,7 +56,7 @@ var c_marker_dir: float
 #region Combo Base Variables
 
 var skill_bag: Array[int] = []
-var available_skills: Array[int] = [1, 2, 3]
+var available_skills: Array[int] = [1, 2, 3, 4]
 var available_shots: Array[int] = [1, 2, 3]
 var chair_shots_fired := 0
 const MAX_CHAIR_SHOTS := 3
@@ -365,8 +365,9 @@ func chase_target(dir: float, abs_dis: float) -> void:
 	
 	if is_skilling:
 		return
-	
+
 	boss_state = BossStates.CHASING
+	
 	
 	var current_speed: float
 	
@@ -451,6 +452,16 @@ func handle_boss_logic(delta: float) -> void:
 
 
 #region Skills
+
+#region Chase Attack Skill
+
+func chase_attack() -> void:
+	is_skilling = true
+	
+	boss_state = BossStates.CHASE_ATTACK
+
+
+#endregion -- Chase Attack Skill
 
 #region Fall Book Skill
 
@@ -590,7 +601,6 @@ func start_skill(num: int) -> void:
 	
 	is_skilling = true
 	boss_state = BossStates.SKILLING
-
 	
 	match num:
 		1:
@@ -599,6 +609,8 @@ func start_skill(num: int) -> void:
 			start_chair_skill()
 		3:
 			handle_directory_skill()
+		4:
+			chase_attack()
 		_:
 			is_skilling = false
 
@@ -622,7 +634,7 @@ func end_skill() -> void:
 
 	is_skilling = false
 	is_shooting = false
-
+	
 	print("bag now: ", skill_bag)
 	
 	if skill_bag.is_empty() and pending_skill == 0:
@@ -786,7 +798,6 @@ func _on_e_sprite_animation_finished() -> void:
 			print("animation finished, human hurt")
 			end_hurt()
 
-	
 	if m_sprite.animation == "death":
 		end_first_death()
 	
@@ -795,6 +806,9 @@ func _on_d_sprite_animation_finished() -> void:
 	if d_sprite.animation == "hurt":
 		print("animation finished, demon hurt")
 		end_demon_hurt()
+	
+	if d_sprite.animation == "attk_one":
+		end_skill()
 
 	
 

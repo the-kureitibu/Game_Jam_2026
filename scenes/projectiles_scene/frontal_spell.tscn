@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://cue426o6d4yla"]
+
+[ext_resource type="Script" uid="uid://dmvyn7ii3an30" path="res://scenes/projectiles_scene/frontal_spell.gd" id="1_oa2cu"]
+[ext_resource type="Texture2D" uid="uid://dipmdojd71ue2" path="res://assets/sprites/projectiles/elder2 wep.png" id="2_b8lgu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yplid"]
+atlas = ExtResource("2_b8lgu")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_srwl6"]
+atlas = ExtResource("2_b8lgu")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eywy8"]
+atlas = ExtResource("2_b8lgu")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_usibn"]
+atlas = ExtResource("2_b8lgu")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gq2rw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yplid")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_srwl6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eywy8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_usibn")
+}],
+"loop": true,
+"name": &"attk",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a52gl"]
+radius = 51.78803
+
+[node name="FrontalSpell" type="Area2D" unique_id=1822917589 groups=["Boss_Projectile"]]
+script = ExtResource("1_oa2cu")
+
+[node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=481903981]
+sprite_frames = SubResource("SpriteFrames_gq2rw")
+animation = &"attk"
+
+[node name="MainCol" type="CollisionShape2D" parent="." unique_id=809875206]
+shape = SubResource("CircleShape2D_a52gl")
