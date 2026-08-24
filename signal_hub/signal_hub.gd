@@ -9,6 +9,12 @@ signal blocking_anim_done
 signal player_died
 #endregion
 
+#region Enemy Boss
+
+signal is_needed_flip
+
+#endregion -- Enemy Boss
+
 #region Stage/Level Related
 
 signal stage_restart

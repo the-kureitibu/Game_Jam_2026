@@ -31,7 +31,7 @@ extends Control
 
 #region Boss Animation
 
-@onready var boss_anim_player: AnimationPlayer
+@onready var boss_anim_player: AnimatedSprite2D
 @onready var boss_target = get_tree().get_first_node_in_group("Boss_target")
 
 #endregion -- Boss Animation
@@ -53,6 +53,7 @@ var start_dialogue: bool = false
 
 @onready var is_demon_lord: bool = false
 @onready var is_transition: bool = false
+@onready var transforming_done: bool = false
 
 #endregion -- Gate Keepers
 
@@ -174,7 +175,7 @@ func sequences_helper(curr_index: int, speaker: String = "speaker", line: String
 	return [speaker_index, line_index]
 
 func advance_dialogue() -> void:
-	if current_index == 2:
+	if current_index == 3 and !transforming_done:
 		transition_to_demon_lord()
 	
 	if is_transition:
@@ -225,7 +226,6 @@ func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx
 			if cur_index == 0:
 				boss_name_label.text = "Salaryman Satou, Four Heavenly Kings"
 				boss_image.texture = load(boss_thumbnail1_path)
-				#change thumbnail, play anim
 			else:
 				boss_name_label.text = "Salaryman Satou, Demon Lord"
 				boss_image.texture = load(boss_thumbnail4_path)
@@ -250,9 +250,26 @@ func transition_to_demon_lord() -> void:
 	
 	is_transition = true
 	boss_anim_player.visible = true 
+
+	boss_anim_player.play("to_demon_one")
 	
-	boss_anim_player.play()
+	SignalHub.is_needed_flip.emit()
 	
+	await boss_anim_player.animation_finished
+	
+	boss_anim_player.play("to_demon_two")
+	
+	await boss_anim_player.animation_finished
+	
+	set_final_thumbnail()
+
+
+func set_final_thumbnail() -> void:
+	boss_name_label.text = "Salaryman Satou, Demon Lord"
+	boss_image.texture = load(boss_thumbnail4_path)
+	
+	is_transition = false
+	transforming_done = true
 
 
 #endregion -- Advancing Dialogue

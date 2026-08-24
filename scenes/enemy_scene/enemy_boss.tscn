@@ -280,7 +280,7 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 1.0,
+"duration": 3.0,
 "texture": SubResource("AtlasTexture_q8ktb")
 }, {
 "duration": 1.0,
@@ -703,9 +703,8 @@ collision_mask = 16
 script = ExtResource("1_pel0o")
 
 [node name="d_sprite" type="AnimatedSprite2D" parent="." unique_id=1116574413]
-visible = false
 sprite_frames = SubResource("SpriteFrames_kjeor")
-animation = &"to_demon_one"
+animation = &"to_demon_two"
 offset = Vector2(0, -68)
 
 [node name="e_sprite" type="AnimatedSprite2D" parent="." unique_id=290278967]
@@ -716,7 +715,7 @@ animation = &"death"
 offset = Vector2(0, -68)
 
 [node name="MainCol" type="CollisionShape2D" parent="." unique_id=1285489192]
-position = Vector2(0, -52)
+position = Vector2(0, -49)
 shape = SubResource("CapsuleShape2D_kjeor")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1771797632]

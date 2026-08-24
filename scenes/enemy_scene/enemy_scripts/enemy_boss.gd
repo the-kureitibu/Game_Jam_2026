@@ -208,6 +208,7 @@ func _ready() -> void:
 	find_target()
 	
 	print("Number of shots ", chair_shots_fired)
+	SignalHub.is_needed_flip.connect(flip_to_target)
 	#launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir
 	
 	
@@ -242,6 +243,17 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
+#region Misc
+
+func flip_to_target() -> void:
+	var target_dis = p_target.global_position.x - global_position.x
+	var signed_dir = sign(target_dis)
+	
+	if signed_dir != 0:
+		d_sprite.flip_h = signed_dir == 1
+	
+
+#endregion -- Misc
 
 #region Movement func
 
