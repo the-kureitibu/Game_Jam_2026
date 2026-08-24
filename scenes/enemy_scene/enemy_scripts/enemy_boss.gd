@@ -174,7 +174,7 @@ var b_max_speed := 100.0
 #region Phase 2 Stats
 
 @onready var PHASE2_MAX_HEALTH: float = 200.0
-@onready var p2_boss_health: float = 50.0: 
+@onready var p2_boss_health: float = 0.0: 
 	set(value):
 		var new_health = value
 		
@@ -214,13 +214,25 @@ func _physics_process(delta: float) -> void:
 		velocity.x = 0.0
 		move_and_slide()
 		return
-
 	
-	if boss_health <= 0.0:
-		if !is_phase_two and !is_first_death:
-			is_first_death = true 
+	if boss_state == BossStates.TRUE_DEATH:
+		velocity.x = 0.0
+		move_and_slide()
+		return
+	
+	if !is_phase_two and boss_health <= 0.0:
+		if !is_first_death:
+			is_first_death = true
 			handle_first_death()
-			
+	
+		velocity.x = 0.0
+		move_and_slide()
+		return
+
+
+	if is_phase_two and p2_boss_health <= 0.0:
+		#handle_true_death()
+		velocity.x = 0.0
 		move_and_slide()
 		return
 	
@@ -229,7 +241,6 @@ func _physics_process(delta: float) -> void:
 		handle_anim(BossStates.HURT)
 		move_and_slide()
 		return
-	
 	
 	handle_boss_logic(delta)
 	update_chair_skill(delta)
@@ -261,7 +272,6 @@ func handle_movement() -> void:
 	
 	if p_target == null:
 		return
-	
 
 	var signed_distance = find_target()
 	var signed_direction = sign(signed_distance)
@@ -291,18 +301,24 @@ func pass_marker_dir(s_dir: int) -> void:
 
 #region Animations 
 
+func get_active_sprite() -> AnimatedSprite2D:
+	if is_phase_two:
+		return d_sprite
+	return m_sprite
+
+
 func play_boss_anim(anim_name: StringName, force: bool = false) -> void:
+	var active_sprite := get_active_sprite()
+	
 	if force:
-		m_sprite.play(anim_name)
+		active_sprite.play(anim_name)
 		return
 	
-	if m_sprite.animation == anim_name and m_sprite.is_playing():
+	if active_sprite.animation == anim_name and active_sprite.is_playing():
 		return
 	
-	if !is_phase_two:
-		m_sprite.play(anim_name)
-	else:
-		d_sprite.play(anim_name)
+	active_sprite.play(anim_name)
+	
 
 
 func handle_anim(state: EnemyBase.BossStates) -> void:
@@ -387,7 +403,10 @@ func handle_boss_logic(delta: float) -> void:
 	
 	if signed_direction != 0:
 		var boss_facing_dir = signed_direction
-		m_sprite.flip_h = signed_direction == 1
+		if boss_form_state == EnemyFormState.HUMAN_FORM:
+			m_sprite.flip_h = signed_direction == 1
+		else:
+			d_sprite.flip_h = signed_direction == 1
 		
 		c_marker.position.x = c_marker_base_x * boss_facing_dir
 		bf_marker.position.x = bf_marker_base_x * boss_facing_dir
@@ -567,7 +586,7 @@ func start_skill(num: int) -> void:
 	
 	is_skilling = true
 	boss_state = BossStates.SKILLING
-	
+
 	
 	match num:
 		1:
@@ -699,16 +718,34 @@ func handle_first_death() -> void:
 func start_phase_two() -> void:
 	if !GameManager.can_start_second_phase:
 		return
-		
+
 	is_phase_two = true
 		
 	boss_form_state = EnemyFormState.DEMON_LORD
-		
+	boss_state = BossStates.CHASING
+	
 	is_hurt = false
-		
+	is_skilling = false
+	is_shooting = false
+	is_third_skill_running = false
+	is_recovering = false
+	
+	pending_skill = 0
+	skill_bag.clear()
+	chase_timer = 1.0
+	
+	if m_sprite.visible:
+		m_sprite.visible = false
+	
+	if !d_sprite.visible:
+		d_sprite.visible = true
+	
+	p2_boss_health = PHASE2_MAX_HEALTH
+	
 	print(EnemyBase.BossStates.keys()[boss_state])
 	print(EnemyBase.EnemyFormState.keys()[boss_form_state])
 	print("is_hurt?: ", is_hurt)
+	print("chase_timer?: ", chase_timer)
 
 
 #endregion -- Phase 2 Related 
@@ -738,6 +775,9 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 func _on_e_sprite_animation_finished() -> void:
 	
 	if m_sprite.animation == "hurt":
+		end_hurt()
+
+	if d_sprite.animation == "hurt":
 		end_hurt()
 	
 	if m_sprite.animation == "death":

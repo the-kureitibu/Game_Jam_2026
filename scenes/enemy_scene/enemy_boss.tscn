@@ -63,6 +63,30 @@ region = Rect2(1024, 1108, 128, 191)
 atlas = ExtResource("1_m08xj")
 region = Rect2(1152, 1108, 128, 191)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0skl"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(256, 726, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8c5ni"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(128, 726, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8tjox"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(0, 726, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yvqmr"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(0, 726, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0luy7"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(128, 726, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7q1eu"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(256, 726, 128, 192)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_veej5"]
 atlas = ExtResource("1_m08xj")
 region = Rect2(256, 726, 128, 191)
@@ -251,6 +275,29 @@ animations = [{
 "loop": false,
 "name": &"death",
 "speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0skl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8c5ni")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8tjox")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yvqmr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0luy7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7q1eu")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -759,8 +806,9 @@ script = ExtResource("1_pel0o")
 [node name="d_sprite" type="AnimatedSprite2D" parent="." unique_id=1116574413]
 visible = false
 sprite_frames = SubResource("SpriteFrames_kjeor")
-animation = &"skill"
-frame_progress = 0.38311875
+animation = &"hurt"
+frame = 5
+frame_progress = 1.0
 offset = Vector2(0, -68)
 
 [node name="e_sprite" type="AnimatedSprite2D" parent="." unique_id=290278967]
