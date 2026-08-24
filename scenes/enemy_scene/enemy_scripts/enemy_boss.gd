@@ -53,7 +53,7 @@ const CHAIR_SCENE = preload("res://scenes/projectiles_scene/chair_skill.tscn")
 const BOOK_FALL_SCENE = preload("res://scenes/projectiles_scene/book_fall_skill.tscn")
 const DIRECTORY_SCENE = preload("res://scenes/projectiles_scene/directory_skill.tscn")
 const FRONTAL_SPELL = preload("res://scenes/projectiles_scene/frontal_spell.tscn")
-
+const CIRCULAR_BARRAGE = preload("res://scenes/projectiles_scene/circular_barrage.tscn")
 
 var c_marker_dir: float
 
@@ -63,11 +63,16 @@ var c_marker_dir: float
 
 var skill_bag: Array[int] = []
 var available_skills: Array[int] = [1, 2, 3]
-var available_skills_second_phase: Array[int] = [1, 2, 3, 4]
+var available_skills_second_phase: Array[int] = [1, 2, 3, 4, 5]
 var available_shots: Array[int] = [1, 2, 3]
 var chair_shots_fired := 0
 const MAX_CHAIR_SHOTS := 3
 const CHAIR_SHOT_INTERVAL := 1.5
+
+var spell_shots_fired := 0
+const MAX_SPELL_SHOTS := 3
+const SPELL_SHOT_INTERVAL := 1.5
+
 
 var is_recovering: bool = false
 var pending_skill := 0
@@ -141,6 +146,7 @@ var is_stunned := false
 var is_chasing := false
 var is_skilling := false
 var is_shooting := false
+var is_shooting_barrage := false
 var is_hurt_ongoing := false
 
 #endregion
@@ -212,7 +218,7 @@ func _ready() -> void:
 	
 	find_target()
 	
-	print("Number of shots ", chair_shots_fired)
+	#print("Number of shots ", chair_shots_fired)
 	SignalHub.is_needed_flip.connect(flip_to_target)
 	SignalHub.start_second_phase.connect(start_phase_two)
 	
@@ -254,6 +260,7 @@ func _physics_process(delta: float) -> void:
 	
 	handle_boss_logic(delta)
 	update_chair_skill(delta)
+	update_circular_skill(delta)
 	update_summon_directory(delta)
 	update_recovery(delta)
 	
@@ -434,6 +441,10 @@ func handle_boss_logic(delta: float) -> void:
 		velocity.x = 0
 		return
 	
+	if is_shooting_barrage:
+		velocity.x = 0
+		return
+	
 	if is_recovering:
 		handle_movement()
 		return
@@ -466,13 +477,15 @@ func handle_boss_logic(delta: float) -> void:
 #region Chase Attack Skill
 
 func frontal_spell(scene: PackedScene, pos: Vector2, direct: int) -> void:
+	if !is_phase_two:
+		return
+	
 	is_skilling = true
 	
 	boss_state = BossStates.CHASE_ATTACK
 	
 	var spell_scene = scene.instantiate()
 	spell_scene.target_pos = pos
-	#spell_scene.dir = direct
 	
 	var spell_parent = get_tree().current_scene.get_node("Projectiles")
 	spell_parent.add_child(spell_scene)
@@ -495,7 +508,7 @@ func fall_book(scene: PackedScene, pos: Vector2) -> void:
 	
 	if book_scene.is_inside_tree():
 		book_scene.anim_done.connect(end_skill)
-		print("Books scene connected?: ", book_scene.anim_done.is_connected(end_skill))
+		#print("Books scene connected?: ", book_scene.anim_done.is_connected(end_skill))
 
 #endregion -- Fall Book Skill
 
@@ -539,12 +552,65 @@ func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
 	
 	projectile_parent.add_child(chair_scene)
 
-	print(" I throw chair")
+	#print(" I throw chair")
 	shots_timer = 1.5
-	print("Shots timer refilled? ", shots_timer)
+	#print("Shots timer refilled? ", shots_timer)
 	
-
 #endregion -- Chair Skill
+
+#region Circular Barrage Skill
+
+func start_circular_skill() -> void:
+	if !is_phase_two:
+		return
+
+	is_skilling = true
+	is_shooting_barrage = true
+	spell_shots_fired = 0
+	shots_timer = 0.0
+
+func update_circular_skill(delta) -> void:
+	if !is_phase_two:
+		return
+	
+	if !is_shooting_barrage:
+		return
+	
+	shots_timer = set_timer(shots_timer, delta)
+	
+	if shots_timer > 0.0:
+		return
+
+	launch_circular_barrage(CIRCULAR_BARRAGE, c_marker.global_position, c_marker_dir)
+	spell_shots_fired += 1
+
+	if spell_shots_fired >= MAX_SPELL_SHOTS:
+		end_skill()
+	else: 
+		shots_timer = SPELL_SHOT_INTERVAL
+
+	
+func launch_circular_barrage(scene: PackedScene, pos: Vector2, direction: int) -> void:
+	if !is_phase_two:
+		return
+	
+	is_skilling = true
+	is_shooting_barrage = true
+	
+	var circular_scene = scene.instantiate()
+	circular_scene.global_position = pos
+	circular_scene.marker_dir = direction
+	
+	var projectile_parent = get_tree().current_scene.get_node("Projectiles")
+	
+	projectile_parent.add_child(circular_scene)
+
+	#print(" I throw spell")
+	shots_timer = 1.5
+	#print("Shots timer refilled? ", shots_timer)
+
+
+#endregion Circular Barrage Skill
 
 #region Summon Directories Skill
 
@@ -595,13 +661,13 @@ func update_summon_directory(delta: float) -> void:
 
 func get_next_skill() -> int:
 	
-	print("BEFORE get_next_skill, bag: ", skill_bag)
+	#print("BEFORE get_next_skill, bag: ", skill_bag)
 	if skill_bag.is_empty():
-		print("BAG EMPTY, REFILLING")
+		#print("BAG EMPTY, REFILLING")
 		refill_skill_bag()
 	
 	var skill = skill_bag.pop_front()
-	print("PICKED SKILL: ", skill, " | BAG AFTER PICK: ", skill_bag)
+	#print("PICKED SKILL: ", skill, " | BAG AFTER PICK: ", skill_bag)
 	return skill
 
 func refill_skill_bag() -> void:
@@ -632,6 +698,8 @@ func start_skill(num: int) -> void:
 			handle_directory_skill()
 		4:
 			frontal_spell(FRONTAL_SPELL, frontal_s_marker.global_position, facing_dir)
+		5:
+			start_circular_skill()
 		_:
 			is_skilling = false
 	
@@ -657,8 +725,10 @@ func end_skill() -> void:
 
 	is_skilling = false
 	is_shooting = false
+	is_shooting_barrage = false
 	
-	print("bag now: ", skill_bag)
+	
+	#print("bag now: ", skill_bag)
 	
 	if skill_bag.is_empty() and pending_skill == 0:
 		start_recovery()
@@ -699,7 +769,7 @@ func reduce_timer(delta: float) -> void:
 
 func handle_hurt(damage: float) -> void:
 	if is_hurt:
-		print("still hurt") #-- this never fired
+		#print("still hurt") #-- this never fired
 		return
 	
 	start_hurt(damage)
@@ -715,6 +785,7 @@ func start_hurt(damage: float) -> void:
 	is_hurt = true
 	is_skilling = false
 	is_shooting = false
+	is_shooting_barrage = false
 	is_third_skill_running = false
 	is_recovering = false
 	
@@ -723,6 +794,8 @@ func start_hurt(damage: float) -> void:
 	directory_summon_timer = 0.0
 	channeling_skill_timer = 0.0
 	chair_shots_fired = 0
+	spell_shots_fired = 0
+	
 	
 	velocity.x = 0.0
 	
@@ -769,6 +842,7 @@ func start_phase_two() -> void:
 	is_hurt = false
 	is_skilling = false
 	is_shooting = false
+	is_shooting_barrage = false
 	is_third_skill_running = false
 	is_recovering = false
 	
@@ -784,10 +858,10 @@ func start_phase_two() -> void:
 	
 	p2_boss_health = PHASE2_MAX_HEALTH
 	
-	print(EnemyBase.BossStates.keys()[boss_state])
-	print(EnemyBase.EnemyFormState.keys()[boss_form_state])
-	print("is_hurt?: ", is_hurt)
-	print("chase_timer?: ", chase_timer)
+	#print(EnemyBase.BossStates.keys()[boss_state])
+	#print(EnemyBase.EnemyFormState.keys()[boss_form_state])
+	#print("is_hurt?: ", is_hurt)
+	#print("chase_timer?: ", chase_timer)
 
 
 #endregion -- Phase 2 Related 
@@ -818,7 +892,7 @@ func _on_e_sprite_animation_finished() -> void:
 	
 	if boss_form_state == EnemyFormState.HUMAN_FORM:
 		if m_sprite.animation == "hurt":
-			print("animation finished, human hurt")
+			#print("animation finished, human hurt")
 			end_hurt()
 
 	if m_sprite.animation == "death":
@@ -827,7 +901,7 @@ func _on_e_sprite_animation_finished() -> void:
 func _on_d_sprite_animation_finished() -> void:
 	
 	if d_sprite.animation == "hurt":
-		print("animation finished, demon hurt")
+		#print("animation finished, demon hurt")
 		end_demon_hurt()
 	
 	if d_sprite.animation == "attk_one":
