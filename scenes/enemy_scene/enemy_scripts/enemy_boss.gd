@@ -1,10 +1,5 @@
 extends EnemyBase
 
-#For tomorrow:
-#1. if health 0, and not second phase > first death 
-#2. sends signal to manager to trigger second phase dialogue 
-#3. Stage triggers dialogue 
-
 
 #region Base Variables
 
@@ -28,9 +23,6 @@ var slowing_speed := 70.0
 @onready var s_height = s_texture.get_height() / - 2.0
 @onready var main_col: CollisionShape2D = $MainCol
 @onready var hurt_col: CollisionShape2D = $Hurtbox/HurtCol
-
-
-
 
 @onready var c_marker: Marker2D = $ChairMarker
 @onready var bf_marker: Marker2D = $BookFMarker
@@ -198,7 +190,6 @@ var is_first_death: bool = false
 
 #endregion -- Phase 2 Stats
 
-
 #endregion -- States and Vars 
 
 func draw_speed_limit() -> void:
@@ -215,7 +206,7 @@ func _ready() -> void:
 	
 	print("Number of shots ", chair_shots_fired)
 	SignalHub.is_needed_flip.connect(flip_to_target)
-	#launch_chair(CHAIR_SCENE, c_marker.global_position, c_marker_dir
+	SignalHub.start_second_phase.connect(start_phase_two)
 	
 	
 func _physics_process(delta: float) -> void:
@@ -257,7 +248,6 @@ func flip_to_target() -> void:
 	
 	if signed_dir != 0:
 		d_sprite.flip_h = signed_dir == 1
-	
 
 #endregion -- Misc
 
@@ -326,6 +316,9 @@ func handle_anim(state: EnemyBase.BossStates) -> void:
 
 		BossStates.SKILLING:
 			play_boss_anim("skill")
+		
+		BossStates.CHASE_ATTACK:
+			play_boss_anim("attk_one")
 	
 		#BossStates.FIRST_DEATH:
 			#play_boss_anim("death", true)
@@ -354,7 +347,6 @@ func chase_target(dir: float, abs_dis: float) -> void:
 		return
 	
 	boss_state = BossStates.CHASING
-	
 	
 	var current_speed: float
 	
@@ -677,8 +669,6 @@ func start_hurt(damage: float) -> void:
 	
 	boss_state = BossStates.HURT
 	
-	is_hurt = true
-	
 	if is_phase_two:
 		p2_boss_health -= damage
 	else:
@@ -686,13 +676,11 @@ func start_hurt(damage: float) -> void:
 
 func handle_first_death() -> void:
 	if boss_state == BossStates.FIRST_DEATH:
-		print("is this still running?")
 		return
 	
 	boss_state = BossStates.FIRST_DEATH
 	play_boss_anim("death")
 
-	
 
 #func handle_death() -> void:
 	#
@@ -702,10 +690,29 @@ func handle_first_death() -> void:
 	#boss_state = BossStates.FIRST_DEATH
 	#SignalHub.ready_for_second_phase.emit()
 	##play_anim(m_sprite, "death")
-	#
-
-
+	
 #endregion -- Health Related 
+
+
+#region Phase 2 Related 
+
+func start_phase_two() -> void:
+	if !GameManager.can_start_second_phase:
+		return
+		
+	is_phase_two = true
+		
+	boss_form_state = EnemyFormState.DEMON_LORD
+		
+	is_hurt = false
+		
+	print(EnemyBase.BossStates.keys()[boss_state])
+	print(EnemyBase.EnemyFormState.keys()[boss_form_state])
+	print("is_hurt?: ", is_hurt)
+
+
+#endregion -- Phase 2 Related 
+
 
 #region Area Signals 
 
@@ -722,8 +729,6 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 			p_dmg = p_projectile.hit()
 		
 		handle_hurt(p_dmg)
-
-
 
 #endregion -- Area Signals 
 

@@ -250,8 +250,6 @@ func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx
 		"right":
 			dialogue_text_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	
-
-
 	
 	dialogue_text_label.text = speaker_text_collection[cur_index]
 	

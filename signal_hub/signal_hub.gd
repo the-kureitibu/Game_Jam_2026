@@ -24,6 +24,7 @@ signal pre_fight_dialogue_done
 
 signal ready_for_second_phase
 signal mid_fight_dialogue_done
+signal start_second_phase
 
 
 #endregion  -- Stage/Level Related

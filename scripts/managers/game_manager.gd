@@ -196,6 +196,8 @@ func start_boss_fight() -> void:
 
 func start_boss_second_phase() -> void:
 	can_start_second_phase = true
+	SignalHub.start_second_phase.emit()
+
 
 #endregion -- Boss Fight Related 
 

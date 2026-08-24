@@ -91,6 +91,34 @@ region = Rect2(896, 726, 128, 191)
 atlas = ExtResource("1_m08xj")
 region = Rect2(1024, 726, 128, 191)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_y8blh"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(256, 726, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kk7pl"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(384, 726, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kukqf"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(512, 726, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ar36g"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(640, 726, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xyqxd"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(768, 726, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h6g10"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(896, 726, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_28t7p"]
+atlas = ExtResource("1_m08xj")
+region = Rect2(1024, 726, 128, 192)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_p55qm"]
 atlas = ExtResource("1_m08xj")
 region = Rect2(0, 580, 128, 145)
@@ -248,6 +276,32 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y8blh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kk7pl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kukqf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ar36g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xyqxd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h6g10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_28t7p")
+}],
+"loop": true,
+"name": &"skill",
 "speed": 5.0
 }, {
 "frames": [{
@@ -705,7 +759,8 @@ script = ExtResource("1_pel0o")
 [node name="d_sprite" type="AnimatedSprite2D" parent="." unique_id=1116574413]
 visible = false
 sprite_frames = SubResource("SpriteFrames_kjeor")
-animation = &"to_demon_two"
+animation = &"skill"
+frame_progress = 0.38311875
 offset = Vector2(0, -68)
 
 [node name="e_sprite" type="AnimatedSprite2D" parent="." unique_id=290278967]
