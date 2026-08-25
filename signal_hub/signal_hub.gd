@@ -29,7 +29,6 @@ signal start_second_phase
 signal end_game_start
 signal start_end_game_dialogue
 
-
 #endregion  -- Stage/Level Related
 
 #region UI related
@@ -40,6 +39,12 @@ signal update_p_stats(v_name: String, value: int)
 signal transition_done
 
 #endregion
+
+#region Game Related
+
+signal restart_game
+
+#endregion -- Game Related
 
 #region Michael Related
 

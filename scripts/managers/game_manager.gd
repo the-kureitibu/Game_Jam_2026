@@ -76,13 +76,18 @@ func _ready() -> void:
 	SignalHub.ready_for_second_phase.connect(update_boss_second_phase)
 	SignalHub.mid_fight_dialogue_done.connect(start_boss_second_phase)
 	
+	SignalHub.restart_game.connect(restart_game_manager)
 
-func _process(delta: float) -> void:
-	if get_tree().paused:
-		pass
-	
 
 #endregion -- Processes
+
+#region Restart Levels
+
+func restart_game_manager() -> void:
+	pass
+
+#endregion -- Restart Levels
+
 
 #region Levels Start
 func announce_level_scene() -> void:
@@ -179,7 +184,14 @@ func player_death() -> void:
 	var announcer_scene = TEXT_ANNOUNCER.instantiate()
 	get_tree().root.add_child(announcer_scene)
 	
-	announcer_scene.announce_death("You've Failed, Spidor")
+	var announce_text: String = ""
+	
+	if game_scene_state == GameLevelStates.BOSS_ROOM:
+		announce_text = "You've Failed, Spidor. Perhaps, Somewhere in the Demon Realm lies forgotten power."
+	else:
+		announce_text = "You've Failed, Spidor"
+	
+	announcer_scene.announce_death(announce_text)
 
 #endregion --  Restart Stage  
 

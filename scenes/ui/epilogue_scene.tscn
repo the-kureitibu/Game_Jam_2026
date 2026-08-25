@@ -3,6 +3,15 @@
 [ext_resource type="Script" uid="uid://cjdolo12x8ilr" path="res://scenes/ui/epilogue_scene.gd" id="1_kawkk"]
 [ext_resource type="Texture2D" uid="uid://c8elxsusu7ut7" path="res://assets/sprites/ui/BG/bucko_jam_ending1.png" id="2_kawkk"]
 [ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="3_4g5s4"]
+[ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="4_h63l8"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4g5s4"]
+texture = ExtResource("4_h63l8")
+region_rect = Rect2(275, 178, 90, 27)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fxac2"]
+texture = ExtResource("4_h63l8")
+region_rect = Rect2(275, 212, 90, 25)
 
 [node name="EpilogueScene" type="Control" unique_id=1931346612]
 layout_mode = 3
@@ -141,3 +150,66 @@ size_flags_horizontal = 3
 theme_override_colors/default_color = Color(0.9509199, 0.6195214, 0.74134755, 1)
 theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/normal_font = ExtResource("3_4g5s4")
+
+[node name="ButtonMarginCont" type="MarginContainer" parent="." unique_id=1451194070]
+visible = false
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ButtonHBox" type="HBoxContainer" parent="ButtonMarginCont" unique_id=1532874183]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="ButtonVBox" type="VBoxContainer" parent="ButtonMarginCont/ButtonHBox" unique_id=1540031017]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TopSpacer" type="Control" parent="ButtonMarginCont/ButtonHBox/ButtonVBox" unique_id=1617382672]
+custom_minimum_size = Vector2(0, 6.66)
+layout_mode = 2
+
+[node name="BackToStart" type="Button" parent="ButtonMarginCont/ButtonHBox/ButtonVBox" unique_id=1245267158]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8950189, 0.4042994, 0.6100351, 1)
+theme_override_fonts/font = ExtResource("3_4g5s4")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_4g5s4")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_fxac2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_fxac2")
+text = "Back To Start"
+
+[node name="MidSpacer" type="Control" parent="ButtonMarginCont/ButtonHBox/ButtonVBox" unique_id=1182166979]
+custom_minimum_size = Vector2(0, 6.66)
+layout_mode = 2
+
+[node name="ExitButton" type="Button" parent="ButtonMarginCont/ButtonHBox/ButtonVBox" unique_id=92978597]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8950189, 0.4042994, 0.6100351, 1)
+theme_override_fonts/font = ExtResource("3_4g5s4")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_4g5s4")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_fxac2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_fxac2")
+text = "Exit Game
+"
+
+[node name="Control2" type="Control" parent="ButtonMarginCont/ButtonHBox/ButtonVBox" unique_id=783377119]
+custom_minimum_size = Vector2(0, 6.66)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="ButtonMarginCont/ButtonHBox" unique_id=570437869]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+
+[connection signal="pressed" from="ButtonMarginCont/ButtonHBox/ButtonVBox/BackToStart" to="." method="_on_back_to_start_pressed"]
+[connection signal="pressed" from="ButtonMarginCont/ButtonHBox/ButtonVBox/ExitButton" to="." method="_on_exit_button_pressed"]

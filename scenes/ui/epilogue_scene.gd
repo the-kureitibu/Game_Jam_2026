@@ -26,6 +26,9 @@ extends Control
 @onready var dialogue_text_label: RichTextLabel = $MainMargin/PanelContainer/SecondHBox/VBoxContainer/DialogueTextLabel
 @onready var next_text_label: RichTextLabel = $MainMargin/PanelContainer/NextTextContainer/NextTextLabel
 
+@onready var button_margin_cont: MarginContainer = $ButtonMarginCont
+
+
 #endregion -- References 
 
 #region Base
@@ -218,3 +221,17 @@ func pulse_control(control: Control) -> void:
 	tween.tween_property(control, "modulate:a", 1.0, 2.5)
 
 #endregion --  Effects 
+
+#region Buttons
+
+func _on_back_to_start_pressed() -> void:
+	
+	
+	SignalHub.restart_game.emit()
+
+
+
+func _on_exit_button_pressed() -> void:
+	get_tree().quit()
+
+#endregion -- Buttons
