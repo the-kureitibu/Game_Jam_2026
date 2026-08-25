@@ -153,10 +153,15 @@ var is_panel_open := false
 @onready var test_arr: Array = []
 
 
-
 #endregion
 
 #endregion 
+
+#region SFX 
+@onready var typing_sfx: String = "res://assets/audio/sfx/typewriter3.wav"
+
+#endregion -- SFX 
+
 
 func _ready() -> void:
 	
@@ -176,7 +181,9 @@ func test_func() -> void:
 
 
 func open_attk_tutorial_panel() -> void:
-	print("did this run")
+	AudioManager.play_sfx(typing_sfx, -1.0)
+
+
 	
 	if is_panel_open:
 		return
@@ -186,15 +193,15 @@ func open_attk_tutorial_panel() -> void:
 	
 
 	is_panel_open = true 
-	print("panel open? ", is_panel_open)
 	is_attk_tutorial_panel = true
-	print("attk tutorial open? ", is_attk_tutorial_panel)
 	
 	panel_ini_helper(attk_tutorial_panel, arrow_navs_panel, 
 					text_label_one, 0, current_index)
 
 	
 func open_jump_block_panel() -> void:
+	AudioManager.play_sfx(typing_sfx, -1.0)
+
 	if is_panel_open:
 		return
 	
@@ -209,6 +216,8 @@ func open_jump_block_panel() -> void:
 				text_label_two, 1, current_index)
 
 func open_rage_panel() -> void:
+	AudioManager.play_sfx(typing_sfx, -1.0)
+
 	if is_panel_open:
 		return
 	
@@ -222,6 +231,8 @@ func open_rage_panel() -> void:
 				text_label_three, 2, current_index)
 
 func open_rage_skill_panel() -> void:
+	AudioManager.play_sfx(typing_sfx, -1.0)
+
 	if is_panel_open:
 		return
 	
@@ -240,9 +251,7 @@ func panel_ini_helper(panel: MarginContainer, arrow_panel: VBoxContainer,
 				label: Label, main_dict_item: int, index: int) -> void:
 
 	panel.visible = true 
-	print("panel ", panel)
-	print("panel visible? ", panel.visible)
-	
+
 	arrow_panel.visible = true
 	exit_button.visible = true
 	
@@ -272,13 +281,13 @@ func button_nav_text_helper(label: Label, main_dict_item: int, index: int) -> vo
 	label.text = current_panel_dict[current_inner_key]
 
 func _on_arrow_left_button_pressed() -> void:
-
 	current_index -= 1
 	
 	switch_image_and_label()
 
 
 func _on_arrow_right_button_pressed() -> void:
+	
 	current_index += 1
 	
 	switch_image_and_label()

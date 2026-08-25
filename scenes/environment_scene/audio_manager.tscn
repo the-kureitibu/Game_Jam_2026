@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b2pm3rq6v03x2"]
+
+[ext_resource type="Script" uid="uid://ddkpubq2mtrdg" path="res://scripts/autoloads/audio_manager.gd" id="1_7papk"]
+
+[node name="AudioManager" type="Node2D" unique_id=163620520]
+script = ExtResource("1_7papk")
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="." unique_id=1303889068]
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1910759567]

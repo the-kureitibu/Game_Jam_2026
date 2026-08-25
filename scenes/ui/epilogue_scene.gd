@@ -65,7 +65,7 @@ var dialogue_lines: Array[Dictionary] = [
 		"speaker": "Bucko",
 		"name": "Bucko",
 		"text": [
-			"The guy with the weird clothes was strong.",
+			"All thanks to bro Michael. The guy with the weird clothes was strong.",
 			"...",
 			"...",
 			"...",

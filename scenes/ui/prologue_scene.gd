@@ -17,6 +17,12 @@ extends Control
 
 const TUTORIAL_SCENE: String ="res://scenes/levels_scene/tutorial_level.tscn"
 
+
+#region SFX 
+@onready var typing_sfx: String = "res://assets/audio/sfx/typewriter3.wav"
+
+#endregion -- SFX 
+
 #endregion -- References
 
 #region Timers 
@@ -172,6 +178,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	
 	if event.is_action_pressed("next"):
+		AudioManager.play_sfx(typing_sfx, -1.0)
 		advance_dialogue()
 
 func advance_dialogue() -> void:

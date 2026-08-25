@@ -57,6 +57,13 @@ var arrow_original_positions: Dictionary = {}
 
 #endregion --  Arrow Arrays
 
+#region BGM 
+
+@onready var woodland_fantasy_bgm: String = "res://assets/audio/bgm/Woodland Fantasy.mp3"
+
+#endregion -- BGM
+
+
 #endregion --  References
 
 
@@ -72,6 +79,10 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 
+	AudioManager.fade_to_bgm(woodland_fantasy_bgm, -10.0)
+
+#AudioManager.fade_to_bgm(woodland_fantasy_bgm, -10.0)
+
 	for arrow in arrows:
 		arrow_original_positions[arrow] = arrow.position
 	
@@ -86,6 +97,7 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("up"):
+		
 		if is_in_arrow_one:
 			tutorial_u_is.open_attk_tutorial_panel()
 		elif is_in_arrow_two:
@@ -105,6 +117,8 @@ func _on_exit_area_body_entered(body: Node2D) -> void:
 	
 	if player:
 		ui_layer.visible = false
+		
+		AudioManager.fade_out_bgm()
 		GameManager.change_scene_with_transition(GRASS_LAND_SCENE)
 		
 

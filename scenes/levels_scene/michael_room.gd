@@ -15,6 +15,12 @@ var michael_summoned: bool = false
 const MICHAEL_SCENE = preload("res://scenes/player_scene/michael.tscn")
 const DEMON_REALM: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 
+#region BGM
+
+@onready var fall_of_arcana: String = "res://assets/audio/bgm/The Fall of Arcana.mp3"
+
+#endregion -- BGM
+
 #region -- References
 
 
@@ -27,6 +33,9 @@ func _enter_tree() -> void:
 	GameManager.game_scene_state = GameManager.GameLevelStates.MICHAEL_ROOM
 
 func _ready() -> void:
+	AudioManager.fade_to_bgm(fall_of_arcana, -10.0)
+	
+	
 	top_control_michael.visible = false
 	SignalHub.show_michael_tutorial.connect(show_tutorial)
 
@@ -72,13 +81,13 @@ func _on_statue_hurt_box_area_entered(area: Area2D) -> void:
 	if player == 'HitBox':
 		cur_statue_frame += 1
 		update_statue_sprite(michael_statue, cur_statue_frame)
-	else:
-		print("Not Hitbox: ")
 
 func _on_exit_area_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 
 	if player:
+		
+		AudioManager.fade_out_bgm()
 		GameManager.change_scene_with_transition(DEMON_REALM)
 
 #endregion -- Area Signals

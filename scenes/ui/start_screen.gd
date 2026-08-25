@@ -37,14 +37,20 @@ extends Control
 @onready var video_stream_player: VideoStreamPlayer = $VideoStreamPlayer
 const PROLOGUE_SCENE: String = "res://scenes/ui/prologue_scene.tscn"
 
+#region BGMS
+
+@onready var town_theme_bgm: String = "res://assets/audio/bgm/TownTheme.mp3"
+
+#endregion -- BGMS
+
+
 #endregion -- References 
 
 #endregion -- Base Vars
 
 #region Processes 
 func _ready() -> void:
-	print(GameManager.GameLevelStates.keys()[GameManager.game_scene_state])
-
+	AudioManager.fade_to_bgm(town_theme_bgm, -10.0)
 
 	hide_title_screen_parts()
 	await reveal_title_sequence()
@@ -119,6 +125,7 @@ func start_vid_bg() -> void:
 
 func _on_start_button_pressed() -> void:
 	
+	AudioManager.fade_out_bgm()
 	GameManager.change_scene_with_transition(PROLOGUE_SCENE)
 
 

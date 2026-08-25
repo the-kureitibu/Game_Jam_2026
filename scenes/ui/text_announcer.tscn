@@ -20,14 +20,17 @@ offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="MainMargin" type="MarginContainer" parent="MainControl" unique_id=35954899]
 layout_mode = 0
 offset_right = 450.0
 offset_bottom = 200.0
+mouse_filter = 2
 
 [node name="TextLabel" type="RichTextLabel" parent="MainControl/MainMargin" unique_id=685132318]
 layout_mode = 2
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.9970253, 0.55746365, 1, 1)
 theme_override_colors/font_shadow_color = Color(0.16448733, 0.093594514, 0.014197476, 1)
 theme_override_fonts/normal_font = ExtResource("1_no8ro")

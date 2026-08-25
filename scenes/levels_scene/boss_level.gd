@@ -10,14 +10,23 @@ extends Node2D
 const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 const BOSS_ROOM_SCENE: String = "res://scenes/levels_scene/boss_room.tscn"
 
+#region BGM 
+
+@onready var orchestra_bgm: String = "res://assets/audio/bgm/Героическая минорная.mp3"
+
+#endregion -- BGM
+
+
 #endregion --  References 
 
 
 func _enter_tree() -> void:
 	GameManager.game_scene_state = GameManager.GameLevelStates.BOSS_LEVEL
 	
-	
+
 func _ready() -> void:
+	AudioManager.fade_to_bgm(orchestra_bgm, -10.0)
+	
 	player_one.global_position = $PlayerScene.global_position
 	player_two.global_position = $PlayerTwoScene.global_position
 	
@@ -50,8 +59,12 @@ func _on_to_demon_realm_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 	
 	if player:
+		
+		AudioManager.fade_out_bgm()
+		
 		GameManager.capture_player_stats(player_one.p_health, player_one.r_amount)
 		SignalHub.back_to_previous_stage.emit()
+		
 
 
 func _on_to_boss_room_body_entered(body: Node2D) -> void:
@@ -60,6 +73,8 @@ func _on_to_boss_room_body_entered(body: Node2D) -> void:
 	if player:
 		capture_last_position()
 		main_ui.visible = false
+		
+		AudioManager.fade_out_bgm()
 		GameManager.change_scene_with_transition(BOSS_ROOM_SCENE)
 
 
