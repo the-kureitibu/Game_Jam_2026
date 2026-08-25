@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://2owtkfsqfqps"]
 
 [ext_resource type="Script" uid="uid://cjdolo12x8ilr" path="res://scenes/ui/epilogue_scene.gd" id="1_kawkk"]
-[ext_resource type="VideoStream" uid="uid://jn0yc7e8s8rn" path="res://assets/video/ami_vid_final.ogv" id="2_h63l8"]
+[ext_resource type="Texture2D" uid="uid://c8elxsusu7ut7" path="res://assets/sprites/ui/BG/bucko_jam_ending1.png" id="2_kawkk"]
 [ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="3_4g5s4"]
 
 [node name="EpilogueScene" type="Control" unique_id=1931346612]
@@ -13,7 +13,17 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_kawkk")
 
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1183690549]
+[node name="BGOne" type="TextureRect" parent="." unique_id=1870522658]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_kawkk")
+expand_mode = 1
+
+[node name="BGTwo" type="TextureRect" parent="." unique_id=379317729]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -21,10 +31,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
-stream = ExtResource("2_h63l8")
-volume_db = 1.9500003
-expand = true
+expand_mode = 1
 
 [node name="MainMargin" type="MarginContainer" parent="." unique_id=1636010062]
 layout_mode = 1
@@ -43,11 +50,11 @@ size_flags_vertical = 4
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="AmiyaBuckoImage" type="TextureRect" parent="MainMargin/ImageVBox/HBoxContainer" unique_id=1941700493]
+[node name="AmiyaImage" type="TextureRect" parent="MainMargin/ImageVBox/HBoxContainer" unique_id=1941700493]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="BossImage" type="TextureRect" parent="MainMargin/ImageVBox/HBoxContainer" unique_id=343126321]
+[node name="BuckoImage" type="TextureRect" parent="MainMargin/ImageVBox/HBoxContainer" unique_id=343126321]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 10
@@ -78,13 +85,13 @@ theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.2549019
 theme_override_fonts/normal_font = ExtResource("3_4g5s4")
 theme_override_font_sizes/normal_font_size = 18
 
-[node name="BossNameContainer" type="VBoxContainer" parent="MainMargin/PanelContainer/MainHbox" unique_id=1853888111]
+[node name="BuckoNameContainer" type="VBoxContainer" parent="MainMargin/PanelContainer/MainHbox" unique_id=1853888111]
 custom_minimum_size = Vector2(350, 40)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 0
 
-[node name="BossNameLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/MainHbox/BossNameContainer" unique_id=1722948457]
+[node name="BuckoNameLabel" type="RichTextLabel" parent="MainMargin/PanelContainer/MainHbox/BuckoNameContainer" unique_id=1722948457]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/default_color = Color(0.96298975, 0.7163942, 0.8028215, 1)

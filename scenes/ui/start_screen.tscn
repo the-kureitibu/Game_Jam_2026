@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://du2tfc1t68iwt"]
 
 [ext_resource type="Script" uid="uid://bvmn6d2iw727f" path="res://scenes/ui/start_screen.gd" id="1_adf7y"]
-[ext_resource type="Texture2D" uid="uid://drbhay1ylegtp" path="res://assets/sprites/ui/title2.1.png" id="1_ihgl4"]
+[ext_resource type="Texture2D" uid="uid://drbhay1ylegtp" path="res://assets/sprites/ui/HUD/title2.1.png" id="1_ihgl4"]
 [ext_resource type="VideoStream" uid="uid://c14sylo7ugqhd" path="res://assets/video/bucko_vid_final.ogv" id="2_a1ei0"]
-[ext_resource type="Texture2D" uid="uid://ggpanj5gstu0" path="res://assets/sprites/ui/title2.2.png" id="2_kolwf"]
-[ext_resource type="Texture2D" uid="uid://4v8a0smmavgw" path="res://assets/sprites/ui/title2.3.png" id="3_adf7y"]
+[ext_resource type="Texture2D" uid="uid://ggpanj5gstu0" path="res://assets/sprites/ui/HUD/title2.2.png" id="2_kolwf"]
+[ext_resource type="Texture2D" uid="uid://4v8a0smmavgw" path="res://assets/sprites/ui/HUD/title2.3.png" id="3_adf7y"]
 [ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="4_kolwf"]
 [ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="6_a3st5"]
 

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://t2g8yioc8y3a"]
 
 [ext_resource type="Script" uid="uid://c75a26ti3xwut" path="res://scenes/ui/monster_health_bar.gd" id="1_1p44o"]
-[ext_resource type="Texture2D" uid="uid://bi0abtj3uypsf" path="res://assets/sprites/ui/bg.png" id="1_k3qpb"]
-[ext_resource type="Texture2D" uid="uid://d15lsk3r8ed03" path="res://assets/sprites/ui/over.png" id="2_1p44o"]
-[ext_resource type="Texture2D" uid="uid://7xd2wua4ru6f" path="res://assets/sprites/ui/progress.png" id="3_72nub"]
+[ext_resource type="Texture2D" uid="uid://bi0abtj3uypsf" path="res://assets/sprites/ui/HUD/bg.png" id="1_k3qpb"]
+[ext_resource type="Texture2D" uid="uid://d15lsk3r8ed03" path="res://assets/sprites/ui/HUD/over.png" id="2_1p44o"]
+[ext_resource type="Texture2D" uid="uid://7xd2wua4ru6f" path="res://assets/sprites/ui/HUD/progress.png" id="3_72nub"]
 
 [node name="MonsterHealthBar" type="Control" unique_id=1802553802]
 layout_mode = 3
