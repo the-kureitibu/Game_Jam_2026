@@ -24,6 +24,17 @@ extends Control
 @onready var dialogue_text_label: RichTextLabel = $MainMargin/PanelContainer/SecondHBox/VBoxContainer/DialogueTextLabel
 @onready var next_text_label: RichTextLabel = $MainMargin/PanelContainer/NextTextContainer/NextTextLabel
 
+#region BGM 
+
+@onready var dova_bgm: String = "res://assets/audio/bgm/dova_Die Letzte Revolution_master.mp3"
+
+#endregion -- BGM 
+
+#region SFX 
+@onready var typing_sfx: String = "res://assets/audio/sfx/typewriter3.wav"
+
+#endregion -- SFX 
+
 #endregion -- References 
 
 #region Base
@@ -124,6 +135,7 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("next"):
+		AudioManager.play_sfx(typing_sfx, -1.0)
 		advance_dialogue()
 
 func sequences_helper(curr_index: int, speaker: String = "speaker", line: String = "line", arr: Array = dialogue_sequences) -> Array:
@@ -133,6 +145,9 @@ func sequences_helper(curr_index: int, speaker: String = "speaker", line: String
 	return [speaker_index, line_index]
 
 func advance_dialogue() -> void:
+	if current_index == 8:
+		AudioManager.fade_to_bgm(dova_bgm, -10.0)
+	
 	if has_ended_dialogue:
 		return
 

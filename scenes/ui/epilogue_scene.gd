@@ -30,6 +30,21 @@ extends Control
 @onready var button_margin_cont: MarginContainer = $ButtonMarginCont
 
 const START_SCENE: String = "res://scenes/ui/start_screen.tscn"
+
+#region BGM 
+
+@onready var woodland_fantasy_bgm: String = "res://assets/audio/bgm/Woodland Fantasy.mp3"
+
+#endregion -- BGM
+
+#region SFX 
+@onready var typing_sfx: String = "res://assets/audio/sfx/typewriter3.wav"
+@onready var apple_bite_sfx: String = "res://assets/audio/sfx/apple_bite.ogg"
+
+
+#endregion -- SFX 
+
+
 #endregion -- References 
 
 #region Base
@@ -107,11 +122,15 @@ var dialogue_lines: Array[Dictionary] = [
 #endregion -- Base Vars
 
 
+
+
 #region Processes
 func _enter_tree() -> void:
 	GameManager.game_scene_state = GameManager.GameLevelStates.EPILOGUE
 
 func _ready() -> void:
+	AudioManager.fade_to_bgm(woodland_fantasy_bgm, -10.0)
+
 
 	dialogue_helper(0, "left", 0)
 	
@@ -127,6 +146,13 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("next"):
+		
+		if not current_index == 9:
+			AudioManager.play_sfx(typing_sfx, -1.0)
+		else:
+			AudioManager.play_sfx(apple_bite_sfx, -2.0)
+			
+			
 		advance_dialogue()
 
 func sequences_helper(curr_index: int, speaker: String = "speaker", line: String = "line", arr: Array = dialogue_sequences) -> Array:
@@ -165,6 +191,7 @@ func advance_dialogue() -> void:
 	dialogue_helper(sequence_speaker_index, side, sequence_line_index)
 	
 	current_index += 1
+
 
 
 func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx: String = "text", sp_name: String = "speaker") -> void:
@@ -238,6 +265,8 @@ func pulse_control(control: Control) -> void:
 func _on_back_to_start_pressed() -> void:
 	
 	SignalHub.restart_game.emit()
+	
+	AudioManager.fade_out_bgm()
 	GameManager.change_scene_with_transition(START_SCENE)
 	
 

@@ -126,6 +126,17 @@ var dialogue_lines: Array[Dictionary] = [
 
 #endregion -- Dialogue Collection
 
+#region BGM
+
+@onready var herodemise_bgm: String = "res://assets/audio/bgm/Heroic Demise (New).mp3"
+
+#endregion -- BGM
+
+#region SFX 
+@onready var typing_sfx: String = "res://assets/audio/sfx/typewriter3.wav"
+
+#endregion -- SFX 
+
 #endregion -- Base Vars
 
 
@@ -145,6 +156,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	AudioManager.fade_out_bgm()
 
 	dialogue_helper(0, "left", 0)
 	
@@ -171,6 +183,7 @@ func update_boss_form() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("next"):
+		AudioManager.play_sfx(typing_sfx, -1.0)
 		advance_dialogue()
 
 func sequences_helper(curr_index: int, speaker: String = "speaker", line: String = "line", arr: Array = dialogue_sequences) -> Array:
@@ -180,6 +193,9 @@ func sequences_helper(curr_index: int, speaker: String = "speaker", line: String
 	return [speaker_index, line_index]
 
 func advance_dialogue() -> void:
+	if current_index == 4:
+		AudioManager.fade_to_bgm(herodemise_bgm, -10.0)
+	
 	if current_index == 3 and !transforming_done:
 		transition_to_demon_lord()
 	

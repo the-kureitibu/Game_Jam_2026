@@ -5,8 +5,11 @@ extends Node2D
 const PRE_FIGHT_DIALOGUE = preload("res://scenes/ui/pre_boss_dialogue.tscn")
 const PRE_SECOND_PHASE_DIALOGUE = preload("res://scenes/ui/second_phase_dialogue.tscn")
 const EPILOGUE_SCENE: String = "res://scenes/ui/epilogue_scene.tscn"
+@onready var canvas_layer: CanvasLayer = $CanvasLayer
+
 
 #endregion -- References
+
 
 #region Functions 
 
@@ -32,6 +35,8 @@ func _ready() -> void:
 func move_to_end_dialogue() -> void:
 	await get_tree().process_frame
 	
+	AudioManager.fade_out_bgm()
+	canvas_layer.visible = false
 	GameManager.change_scene_with_transition(EPILOGUE_SCENE)
 
 func start_end_fight_dialogue() -> void:
