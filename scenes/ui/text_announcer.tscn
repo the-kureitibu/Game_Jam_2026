@@ -7,12 +7,16 @@
 script = ExtResource("1_nhm4q")
 
 [node name="MainControl" type="Control" parent="." unique_id=1434453080]
-custom_minimum_size = Vector2(450, 50)
+custom_minimum_size = Vector2(450, 200)
 layout_mode = 3
 anchor_left = 0.5
-anchor_top = 0.2
+anchor_top = 0.6
 anchor_right = 0.5
-anchor_bottom = 0.2
+anchor_bottom = 0.6
+offset_left = -225.0
+offset_top = -100.0
+offset_right = 225.0
+offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
@@ -20,7 +24,7 @@ size_flags_vertical = 4
 [node name="MainMargin" type="MarginContainer" parent="MainControl" unique_id=35954899]
 layout_mode = 0
 offset_right = 450.0
-offset_bottom = 50.0
+offset_bottom = 200.0
 
 [node name="TextLabel" type="RichTextLabel" parent="MainControl/MainMargin" unique_id=685132318]
 layout_mode = 2

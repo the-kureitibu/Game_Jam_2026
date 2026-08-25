@@ -187,7 +187,7 @@ var b_max_speed := 100.0
 
 #region Phase 2 Stats
 
-@onready var PHASE2_MAX_HEALTH: float = 200.0
+@onready var PHASE2_MAX_HEALTH: float = 10.0
 @onready var p2_boss_health: float = 0.0: 
 	set(value):
 		var new_health = value
@@ -245,9 +245,8 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
-
 	if is_phase_two and p2_boss_health <= 0.0:
-		#handle_true_death()
+		handle_true_death()
 		velocity.x = 0.0
 		move_and_slide()
 		return
@@ -816,14 +815,15 @@ func handle_first_death() -> void:
 	play_boss_anim("death")
 
 
-#func handle_death() -> void:
-	#
-	#if boss_state == BossStates.FIRST_DEATH:
-		#return
-	#
-	#boss_state = BossStates.FIRST_DEATH
-	#SignalHub.ready_for_second_phase.emit()
-	##play_anim(m_sprite, "death")
+func handle_true_death() -> void:
+	
+	if boss_state == BossStates.TRUE_DEATH:
+		return
+	
+	boss_state = BossStates.TRUE_DEATH
+	
+	SignalHub.end_game_start.emit()
+	play_boss_anim("death", true)
 	
 #endregion -- Health Related 
 
@@ -857,11 +857,6 @@ func start_phase_two() -> void:
 		d_sprite.visible = true
 	
 	p2_boss_health = PHASE2_MAX_HEALTH
-	
-	#print(EnemyBase.BossStates.keys()[boss_state])
-	#print(EnemyBase.EnemyFormState.keys()[boss_form_state])
-	#print("is_hurt?: ", is_hurt)
-	#print("chase_timer?: ", chase_timer)
 
 
 #endregion -- Phase 2 Related 
@@ -901,7 +896,6 @@ func _on_e_sprite_animation_finished() -> void:
 func _on_d_sprite_animation_finished() -> void:
 	
 	if d_sprite.animation == "hurt":
-		#print("animation finished, demon hurt")
 		end_demon_hurt()
 	
 	if d_sprite.animation == "attk_one":

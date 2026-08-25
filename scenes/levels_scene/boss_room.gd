@@ -15,14 +15,25 @@ func _enter_tree() -> void:
 		GameManager.game_scene_state = GameManager.GameLevelStates.BOSS_ROOM
 	
 	SignalHub.pre_boss_fight_dialogue.emit()
-
+	
 
 func _ready() -> void:
 	start_pre_fight_dialogue(PRE_FIGHT_DIALOGUE)
 
 	SignalHub.ready_for_second_phase.connect(handle_second_phase_dialogue)
-
+	
+	SignalHub.end_game_start.connect(start_end_fight_dialogue)
+	SignalHub.start_end_game_dialogue.connect(move_to_end_dialogue)
+	
+	
 #endregion -- Processes 
+
+func move_to_end_dialogue() -> void:
+	print("Game done")
+
+func start_end_fight_dialogue() -> void:
+	GameManager.game_scene_state = GameManager.GameLevelStates.END_GAME
+	GameManager.announce_level_scene()
 
 func start_pre_fight_dialogue(scene: PackedScene) -> void:
 	var pre_fight_dialogue = scene.instantiate()

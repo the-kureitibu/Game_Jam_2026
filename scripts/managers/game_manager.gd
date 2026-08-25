@@ -27,7 +27,8 @@ enum GameLevelStates {
 	DEMON_REALM,
 	BOSS_LEVEL,
 	MICHAEL_ROOM,
-	BOSS_ROOM
+	BOSS_ROOM,
+	END_GAME
 }
 	
 #endregion -- Game Enums
@@ -99,6 +100,8 @@ func announce_level_scene() -> void:
 			announcer_scene.announce("Forgotten Sanctuary")
 		GameLevelStates.BOSS_LEVEL:
 			announcer_scene.announce("Demon Castle")
+		GameLevelStates.END_GAME:
+			announcer_scene.announce("Huff, Huff, We did it, Bucko.")
 			
 
 func clear_announcers() -> void:

@@ -806,9 +806,7 @@ script = ExtResource("1_pel0o")
 [node name="d_sprite" type="AnimatedSprite2D" parent="." unique_id=1116574413]
 visible = false
 sprite_frames = SubResource("SpriteFrames_kjeor")
-animation = &"hurt"
-frame = 5
-frame_progress = 1.0
+animation = &"walk"
 offset = Vector2(0, -68)
 
 [node name="e_sprite" type="AnimatedSprite2D" parent="." unique_id=290278967]

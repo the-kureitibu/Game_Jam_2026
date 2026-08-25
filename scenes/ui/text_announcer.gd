@@ -24,6 +24,9 @@ func announce(text: String) -> void:
 	tween.tween_property(text_label, "modulate:a", 0.0, 2.0)
 		
 	await tween.finished 
+	
+	if GameManager.game_scene_state == GameManager.GameLevelStates.END_GAME:
+		SignalHub.start_end_game_dialogue.emit()
 		
 	queue_free()
 
