@@ -3,7 +3,7 @@ extends Node
 
 #region Base Vars
 
-@onready var game_scene_state = GameLevelStates.START_SCENE
+var game_scene_state = GameLevelStates.START_SCENE
 
 #region References
 
@@ -28,7 +28,8 @@ enum GameLevelStates {
 	BOSS_LEVEL,
 	MICHAEL_ROOM,
 	BOSS_ROOM,
-	END_GAME
+	END_GAME,
+	EPILOGUE
 }
 	
 #endregion -- Game Enums
@@ -61,7 +62,8 @@ func _ready() -> void:
 
 	if (game_scene_state != GameLevelStates.START_SCENE or 
 		game_scene_state != GameLevelStates.PROLOGUE_SCENE or 
-		game_scene_state != GameLevelStates.TUTORIAL_SCENE):
+		game_scene_state != GameLevelStates.TUTORIAL_SCENE or 
+		game_scene_state != GameLevelStates.EPILOGUE):
 		
 		SignalHub.transition_done.connect(announce_level_scene)
 	
@@ -84,7 +86,20 @@ func _ready() -> void:
 #region Restart Levels
 
 func restart_game_manager() -> void:
-	pass
+	current_scene_path = ""
+	previous_scene_path = ""
+	is_immortal = false
+	player_one_spawn_p = Vector2.ZERO
+	player_two_spawn_p = Vector2.ZERO
+	player_one_prev_spawn = Vector2.ZERO
+	player_two_prev_spawn = Vector2.ZERO
+	player_saved_health = 0.0
+	player_saved_rage = 0.0
+	is_pre_dialogue = false
+	can_start_boss_fight = false
+	can_start_second_phase = false
+	is_second_phase_pre_dialogue = false
+
 
 #endregion -- Restart Levels
 
@@ -201,10 +216,8 @@ func update_pre_boss_fight() -> void:
 	is_pre_dialogue = true
 
 func update_boss_second_phase() -> void:
-	#print("signal worked on manager?")
 	
 	is_second_phase_pre_dialogue = true
-	#print("is_second_phase_pre_dialogue: ", is_second_phase_pre_dialogue)
 
 func start_boss_fight() -> void:
 	can_start_boss_fight = true

@@ -6,6 +6,7 @@ extends Control
 
 @onready var bg_one: TextureRect = $BGOne
 @onready var bg_two: TextureRect = $BGTwo
+@onready var black_bg: ColorRect = $BlackBG
 
 
 @onready var amiya_thumbnail_path: String = "res://assets/sprites/ui/thumbnails/Amiya_thumbnail.png"
@@ -28,7 +29,7 @@ extends Control
 
 @onready var button_margin_cont: MarginContainer = $ButtonMarginCont
 
-
+const START_SCENE: String = "res://scenes/ui/start_screen.tscn"
 #endregion -- References 
 
 #region Base
@@ -106,8 +107,9 @@ var dialogue_lines: Array[Dictionary] = [
 #endregion -- Base Vars
 
 
-
 #region Processes
+func _enter_tree() -> void:
+	GameManager.game_scene_state = GameManager.GameLevelStates.EPILOGUE
 
 func _ready() -> void:
 
@@ -166,7 +168,7 @@ func advance_dialogue() -> void:
 
 
 func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx: String = "text", sp_name: String = "speaker") -> void:
-		
+	
 	var main_collection = dialogue_lines[main_index]
 	var speaker_text_collection = main_collection[sp_text_indx]
 	
@@ -176,6 +178,8 @@ func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx
 		"Amiya Aranha":
 			player_name_label.text = "Amiya Aranha"
 			amiya_image.texture = load(amiya_thumbnail_path)
+			if cur_index == 4:
+				black_bg.visible = true
 		"Bucko":
 			player_name_label.text = "Bucko"
 			bucko_image.texture = load(bucko_thumbnail_path)
@@ -197,9 +201,16 @@ func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx
 
 func show_bg_two() -> void:
 	bg_one.visible = false
-	print("BG one visible?: ", bg_one.visible)
+
+	var tween = create_tween()
+	tween.tween_property(black_bg, "modulate:a", 0.0, 1.5)
+	
 	bg_two.visible = true
-	print("BG two visible?: ", bg_two.visible)
+	
+	await tween.finished
+	
+	black_bg.visible = false
+	
 	
 #endregion -- Backgrounds
 
@@ -207,7 +218,7 @@ func show_bg_two() -> void:
 #region End Buttons
 
 func show_end_buttons() -> void:
-	print("Show buttons")
+	button_margin_cont.visible = true
 
 #endregion -- End Buttons
 
@@ -226,10 +237,9 @@ func pulse_control(control: Control) -> void:
 
 func _on_back_to_start_pressed() -> void:
 	
-	
 	SignalHub.restart_game.emit()
-
-
+	GameManager.change_scene_with_transition(START_SCENE)
+	
 
 func _on_exit_button_pressed() -> void:
 	get_tree().quit()

@@ -4,6 +4,7 @@ extends Node2D
 
 const PRE_FIGHT_DIALOGUE = preload("res://scenes/ui/pre_boss_dialogue.tscn")
 const PRE_SECOND_PHASE_DIALOGUE = preload("res://scenes/ui/second_phase_dialogue.tscn")
+const EPILOGUE_SCENE: String = "res://scenes/ui/epilogue_scene.tscn"
 
 #endregion -- References
 
@@ -29,7 +30,9 @@ func _ready() -> void:
 #endregion -- Processes 
 
 func move_to_end_dialogue() -> void:
-	print("Game done")
+	await get_tree().process_frame
+	
+	GameManager.change_scene_with_transition(EPILOGUE_SCENE)
 
 func start_end_fight_dialogue() -> void:
 	GameManager.game_scene_state = GameManager.GameLevelStates.END_GAME
