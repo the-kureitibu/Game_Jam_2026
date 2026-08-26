@@ -135,7 +135,8 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("next"):
-		AudioManager.play_sfx(typing_sfx, -1.0)
+		AudioManager.play_music(typing_sfx, "oneshot", -6.0)
+
 		advance_dialogue()
 
 func sequences_helper(curr_index: int, speaker: String = "speaker", line: String = "line", arr: Array = dialogue_sequences) -> Array:
@@ -146,7 +147,8 @@ func sequences_helper(curr_index: int, speaker: String = "speaker", line: String
 
 func advance_dialogue() -> void:
 	if current_index == 8:
-		AudioManager.fade_to_bgm(dova_bgm, -10.0)
+		AudioManager.fade_to_bgm(dova_bgm, "bgm", -10.0)
+
 	
 	if has_ended_dialogue:
 		return

@@ -181,8 +181,8 @@ func test_func() -> void:
 
 
 func open_attk_tutorial_panel() -> void:
-	AudioManager.play_sfx(typing_sfx, -1.0)
-
+	
+	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 
 	
 	if is_panel_open:
@@ -200,7 +200,7 @@ func open_attk_tutorial_panel() -> void:
 
 	
 func open_jump_block_panel() -> void:
-	AudioManager.play_sfx(typing_sfx, -1.0)
+	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 
 	if is_panel_open:
 		return
@@ -216,7 +216,7 @@ func open_jump_block_panel() -> void:
 				text_label_two, 1, current_index)
 
 func open_rage_panel() -> void:
-	AudioManager.play_sfx(typing_sfx, -1.0)
+	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 
 	if is_panel_open:
 		return
@@ -231,7 +231,7 @@ func open_rage_panel() -> void:
 				text_label_three, 2, current_index)
 
 func open_rage_skill_panel() -> void:
-	AudioManager.play_sfx(typing_sfx, -1.0)
+	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 
 	if is_panel_open:
 		return

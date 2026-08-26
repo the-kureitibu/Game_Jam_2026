@@ -56,7 +56,9 @@ func _enter_tree() -> void:
 		add_to_group("player_projectile")
 
 func _ready() -> void:
-	AudioManager.play_sfx(light_ray_sfx)
+
+	AudioManager.play_music(light_ray_sfx, "skill", -9.0)
+	
 	
 	z_index = 10
 	
@@ -186,6 +188,7 @@ func start_alpha_fade_in_sequence() -> void:
 	for item in backwards_array:
 		await fade_in_to_trans_sprite(item, 0.3)
 	
+	AudioManager.stop_music("skill")
 	light_ray_done.emit()
 	queue_free()
 

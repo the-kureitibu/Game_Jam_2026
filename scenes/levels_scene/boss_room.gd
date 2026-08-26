@@ -35,7 +35,7 @@ func _ready() -> void:
 func move_to_end_dialogue() -> void:
 	await get_tree().process_frame
 	
-	AudioManager.fade_out_bgm()
+	AudioManager.fade_out_bgm("bgm")
 	canvas_layer.visible = false
 	GameManager.change_scene_with_transition(EPILOGUE_SCENE)
 

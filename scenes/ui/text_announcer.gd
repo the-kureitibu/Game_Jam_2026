@@ -7,9 +7,6 @@ var can_send_signal := false
 
 #endregion --  References
 
-#pass the previous scene name from GAme manager to here 
-#compare current scene name vs previous scene name from manager 
-#if tween is running, kill, update
 
 func _enter_tree() -> void:
 	add_to_group("text_announcer")

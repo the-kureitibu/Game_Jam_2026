@@ -7,4 +7,10 @@ script = ExtResource("1_7papk")
 
 [node name="BGMPlayer" type="AudioStreamPlayer" parent="." unique_id=1303889068]
 
-[node name="SFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1910759567]
+[node name="SkillSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1910759567]
+
+[node name="PersistentSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1083305239]
+
+[node name="VoiceSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=808781853]
+
+[node name="OneShotSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1296323687]

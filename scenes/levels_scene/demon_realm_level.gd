@@ -26,7 +26,7 @@ func _enter_tree() -> void:
 	
 	
 func _ready() -> void:
-	AudioManager.fade_to_bgm(orchestra_bgm, -10.0)
+	AudioManager.fade_to_bgm(orchestra_bgm, "bgm", -10.0)
 	
 	player_one.global_position = $PlayerScene.global_position
 	player_two.global_position = $PlayerTwoScene.global_position
@@ -60,7 +60,7 @@ func _on_transition_previous_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 	
 	if player:
-		AudioManager.fade_out_bgm()
+		AudioManager.fade_out_bgm("bgm")
 		
 		GameManager.capture_player_stats(player_one.p_health, player_one.r_amount)
 		
@@ -73,7 +73,7 @@ func _on_to_michael_body_entered(body: Node2D) -> void:
 	if player:
 		main_ui_canvas.visible = false
 		
-		AudioManager.fade_out_bgm()
+		AudioManager.fade_out_bgm("bgm")
 		GameManager.change_scene_with_transition(MICHAEL_ROOM_SCENE)
 
 
@@ -84,7 +84,7 @@ func _on_to_boss_castle_body_entered(body: Node2D) -> void:
 		capture_last_position()
 		main_ui_canvas.visible = false
 		
-		AudioManager.fade_out_bgm()
+		AudioManager.fade_out_bgm("bgm")
 		GameManager.change_scene_with_transition(BOSS_CASTLE_SCENE)
 
 

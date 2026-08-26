@@ -33,8 +33,7 @@ func _enter_tree() -> void:
 	GameManager.game_scene_state = GameManager.GameLevelStates.MICHAEL_ROOM
 
 func _ready() -> void:
-	AudioManager.fade_to_bgm(fall_of_arcana, -10.0)
-	
+	AudioManager.fade_to_bgm(fall_of_arcana, "bgm", -10.0)
 	
 	top_control_michael.visible = false
 	SignalHub.show_michael_tutorial.connect(show_tutorial)
@@ -87,7 +86,7 @@ func _on_exit_area_body_entered(body: Node2D) -> void:
 
 	if player:
 		
-		AudioManager.fade_out_bgm()
+		AudioManager.fade_out_bgm("bgm")
 		GameManager.change_scene_with_transition(DEMON_REALM)
 
 #endregion -- Area Signals

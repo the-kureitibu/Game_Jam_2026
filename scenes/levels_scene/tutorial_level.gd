@@ -79,7 +79,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 
-	AudioManager.fade_to_bgm(woodland_fantasy_bgm, -10.0)
+	AudioManager.fade_to_bgm(woodland_fantasy_bgm, "bgm", -10.0)
 
 #AudioManager.fade_to_bgm(woodland_fantasy_bgm, -10.0)
 
@@ -118,7 +118,7 @@ func _on_exit_area_body_entered(body: Node2D) -> void:
 	if player:
 		ui_layer.visible = false
 		
-		AudioManager.fade_out_bgm()
+		AudioManager.fade_out_bgm("bgm")
 		GameManager.change_scene_with_transition(GRASS_LAND_SCENE)
 		
 

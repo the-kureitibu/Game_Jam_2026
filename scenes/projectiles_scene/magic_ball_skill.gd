@@ -26,6 +26,8 @@ func _enter_tree() -> void:
 		add_to_group("player_projectile")
 
 func _ready() -> void:
+	AudioManager.play_music(wind_sfx, "skill", -9.0)
+	
 	m_sprite.play("launch")
 	
 	
@@ -69,6 +71,8 @@ func _on_main_sprite_animation_finished() -> void:
 	
 	await tween.finished
 	launched_done.emit()
+	
+	AudioManager.stop_music("skill")
 	queue_free()
 	
 

@@ -24,7 +24,7 @@ func _enter_tree() -> void:
 	GameManager.game_scene_state = GameManager.GameLevelStates.GRASSLAND_SCENE
 	
 func _ready() -> void:
-	AudioManager.fade_to_bgm(woodland_fantasy_bgm, -10.0)
+	AudioManager.fade_to_bgm(woodland_fantasy_bgm, "bgm", -10.0)
 
 	player_one.global_position = $PlayerScene.global_position
 	player_two.global_position = $PlayerTwoScene.global_position
@@ -58,7 +58,7 @@ func _on_transition_area_body_entered(body: Node2D) -> void:
 		capture_last_position()
 		main_ui_canvas.visible = false
 		
-		AudioManager.fade_out_bgm()
+		AudioManager.fade_out_bgm("bgm")
 		GameManager.change_scene_with_transition(DEMON_REALM_SCENE)
 
 #endregion -- Transitions 

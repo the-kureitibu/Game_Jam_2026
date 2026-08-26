@@ -129,7 +129,7 @@ func _enter_tree() -> void:
 	GameManager.game_scene_state = GameManager.GameLevelStates.EPILOGUE
 
 func _ready() -> void:
-	AudioManager.fade_to_bgm(woodland_fantasy_bgm, -10.0)
+	AudioManager.fade_to_bgm(woodland_fantasy_bgm, "bgm", -10.0)
 
 
 	dialogue_helper(0, "left", 0)
@@ -148,10 +148,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("next"):
 		
 		if not current_index == 9:
-			AudioManager.play_sfx(typing_sfx, -1.0)
-		else:
-			AudioManager.play_sfx(apple_bite_sfx, -2.0)
-			
+			AudioManager.play_music(typing_sfx, "oneshot", -6.0)
+		else:	
+			AudioManager.play_music(apple_bite_sfx, "oneshot", -2.0)
+
 			
 		advance_dialogue()
 
@@ -266,7 +266,7 @@ func _on_back_to_start_pressed() -> void:
 	
 	SignalHub.restart_game.emit()
 	
-	AudioManager.fade_out_bgm()
+	AudioManager.fade_out_bgm("bgm")
 	GameManager.change_scene_with_transition(START_SCENE)
 	
 

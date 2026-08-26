@@ -261,7 +261,7 @@ func grab_cam_limits() -> Dictionary:
 
 #region BGM
 
-@onready var skill_sfx: String = "res://assets/audio/sfx/sfx agh.wav"
+@onready var skill_sfx: String = "res://assets/audio/sfx/sfx ha.wav"
 
 #endregion -- BGM
 
@@ -383,15 +383,18 @@ func player_move() -> void:
 
 	velocity.x = p_direction * p_speed
 
+	if p_direction != 0 and is_on_floor():
+		AudioManager.play_music(PLAYER_WALKING, "persistent", 1.0)
 	
-
+	if p_direction == 0 and AudioManager.persistent_sfx_player.is_playing():
+		AudioManager.stop_music("persistent")
+	
 	if velocity.x > 0:
 		facing_dir = 1
 	elif velocity.x < 0:
 		facing_dir = -1
 
 	if p_direction != 0:
-		AudioManager.play_sfx(PLAYER_WALKING, -1.0)
 		
 		if p_form_state == PlayerFormState.HUMAN_FORM:
 			p_sprite.flip_h = p_direction < 0
@@ -400,11 +403,7 @@ func player_move() -> void:
 			
 		magic_ball_marker.position.x = m_ball_marker_base_x * p_direction
 	
-	if p_direction != 0 and is_on_floor():
-		AudioManager.play_sfx(PLAYER_WALKING, -1.0)
-	
-	if p_direction == 0 and AudioManager.sfx_player.is_playing():
-		AudioManager.stop_sfx()
+
 
 
 func player_jump() -> void:
@@ -486,6 +485,8 @@ func handle_dashing() -> void:
 
 	if !Input.is_action_just_pressed("dash"):
 		return
+	
+	AudioManager.play_music(SWOSH_WHOOSH_AIR_CUT, "oneshot", -10.0)
 	start_dashing()
 
 func start_dashing() -> void:
@@ -617,7 +618,7 @@ func start_attack() -> void:
 		
 	if p_form_state == PlayerFormState.HUMAN_FORM:
 		start_attk_combo(1)
-		AudioManager.play_sfx(SWOSH_WHOOSH_AIR_CUT, -8.0)
+		AudioManager.play_music(SWOSH_WHOOSH_AIR_CUT, "oneshot", -10.0)
 	else:
 		handle_web_attack()
 
@@ -849,7 +850,7 @@ func handle_hurt(damage: float) -> void:
 
 
 func start_hurt(damage: float) -> void:
-	AudioManager.play_sfx(SFX_AGH, -4.0)
+	AudioManager.play_music(SFX_AGH, "voice", -10.0)
 	
 	is_busy = true
 	input_available = false
@@ -1112,7 +1113,8 @@ func handle_skill_one() -> void:
 		return
 	
 	if Input.is_action_just_pressed("skill_one"):
-		AudioManager.play_sfx(skill_sfx, -1.0)
+		
+		AudioManager.play_music(skill_sfx, "voice", -10.0)
 		start_skill_one()
 
 func start_skill_one() -> void:
@@ -1196,7 +1198,8 @@ func handle_skill_two() -> void:
 		return
 	
 	if Input.is_action_just_pressed("skill_two"):
-		AudioManager.play_sfx(skill_sfx, -1.0)
+		
+		AudioManager.play_music(skill_sfx, "voice", -10.0)
 		start_skill_two()
 
 func start_skill_two() -> void:

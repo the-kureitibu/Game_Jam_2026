@@ -215,6 +215,8 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_fos4h")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_o7jhk")
 theme_override_styles/hover = SubResource("StyleBoxTexture_pg22n")
 
+[node name="Projectiles" type="Node2D" parent="." unique_id=1912013478]
+
 [connection signal="area_entered" from="StatueHurtBox" to="." method="_on_statue_hurt_box_area_entered"]
 [connection signal="body_entered" from="ExitArea" to="." method="_on_exit_area_body_entered"]
 [connection signal="pressed" from="TutorialPopup/TopControl/BasePanel/ExitButtonContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

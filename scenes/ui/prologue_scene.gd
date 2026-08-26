@@ -94,7 +94,6 @@ func _enter_tree() -> void:
 		SignalHub.transition_done.connect(fade_out_and_start)
 
 func _ready() -> void:
-	print(GameManager.GameLevelStates.keys()[GameManager.game_scene_state])
 	
 	first_label_container.modulate.a = 0.0
 	video_stream_player.modulate.a = 0.0
@@ -178,7 +177,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	
 	if event.is_action_pressed("next"):
-		AudioManager.play_sfx(typing_sfx, -1.0)
+		AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 		advance_dialogue()
 
 func advance_dialogue() -> void:

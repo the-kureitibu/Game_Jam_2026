@@ -43,6 +43,11 @@ const PROLOGUE_SCENE: String = "res://scenes/ui/prologue_scene.tscn"
 
 #endregion -- BGMS
 
+#region SFX 
+@onready var typing_sfx: String = "res://assets/audio/sfx/typewriter3.wav"
+
+#endregion -- SFX 
+
 
 #endregion -- References 
 
@@ -50,7 +55,7 @@ const PROLOGUE_SCENE: String = "res://scenes/ui/prologue_scene.tscn"
 
 #region Processes 
 func _ready() -> void:
-	AudioManager.fade_to_bgm(town_theme_bgm, -10.0)
+	AudioManager.fade_to_bgm(town_theme_bgm, "bgm", -10.0)
 
 	hide_title_screen_parts()
 	await reveal_title_sequence()
@@ -125,12 +130,16 @@ func start_vid_bg() -> void:
 
 func _on_start_button_pressed() -> void:
 	
-	AudioManager.fade_out_bgm()
+	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
+
+	AudioManager.fade_out_bgm("bgm")
+	
 	GameManager.change_scene_with_transition(PROLOGUE_SCENE)
 
 
 
 func _on_exit_button_pressed() -> void:
+
 	get_tree().quit()
 
 
