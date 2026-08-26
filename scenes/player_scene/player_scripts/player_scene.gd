@@ -141,6 +141,9 @@ const MICHAEL = preload("res://scenes/player_scene/michael.tscn")
 @onready var web_marker3: Marker2D = $WebAttackParent/WebMarker3
 @onready var michael_marker: Marker2D = $MichaelMarker
 
+@onready var speech_bubble_marker: Marker2D = $SpeechBubbleMarker
+@onready var speech_bubble: Control = $SpeechBubbleMarker/SpeechBubble
+
 
 const MAX_TARGET := 1
 
@@ -267,10 +270,53 @@ func grab_cam_limits() -> Dictionary:
 
 #endregion -- BGM
 
+
+#region Miscs
+
+
+signal update_text_bucko(text: String)
+var is_bubble_up := false
+
+func open_and_update_text(word: String, for_bucko: String) -> void:
+	if is_bubble_up: 
+		return
+	
+	is_bubble_up = true
+	
+	speech_bubble.update_text(word)
+	
+	update_text_bucko.emit(for_bucko)
+	
+	if !speech_bubble_marker.visible:
+		speech_bubble_marker.visible = true
+	
+	var timer = 0.0
+	if GameManager.game_scene_state == GameManager.GameLevelStates.TUTORIAL_SCENE:
+		timer = 5.0
+	else:
+		timer = 1.0
+	
+	await get_tree().create_timer(timer).timeout
+
+	var tween = create_tween()
+	tween.tween_property(speech_bubble_marker, "modulate:a", 0.0, 2.0)
+	
+	await tween.finished
+	
+	close_bubbles()
+
+func close_bubbles() -> void:
+	
+	speech_bubble_marker.visible = false
+	is_bubble_up = false
+	speech_bubble_marker.modulate.a = 1.0
+
+#endregion -- Miscs
+
+
 #region Processes 
 
 func _ready() -> void:
-
 
 	SignalHub.blocking_anim_done.connect(end_blocking_state)
 
@@ -297,6 +343,10 @@ func _ready() -> void:
 	SignalHub.is_in_flatform.connect(in_flatform)
 	SignalHub.not_in_flatform.connect(not_in_flatform)
 	SignalHub.revival_complete.connect(unpause_after_revive)
+
+	if GameManager.game_scene_state == GameManager.GameLevelStates.TUTORIAL_SCENE:
+		open_and_update_text("行こう", "Oraa")
+
 
 
 func _physics_process(delta: float) -> void:
@@ -1126,6 +1176,8 @@ func handle_skill_one() -> void:
 		start_skill_one()
 
 func start_skill_one() -> void:
+	
+	
 	if is_skilling:
 		return
 
@@ -1174,8 +1226,10 @@ func find_nearest_enemy() -> void:
 
 func start_light_ray_skill(n: Node2D, scene: PackedScene):
 	if n == null:
-		print("No target acquired")
+		open_and_update_text("asdf", "....")
 		return
+	
+	open_and_update_text("Raaa", "Oraa")
 
 	is_skilling = true
 	
@@ -1211,6 +1265,8 @@ func handle_skill_two() -> void:
 		start_skill_two()
 
 func start_skill_two() -> void:
+	open_and_update_text("Raaa", "Oraa")
+
 	if is_skilling:
 		return
 	

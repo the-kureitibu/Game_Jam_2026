@@ -1,20 +1,56 @@
 [gd_scene format=3 uid="uid://1xq1hlgvc2d0"]
 
 [ext_resource type="Script" uid="uid://d2y1y8pwlf3ch" path="res://scenes/ui/speech_bubble.gd" id="1_ad2a6"]
+[ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="2_ppych"]
+[ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="2_rtw6t"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rtw6t"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ppych"]
+texture = ExtResource("2_rtw6t")
+region_rect = Rect2(519, 203, 30, 28)
 
 [node name="SpeechBubble" type="Control" unique_id=857700157]
+custom_minimum_size = Vector2(50, 25)
 layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ad2a6")
+
+[node name="MainPanel" type="PanelContainer" parent="." unique_id=1288636704]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ad2a6")
+theme_override_styles/panel = SubResource("StyleBoxTexture_rtw6t")
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1288636704]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer" unique_id=726263570]
+[node name="TextLabel" type="RichTextLabel" parent="MainPanel" unique_id=726263570]
 layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_ppych")
+theme_override_font_sizes/normal_font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxTexture_ppych")
+horizontal_alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPanel" unique_id=540636557]
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Control" type="Control" parent="MainPanel/HBoxContainer" unique_id=1596531319]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainPanel/HBoxContainer" unique_id=39388040]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.3297125, 0.21882018, 0.257375, 1)
+theme_override_colors/font_shadow_color = Color(0.34175828, 0.14083374, 0.22769222, 0)
+theme_override_colors/font_outline_color = Color(0.4392157, 0, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("2_ppych")
+theme_override_font_sizes/font_size = 9
+text = "awoo~"
+horizontal_alignment = 1
+vertical_alignment = 1

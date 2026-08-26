@@ -6,6 +6,9 @@ extends PlayerBase
 
 @onready var main_sprite: AnimatedSprite2D = $MainSprite
 @onready var blocking_col: CollisionShape2D = $BlockBox/BlockShape
+@onready var speech_bubble: Control = $SpeechBubbleMarker/SpeechBubble
+@onready var speech_bubble_marker: Marker2D = $SpeechBubbleMarker
+
 
 #endregion
 
@@ -45,17 +48,57 @@ var is_on_air := false
 
 #endregion
 
+#region Miscs
+var is_bubble_up := false
+
+func update_bubbles(text: String) -> void:
+	if is_bubble_up: 
+		return
+	
+	is_bubble_up = true
+	
+	speech_bubble.update_text(text)
+
+	if !speech_bubble_marker.visible:
+		speech_bubble_marker.visible = true
+	
+	var timer = 0.0
+	if GameManager.game_scene_state == GameManager.GameLevelStates.TUTORIAL_SCENE:
+		timer = 5.0
+	else:
+		timer = 1.0
+	
+	await get_tree().create_timer(timer).timeout
+
+	var tween = create_tween()
+	tween.tween_property(speech_bubble_marker, "modulate:a", 0.0, 2.0)
+	
+	await tween.finished
+	
+	close_bubbles()
+
+func close_bubbles() -> void:
+	speech_bubble_marker.visible = false
+	is_bubble_up = false
+	speech_bubble_marker.modulate.a = 1.0
+
+	
+#endregion --Miscs
+
 func _enter_tree() -> void:
 	if not is_in_group("Player_two"):
 		add_to_group("Player_two")
 		
 func _ready() -> void:
+
 	t_player = get_tree().get_first_node_in_group("Player_target")
 	
 	if !is_in_group("Player_two"):
 		push_error("Not in Group")
 	
 	blocking_col.set_deferred("disabled", true)
+	
+	t_player.update_text_bucko.connect(update_bubbles)
 
 func _physics_process(delta: float) -> void:
 	handle_animation()

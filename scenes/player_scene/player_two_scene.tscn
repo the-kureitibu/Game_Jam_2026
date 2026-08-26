@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://0qewb1eoteia" path="res://assets/sprites/player/bucko2026.png" id="1_kgobb"]
 [ext_resource type="Script" uid="uid://dcuw4nf84j1u0" path="res://scenes/player_scene/player_scripts/player_two_scene.gd" id="1_s2g3w"]
+[ext_resource type="PackedScene" uid="uid://1xq1hlgvc2d0" path="res://scenes/ui/speech_bubble.tscn" id="3_ndq45"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kgobb"]
 atlas = ExtResource("1_kgobb")
@@ -326,5 +327,11 @@ shape = SubResource("CircleShape2D_sddkf")
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_kgobb")
 debug_color = Color(0.73422676, 0.457223, 0.31594896, 0.41960785)
+
+[node name="SpeechBubbleMarker" type="Marker2D" parent="." unique_id=97348512]
+visible = false
+position = Vector2(31, -63)
+
+[node name="SpeechBubble" parent="SpeechBubbleMarker" unique_id=857700157 instance=ExtResource("3_ndq45")]
 
 [connection signal="animation_finished" from="MainSprite" to="." method="_on_main_sprite_animation_finished"]
