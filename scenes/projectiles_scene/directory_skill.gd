@@ -16,9 +16,17 @@ var queue_timer: float = 5.0
 
 @onready var can_exit_tree: bool = false
 
+#region SFX
+@onready var flight_cast: String = "res://assets/audio/sfx/flight_sound.mp3"
+
+#endregion -- SFX 
+
+
 #region Processes
 
 func _ready() -> void:
+	AudioManager.play_music(flight_cast, "special", -6.0)
+
 	set_speed()
 	global_position = marker_pos
 	

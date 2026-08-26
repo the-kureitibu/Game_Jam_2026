@@ -206,6 +206,16 @@ var is_first_death: bool = false
 
 #endregion -- States and Vars 
 
+#region SFX
+@onready var spell_cast: String = "res://assets/audio/sfx/foom_0.wav"
+@onready var flame_spread: String = "res://assets/audio/sfx/TailWhip.ogg"
+@onready var SWOSH_WHOOSH_AIR_CUT: String = "res://assets/audio/sfx/swosh-whoosh-air-cut.mp3"
+@onready var WHEW: String = "res://assets/audio/sfx/sfx whew.wav"
+
+
+#endregion -- SFX 
+
+
 func draw_speed_limit() -> void:
 	pass
 
@@ -218,7 +228,6 @@ func _ready() -> void:
 	
 	find_target()
 	
-	#print("Number of shots ", chair_shots_fired)
 	SignalHub.is_needed_flip.connect(flip_to_target)
 	SignalHub.start_second_phase.connect(start_phase_two)
 	
@@ -507,7 +516,6 @@ func fall_book(scene: PackedScene, pos: Vector2) -> void:
 	
 	if book_scene.is_inside_tree():
 		book_scene.anim_done.connect(end_skill)
-		#print("Books scene connected?: ", book_scene.anim_done.is_connected(end_skill))
 
 #endregion -- Fall Book Skill
 
@@ -551,9 +559,7 @@ func launch_chair(scene: PackedScene, pos: Vector2, direction: int) -> void:
 	
 	projectile_parent.add_child(chair_scene)
 
-	#print(" I throw chair")
 	shots_timer = 1.5
-	#print("Shots timer refilled? ", shots_timer)
 	
 #endregion -- Chair Skill
 
@@ -604,9 +610,7 @@ func launch_circular_barrage(scene: PackedScene, pos: Vector2, direction: int) -
 	
 	projectile_parent.add_child(circular_scene)
 
-	#print(" I throw spell")
 	shots_timer = 1.5
-	#print("Shots timer refilled? ", shots_timer)
 
 
 #endregion Circular Barrage Skill
@@ -660,13 +664,10 @@ func update_summon_directory(delta: float) -> void:
 
 func get_next_skill() -> int:
 	
-	#print("BEFORE get_next_skill, bag: ", skill_bag)
 	if skill_bag.is_empty():
-		#print("BAG EMPTY, REFILLING")
 		refill_skill_bag()
 	
 	var skill = skill_bag.pop_front()
-	#print("PICKED SKILL: ", skill, " | BAG AFTER PICK: ", skill_bag)
 	return skill
 
 func refill_skill_bag() -> void:
@@ -727,7 +728,6 @@ func end_skill() -> void:
 	is_shooting_barrage = false
 	
 	
-	#print("bag now: ", skill_bag)
 	
 	if skill_bag.is_empty() and pending_skill == 0:
 		start_recovery()
@@ -768,7 +768,6 @@ func reduce_timer(delta: float) -> void:
 
 func handle_hurt(damage: float) -> void:
 	if is_hurt:
-		#print("still hurt") #-- this never fired
 		return
 	
 	start_hurt(damage)
@@ -887,7 +886,6 @@ func _on_e_sprite_animation_finished() -> void:
 	
 	if boss_form_state == EnemyFormState.HUMAN_FORM:
 		if m_sprite.animation == "hurt":
-			#print("animation finished, human hurt")
 			end_hurt()
 
 	if m_sprite.animation == "death":

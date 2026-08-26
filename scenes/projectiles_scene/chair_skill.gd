@@ -22,9 +22,16 @@ var chair_broken := false
 
 #endregion
 
+#region SFX
+@onready var throw_cast: String = "res://assets/audio/sfx/sfx_throw.wav"
+
+#endregion -- SFX 
+
 #region Processes 
 
 func _ready() -> void:
+	AudioManager.play_music(throw_cast, "special", -6.0)
+
 	play_anim(m_sprite, "launch")
 	
 	if boss_target == null:
@@ -53,7 +60,6 @@ func _physics_process(delta: float) -> void:
 		queue_timer -= delta
 		if queue_timer <= 0.0:
 			queue_free()
-			print("Chair freed")
 	
 
 #endregion

@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://1xq1hlgvc2d0"]
+
+[ext_resource type="Script" uid="uid://d2y1y8pwlf3ch" path="res://scenes/ui/speech_bubble.gd" id="1_ad2a6"]
+
+[node name="SpeechBubble" type="Control" unique_id=857700157]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ad2a6")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1288636704]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer" unique_id=726263570]
+layout_mode = 2

@@ -5,6 +5,7 @@ extends Node2D
 @onready var skill_sfx_player: AudioStreamPlayer = $SkillSFXPlayer
 @onready var voice_sfx_player: AudioStreamPlayer = $VoiceSFXPlayer
 @onready var one_shot_sfx_player: AudioStreamPlayer = $OneShotSFXPlayer
+@onready var special_sfx_player: AudioStreamPlayer = $SpecialSFXPlayer
 
 
 var current_bgm_path: String = ""
@@ -34,6 +35,8 @@ func play_music(path: String, type: String, volume_db: float = 0.0) -> void:
 			bgm_sfx_helper(voice_sfx_player, path, "SFX", volume_db)
 		"oneshot":
 			bgm_sfx_helper(one_shot_sfx_player, path, "SFX", volume_db)
+		"special":
+			bgm_sfx_helper(special_sfx_player, path, "SFX", volume_db)
 	
 	
 

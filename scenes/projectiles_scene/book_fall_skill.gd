@@ -14,7 +14,16 @@ var dmg := 20
 
 signal anim_done
 
+#region SFX
+@onready var spell_cast: String = "res://assets/audio/sfx/foom_0.wav"
+@onready var flame_spread: String = "res://assets/audio/sfx/TailWhip.ogg"
+
+
+#endregion -- SFX 
+
 func _ready() -> void:
+	AudioManager.play_music(spell_cast, "special", -2.0)
+	
 	m_sprite.play("fall")
 	
 	col_explode.set_deferred("disabled", true)
@@ -72,15 +81,17 @@ func _on_area_entered(area: Area2D) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	var movement_stopper = Vector2.ZERO
 	var terrain_group = body.get_tree().get_first_node_in_group("Terrain")
-			
+	
 	if not terrain_group:
 		return 
 
 	if dir.y <= 0.0:
 		return
-		
+
 	if terrain_group:
 
+		AudioManager.play_music(flame_spread, "special", -2.0)
+			
 		dir = movement_stopper
 		
 		b_sprite.visible = true

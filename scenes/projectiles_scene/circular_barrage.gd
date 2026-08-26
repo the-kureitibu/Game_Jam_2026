@@ -22,9 +22,17 @@ var chair_broken := false
 
 #endregion
 
+#region SFX
+@onready var earth_cast: String = "res://assets/audio/sfx/Earth Element Magic Spell.ogg"
+
+
+#endregion -- SFX 
+
 #region Processes 
 
 func _ready() -> void:
+	AudioManager.play_music(earth_cast, "special", -6.0)
+	
 	play_anim(m_sprite, "launch")
 	
 	if boss_target == null:

@@ -21,6 +21,12 @@ var dir: int = 0
 
 #endregion -- References
 
+
+#region SFX
+@onready var earth_cast: String = "res://assets/audio/sfx/Earth Element Magic Spell.ogg"
+
+#endregion -- SFX 
+
 func _enter_tree() -> void:
 	if target_boss == null:
 		target_boss = get_tree().get_first_node_in_group("Boss_target")
@@ -32,6 +38,8 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	
+	AudioManager.play_music(earth_cast, "special", -6.0)
+
 	global_position = target_pos
 	main_sprite.play("attk")
 
@@ -40,7 +48,6 @@ func _physics_process(delta: float) -> void:
 	
 	spin_and_move(delta)
 
-	
 
 func spin_and_move(delta: float) -> void:
 	rotation += rot_speed * delta 

@@ -256,6 +256,8 @@ func grab_cam_limits() -> Dictionary:
 @onready var PLAYER_WALKING: String = "res://assets/audio/sfx/player_walking.mp3"
 @onready var SFX_AGH: String = "res://assets/audio/sfx/sfx agh.wav"
 @onready var SWOSH_WHOOSH_AIR_CUT: String = "res://assets/audio/sfx/swosh-whoosh-air-cut.mp3"
+@onready var WHEW: String = "res://assets/audio/sfx/sfx whew.wav"
+@onready var rage_sfx: String = "res://assets/audio/sfx/sfx angry noise.wav"
 
 #endregion -- SFX 
 
@@ -545,6 +547,8 @@ func start_block() -> void:
 	if not Input.is_action_just_pressed("block"):
 		return
 
+	AudioManager.play_music(WHEW, "voice", -10.0)
+
 	start_blocking()
 
 func start_blocking() -> void:
@@ -731,11 +735,15 @@ func handle_rage() -> void:
 
 
 func rage_transform() -> void:
+	
 
 	if is_raging or is_transforming:
 		return
 	
 	is_transforming = true
+	
+	AudioManager.play_music(rage_sfx, "voice", 1.0)
+
 
 	p_action_state = PlayerActionState.RAGE_TRANSFORM
 	anim_player.play("rage_transform")

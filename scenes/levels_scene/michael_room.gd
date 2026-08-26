@@ -16,6 +16,8 @@ var michael_summoned: bool = false
 const MICHAEL_SCENE = preload("res://scenes/player_scene/michael.tscn")
 const DEMON_REALM: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 
+signal cracking 
+
 #region BGM
 
 @onready var fall_of_arcana: String = "res://assets/audio/bgm/The Fall of Arcana.mp3"
@@ -25,6 +27,7 @@ const DEMON_REALM: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 
 #region SFX 
 @onready var typing_sfx: String = "res://assets/audio/sfx/typewriter3.wav"
+@onready var cracking_sfx: String = "res://assets/audio/sfx/multiple_cracks_1.wav"
 
 #endregion -- SFX 
 
@@ -45,6 +48,7 @@ func _ready() -> void:
 	
 	top_control_michael.visible = false
 	SignalHub.show_michael_tutorial.connect(show_tutorial)
+	cracking.connect(play_crack_sounds)
 
 
 #endregion -- Processes
@@ -78,10 +82,17 @@ func summon_michael(scene: PackedScene) -> void:
 func show_tutorial() -> void:
 	await get_tree().process_frame
 	
+	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 	top_control_michael.visible = true
 	
 #endregion Michael Scene Instantiate
 
+#region Statue SFX
+
+func play_crack_sounds() -> void:
+	AudioManager.play_music(cracking_sfx, "skill", -6.0)
+ 
+#endregion -- Statue SFX 
 
 #region Area Signals
 
@@ -90,6 +101,7 @@ func _on_statue_hurt_box_area_entered(area: Area2D) -> void:
 	
 	if player == 'HitBox':
 		cur_statue_frame += 1
+		cracking.emit()
 		update_statue_sprite(michael_statue, cur_statue_frame)
 
 func _on_exit_area_body_entered(body: Node2D) -> void:

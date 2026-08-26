@@ -6,11 +6,24 @@ extends Node2D
 var max_height_offset: float = -70.0
 var captured_pos: Vector2 = Vector2.ZERO
 
+
+#region SFX 
+@onready var holy_sfx: String = "res://assets/audio/sfx/light_ray.ogg"
+
+#endregion -- SFX 
+
+
+
 #endregion -- References 
+
+
 
 #region Processes
 
 func _ready() -> void:
+	
+	AudioManager.play_music(holy_sfx, "skill", -6.0)
+	
 	var tween = create_tween()
 	
 	global_position = captured_pos

@@ -11,7 +11,7 @@ var in_front_of_gate: bool = false
 var gate_opened: bool = false
 var password := "56709"
 var is_pass_matched := false
-
+var is_stop_sfx := false
 signal can_play_bgm 
 
 #region BGM
@@ -31,8 +31,6 @@ signal can_play_bgm
 func unlock_gate() -> void:
 	
 	if is_pass_matched:
-		AudioManager.play_music(typing_sfx, "oneshot", -6.0)
-		
 		line_edit.visible = false
 		
 		play_anim(gate)
@@ -58,8 +56,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	
 	if event.is_action_pressed("up"):
-		AudioManager.play_music(typing_sfx, "oneshot", -6.0)
-
+		if is_stop_sfx: 
+			return
+		else:
+			is_stop_sfx = true
+			AudioManager.play_music(typing_sfx, "oneshot", -6.0)
+			
 		line_edit.visible = true
 
 
@@ -83,6 +85,7 @@ func play_unlock_bgm() -> void:
 	AudioManager.play_music(bgm_56709, "bgm", -10.0)
 	
 	await get_tree().create_timer(7.0).timeout
+	
 	
 	can_play_bgm.emit()
 	

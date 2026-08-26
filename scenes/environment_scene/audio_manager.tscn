@@ -14,3 +14,5 @@ script = ExtResource("1_7papk")
 [node name="VoiceSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=808781853]
 
 [node name="OneShotSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1296323687]
+
+[node name="SpecialSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=179873310]
