@@ -346,6 +346,10 @@ func _ready() -> void:
 
 	if GameManager.game_scene_state == GameManager.GameLevelStates.TUTORIAL_SCENE:
 		open_and_update_text("行こう", "Oraa")
+	
+	SignalHub.falling_players.connect(open_and_update_text.bind("WEEEE", "WEEEE"))
+	SignalHub.awoo_56709.connect(open_and_update_text.bind(".....", "AWOOO~"))
+	SignalHub.michael.connect(open_and_update_text.bind("Michael?!", "BUCKO?!"))
 
 
 
@@ -786,7 +790,8 @@ func handle_rage() -> void:
 
 func rage_transform() -> void:
 	
-
+	open_and_update_text("OMAEE", "YABAっ")
+	
 	if is_raging or is_transforming:
 		return
 	
@@ -908,6 +913,9 @@ func handle_hurt(damage: float) -> void:
 
 
 func start_hurt(damage: float) -> void:
+	
+	open_and_update_text("MUUU", "YABAっ")
+	
 	AudioManager.play_music(SFX_AGH, "voice", -10.0)
 	
 	is_busy = true

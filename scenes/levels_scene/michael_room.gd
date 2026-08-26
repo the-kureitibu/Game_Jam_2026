@@ -120,6 +120,8 @@ func _on_exit_button_pressed() -> void:
 	await get_tree().process_frame
 	
 	top_control_michael.visible = false
+	
+	SignalHub.michael.emit()
 
 #endregion -- Button Signals
 

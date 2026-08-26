@@ -7,6 +7,8 @@ extends Control
 @onready var amiya_thumbnail_path: String = "res://assets/sprites/ui/thumbnails/Amiya_thumbnail.png"
 @onready var bucko_thumbnail_path: String = "res://assets/sprites/ui/thumbnails/bucko_thumbnail.png"
 @onready var boss_thumbnail_path: String = "res://assets/sprites/ui/thumbnails/boss_thumbnail.png"
+@onready var boss_thumbnail_path2: String = "res://assets/sprites/ui/thumbnails/boss_thumbnailv1.png"
+
 
 @onready var amiya_bucko_image: TextureRect = $MainMargin/ImageVBox/HBoxContainer/AmiyaBuckoImage
 @onready var boss_image: TextureRect = $MainMargin/ImageVBox/HBoxContainer/BossImage
@@ -177,6 +179,11 @@ func advance_dialogue() -> void:
 	dialogue_helper(sequence_speaker_index, side, sequence_line_index)
 	
 	current_index += 1
+	
+	if current_index == 9:
+		boss_image.texture = load(boss_thumbnail_path)
+	else:
+		boss_image.texture = load(boss_thumbnail_path2)
 
 
 func dialogue_helper(main_index: int, side: String, cur_index: int, sp_text_indx: String = "text", sp_name: String = "speaker") -> void:

@@ -88,6 +88,7 @@ func play_unlock_bgm() -> void:
 	
 	
 	can_play_bgm.emit()
+	SignalHub.awoo_56709.emit()
 	
 
 

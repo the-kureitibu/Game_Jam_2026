@@ -20,7 +20,7 @@ func _process(delta: float) -> void:
 			
 			if main_col.disabled:
 				main_col.set_deferred("disabled", false)
-				enable_timer = 0.5
+				enable_timer = 3.0
 
 	if ray_cast_2d.is_colliding():
 		var collider = ray_cast_2d.get_collider()
@@ -29,7 +29,7 @@ func _process(delta: float) -> void:
 			return
 		else:
 			SignalHub.is_in_flatform.emit()
-			enable_timer = 0.5
+			enable_timer = 3.0
 
 
 			if Input.is_action_pressed("down") and Input.is_action_pressed("jump"):
@@ -37,5 +37,6 @@ func _process(delta: float) -> void:
 					return
 				else:
 					main_col.set_deferred("disabled", true)
+					SignalHub.falling_players.emit()
 	else:
 		SignalHub.not_in_flatform.emit()

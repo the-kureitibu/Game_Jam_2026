@@ -7,6 +7,11 @@ extends Node
 signal blocking_anim_done
 
 signal player_died
+signal falling_players
+
+signal awoo_56709
+signal michael
+
 #endregion
 
 #region Enemy Boss
