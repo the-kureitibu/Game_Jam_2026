@@ -9,6 +9,7 @@ var michael_summoned: bool = false
 @onready var michael_marker: Marker2D = $MichaelMarker
 @onready var top_control_michael: Control = $TutorialPopup/TopControl
 @onready var exit_button: Button = $TutorialPopup/TopControl/BasePanel/ExitButtonContainer/VBoxContainer/ExitButton
+@onready var michael_gate: StaticBody2D = $MichaelGate
 
 
 
@@ -18,8 +19,14 @@ const DEMON_REALM: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 #region BGM
 
 @onready var fall_of_arcana: String = "res://assets/audio/bgm/The Fall of Arcana.mp3"
+@onready var bgm_56709: String = "res://assets/audio/bgm/56709.ogg"
 
 #endregion -- BGM
+
+#region SFX 
+@onready var typing_sfx: String = "res://assets/audio/sfx/typewriter3.wav"
+
+#endregion -- SFX 
 
 #region -- References
 
@@ -33,13 +40,17 @@ func _enter_tree() -> void:
 	GameManager.game_scene_state = GameManager.GameLevelStates.MICHAEL_ROOM
 
 func _ready() -> void:
-	AudioManager.fade_to_bgm(fall_of_arcana, "bgm", -10.0)
+	michael_gate.can_play_bgm.connect(play_bgm)
+	
 	
 	top_control_michael.visible = false
 	SignalHub.show_michael_tutorial.connect(show_tutorial)
 
 
 #endregion -- Processes
+
+func play_bgm() -> void:
+	AudioManager.fade_to_bgm(fall_of_arcana, "bgm", -10.0)
 
 #region Statue related
 
