@@ -33,6 +33,8 @@ const MAX_STACK := 5
 #region References 
 
 @onready var player_target = get_tree().get_first_node_in_group("Player_target")
+@onready var WEB_SFX: String = "res://assets/audio/sfx/stick-though-spider-web.mp3"
+
 
 #endregion
 
@@ -40,6 +42,8 @@ const MAX_STACK := 5
 
 signal web_attack_done
 #endregion
+
+
 
 #region Processes
 
@@ -49,6 +53,8 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	
+	AudioManager.play_sfx(WEB_SFX, -1.0)
 
 	sprite_one.rotation = deg_to_rad(90.0)
 

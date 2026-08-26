@@ -252,6 +252,13 @@ func grab_cam_limits() -> Dictionary:
 
 #endregion -- Skills related
 
+#region SFX
+@onready var PLAYER_WALKING: String = "res://assets/audio/sfx/player_walking.mp3"
+@onready var SFX_AGH: String = "res://assets/audio/sfx/sfx agh.wav"
+@onready var SWOSH_WHOOSH_AIR_CUT: String = "res://assets/audio/sfx/swosh-whoosh-air-cut.mp3"
+
+#endregion -- SFX 
+
 #region Processes 
 
 func _ready() -> void:
@@ -317,6 +324,7 @@ func _physics_process(delta: float) -> void:
 	handle_death()
 	
 
+
 #endregion
 
 #region Initial Stats declaration
@@ -369,12 +377,16 @@ func player_move() -> void:
 
 	velocity.x = p_direction * p_speed
 
+	
+
 	if velocity.x > 0:
 		facing_dir = 1
 	elif velocity.x < 0:
 		facing_dir = -1
 
 	if p_direction != 0:
+		AudioManager.play_sfx(PLAYER_WALKING, -1.0)
+		
 		if p_form_state == PlayerFormState.HUMAN_FORM:
 			p_sprite.flip_h = p_direction < 0
 		else:
@@ -382,6 +394,11 @@ func player_move() -> void:
 			
 		magic_ball_marker.position.x = m_ball_marker_base_x * p_direction
 	
+	if p_direction != 0 and is_on_floor():
+		AudioManager.play_sfx(PLAYER_WALKING, -1.0)
+	
+	if p_direction == 0 and AudioManager.sfx_player.is_playing():
+		AudioManager.stop_sfx()
 
 
 func player_jump() -> void:
@@ -556,6 +573,8 @@ func end_blocking() -> void:
 	force_move_animation()
 
 func start_attack() -> void:
+	
+	
 	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
 		and GameManager.can_start_boss_fight == false):
 		velocity.x = 0.0
@@ -592,8 +611,11 @@ func start_attack() -> void:
 		
 	if p_form_state == PlayerFormState.HUMAN_FORM:
 		start_attk_combo(1)
+		AudioManager.play_sfx(SWOSH_WHOOSH_AIR_CUT, -8.0)
 	else:
 		handle_web_attack()
+
+	
 
 func open_attack_window() -> void:
 	attack_window_open = true
@@ -821,6 +843,8 @@ func handle_hurt(damage: float) -> void:
 
 
 func start_hurt(damage: float) -> void:
+	AudioManager.play_sfx(SFX_AGH, -4.0)
+	
 	is_busy = true
 	input_available = false
 	

@@ -4,7 +4,7 @@ extends Node2D
 @onready var sfx_player: AudioStreamPlayer = $SFXPlayer
 
 var current_bgm_path: String = ""
-
+var current_sfx_path: String = ""
 
 func play_bgm(path: String, volume_db: float = 0.0) -> void:
 	if current_bgm_path == path and bgm_player.playing:
@@ -26,9 +26,19 @@ func play_bgm(path: String, volume_db: float = 0.0) -> void:
 func stop_bgm() -> void:
 	bgm_player.stop()
 	current_bgm_path = ""
+	
 
+func stop_sfx() -> void:
+	sfx_player.stop()
+	current_sfx_path = ""
+	
 
 func play_sfx(path: String, volume_db: float = 0.0) -> void:
+	if current_sfx_path == path and sfx_player.playing:
+		return
+	
+	current_sfx_path = path
+	
 	var stream: AudioStream = load(path)
 	if stream == null:
 		push_error("SFX not found: " + path)
