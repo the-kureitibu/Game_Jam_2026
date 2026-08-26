@@ -13,6 +13,12 @@ signal launched_done
 
 @onready var player_target = get_tree().get_first_node_in_group("Player_target")
 
+#region References
+
+@onready var wind_sfx: String = "res://assets/audio/sfx/strong wind blowing.mp3"
+
+#endregion -- References
+
 #endregion
 
 func _enter_tree() -> void:

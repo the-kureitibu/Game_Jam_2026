@@ -259,6 +259,12 @@ func grab_cam_limits() -> Dictionary:
 
 #endregion -- SFX 
 
+#region BGM
+
+@onready var skill_sfx: String = "res://assets/audio/sfx/sfx agh.wav"
+
+#endregion -- BGM
+
 #region Processes 
 
 func _ready() -> void:
@@ -1106,6 +1112,7 @@ func handle_skill_one() -> void:
 		return
 	
 	if Input.is_action_just_pressed("skill_one"):
+		AudioManager.play_sfx(skill_sfx, -1.0)
 		start_skill_one()
 
 func start_skill_one() -> void:
@@ -1189,6 +1196,7 @@ func handle_skill_two() -> void:
 		return
 	
 	if Input.is_action_just_pressed("skill_two"):
+		AudioManager.play_sfx(skill_sfx, -1.0)
 		start_skill_two()
 
 func start_skill_two() -> void:

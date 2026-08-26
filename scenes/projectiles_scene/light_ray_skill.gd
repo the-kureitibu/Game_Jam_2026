@@ -35,12 +35,19 @@ var current_visible_stack := 0
 
 @onready var player_target = get_tree().get_first_node_in_group("Player_target")
 
+#region References 
+
+@onready var light_ray_sfx: String = "res://assets/audio/sfx/light_ray3.ogg"
+
+#endregion 
+
 #endregion
 
 #region Signals
 
 signal light_ray_done
 #endregion
+
 
 #region Processes
 
@@ -49,6 +56,7 @@ func _enter_tree() -> void:
 		add_to_group("player_projectile")
 
 func _ready() -> void:
+	AudioManager.play_sfx(light_ray_sfx)
 	
 	z_index = 10
 	
