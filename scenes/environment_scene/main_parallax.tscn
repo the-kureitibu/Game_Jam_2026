@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://ncaipo1qyrg7"]
+
+[ext_resource type="Script" uid="uid://cy1rbojnkyj7c" path="res://scenes/environment_scene/environment_scripts/main_parallax.gd" id="1_3upmm"]
+[ext_resource type="Script" uid="uid://ki773xyt0qry" path="res://scenes/environment_scene/camera_test_2d.gd" id="2_7l2ed"]
+[ext_resource type="Texture2D" uid="uid://257bjq02l37b" path="res://assets/sprites/environment/Plains parallax separate layers/Plains parallax separate layers/sky.png" id="2_slr23"]
+
+[node name="MainParallax" type="Node2D" unique_id=1413847002]
+script = ExtResource("1_3upmm")
+
+[node name="CameraTest2D" type="Camera2D" parent="." unique_id=869913531]
+script = ExtResource("2_7l2ed")
+
+[node name="ParallaxBackground" type="Node2D" parent="." unique_id=1779685934]
+
+[node name="ParallaxFar" type="Parallax2D" parent="ParallaxBackground" unique_id=2108742490]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxFar" unique_id=1496055424]
+texture = ExtResource("2_slr23")
+centered = false
+
+[node name="ParallaxMidFar" type="Parallax2D" parent="ParallaxBackground" unique_id=1046309087]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxMidFar" unique_id=827991200]
+centered = false
+
+[node name="ParallaxMid" type="Parallax2D" parent="ParallaxBackground" unique_id=2443782]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxMid" unique_id=998178674]
+centered = false
+
+[node name="ParallaxMidNear" type="Parallax2D" parent="ParallaxBackground" unique_id=856725702]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxMidNear" unique_id=1662458698]
+centered = false
+
+[node name="ParallaxNear" type="Parallax2D" parent="ParallaxBackground" unique_id=1441819753]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxNear" unique_id=220749501]
+centered = false
+
+[node name="ParallaxFront" type="Parallax2D" parent="ParallaxBackground" unique_id=1615209873]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxFront" unique_id=2023930666]
+centered = false
