@@ -97,7 +97,7 @@ func determine_level_scene(lvl_name: Variant) -> void:
 			cam.offset = Vector2(0, -20.0)
 			
 		"GrassLandLevel":
-			handle_cam_limits(0, 8291, 88, -1050)
+			handle_cam_limits(0, 8291, 417, -1050)
 			is_grassland_level = true
 		
 		"BossRoom":
