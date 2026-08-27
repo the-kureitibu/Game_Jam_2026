@@ -13,7 +13,7 @@ extends Camera2D
 @export var test_speed := 150.0
 @export var follow_speed := 5.0
 
-var fake_player_pos := Vector2.ZERO
+var fake_player_pos := Vector2(0, 150.0)
 
 func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_axis("left", "right")
