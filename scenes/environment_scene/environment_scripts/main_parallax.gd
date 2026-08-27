@@ -49,7 +49,7 @@ extends Node2D
 
 @onready var BACK: String = "res://assets/sprites/environment/parallax/back.png"
 @onready var TREE: String = "res://assets/sprites/environment/parallax/tree..png"
-@onready var WALL_1: String = "res://assets/sprites/environment/parallax/wall1.png"
+@onready var WALL_1: String = "res://assets/sprites/environment/parallax/wall.png"
 @onready var WALL_2: String = "res://assets/sprites/environment/parallax/wall2.png"
 @onready var WALL_3 : String = "res://assets/sprites/environment/parallax/wall3.png"
 
@@ -59,17 +59,29 @@ extends Node2D
 
 #region Processes
 
-func _enter_tree() -> void:
+func _ready() -> void:
 	match GameManager.game_scene_state:
 		GameManager.GameLevelStates.GRASSLAND_SCENE:
 			set_parallax_texture(SKY, CLOUDS, HILL, FOREST, PLAINS, GRASS)
 			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.08, 0.08), Vector2(0.09, 0.09), Vector2(0.1, 0.1), Vector2(0.3, 0.3), Vector2(0.8, 0.8))
 			set_parallax_repeat_size(Vector2(640.0, 0.0), Vector2(640.0, 0.0), Vector2(640.0, 0.0), Vector2(640.0, 0.0), Vector2(640.0, 0.0), Vector2(640.0, 0.0))
 			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
+		GameManager.GameLevelStates.DEMON_REALM:
+			set_parallax_texture(one, two, three, four, five, six)
+			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.08, 0.08), Vector2(0.01, 0.01), Vector2(0.2, 0.2), Vector2(0.6, 0.6), Vector2(0.1, 0.1))
+			set_parallax_repeat_size(Vector2(576.0, 0.0), Vector2(576.0, 0.0), Vector2(576.0, 0.0), Vector2(576.0, 0.0), Vector2(576.0, 0.0), Vector2(640.0, 0.0))
+			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
+		GameManager.GameLevelStates.BOSS_LEVEL:
+			set_parallax_texture(BACK, TREE, WALL_2, WALL_3, WALL_1, WALL_1)
+			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.08, 0.08), Vector2(0.02, 0.02), Vector2(0.3, 0.3), Vector2(0.25, 0.25), Vector2(0.5, 0.5))
+			set_parallax_repeat_size(Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340))
+			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
+		GameManager.GameLevelStates.BOSS_ROOM:
+			set_parallax_texture(BACK, TREE, WALL_2, WALL_3, WALL_1, WALL_1)
+			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.08, 0.08), Vector2(0.02, 0.02), Vector2(0.3, 0.3), Vector2(0.25, 0.25), Vector2(0.5, 0.5))
+			set_parallax_repeat_size(Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340))
+			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
 
-
-func _ready() -> void:
-	pass
 
 #endregion -- Processes
 

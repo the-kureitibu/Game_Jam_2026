@@ -16,8 +16,11 @@ extends Camera2D
 var fake_player_pos := Vector2(0, 150.0)
 
 func _physics_process(delta: float) -> void:
-	var input_dir := Input.get_axis("left", "right")
-	fake_player_pos.x += input_dir * test_speed * delta
+	#var input_dir := Input.get_axis("left", "right")
+	var input_dir := Input.get_vector("left", "right", "up","down" )
+	#fake_player_pos.x += input_dir * test_speed * delta
+	fake_player_pos += input_dir * test_speed * delta
+
 	
 	global_position = global_position.lerp(
 		fake_player_pos,
