@@ -85,14 +85,15 @@ func _ready() -> void:
 			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
 		GameManager.GameLevelStates.BOSS_LEVEL:
 			set_parallax_texture(BACK, TREE, WALL_2, WALL_3, WALL_1, WALL_1)
-			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.08, 0.08), Vector2(0.02, 0.02), Vector2(0.3, 0.3), Vector2(0.25, 0.25), Vector2(0.5, 0.5))
-			set_parallax_repeat_size(Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340))
+			set_parallax_scroll(Vector2(1.0, 1.0), Vector2(0.07, 0.07), Vector2(0.6, 0.6), Vector2(0.5, 0.5), Vector2(0.1, 0.1), Vector2(0.0, 0.0))
+			set_parallax_repeat_size(Vector2(0.0, 340), Vector2(0.0, 340.0), Vector2(0.0, 340.0), Vector2(0.0, 340.0), Vector2(0.0, 340.0), Vector2(0.0, 340.0))
 			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
 		GameManager.GameLevelStates.BOSS_ROOM:
 			set_parallax_texture(BACK, TREE, WALL_2, WALL_3, WALL_1, WALL_1)
-			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.08, 0.08), Vector2(0.02, 0.02), Vector2(0.3, 0.3), Vector2(0.25, 0.25), Vector2(0.5, 0.5))
-			set_parallax_repeat_size(Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340))
+			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.07, 0.07), Vector2(0.6, 0.6), Vector2(0.5, 0.5), Vector2(0.1, 0.1), Vector2(0.0, 0.0))
+			set_parallax_repeat_size(Vector2(640.0, 340.0), Vector2(640.0, 340.0), Vector2(640.0, 340.0), Vector2(640.0, 340.0), Vector2(640.0, 340.0), Vector2(640.0, 340.0))
 			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
+			set_parallax_zoom_scale(Vector2(1.5, 1.5), Vector2(1.5, 1.5), Vector2(1.5, 1.5), Vector2(1.5, 1.5), Vector2(1.5, 1.5), Vector2(1.5, 1.5))
 		GameManager.GameLevelStates.MICHAEL_ROOM:
 			set_parallax_texture(cave_one, cave_two, cave_three, cave_four, cave_five, cave_six)
 			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.2, 0.2), Vector2(0.1, 0.1), Vector2(0.4, 0.4), Vector2(0.5, 0.5), Vector2(1.0, 1.0))
