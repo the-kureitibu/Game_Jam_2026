@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ncaipo1qyrg7"]
 
 [ext_resource type="Script" uid="uid://cy1rbojnkyj7c" path="res://scenes/environment_scene/environment_scripts/main_parallax.gd" id="1_3upmm"]
+[ext_resource type="Texture2D" uid="uid://dpfsr46exjw5b" path="res://assets/sprites/environment/free-pixel-art-cloud-and-sky-backgrounds/3. NEW CLOUDS/6.png" id="2_slr23"]
 
 [node name="MainParallax" type="Node2D" unique_id=1413847002]
 script = ExtResource("1_3upmm")
@@ -12,6 +13,7 @@ metadata/_edit_vertical_guides_ = [-63.0]
 [node name="ParallaxFar" type="Parallax2D" parent="ParallaxBackground" unique_id=2108742490]
 
 [node name="SpriteFar" type="Sprite2D" parent="ParallaxBackground/ParallaxFar" unique_id=1496055424]
+texture = ExtResource("2_slr23")
 centered = false
 
 [node name="ParallaxMidFar" type="Parallax2D" parent="ParallaxBackground" unique_id=1046309087]

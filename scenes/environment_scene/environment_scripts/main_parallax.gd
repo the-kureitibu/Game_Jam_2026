@@ -55,6 +55,18 @@ extends Node2D
 
 #endregion -- Boss Level/Boss Room References
 
+#region Michael Room References
+
+@onready var cave_one: String = "res://assets/sprites/environment/Parallax Cave/1.png"
+@onready var cave_two: String = "res://assets/sprites/environment/Parallax Cave/2.png"
+@onready var cave_three: String = "res://assets/sprites/environment/Parallax Cave/3fx.png"
+@onready var cave_four: String = "res://assets/sprites/environment/Parallax Cave/4.png"
+@onready var cave_five: String = "res://assets/sprites/environment/Parallax Cave/7.png"
+@onready var cave_six: String = "res://assets/sprites/environment/Parallax Cave/9.png"
+
+
+#endregion -- Michael Room References
+
 #region Functions
 
 #region Processes
@@ -81,6 +93,12 @@ func _ready() -> void:
 			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.08, 0.08), Vector2(0.02, 0.02), Vector2(0.3, 0.3), Vector2(0.25, 0.25), Vector2(0.5, 0.5))
 			set_parallax_repeat_size(Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340), Vector2(0.0, 340))
 			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
+		GameManager.GameLevelStates.MICHAEL_ROOM:
+			set_parallax_texture(cave_one, cave_two, cave_three, cave_four, cave_five, cave_six)
+			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.2, 0.2), Vector2(0.1, 0.1), Vector2(0.4, 0.4), Vector2(0.5, 0.5), Vector2(1.0, 1.0))
+			set_parallax_repeat_size(Vector2(1920.0, 0.0), Vector2(1920.0, 0.0), Vector2(1920.0, 0.0), Vector2(1920.0, 0.0), Vector2(1920.0, 0.0), Vector2(1920.0, 0.0))
+			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
+			set_parallax_zoom_scale(Vector2(0.32, 0.32), Vector2(0.32, 0.32), Vector2(0.32, 0.32), Vector2(0.32, 0.32), Vector2(0.32, 0.32), Vector2(0.32, 0.32))
 
 
 #endregion -- Processes
@@ -124,6 +142,16 @@ func set_parallax_repeat_times(p_far: int, p_midfar: int, p_mid: int,
 	parallax_mid_near.repeat_times = p_midnear
 	parallax_near.repeat_times = p_near
 	parallax_front.repeat_times = p_front
+
+func set_parallax_zoom_scale(p_far: Vector2, p_midfar: Vector2, p_mid: Vector2,
+	p_midnear: Vector2, p_near: Vector2, p_front: Vector2,) -> void:
+	
+	parallax_far.scale = p_far
+	parallax_mid_far.scale = p_midfar
+	parallax_mid.scale = p_mid
+	parallax_mid_near.scale = p_midnear
+	parallax_near.scale = p_near
+	parallax_front.scale = p_front
 
 
 #endregion -- Functions
