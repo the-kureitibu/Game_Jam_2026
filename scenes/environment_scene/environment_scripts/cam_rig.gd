@@ -18,6 +18,9 @@ extends Node2D
 @onready var is_boss_room_level: bool = false
 @onready var is_michael_room: bool = false
 
+var base_follow_speed := 4.0
+var catchup_follow_speed := 12.0
+var catchup_distance := 180.0
 
 #endregion
 
@@ -52,12 +55,26 @@ func _physics_process(delta: float) -> void:
 		return
 		
 	if is_boss_room_level and p_target and boss_target:
-		var current_midpoint = get_boss_room_midpoint()
-		global_position = global_position.lerp(current_midpoint, weight)
+		#var current_midpoint = get_boss_room_midpoint()
+		#global_position = global_position.lerp(current_midpoint, weight)
+		#
+		follow_boss_midpoint(delta)
 		handle_camera_zoom(delta)
 	elif p_target and !is_boss_room_level:
 		global_position = global_position.lerp(p_target.global_position, weight)
 		
+
+func follow_boss_midpoint(delta: float) -> void:
+	var midpoint := get_boss_room_midpoint()
+	
+	var distance_to_player := global_position.distance_to(p_target.global_position)
+	var current_follow_speed := base_follow_speed
+	
+	if distance_to_player > 180.0:
+		current_follow_speed = base_follow_speed * 3.0
+	
+	var weight = clamp(current_follow_speed * delta, 0.0, 1.0)
+	global_position = global_position.lerp(midpoint, weight)
 
 
 func get_boss_room_midpoint() -> Vector2:

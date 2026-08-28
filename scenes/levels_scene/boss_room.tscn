@@ -12,7 +12,7 @@
 
 [node name="BossRoom" type="Node2D" unique_id=481181433 groups=["Terrain"]]
 script = ExtResource("1_l7ur8")
-metadata/_edit_vertical_guides_ = [1584.0, -369.0, -254.0, 1646.0]
+metadata/_edit_vertical_guides_ = [1584.0, -369.0, -254.0, 1646.0, 0.0]
 metadata/_edit_horizontal_guides_ = [-434.0, 91.0, 465.0, -98.0]
 
 [node name="MainParallax" parent="." unique_id=1413847002 instance=ExtResource("2_gucgu")]
@@ -41,7 +41,7 @@ s2_timer = 0.0
 position = Vector2(131, 335)
 
 [node name="EnemyBoss" parent="." unique_id=1734450653 instance=ExtResource("4_l7ur8")]
-position = Vector2(541, 330)
+position = Vector2(524, 335)
 
 [node name="CamRig" parent="." unique_id=819861590 instance=ExtResource("5_ea7vf")]
 

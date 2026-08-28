@@ -6,7 +6,7 @@ extends EnemyBase
 var b_health: int = 100
 var b_damage: int = 20
 var b_speed: float = 60.0
-var b_acceleration := 2.5
+var b_acceleration := 4.0
 var slowing_speed := 70.0
 	
 @onready var jump_height: float = 120.0
@@ -345,7 +345,6 @@ func play_boss_anim(anim_name: StringName, force: bool = false) -> void:
 	active_sprite.play(anim_name)
 	
 
-
 func handle_anim(state: EnemyBase.BossStates) -> void:
 
 	match state:
@@ -399,7 +398,10 @@ func chase_target(dir: float, abs_dis: float) -> void:
 		velocity.x = current_speed
 
 	elif abs_dis < slowing_d_radius:
-		velocity.x = dir * slowing_speed
+		if !is_phase_two:
+			velocity.x = dir * slowing_speed
+		else:
+			pass
 		
 	else:
 		current_speed = b_speed * b_acceleration

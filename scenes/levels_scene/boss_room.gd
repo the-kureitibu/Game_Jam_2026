@@ -6,6 +6,7 @@ const PRE_FIGHT_DIALOGUE = preload("res://scenes/ui/pre_boss_dialogue.tscn")
 const PRE_SECOND_PHASE_DIALOGUE = preload("res://scenes/ui/second_phase_dialogue.tscn")
 const EPILOGUE_SCENE: String = "res://scenes/ui/epilogue_scene.tscn"
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
+@onready var main_parallax: Node2D = $MainParallax
 
 
 #endregion -- References
@@ -22,6 +23,9 @@ func _enter_tree() -> void:
 	
 
 func _ready() -> void:
+	main_parallax.global_position = Vector2(0, -100)
+	
+	
 	start_pre_fight_dialogue(PRE_FIGHT_DIALOGUE)
 
 	SignalHub.ready_for_second_phase.connect(handle_second_phase_dialogue)

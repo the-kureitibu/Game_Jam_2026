@@ -45,13 +45,24 @@ extends Node2D
 
 #endregion -- Demon Realm  References
 
-#region Boss Level/Boss Room References
+#region Boss Level Room References
 
 @onready var BACK: String = "res://assets/sprites/environment/parallax/back.png"
 @onready var TREE: String = "res://assets/sprites/environment/parallax/tree..png"
 @onready var WALL_1: String = "res://assets/sprites/environment/parallax/wall.png"
 @onready var WALL_2: String = "res://assets/sprites/environment/parallax/wall2.png"
 @onready var WALL_3 : String = "res://assets/sprites/environment/parallax/wall3.png"
+
+#endregion -- Boss Level/Boss Room References
+
+#region Boss Level Room References
+
+@onready var cave_one_hd: String = "res://assets/sprites/environment/parallax cave hd/1.png"
+@onready var cave_two_hd: String = "res://assets/sprites/environment/parallax cave hd/2.png"
+@onready var cave_three_hd: String = "res://assets/sprites/environment/parallax cave hd/3fx.png"
+@onready var cave_four_hd: String = "res://assets/sprites/environment/parallax cave hd/4.png"
+@onready var cave_five_hd: String = "res://assets/sprites/environment/parallax cave hd/7.png"
+@onready var cave_six_hd: String = "res://assets/sprites/environment/parallax cave hd/9.png"
 
 #endregion -- Boss Level/Boss Room References
 
@@ -89,11 +100,9 @@ func _ready() -> void:
 			set_parallax_repeat_size(Vector2(0.0, 340), Vector2(0.0, 340.0), Vector2(0.0, 340.0), Vector2(0.0, 340.0), Vector2(0.0, 340.0), Vector2(0.0, 340.0))
 			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
 		GameManager.GameLevelStates.BOSS_ROOM:
-			set_parallax_texture(BACK, TREE, WALL_2, WALL_3, WALL_1, WALL_1)
-			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.07, 0.07), Vector2(0.6, 0.6), Vector2(0.5, 0.5), Vector2(0.1, 0.1), Vector2(0.0, 0.0))
-			set_parallax_repeat_size(Vector2(640.0, 340.0), Vector2(640.0, 340.0), Vector2(640.0, 340.0), Vector2(640.0, 340.0), Vector2(640.0, 340.0), Vector2(640.0, 340.0))
-			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
-			set_parallax_zoom_scale(Vector2(1.5, 1.5), Vector2(1.5, 1.5), Vector2(1.5, 1.5), Vector2(1.5, 1.5), Vector2(1.5, 1.5), Vector2(1.5, 1.5))
+			set_parallax_texture(cave_one_hd, cave_two_hd, cave_three_hd, cave_four_hd, cave_five_hd, cave_six_hd)
+			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.02, 0.02), Vector2(0.04, 0.04), Vector2(0.06, 0.06), Vector2(0.08, 0.08), Vector2(0.1, 0.1))
+			set_parallax_texture_position(Vector2(-100.0, 0.0), Vector2(-100.0, 0.0), Vector2(-100.0, 0.0), Vector2(-100.0, 0.0), Vector2(-100.0, 0.0), Vector2(-100.0, 0.0))
 		GameManager.GameLevelStates.MICHAEL_ROOM:
 			set_parallax_texture(cave_one, cave_two, cave_three, cave_four, cave_five, cave_six)
 			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.2, 0.2), Vector2(0.1, 0.1), Vector2(0.4, 0.4), Vector2(0.5, 0.5), Vector2(1.0, 1.0))
@@ -153,5 +162,14 @@ func set_parallax_zoom_scale(p_far: Vector2, p_midfar: Vector2, p_mid: Vector2,
 	parallax_near.scale = p_near
 	parallax_front.scale = p_front
 
+func set_parallax_texture_position(t_far: Vector2, t_midfar: Vector2, t_mid: Vector2,
+	t_midnear: Vector2, t_near: Vector2, t_front: Vector2,) -> void:
+	
+	sprite_far.position = t_far
+	sprite_mid_far.position = t_midfar
+	sprite_mid.position = t_mid
+	sprite_mid_near.position = t_midnear
+	sprite_near.position = t_near
+	sprite_front.position = t_front
 
 #endregion -- Functions
