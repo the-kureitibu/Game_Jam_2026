@@ -96,9 +96,8 @@ func _ready() -> void:
 		GameManager.GameLevelStates.MICHAEL_ROOM:
 			set_parallax_texture(cave_one, cave_two, cave_three, cave_four, cave_five, cave_six)
 			set_parallax_scroll(Vector2(0.0, 0.0), Vector2(0.2, 0.2), Vector2(0.1, 0.1), Vector2(0.4, 0.4), Vector2(0.5, 0.5), Vector2(1.0, 1.0))
-			set_parallax_repeat_size(Vector2(1920.0, 0.0), Vector2(1920.0, 0.0), Vector2(1920.0, 0.0), Vector2(1920.0, 0.0), Vector2(1920.0, 0.0), Vector2(1920.0, 0.0))
+			set_parallax_repeat_size(Vector2(640.0, 0.0), Vector2(640.0, 0.0), Vector2(640.0, 0.0), Vector2(640.0, 0.0), Vector2(640.0, 0.0), Vector2(640.0, 0.0))
 			set_parallax_repeat_times(1, 1, 1, 1, 1, 1)
-			set_parallax_zoom_scale(Vector2(0.32, 0.32), Vector2(0.32, 0.32), Vector2(0.32, 0.32), Vector2(0.32, 0.32), Vector2(0.32, 0.32), Vector2(0.32, 0.32))
 
 
 #endregion -- Processes
