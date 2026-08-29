@@ -96,8 +96,10 @@ var p_direction: float = 0.0
 var can_dash: bool = true
 var dash_timer := 0.0
 var dash_duration := 0.2
+var can_dash_timer := 0.0
 var dash_speed := 600.0
 var is_dashing := false
+var has_dashed_mid_air := false
 
 
 #endregion
@@ -354,8 +356,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	#queue_redraw()
-	#p_sprite.play("idle") - animation never runs without this
+
+	handle_floor_state()
 
 	if is_dashing:
 		dash_timer = set_timer(dash_timer, delta)
@@ -364,11 +366,14 @@ func _physics_process(delta: float) -> void:
 			hurt_box_col.set_deferred("disabled", false)
 			can_dash = true
 
+
 	reduce_timer(delta)
 	apply_gravity(delta)
 	handle_dashing()
 	player_move()
 	is_air_dashing()
+	has_dashed_midair()
+	
 	move_and_slide()
 
 	start_attack()
@@ -379,6 +384,7 @@ func _physics_process(delta: float) -> void:
 	start_block()
 	player_jump()
 	handle_air_state()
+	
 	update_move_state()
 	update_rage_timer(delta)
 	update_rage_cooling(delta)
@@ -497,6 +503,10 @@ func handle_air_state() -> void:
 	if !is_on_floor():
 		is_on_air = true
 
+func handle_floor_state() -> void:
+	if is_on_floor() and has_dashed_mid_air:
+		has_dashed_mid_air = false
+
 func apply_gravity(delta) -> void:
 
 	if is_on_floor():
@@ -526,7 +536,6 @@ func handle_dashing() -> void:
 		velocity.x = 0.0
 		return
 	
-	
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	
@@ -539,13 +548,19 @@ func handle_dashing() -> void:
 	if !can_dash:
 		return
 
+	if is_air_dashing():
+		return
+
 	if !Input.is_action_just_pressed("dash"):
 		return
 	
-	AudioManager.play_music(SWOSH_WHOOSH_AIR_CUT, "oneshot", -10.0)
+	
 	start_dashing()
 
 func start_dashing() -> void:
+	
+	if has_dashed_mid_air:
+		return
 
 	if !can_dash:
 		return
@@ -554,11 +569,14 @@ func start_dashing() -> void:
 		return
 
 	can_dash = false
-	is_dashing = true
+	is_dashing = true	
+	
 	hurt_box_col.set_deferred("disabled", true)
 
 	dash_timer = dash_duration
+	can_dash_timer = 1.5
 	velocity.x = facing_dir * dash_speed
+	AudioManager.play_music(SWOSH_WHOOSH_AIR_CUT, "oneshot", -10.0)
 	
 	if p_form_state == PlayerFormState.HUMAN_FORM:
 		play_anim(anim_player, "dashing", true)
@@ -567,6 +585,11 @@ func start_dashing() -> void:
 	
 func is_air_dashing() -> bool:
 	return is_dashing and !is_on_floor()
+
+func has_dashed_midair() -> bool:
+	if !is_on_floor() and is_dashing:
+		has_dashed_mid_air = true
+	return has_dashed_mid_air
 
 #endregion
 
