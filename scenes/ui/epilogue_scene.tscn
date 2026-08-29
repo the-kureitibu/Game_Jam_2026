@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cjdolo12x8ilr" path="res://scenes/ui/epilogue_scene.gd" id="1_kawkk"]
 [ext_resource type="Texture2D" uid="uid://c8elxsusu7ut7" path="res://assets/sprites/ui/BG/bucko_jam_ending1.png" id="2_kawkk"]
 [ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="3_4g5s4"]
+[ext_resource type="Texture2D" uid="uid://c2op18t0fnnct" path="res://assets/sprites/ui/BG/bucko_jam_ending2.png" id="3_fxac2"]
 [ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="4_h63l8"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4g5s4"]
@@ -40,6 +41,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("3_fxac2")
 expand_mode = 1
 
 [node name="BlackBG" type="ColorRect" parent="." unique_id=1591051824]

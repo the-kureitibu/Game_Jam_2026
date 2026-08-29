@@ -1,11 +1,10 @@
 [gd_scene format=3 uid="uid://byigv7c0sjq2o"]
 
 [ext_resource type="Texture2D" uid="uid://dnog4lnhjsi7c" path="res://assets/sprites/ui/Sprite sheets/Setting menu.png" id="1_h8mjf"]
+[ext_resource type="Texture2D" uid="uid://k7f4eil344k4" path="res://assets/sprites/ui/tutorial_uis/slider_grabber.png" id="2_h8mjf"]
 [ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="2_w735g"]
 [ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="3_de0uw"]
 [ext_resource type="Texture2D" uid="uid://dn4muw6jh0klr" path="res://assets/sprites/ui/Sprite sheets/UI Settings Buttons.png" id="4_kbk5f"]
-
-[sub_resource type="ImageTexture" id="ImageTexture_rnaui"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jcchn"]
 texture = ExtResource("4_kbk5f")
@@ -78,60 +77,57 @@ offset_right = 140.0
 offset_bottom = 210.0
 grow_horizontal = 2
 
-[node name="BackDrop" type="NinePatchRect" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=1078142596]
-visible = false
+[node name="MasterVolumeText" type="RichTextLabel" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=63871139]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-size_flags_vertical = 3
-texture = ExtResource("2_w735g")
-region_rect = Rect2(293, 101, 38, 38)
-patch_margin_left = 7
-patch_margin_top = 9
-patch_margin_right = 8
-patch_margin_bottom = 8
-
-[node name="MainPanel" type="HBoxContainer" parent="BasePanel/MainVBox/BG/ImageVBContainer/BackDrop" unique_id=893586103]
-custom_minimum_size = Vector2(250, 0)
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_left = 15.0
-offset_top = 10.0
-offset_right = 265.0
-offset_bottom = -10.0
-grow_vertical = 2
-
-[node name="TextVBContainer" type="VBoxContainer" parent="BasePanel/MainVBox/BG/ImageVBContainer/BackDrop/MainPanel" unique_id=2028814983]
-custom_minimum_size = Vector2(250, 80)
-layout_mode = 2
-
-[node name="Label1" type="Label" parent="BasePanel/MainVBox/BG/ImageVBContainer/BackDrop/MainPanel/TextVBContainer" unique_id=1300441665]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/font_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
+theme_override_colors/default_color = Color(0.96298975, 0.7163942, 0.8028215, 1)
 theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
-theme_override_fonts/font = ExtResource("3_de0uw")
-theme_override_font_sizes/font_size = 18
-text = "Thou hast received my blessing, and lo, the selfsame hand that traced the sign of grace upon thy brow doth now unseal the eternal fount.
+theme_override_fonts/normal_font = ExtResource("3_de0uw")
+theme_override_font_sizes/normal_font_size = 24
+text = "Master Volume"
+horizontal_alignment = 1
 
--archangel Michael (Bucko)"
-autowrap_mode = 2
+[node name="MasterVolume" type="HSlider" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=322866137]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_icons/grabber = ExtResource("2_h8mjf")
+theme_override_styles/slider = SubResource("StyleBoxTexture_jcchn")
+theme_override_styles/grabber_area = SubResource("StyleBoxTexture_qn5cm")
+value = 10.0
+
+[node name="SFXVolumeText" type="RichTextLabel" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=806997542]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.96298975, 0.7163942, 0.8028215, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("3_de0uw")
+theme_override_font_sizes/normal_font_size = 24
+text = "SFX Volume"
+horizontal_alignment = 1
+
+[node name="SFXVolume" type="HSlider" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=2000028139]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_icons/grabber = ExtResource("2_h8mjf")
+theme_override_styles/slider = SubResource("StyleBoxTexture_jcchn")
+theme_override_styles/grabber_area = SubResource("StyleBoxTexture_qn5cm")
+value = 10.0
+
+[node name="VSpacer1" type="Control" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=646389352]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
 
 [node name="TitleButton" type="Button" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=570947956]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="Button2" type="Button" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=958231545]
-custom_minimum_size = Vector2(0, 50)
+[node name="VSpacer2" type="Control" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=895549955]
+custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="HSlider" type="HSlider" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=322866137]
-custom_minimum_size = Vector2(0, 70)
+[node name="ExitButton" type="Button" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=958231545]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-theme_override_icons/grabber = SubResource("ImageTexture_rnaui")
-theme_override_styles/slider = SubResource("StyleBoxTexture_jcchn")
-theme_override_styles/grabber_area = SubResource("StyleBoxTexture_qn5cm")
-value = 100.0
 
 [node name="ExitButtonContainer" type="MarginContainer" parent="BasePanel" unique_id=2028960429]
 z_index = 1
@@ -146,7 +142,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="ExitButton" type="Button" parent="BasePanel/ExitButtonContainer/VBoxContainer" unique_id=1459849193]
+[node name="XButton" type="Button" parent="BasePanel/ExitButtonContainer/VBoxContainer" unique_id=1459849193]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxTexture_5he78")
