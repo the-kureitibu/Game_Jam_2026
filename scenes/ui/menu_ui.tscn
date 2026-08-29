@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://byigv7c0sjq2o"]
 
+[ext_resource type="Script" uid="uid://dxdsi5w2kibf" path="res://scenes/ui/menu_ui.gd" id="1_de0uw"]
 [ext_resource type="Texture2D" uid="uid://dnog4lnhjsi7c" path="res://assets/sprites/ui/Sprite sheets/Setting menu.png" id="1_h8mjf"]
 [ext_resource type="Texture2D" uid="uid://k7f4eil344k4" path="res://assets/sprites/ui/tutorial_uis/slider_grabber.png" id="2_h8mjf"]
 [ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="2_w735g"]
@@ -17,6 +18,14 @@ texture = ExtResource("4_kbk5f")
 expand_margin_top = 20.0
 expand_margin_bottom = 20.0
 region_rect = Rect2(50, 194, 44, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4g5s4"]
+texture = ExtResource("2_w735g")
+region_rect = Rect2(275, 178, 90, 27)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fxac2"]
+texture = ExtResource("2_w735g")
+region_rect = Rect2(275, 212, 90, 25)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5he78"]
 texture = ExtResource("2_w735g")
@@ -37,6 +46,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_de0uw")
 
 [node name="BasePanel" type="MarginContainer" parent="." unique_id=185126055]
 z_index = 1
@@ -65,6 +75,26 @@ size_flags_vertical = 3
 texture = ExtResource("1_h8mjf")
 region_rect = Rect2(139, 12, 106, 122)
 
+[node name="BlackBG" type="NinePatchRect" parent="BasePanel/MainVBox/BG" unique_id=1829624355]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -150.0
+offset_right = 150.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_w735g")
+region_rect = Rect2(107, 155, 26, 26)
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+
 [node name="ImageVBContainer" type="VBoxContainer" parent="BasePanel/MainVBox/BG" unique_id=1578412134]
 custom_minimum_size = Vector2(280, 300)
 layout_mode = 1
@@ -77,23 +107,24 @@ offset_right = 140.0
 offset_bottom = 210.0
 grow_horizontal = 2
 
-[node name="MasterVolumeText" type="RichTextLabel" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=63871139]
+[node name="BGMVolumeText" type="RichTextLabel" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=63871139]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.96298975, 0.7163942, 0.8028215, 1)
 theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/normal_font = ExtResource("3_de0uw")
 theme_override_font_sizes/normal_font_size = 24
-text = "Master Volume"
+text = "BGM Volume"
 horizontal_alignment = 1
 
-[node name="MasterVolume" type="HSlider" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=322866137]
+[node name="BGMVolume" type="HSlider" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=322866137]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_icons/grabber = ExtResource("2_h8mjf")
+theme_override_icons/grabber_highlight = ExtResource("2_h8mjf")
 theme_override_styles/slider = SubResource("StyleBoxTexture_jcchn")
 theme_override_styles/grabber_area = SubResource("StyleBoxTexture_qn5cm")
-value = 10.0
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_qn5cm")
 
 [node name="SFXVolumeText" type="RichTextLabel" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=806997542]
 custom_minimum_size = Vector2(0, 30)
@@ -109,9 +140,10 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_icons/grabber = ExtResource("2_h8mjf")
+theme_override_icons/grabber_highlight = ExtResource("2_h8mjf")
 theme_override_styles/slider = SubResource("StyleBoxTexture_jcchn")
 theme_override_styles/grabber_area = SubResource("StyleBoxTexture_qn5cm")
-value = 10.0
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_qn5cm")
 
 [node name="VSpacer1" type="Control" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=646389352]
 custom_minimum_size = Vector2(0, 5)
@@ -120,6 +152,14 @@ layout_mode = 2
 [node name="TitleButton" type="Button" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=570947956]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.8950189, 0.4042994, 0.6100351, 1)
+theme_override_colors/font_hover_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/font = ExtResource("3_de0uw")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxTexture_4g5s4")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_fxac2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_fxac2")
+text = "Back to start"
 
 [node name="VSpacer2" type="Control" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=895549955]
 custom_minimum_size = Vector2(0, 5)
@@ -128,6 +168,14 @@ layout_mode = 2
 [node name="ExitButton" type="Button" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=958231545]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.8950189, 0.4042994, 0.6100351, 1)
+theme_override_colors/font_hover_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/font = ExtResource("3_de0uw")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxTexture_4g5s4")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_fxac2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_fxac2")
+text = "Exit Isekai"
 
 [node name="ExitButtonContainer" type="MarginContainer" parent="BasePanel" unique_id=2028960429]
 z_index = 1
@@ -135,12 +183,14 @@ custom_minimum_size = Vector2(370, 320)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="BasePanel/ExitButtonContainer" unique_id=1299127806]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="XButton" type="Button" parent="BasePanel/ExitButtonContainer/VBoxContainer" unique_id=1459849193]
 layout_mode = 2
@@ -148,3 +198,10 @@ size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxTexture_5he78")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_nypqd")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ul53p")
+
+[connection signal="value_changed" from="BasePanel/MainVBox/BG/ImageVBContainer/BGMVolume" to="." method="_on_bgm_volume_value_changed"]
+[connection signal="drag_started" from="BasePanel/MainVBox/BG/ImageVBContainer/SFXVolume" to="." method="_on_sfx_volume_drag_started"]
+[connection signal="value_changed" from="BasePanel/MainVBox/BG/ImageVBContainer/SFXVolume" to="." method="_on_sfx_volume_value_changed"]
+[connection signal="pressed" from="BasePanel/MainVBox/BG/ImageVBContainer/TitleButton" to="." method="_on_title_button_pressed"]
+[connection signal="pressed" from="BasePanel/MainVBox/BG/ImageVBContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="BasePanel/ExitButtonContainer/VBoxContainer/XButton" to="." method="_on_x_button_pressed"]

@@ -211,7 +211,7 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxTexture_4g5s4")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_fxac2")
 theme_override_styles/hover = SubResource("StyleBoxTexture_fxac2")
-text = "Exit Game
+text = "Exit Isekai
 "
 
 [node name="Control2" type="Control" parent="ButtonMarginCont/ButtonHBox/ButtonVBox" unique_id=783377119]
