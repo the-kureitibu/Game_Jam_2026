@@ -2,6 +2,13 @@ extends Node2D
 
 #region References 
 
+#region Menu Panel
+
+
+@onready var menu_ui: Control = $MainUICanvas/MenuUI
+
+#endregion Menu Panel
+
 @onready var player_one: CharacterBody2D = $PlayerScene
 @onready var player_two: CharacterBody2D = $PlayerTwoScene
 @onready var current_path = get_tree().current_scene.scene_file_path
@@ -35,8 +42,13 @@ func _ready() -> void:
 		player_two.global_position
 	)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("menu"):
+		
+		menu_ui.open_menu_panel()
 
 #region Transitions 
+
 
 
 func capture_last_position() -> void:

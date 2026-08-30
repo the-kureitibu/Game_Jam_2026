@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bi22meo6lkgsj" path="res://assets/sprites/environment/Bushes-16x16.png" id="5_rkpsh"]
 [ext_resource type="PackedScene" uid="uid://bfsff145cw0w7" path="res://scenes/ui/tutorial_u_is.tscn" id="6_t00yd"]
 [ext_resource type="PackedScene" uid="uid://wxyw3dr3fl1b" path="res://scenes/player_scene/player_two_scene.tscn" id="11_d7ogu"]
+[ext_resource type="PackedScene" uid="uid://byigv7c0sjq2o" path="res://scenes/ui/menu_ui.tscn" id="11_nw4p4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_btjhv"]
 size = Vector2(76, 307)
@@ -172,9 +173,10 @@ position = Vector2(418, -131)
 shape = SubResource("CircleShape2D_vxa0g")
 
 [node name="UILayer" type="CanvasLayer" parent="." unique_id=2132063985]
-visible = false
 
 [node name="TutorialUIs" parent="UILayer" unique_id=986002305 instance=ExtResource("6_t00yd")]
+
+[node name="MenuUI" parent="UILayer" unique_id=1033321024 instance=ExtResource("11_nw4p4")]
 
 [node name="PlayerTwoScene" parent="." unique_id=1399677113 instance=ExtResource("11_d7ogu")]
 position = Vector2(123, -16)

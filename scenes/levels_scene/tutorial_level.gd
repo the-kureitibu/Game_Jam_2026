@@ -2,6 +2,13 @@ extends Node2D
 
 #region Base Vars
 
+
+#region Menu Panel
+
+@onready var menu_ui: Control = $UILayer/MenuUI
+
+#endregion Menu Panel
+
 #region References
 
 @onready var tutorial_attack: Sprite2D = $TutorialAttack
@@ -106,6 +113,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			tutorial_u_is.open_rage_panel()
 		elif is_in_arrow_four: 	
 			tutorial_u_is.open_rage_skill_panel()
+			
+	if event.is_action_pressed("menu"):
+		menu_ui.open_menu_panel()
 
 #endregion
 

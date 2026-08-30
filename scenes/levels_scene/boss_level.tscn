@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://wxyw3dr3fl1b" path="res://scenes/player_scene/player_two_scene.tscn" id="4_dyj1d"]
 [ext_resource type="PackedScene" uid="uid://dn5srq6ttvo7w" path="res://scenes/ui/main_ui.tscn" id="5_vilxs"]
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="6_el1n2"]
+[ext_resource type="PackedScene" uid="uid://byigv7c0sjq2o" path="res://scenes/ui/menu_ui.tscn" id="7_vilxs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oderq"]
 size = Vector2(74, 269)
@@ -46,9 +47,10 @@ position = Vector2(28, 1167)
 position = Vector2(96, 1165)
 
 [node name="MainUI" type="CanvasLayer" parent="." unique_id=627492529]
-visible = false
 
 [node name="MainUI" parent="MainUI" unique_id=1108660128 instance=ExtResource("5_vilxs")]
+
+[node name="MenuUI" parent="MainUI" unique_id=1033321024 instance=ExtResource("7_vilxs")]
 
 [node name="CamRig" parent="." unique_id=819861590 instance=ExtResource("6_el1n2")]
 

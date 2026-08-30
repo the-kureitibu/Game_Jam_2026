@@ -281,15 +281,19 @@ func button_nav_text_helper(label: Label, main_dict_item: int, index: int) -> vo
 	label.text = current_panel_dict[current_inner_key]
 
 func _on_arrow_left_button_pressed() -> void:
-	current_index -= 1
 	
+	current_index -= 1
+	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
+
 	switch_image_and_label()
+	
 
 
 func _on_arrow_right_button_pressed() -> void:
 	
 	current_index += 1
-	
+	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
+
 	switch_image_and_label()
 	
 func switch_image_and_label() -> void:
@@ -355,6 +359,8 @@ func button_image_helper(panel: MarginContainer, image_array: Array) -> void:
 func _on_exit_button_pressed() -> void:
 	is_panel_open = false
 	
+	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
+
 	for panel in panel_arrays:
 		panel.visible = false
 	

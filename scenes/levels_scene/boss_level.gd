@@ -1,6 +1,7 @@
 extends Node2D
 
 #region References 
+@onready var menu_ui: Control = $MainUI/MenuUI
 
 @onready var player_one: CharacterBody2D = $PlayerScene
 @onready var player_two: CharacterBody2D = $PlayerTwoScene
@@ -79,3 +80,8 @@ func _on_to_boss_room_body_entered(body: Node2D) -> void:
 
 
 #endregion -- Transitions 
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("menu"):
+		
+		menu_ui.open_menu_panel()

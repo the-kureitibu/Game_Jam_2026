@@ -46,9 +46,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_de0uw")
 
 [node name="BasePanel" type="MarginContainer" parent="." unique_id=185126055]
+visible = false
 z_index = 1
 custom_minimum_size = Vector2(350, 300)
 layout_mode = 1
@@ -148,6 +150,7 @@ theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_qn5c
 [node name="VSpacer1" type="Control" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=646389352]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TitleButton" type="Button" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=570947956]
 custom_minimum_size = Vector2(0, 50)
@@ -164,6 +167,7 @@ text = "Back to start"
 [node name="VSpacer2" type="Control" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=895549955]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ExitButton" type="Button" parent="BasePanel/MainVBox/BG/ImageVBContainer" unique_id=958231545]
 custom_minimum_size = Vector2(0, 50)

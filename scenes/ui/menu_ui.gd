@@ -9,6 +9,13 @@ extends Control
 @onready var exit_button: Button = $BasePanel/MainVBox/BG/ImageVBContainer/ExitButton
 @onready var x_button: Button = $BasePanel/ExitButtonContainer/VBoxContainer/XButton
 
+@onready var SFX_AGH: String = "res://assets/audio/sfx/sfx agh.wav"
+@onready var woodland_fantasy_bgm: String = "res://assets/audio/bgm/Woodland Fantasy.mp3"
+@onready var base_panel: MarginContainer = $BasePanel
+@onready var typing_sfx: String = "res://assets/audio/sfx/typewriter3.wav"
+const START_SCENE: String = "res://scenes/ui/start_screen.tscn"
+
+
 #endregion -- References Nodes
 
 
@@ -19,11 +26,15 @@ extends Control
 
 #region Processes
 
-
 #endregion -- Processes
 
-
 #region Volumes
+
+func _ready() -> void:
+	base_panel.visible = false
+
+func open_menu_panel() -> void:
+	base_panel.visible = true
 
 func adjust_sfx_volume() -> void:
 	pass
@@ -37,8 +48,10 @@ func _on_sfx_volume_value_changed(value: float) -> void:
 	else:
 		AudioServer.set_bus_volume_db(bus_index, linear_to_db(linear_value))
 
-	var test_volume := AudioServer.get_bus_volume_db(bus_index)
-	print(test_volume)
+	
+	AudioManager.play_music(SFX_AGH, "voice", -10.0)
+
+
 
 func _on_bgm_volume_value_changed(value: float) -> void:
 	var bus_index := AudioServer.get_bus_index("Music")
@@ -54,8 +67,8 @@ func _on_bgm_volume_value_changed(value: float) -> void:
 			linear_to_db(linear_value)
 		)
 
-	var test_volume := AudioServer.get_bus_volume_db(bus_index)
-	print(test_volume)
+	if !AudioManager.bgm_player.is_playing():
+		AudioManager.play_music(woodland_fantasy_bgm, "bgm", -10.0)
 
 #endregion -- Volumes
 
@@ -63,15 +76,21 @@ func _on_bgm_volume_value_changed(value: float) -> void:
 #region Buttons
 
 func _on_title_button_pressed() -> void:
-	pass # Replace with function body.
+
+	SignalHub.restart_game.emit()
+	
+	AudioManager.fade_out_bgm("bgm")
+	GameManager.change_scene_with_transition(START_SCENE)
 
 
 func _on_exit_button_pressed() -> void:
-	pass # Replace with function body.
+	get_tree().quit()
 
 
 func _on_x_button_pressed() -> void:
-	pass # Replace with function body.
+	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
+	base_panel.visible = false
+
 
 #endregion -- Buttons
 

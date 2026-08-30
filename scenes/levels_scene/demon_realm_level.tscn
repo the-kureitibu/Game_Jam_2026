@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dn5srq6ttvo7w" path="res://scenes/ui/main_ui.tscn" id="6_yn3f5"]
 [ext_resource type="PackedScene" uid="uid://degrrqeqbbpiq" path="res://scenes/environment_scene/one_way_flatform.tscn" id="7_5p1l5"]
 [ext_resource type="PackedScene" uid="uid://q3hyw88nqvk6" path="res://scenes/enemy_scene/mob_one.tscn" id="8_dw7j5"]
+[ext_resource type="PackedScene" uid="uid://byigv7c0sjq2o" path="res://scenes/ui/menu_ui.tscn" id="8_woy01"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yn3f5"]
 size = Vector2(77, 624)
@@ -55,9 +56,10 @@ position = Vector2(176, 317)
 [node name="CamRig" parent="." unique_id=819861590 instance=ExtResource("5_pw7ci")]
 
 [node name="MainUICanvas" type="CanvasLayer" parent="." unique_id=423780292]
-visible = false
 
 [node name="MainUI" parent="MainUICanvas" unique_id=1108660128 instance=ExtResource("6_yn3f5")]
+
+[node name="MenuUI" parent="MainUICanvas" unique_id=1033321024 instance=ExtResource("8_woy01")]
 
 [node name="TransitionPrevious" type="Area2D" parent="." unique_id=2117748891]
 

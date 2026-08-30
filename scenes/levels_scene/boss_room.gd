@@ -1,6 +1,7 @@
 extends Node2D
 
 #region References
+@onready var menu_ui: Control = $CanvasLayer/MenuUI
 
 const PRE_FIGHT_DIALOGUE = preload("res://scenes/ui/pre_boss_dialogue.tscn")
 const PRE_SECOND_PHASE_DIALOGUE = preload("res://scenes/ui/second_phase_dialogue.tscn")
@@ -60,3 +61,8 @@ func start_second_phase_dialogue(scene: PackedScene) -> void:
 
 
 #endregion -- Functions 
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("menu"):
+		
+		menu_ui.open_menu_panel()

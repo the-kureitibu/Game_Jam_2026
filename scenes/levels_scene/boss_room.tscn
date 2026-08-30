@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bp3ocwtrimy7s" path="res://scenes/environment_scene/cam_rig.tscn" id="5_ea7vf"]
 [ext_resource type="PackedScene" uid="uid://dn5srq6ttvo7w" path="res://scenes/ui/main_ui.tscn" id="7_1ll34"]
 [ext_resource type="PackedScene" uid="uid://t2g8yioc8y3a" path="res://scenes/ui/monster_health_bar.tscn" id="8_1ll34"]
+[ext_resource type="PackedScene" uid="uid://byigv7c0sjq2o" path="res://scenes/ui/menu_ui.tscn" id="10_ucrqt"]
 
 [node name="BossRoom" type="Node2D" unique_id=481181433 groups=["Terrain"]]
 script = ExtResource("1_l7ur8")
@@ -56,5 +57,7 @@ offset_right = 106.99999
 offset_bottom = 321.00003
 scale = Vector2(1.5, 0.3)
 boss_node = NodePath("../../EnemyBoss")
+
+[node name="MenuUI" parent="CanvasLayer" unique_id=1033321024 instance=ExtResource("10_ucrqt")]
 
 [node name="Projectiles" type="Node2D" parent="." unique_id=552233184]
