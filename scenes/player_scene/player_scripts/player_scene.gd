@@ -46,7 +46,7 @@ const MAX_RAGE: float = 100.0
 		p_damage = clamp(value, 0, MAX_DMG)
 		stat_changed.emit("p_damage", value)
 		
-@export var r_amount: float:
+@onready var r_amount: float = 0.0:
 	set(value):
 		
 		r_amount = clamp(value, 0, stats.rage_amount)
@@ -162,8 +162,8 @@ const WEB_DELAY := 0.08
 
 #region Skill Base Vars
 
-var web_ray_range: float = 250.0
-var light_ray_range: float = 180.0
+var web_ray_range: float = 280.0
+var light_ray_range: float = 200.0
 var can_skill: bool = true
 var is_skilling := false
 
@@ -414,7 +414,6 @@ func player_move() -> void:
 		velocity.x = 0.0
 		return
 	
-	
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	
@@ -429,7 +428,6 @@ func player_move() -> void:
 	if is_busy:
 		velocity.x = 0.0
 		return
-	
 	
 	if is_blocking:
 		velocity.x = 0.0
@@ -464,11 +462,11 @@ func player_move() -> void:
 			s_sprite.flip_h = p_direction < 0
 			
 		magic_ball_marker.position.x = m_ball_marker_base_x * p_direction
-	
 
 
 
 func player_jump() -> void:
+	
 	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
 		and GameManager.can_start_boss_fight == false):
 		velocity.x = 0.0
@@ -481,12 +479,16 @@ func player_jump() -> void:
 	if p_action_state == PlayerActionState.DEAD:
 		return
 		
+
 	if is_hurt:
 		return
 	
 	if !is_on_floor():
 		return
 	
+	#if combo_input_queued and is_attacking:
+		#return
+
 	if is_in_flatform:
 		return
 	
@@ -662,12 +664,10 @@ func end_blocking() -> void:
 
 func start_attack() -> void:
 	
-	
 	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
 		and GameManager.can_start_boss_fight == false):
 		velocity.x = 0.0
 		return
-	
 	
 	
 	if p_action_state == PlayerActionState.REVIVE:
@@ -930,6 +930,9 @@ func force_move_animation() -> void:
 
 func handle_hurt(damage: float) -> void:
 	if is_invulnerable:
+		return
+	
+	if is_transforming:
 		return
 	
 	start_hurt(damage)

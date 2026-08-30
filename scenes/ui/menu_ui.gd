@@ -42,6 +42,9 @@ func adjust_sfx_volume() -> void:
 	pass
 	
 func _on_sfx_volume_value_changed(value: float) -> void:
+	if !base_panel.visible:
+		return
+	
 	var bus_index := AudioServer.get_bus_index("SFX")
 	var linear_value := value / 100.0
 	
@@ -56,6 +59,9 @@ func _on_sfx_volume_value_changed(value: float) -> void:
 
 
 func _on_bgm_volume_value_changed(value: float) -> void:
+	if !base_panel.visible:
+		return
+	
 	var bus_index := AudioServer.get_bus_index("Music")
 
 	
@@ -100,4 +106,4 @@ func _on_x_button_pressed() -> void:
 
 
 func _on_sfx_volume_drag_started() -> void:
-	print("Im draggin")
+	pass

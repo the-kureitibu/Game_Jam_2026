@@ -54,7 +54,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	
-	AudioManager.play_music(WEB_SFX, "oneshot", -2.0)
+	AudioManager.play_music(WEB_SFX, "skill", 1.0)
 
 	sprite_one.rotation = deg_to_rad(90.0)
 

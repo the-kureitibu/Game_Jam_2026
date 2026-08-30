@@ -177,7 +177,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	
 	if event.is_action_pressed("next"):
-		AudioManager.play_music(typing_sfx, "oneshot", -6.0)
+		if not has_ended_dialogue:
+			AudioManager.play_music(typing_sfx, "oneshot", -6.0)
+		
 		advance_dialogue()
 
 func advance_dialogue() -> void:

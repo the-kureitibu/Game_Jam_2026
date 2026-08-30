@@ -11,6 +11,8 @@ extends Node2D
 const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 const BOSS_ROOM_SCENE: String = "res://scenes/levels_scene/boss_room.tscn"
 
+var dmg: float = 10000.0
+
 #region BGM 
 
 @onready var orchestra_bgm: String = "res://assets/audio/bgm/Героическая минорная.mp3"
@@ -85,3 +87,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("menu"):
 		
 		menu_ui.open_menu_panel()
+
+
+func _on_insta_death_pit_area_entered(area: Area2D) -> void:
+	var p_target = area.get_tree().get_first_node_in_group("Player_target")
+	
+	if p_target and "handle_hurt" in p_target:
+		p_target.handle_hurt(dmg)

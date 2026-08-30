@@ -206,6 +206,8 @@ func hit() -> float:
 	return dmg
 
 func jump_to_target() -> void:
+
+	
 	if mob_one_state == MobStates.DEATH:
 		velocity.x = 0
 		return
@@ -226,6 +228,9 @@ func jump_to_target() -> void:
 	if mob_one_state == MobStates.ATTACKING: 
 		return
 	
+	if is_attacking:
+		return
+		
 	is_attacking = true
 	mob_one_state = MobStates.ATTACKING
 	
@@ -372,3 +377,9 @@ func _on_main_sprite_animation_finished() -> void:
 		start_death()
 
 #endregion
+
+
+func print_debug_with_timestamp(message: String, object: Variant):
+	var time_ms = Time.get_ticks_msec()
+	var frame = Engine.get_process_frames()
+	print("[%s | Frame %d] %s %s" % [time_ms, frame, message, object])

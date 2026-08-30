@@ -671,7 +671,8 @@ theme_override_colors/font_color = Color(0.8287756, 0.29803815, 0.5326171, 1)
 theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/font = ExtResource("8_by0sy")
 theme_override_font_sizes/font_size = 45
-text = "w to interact"
+text = "w to interact. f to dash
+"
 
 [connection signal="pressed" from="MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer/ArrowLeftButton" to="." method="_on_arrow_left_button_pressed"]
 [connection signal="pressed" from="MainMargin/ArrowNavsContainer/HBoxContainer/VBoxContainer2/ArrowRightButton" to="." method="_on_arrow_right_button_pressed"]

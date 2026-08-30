@@ -29,7 +29,6 @@ position = Vector2(55, 337)
 p_health = 0.0
 p_speed = 0.0
 p_damage = 0
-r_amount = 0.0
 r_per_attk = 0
 p_move_state = 1
 p_form_state = 0
@@ -80,6 +79,7 @@ shape = SubResource("RectangleShape2D_tj5l5")
 [node name="MainUICanvas" type="CanvasLayer" parent="." unique_id=175239495]
 
 [node name="MainUI" parent="MainUICanvas" unique_id=1108660128 instance=ExtResource("6_krmoe")]
+mouse_filter = 2
 
 [node name="MenuUI" parent="MainUICanvas" unique_id=1033321024 instance=ExtResource("9_h88wo")]
 

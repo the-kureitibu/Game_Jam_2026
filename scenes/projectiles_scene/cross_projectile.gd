@@ -6,6 +6,12 @@ extends Area2D
 @onready var t_player = get_tree().get_first_node_in_group("Player_target")
 
 
+#region References 
+
+@onready var light_ray_sfx: String = "res://assets/audio/sfx/light_ray3.ogg"
+
+#endregion 
+
 func _ready() -> void:
 	
 	
@@ -22,8 +28,13 @@ func handle_initial_attack() -> void:
 	hit_box.set_deferred("disabled", false)
 	main_sprite.visible = true
 	hit_box.visible = true
+	
+	
+
+	
 
 func start_anim() -> void:
+	AudioManager.play_music(light_ray_sfx, "skill", -9.0)
 	anim_player.play("trigger_attack")
 
 func hit() -> int:

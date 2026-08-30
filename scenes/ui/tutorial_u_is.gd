@@ -120,15 +120,15 @@ var is_panel_open := false
 
 @onready var text_collect: Dictionary = {
 	"attack_panel": {
-		"attk_tut": "Press Left Mouse button to attack",
-		"combo_tut": "Press Left Mouse repeatedly to start combo",
+		"attk_tut": "Press 'J' to attack",
+		"combo_tut": "Press 'J' repeatedly to start combo",
 		"skill_one_tut": "Press 'E' key to launch skill one. Must have target nearby",
 		"skill_two_tut": "Press 'R' key to launch skill two"
 	},
 	"block_jump_panel": {
 
 		"jump_tut": "Press Space Bar to jump",
-		"block_tut": "Press Right Mouse button to block. Bucko automatically teleports in front of Ami",
+		"block_tut": "Press 'K' button to block. Bucko automatically teleports in front of Ami",
 	},
 	
 	"rage_panel": {
