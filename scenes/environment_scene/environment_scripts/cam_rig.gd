@@ -124,6 +124,7 @@ func determine_level_scene(lvl_name: Variant) -> void:
 		"DemonRealmLevel":
 			handle_cam_limits(0, 4654, 2200, -681)
 			is_demonrealm_level = true
+			cam.offset = Vector2(0, -120.0)
 			
 		"MichaelRoom":
 			handle_cam_limits(0, 1590, 505, 0)

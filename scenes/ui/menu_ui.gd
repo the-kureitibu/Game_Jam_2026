@@ -32,6 +32,8 @@ const START_SCENE: String = "res://scenes/ui/start_screen.tscn"
 
 func _ready() -> void:
 	base_panel.visible = false
+	bgm_volume.value = 50.0
+	sfx_volume.value = 50.0
 
 func open_menu_panel() -> void:
 	base_panel.visible = true
