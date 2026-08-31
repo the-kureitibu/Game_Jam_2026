@@ -24,19 +24,6 @@ tile_set = ExtResource("1_ea7vf")
 
 [node name="PlayerScene" parent="." unique_id=2131738871 instance=ExtResource("2_s0b1o")]
 position = Vector2(62, 336)
-p_health = 0.0
-p_speed = 0.0
-p_damage = 0
-r_amount = 0.0
-r_per_attk = 0
-p_move_state = 1
-p_form_state = 0
-invulnerable_timer = 0.0
-attk_c_timer = 0.0
-r_timer = 0.0
-r_cd_timer = 0.0
-s1_timer = 0.0
-s2_timer = 0.0
 
 [node name="PlayerTwoScene" parent="." unique_id=1399677113 instance=ExtResource("3_ea7vf")]
 position = Vector2(131, 335)

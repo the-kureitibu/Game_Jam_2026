@@ -11,7 +11,10 @@ const TRANSITION_SCENE = preload("res://scenes/ui/transition_scene.tscn")
 const TEXT_ANNOUNCER = preload("res://scenes/ui/text_announcer.tscn")
 var current_scene_path: String = ""
 var previous_scene_path: String = ""
+var demon_realm_path: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 var is_immortal: bool = false
+
+
 
 
 #endregion -- References
@@ -40,6 +43,11 @@ var player_one_spawn_p: Vector2 = Vector2.ZERO
 var player_two_spawn_p: Vector2 = Vector2.ZERO
 var player_one_prev_spawn: Vector2 = Vector2.ZERO
 var player_two_prev_spawn: Vector2 = Vector2.ZERO
+
+
+var demon_realm_p1: Vector2 = Vector2.ZERO
+var demon_realm_p2: Vector2 = Vector2.ZERO
+
 var player_saved_health: float = 0.0
 var player_saved_rage: float = 0.0
 
@@ -146,18 +154,31 @@ func back_to_previous_stage() -> void:
 		push_error("No current_scene_path registered. Cannot restart stage.")
 		return
 	
-	await get_tree().process_frame
-	
+	#if game_scene_state == GameLevelStates.BOSS_LEVEL:
+		#change_scene_to_previous(demon_realm_path, demon_realm_p1, demon_realm_p2)
+	#else:
+
 	change_scene_to_previous(previous_scene_path, player_one_prev_spawn, player_two_prev_spawn)
 
-func restart_current_stage() -> void:
-	if current_scene_path == "":
-		push_error("No current_scene_path registered. Cannot restart stage.")
-		return
-	
 	await get_tree().process_frame
 	
-	change_scene_with_transition(current_scene_path)
+
+func restart_current_stage() -> void:
+
+	await get_tree().process_frame
+	
+	if game_scene_state == GameLevelStates.BOSS_ROOM:
+		var stats = PlayerStats
+		
+		change_scene_with_transition(demon_realm_path)
+		player_saved_health = 120.0
+		player_saved_rage  = 0.0
+	else:
+		if current_scene_path == "":
+			push_error("No current_scene_path registered. Cannot restart stage.")
+			return
+		
+		change_scene_with_transition(current_scene_path)
 
 
 #endregion -- Levels Start

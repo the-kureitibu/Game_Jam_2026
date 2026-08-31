@@ -360,9 +360,7 @@ func _physics_process(delta: float) -> void:
 	handle_floor_state()
 
 	if p_action_state == PlayerActionState.DASHING:
-		print(PlayerActionState.keys()[p_action_state])
 		dash_timer = set_timer(dash_timer, delta)
-		print(dash_timer)
 		if dash_timer <= 0.0:
 			p_action_state = PlayerActionState.NONE
 			hurt_box_col.set_deferred("disabled", false)
@@ -589,7 +587,6 @@ func start_dashing() -> void:
 	dash_timer = dash_duration
 	can_dash_timer = 1.5
 	velocity.x = facing_dir * dash_speed
-	print(velocity.x)
 	AudioManager.play_music(SWOSH_WHOOSH_AIR_CUT, "oneshot", -10.0)
 	
 	if p_form_state == PlayerFormState.HUMAN_FORM:

@@ -159,7 +159,6 @@ var is_blocking := false
 
 #endregion
 
-
 #region References Vars
 
 @export var p_proj_sprite: Area2D
@@ -1317,7 +1316,6 @@ func start_revive() -> void:
 	await get_tree().create_timer(3.0, true, false, true).timeout
 	
 	if is_current_action(my_id, ActionOwner.REVIVE):
-		print("Revive failsafe triggered")
 		finish_revive()
 
 
@@ -1334,7 +1332,6 @@ func summon_michael(scene: PackedScene) -> void:
 
 
 func unpause_after_revive() -> void:
-	print_debug("ever made it here?")
 	if action_owner != ActionOwner.REVIVE:
 		return
 	
@@ -1367,6 +1364,9 @@ func finish_revive() -> void:
 	sync_legacy_flags()
 	
 	force_move_animation()
+	
+	await get_tree().process_frame
+	revive_finishing = false
 
 func adjust_health_and_state() -> void:
 	finish_revive()
@@ -1553,8 +1553,9 @@ func reduce_timer(delta: float) -> void:
 
 func _on_hit_box_area_entered(area: Area2D) -> void:
 	var from_area = area.get_tree().get_first_node_in_group("Enemy_target")
+	var boss_area = area.get_tree().get_first_node_in_group("Boss_target")
 	
-	if from_area:
+	if from_area or boss_area:
 		accumulate_rage()
 
 #endregion
@@ -1565,7 +1566,6 @@ func _on_hit_box_area_entered(area: Area2D) -> void:
 func _on_main_sprite_animation_finished() -> void:
 
 	if p_sprite.animation == "revive":
-		print("animation ever finished?")
 		adjust_health_and_state()
 
 func _on_spider_sprite_animation_finished() -> void:

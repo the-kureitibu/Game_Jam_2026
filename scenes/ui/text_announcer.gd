@@ -42,5 +42,12 @@ func announce_death(text: String) -> void:
 	await tween.finished 
 	
 	SignalHub.stage_restart.emit()
+
+	AudioManager.fade_out_bgm("bgm")
+	AudioManager.fade_out_bgm("skill")
+	AudioManager.fade_out_bgm("persistent")
+	AudioManager.fade_out_bgm("voice")
+	AudioManager.fade_out_bgm("oneshot")
+	
 	
 	queue_free()

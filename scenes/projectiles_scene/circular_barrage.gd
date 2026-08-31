@@ -61,7 +61,6 @@ func _physics_process(delta: float) -> void:
 		queue_timer -= delta
 		if queue_timer <= 0.0:
 			queue_free()
-			print("Chair freed")
 	
 
 #endregion
@@ -131,15 +130,14 @@ func end_chair_queu() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	print("entered a body?")
 	var terrain = body.get_tree().get_first_node_in_group("Terrain")
 	
 	if !terrain:
 		return
 	
-	if terrain:
-		print("entered a terrain?")
-	
+	#if terrain:
+		#print("entered a terrain?")
+	#
 	m_sprite.play("break")
 	chair_broken = true
 	end_chair_queu() 

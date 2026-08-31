@@ -37,8 +37,8 @@ var slowing_speed := 70.0
 
 signal update_health
 
-@onready var MAX_HEALTH: float = 200.0
-@onready var boss_health: float = 10.0: 
+@onready var MAX_HEALTH: float = 500.0
+@onready var boss_health: float = 500.0: 
 	set(value):
 		var new_health = value
 		
@@ -187,7 +187,7 @@ var b_max_speed := 100.0
 
 #region Phase 2 Stats
 
-@onready var PHASE2_MAX_HEALTH: float = 10.0
+@onready var PHASE2_MAX_HEALTH: float = 750.0
 @onready var p2_boss_health: float = 0.0: 
 	set(value):
 		var new_health = value

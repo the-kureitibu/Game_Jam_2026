@@ -12,10 +12,10 @@ func _on_hitbox_entered(area: Area2D):
 	var test_val: int
 	
 	if from_player:
-		print("hit exist")
+		#print("hit exist")
 		if "hit" in from_player:
 			test_val = from_player.hit()
-			print("value from player ", test_val)
-			#hurt()
-	else:
-		print("no hit")
+			#print("value from player ", test_val)
+			##hurt()
+	#else:     
+		#print("no hit")

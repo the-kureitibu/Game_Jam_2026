@@ -26,7 +26,6 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	main_parallax.global_position = Vector2(0, -100)
 	
-	
 	start_pre_fight_dialogue(PRE_FIGHT_DIALOGUE)
 
 	SignalHub.ready_for_second_phase.connect(handle_second_phase_dialogue)

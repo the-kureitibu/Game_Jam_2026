@@ -11,6 +11,10 @@ extends Node2D
 const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 const MICHAEL_ROOM_SCENE: String = "res://scenes/levels_scene/michael_room.tscn"
 const BOSS_CASTLE_SCENE: String = "res://scenes/levels_scene/boss_level.tscn"
+var position_captured := false
+@onready var last_pos_catcher: RayCast2D = $LastPosCatcher
+
+
 
 #region BGM
 
@@ -31,16 +35,31 @@ func _ready() -> void:
 	
 	player_one.global_position = $PlayerScene.global_position
 	player_two.global_position = $PlayerTwoScene.global_position
-	
-	player_one.p_health = GameManager.player_saved_health
-	player_one.r_amount = GameManager.player_saved_rage
-	
-	
+	#
+	#player_one.p_health = GameManager.player_saved_health
+	#player_one.r_amount = GameManager.player_saved_rage
+	#
+	#
 	GameManager.capture_save_points(
 		current_path,
 		player_one.global_position,
 		player_two.global_position
 	)
+
+func _process(delta: float) -> void:
+	
+	if last_pos_catcher.is_colliding():
+		var collider = last_pos_catcher.get_collider()
+		
+		if collider.name != 'PlayerScene':
+			print("not a player")
+			return
+		else:
+			if position_captured:
+				return
+			
+			position_captured = true
+			capture_last_position()
 
 
 #region Transitions 
@@ -82,9 +101,13 @@ func _on_to_boss_castle_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 	
 	if player:
-		capture_last_position()
-		main_ui_canvas.visible = false
 		
+		GameManager.demon_realm_p1 = player_one.global_position
+		GameManager.demon_realm_p2 = player_two.global_position
+		GameManager.capture_player_stats(player_one.p_health, player_one.r_amount)
+
+		main_ui_canvas.visible = false
+		position_captured = false
 		AudioManager.fade_out_bgm("bgm")
 		GameManager.change_scene_with_transition(BOSS_CASTLE_SCENE)
 

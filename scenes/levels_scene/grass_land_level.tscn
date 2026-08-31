@@ -71,4 +71,9 @@ mouse_filter = 2
 
 [node name="MenuUI" parent="MainUICanvas" unique_id=1033321024 instance=ExtResource("9_h88wo")]
 
+[node name="LastPosCatcher" type="RayCast2D" parent="." unique_id=783552651]
+position = Vector2(8180, -561)
+rotation = 3.1415927
+scale = Vector2(4, 4)
+
 [connection signal="body_entered" from="TransitionArea" to="." method="_on_transition_area_body_entered"]

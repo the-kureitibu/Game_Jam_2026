@@ -13,6 +13,10 @@ const BOSS_ROOM_SCENE: String = "res://scenes/levels_scene/boss_room.tscn"
 
 var dmg: float = 10000.0
 
+var captured_one_global_position: Vector2 = Vector2.ZERO
+var captured_two_global_position: Vector2 = Vector2.ZERO
+
+
 #region BGM 
 
 @onready var orchestra_bgm: String = "res://assets/audio/bgm/Героическая минорная.mp3"
@@ -33,10 +37,15 @@ func _ready() -> void:
 	player_one.global_position = $PlayerScene.global_position
 	player_two.global_position = $PlayerTwoScene.global_position
 	
-	#player_one.p_health = GameManager.player_saved_health
-	#player_one.r_amount = GameManager.player_saved_rage
-	#
+	player_one.p_health = GameManager.player_saved_health
+	player_one.r_amount = GameManager.player_saved_rage
+
+	captured_one_global_position = player_one.global_position
+	captured_two_global_position = player_two.global_position
 	
+	player_one.open_and_update_text("YABAっ", "YABAっ")
+
+
 	GameManager.capture_save_points(
 		current_path,
 		player_one.global_position,
@@ -50,6 +59,7 @@ func capture_last_position() -> void:
 	var player1_last_pos = player_one.global_position
 	var player2_last_pos = player_two.global_position
 	
+
 	GameManager.capture_last_points(
 		current_path,
 		player1_last_pos,
@@ -67,14 +77,13 @@ func _on_to_demon_realm_body_entered(body: Node2D) -> void:
 		
 		GameManager.capture_player_stats(player_one.p_health, player_one.r_amount)
 		SignalHub.back_to_previous_stage.emit()
-		
+
 
 
 func _on_to_boss_room_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 	
 	if player:
-		capture_last_position()
 		main_ui.visible = false
 		
 		AudioManager.fade_out_bgm("bgm")
@@ -92,8 +101,12 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_insta_death_pit_area_entered(area: Area2D) -> void:
 	
 	var p_target = area.get_tree().get_first_node_in_group("Player_target")
-	if p_target:
-		print("here")
-	
-	if p_target and "handle_hurt" in p_target:
+
+
+	if GameManager.is_immortal:
+		player_one.global_position = captured_one_global_position
+		player_two.global_position = captured_two_global_position
+
+		
+	elif p_target and "handle_hurt" in p_target:
 		p_target.handle_hurt(dmg)

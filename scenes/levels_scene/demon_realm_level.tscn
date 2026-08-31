@@ -87,6 +87,14 @@ shape = SubResource("RectangleShape2D_dw7j5")
 position = Vector2(823, 432)
 scale = Vector2(2.5, 2.5)
 
+[node name="MobOne2" parent="." unique_id=1279526141 instance=ExtResource("8_dw7j5")]
+position = Vector2(480, 288)
+scale = Vector2(2.5, 2.5)
+
+[node name="MobOne3" parent="." unique_id=677985663 instance=ExtResource("8_dw7j5")]
+position = Vector2(1611, 208.00002)
+scale = Vector2(2.5, 2.5)
+
 [node name="MobOne4" parent="." unique_id=524663212 instance=ExtResource("8_dw7j5")]
 position = Vector2(2573.0002, -16.999998)
 scale = Vector2(2.5, 2.5)
@@ -94,6 +102,11 @@ scale = Vector2(2.5, 2.5)
 [node name="MobOne5" parent="." unique_id=1197415660 instance=ExtResource("8_dw7j5")]
 position = Vector2(3825, -192)
 scale = Vector2(2.5, 2.5)
+
+[node name="LastPosCatcher" type="RayCast2D" parent="." unique_id=935430188]
+position = Vector2(4429, -223)
+rotation = 3.1415927
+scale = Vector2(4, 4)
 
 [connection signal="body_entered" from="TransitionPrevious" to="." method="_on_transition_previous_body_entered"]
 [connection signal="body_entered" from="ToMichael" to="." method="_on_to_michael_body_entered"]

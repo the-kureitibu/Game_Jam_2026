@@ -13,6 +13,12 @@ extends Node2D
 @onready var player_two: CharacterBody2D = $PlayerTwoScene
 @onready var current_path = get_tree().current_scene.scene_file_path
 @onready var main_ui_canvas: CanvasLayer = $MainUICanvas
+@onready var collision_shape_2d: CollisionShape2D = $TransitionArea/CollisionShape2D
+@onready var last_pos_catcher: RayCast2D = $LastPosCatcher
+
+var is_body_in_area := false
+var position_captured := false
+
 
 
 const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.tscn"
@@ -41,6 +47,23 @@ func _ready() -> void:
 		player_one.global_position,
 		player_two.global_position
 	)
+	
+func _process(delta: float) -> void:
+	
+	if last_pos_catcher.is_colliding():
+		var collider = last_pos_catcher.get_collider()
+		
+		if collider.name != 'PlayerScene':
+			print("not a player")
+			return
+		else:
+			if position_captured:
+				return
+			
+			position_captured = true
+			capture_last_position()
+
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("menu"):
@@ -48,8 +71,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		menu_ui.open_menu_panel()
 
 #region Transitions 
-
-
 
 func capture_last_position() -> void:
 	var player1_last_pos = player_one.global_position
@@ -67,10 +88,15 @@ func _on_transition_area_body_entered(body: Node2D) -> void:
 	var player = body.get_tree().get_first_node_in_group("Player_target")
 	
 	if player:
-		capture_last_position()
-		main_ui_canvas.visible = false
 		
+		main_ui_canvas.visible = false
+		position_captured = false
 		AudioManager.fade_out_bgm("bgm")
+		
 		GameManager.change_scene_with_transition(DEMON_REALM_SCENE)
+		
+
+		
+		
 
 #endregion -- Transitions 

@@ -234,9 +234,7 @@ func force_next_animation() -> void:
 			play_anim(main_sprite, "jump")
 
 func _on_main_sprite_animation_finished() -> void:
-	print("ever made it here?: is_blocking_player: ", is_blocking_player)
 	is_blocking_player = false
-	print("ever made it after?: is_blocking_player: ", is_blocking_player)
 
 	SignalHub.blocking_anim_done.emit()
 	

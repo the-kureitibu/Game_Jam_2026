@@ -21,8 +21,8 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 		if "hit" in from_player:
 			test_val = from_player.hit()
 			hurt()
-	else:
-		print("no hit")
+	#else:
+		#print("no hit")
 
 
 func _on_hit_box_area_entered(area: Area2D) -> void:
