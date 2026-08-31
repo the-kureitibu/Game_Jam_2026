@@ -21,16 +21,19 @@ enum PlayerMoveState {
 }
 
 enum PlayerActionState {
-	RAGE_TRANSFORM,
+	NONE,
 	ATTACK,
 	COMBO_ATTACK,
-	HURT,
+	WEB_ATTACK,
+	SKILL_ONE,
+	SKILL_TWO,
 	BLOCKING,
-	SKILL_1,
-	SKILL_2,
+	DASHING,
+	HURT,
+	RAGE_TRANSFORM,
+	TO_HUMAN_TRANSFORM,
 	DEAD,
 	REVIVE,
-	NONE,
 }
 
 enum PlayerFormState {

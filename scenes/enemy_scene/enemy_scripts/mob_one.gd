@@ -320,6 +320,8 @@ func handle_death() -> void:
 	if mob_one_state == MobStates.DEATH:
 		return
 	
+	hit_box.set_deferred('disabled', true)
+	
 	mob_one_state = MobStates.DEATH
 	play_anim(m_sprite, "death")
 	

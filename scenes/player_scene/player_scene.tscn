@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://dfiomxa4fli0f"]
 
-[ext_resource type="Script" uid="uid://s1qvrey745ir" path="res://scenes/player_scene/player_scripts/player_scene.gd" id="1_w7gii"]
+[ext_resource type="Script" uid="uid://bdkv2lxwhe0hc" path="res://scenes/player_scene/player_scripts/test_player_script.gd" id="1_10rhv"]
 [ext_resource type="Script" uid="uid://rc0p3ykjd7ra" path="res://resources/player/player_stats.gd" id="2_qr5f1"]
 [ext_resource type="Texture2D" uid="uid://b2p72tagowg07" path="res://assets/sprites/player/saintmiya_main_sprite3.png" id="3_10rhv"]
 [ext_resource type="Texture2D" uid="uid://6gld3f250kl5" path="res://assets/sprites/player/saintmiya_main_sprite2.png" id="4_gdmn6"]
 [ext_resource type="PackedScene" uid="uid://dg8083i8qh8us" path="res://scenes/projectiles_scene/cross_projectile.tscn" id="5_10rhv"]
 [ext_resource type="PackedScene" uid="uid://1xq1hlgvc2d0" path="res://scenes/ui/speech_bubble.tscn" id="6_l2g17"]
 
-[sub_resource type="Resource" id="Resource_qr5f1"]
+[sub_resource type="Resource" id="Resource_l2g17"]
 script = ExtResource("2_qr5f1")
 metadata/_custom_type_script = "uid://rc0p3ykjd7ra"
 
@@ -301,7 +301,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nhrfk")
 }],
-"loop": true,
+"loop": false,
 "name": &"death",
 "speed": 5.0
 }, {
@@ -1001,37 +1001,22 @@ _data = {
 [node name="PlayerScene" type="CharacterBody2D" unique_id=2131738871 node_paths=PackedStringArray("p_sprite", "s_sprite", "anim_player", "p_proj_sprite") groups=["Player_target"]]
 process_mode = 3
 collision_mask = 28
-script = ExtResource("1_w7gii")
-stats = SubResource("Resource_qr5f1")
-p_health = null
-p_speed = null
-p_damage = null
-r_amount = null
-r_per_attk = null
+script = ExtResource("1_10rhv")
+stats = SubResource("Resource_l2g17")
 p_sprite = NodePath("MainSprite")
 s_sprite = NodePath("SpiderSprite")
 anim_player = NodePath("AnimationPlayer")
-p_move_state = null
-p_form_state = null
 p_proj_sprite = NodePath("CrossProjectile")
-invulnerable_timer = null
-attk_c_timer = null
-r_timer = null
-r_cd_timer = null
-s1_timer = null
-s2_timer = null
 
 [node name="SpiderSprite" type="AnimatedSprite2D" parent="." unique_id=958795497]
 visible = false
 position = Vector2(0, -51)
 sprite_frames = SubResource("SpriteFrames_xpk8o")
-animation = &"idle"
+animation = &"death"
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")
-animation = &"revive"
-frame = 9
-frame_progress = 1.0
+animation = &"idle"
 offset = Vector2(0, -45)
 
 [node name="CrossProjectile" parent="." unique_id=148571568 instance=ExtResource("5_10rhv")]

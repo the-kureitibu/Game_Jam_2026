@@ -84,6 +84,7 @@ func show_tutorial() -> void:
 	
 	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 	top_control_michael.visible = true
+
 	
 #endregion Michael Scene Instantiate
 

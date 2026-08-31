@@ -33,9 +33,9 @@ func _ready() -> void:
 	player_one.global_position = $PlayerScene.global_position
 	player_two.global_position = $PlayerTwoScene.global_position
 	
-	player_one.p_health = GameManager.player_saved_health
-	player_one.r_amount = GameManager.player_saved_rage
-	
+	#player_one.p_health = GameManager.player_saved_health
+	#player_one.r_amount = GameManager.player_saved_rage
+	#
 	
 	GameManager.capture_save_points(
 		current_path,
@@ -90,7 +90,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_insta_death_pit_area_entered(area: Area2D) -> void:
+	
 	var p_target = area.get_tree().get_first_node_in_group("Player_target")
+	if p_target:
+		print("here")
 	
 	if p_target and "handle_hurt" in p_target:
 		p_target.handle_hurt(dmg)

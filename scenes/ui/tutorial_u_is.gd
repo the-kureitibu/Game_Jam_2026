@@ -122,8 +122,8 @@ var is_panel_open := false
 	"attack_panel": {
 		"attk_tut": "Press 'J' to attack",
 		"combo_tut": "Press 'J' repeatedly to start combo",
-		"skill_one_tut": "Press 'E' key to launch skill one. Must have target nearby",
-		"skill_two_tut": "Press 'R' key to launch skill two"
+		"skill_one_tut": "Press 'R' key to launch skill one. Must have target nearby",
+		"skill_two_tut": "Press 'I' key to launch skill two"
 	},
 	"block_jump_panel": {
 
@@ -137,8 +137,8 @@ var is_panel_open := false
 	
 	"rage_skill_panel": {
 
-		"skill_one_rage_tut": "Press 'E' key to launch skill one during Rage mode. Must have target nearby",
-		"skill_two_rage_tut": "Press 'R' key to launch skill two during Rage mode", 
+		"skill_one_rage_tut": "Press 'R' key to launch skill one during Rage mode. Must have target nearby",
+		"skill_two_rage_tut": "Press 'I' key to launch skill two during Rage mode", 
 	}
 }
 

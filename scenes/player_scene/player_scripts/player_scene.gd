@@ -359,10 +359,12 @@ func _physics_process(delta: float) -> void:
 
 	handle_floor_state()
 
-	if is_dashing:
+	if p_action_state == PlayerActionState.DASHING:
+		print(PlayerActionState.keys()[p_action_state])
 		dash_timer = set_timer(dash_timer, delta)
+		print(dash_timer)
 		if dash_timer <= 0.0:
-			is_dashing = false
+			p_action_state = PlayerActionState.NONE
 			hurt_box_col.set_deferred("disabled", false)
 			can_dash = true
 
@@ -417,26 +419,28 @@ func player_move() -> void:
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	
-	if is_dashing:
+	if p_action_state == PlayerActionState.DASHING:
 		velocity.x = facing_dir * dash_speed
 		return
 
-	if is_transforming:
+	if p_action_state == PlayerActionState.TO_HUMAN_TRANSFORM:
+		velocity.x = 0.0
+		return
+		
+	if p_action_state == PlayerActionState.RAGE_TRANSFORM:
 		velocity.x = 0.0
 		return
 	
-	if is_busy:
-		velocity.x = 0.0
-		return
 	
-	if is_blocking:
+	if p_action_state == PlayerActionState.BLOCKING:
 		velocity.x = 0.0
 		return
 	
 	if is_on_floor():
 		is_on_air = false
 
-	if is_attacking and p_form_state == PlayerFormState.HUMAN_FORM:
+	if p_action_state == PlayerActionState.ATTACK or p_action_state == PlayerActionState.COMBO_ATTACK and p_form_state == PlayerFormState.HUMAN_FORM:
+		velocity.x = 0.0
 		return
 
 	p_direction = Input.get_axis("left", "right")
@@ -464,7 +468,6 @@ func player_move() -> void:
 		magic_ball_marker.position.x = m_ball_marker_base_x * p_direction
 
 
-
 func player_jump() -> void:
 	
 	if (GameManager.game_scene_state == GameManager.GameLevelStates.BOSS_ROOM 
@@ -478,9 +481,13 @@ func player_jump() -> void:
 	
 	if p_action_state == PlayerActionState.DEAD:
 		return
-		
 
-	if is_hurt:
+	if p_action_state == PlayerActionState.HURT:
+		return
+		
+	if (p_action_state == PlayerActionState.ATTACK 
+		or p_action_state == PlayerActionState.COMBO_ATTACK 
+		and p_form_state == PlayerFormState.HUMAN_FORM):
 		return
 	
 	if !is_on_floor():
@@ -517,7 +524,6 @@ func apply_gravity(delta) -> void:
 	if is_air_dashing():
 		velocity.y = 0.0
 		return
-
 	
 	var current_gravity: float
 	
@@ -543,19 +549,24 @@ func handle_dashing() -> void:
 	
 	if p_action_state == PlayerActionState.DEAD:
 		return
-		
-	if is_busy:
+	
+	if p_action_state == PlayerActionState.BLOCKING:
+		return
+	
+	if p_action_state == PlayerActionState.ATTACK:
+		return
+	
+	if p_action_state == PlayerActionState.COMBO_ATTACK:
 		return
 	
 	if !can_dash:
 		return
-
+		
 	if is_air_dashing():
 		return
 
 	if !Input.is_action_just_pressed("dash"):
 		return
-	
 	
 	start_dashing()
 
@@ -567,17 +578,18 @@ func start_dashing() -> void:
 	if !can_dash:
 		return
 	
-	if is_dashing:
+	if p_action_state == PlayerActionState.DASHING:
 		return
 
 	can_dash = false
-	is_dashing = true	
+	p_action_state = PlayerActionState.DASHING
 	
 	hurt_box_col.set_deferred("disabled", true)
 
 	dash_timer = dash_duration
 	can_dash_timer = 1.5
 	velocity.x = facing_dir * dash_speed
+	print(velocity.x)
 	AudioManager.play_music(SWOSH_WHOOSH_AIR_CUT, "oneshot", -10.0)
 	
 	if p_form_state == PlayerFormState.HUMAN_FORM:
@@ -586,10 +598,10 @@ func start_dashing() -> void:
 		play_anim(anim_player, "dashing", true)
 	
 func is_air_dashing() -> bool:
-	return is_dashing and !is_on_floor()
+	return p_action_state == PlayerActionState.DASHING and !is_on_floor()
 
 func has_dashed_midair() -> bool:
-	if !is_on_floor() and is_dashing:
+	if !is_on_floor() and p_action_state == PlayerActionState.DASHING:
 		has_dashed_mid_air = true
 	return has_dashed_mid_air
 
@@ -603,23 +615,23 @@ func start_block() -> void:
 		velocity.x = 0.0
 		return
 	
-	
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	
-	if is_skilling:
+	if p_action_state == PlayerActionState.SKILL_ONE or p_action_state == PlayerActionState.SKILL_TWO:
 		return
 	
-	if is_transforming:
+	if p_action_state == PlayerActionState.TO_HUMAN_TRANSFORM:
 		velocity.x = 0.0
 		return
 	
-	if is_busy:
+	if p_action_state == PlayerActionState.RAGE_TRANSFORM:
 		velocity.x = 0.0
 		return
 	
-	if is_attacking and !is_on_floor():
+	if p_action_state == PlayerActionState.ATTACK and !is_on_floor():
 		return
+
 	elif !is_on_floor():
 		return
 		
@@ -632,19 +644,19 @@ func start_block() -> void:
 
 func start_blocking() -> void:
 	
-	is_busy = true
-	is_blocking = true
+	if p_action_state == PlayerActionState.BLOCKING:
+		return
 	
 	p_action_state = PlayerActionState.BLOCKING
+	is_blocking = true 
 	play_anim(p_sprite, "block", true)
 	p_sprite.sprite_frames.set_animation_loop("block", true)
 	
 func _on_block_connect() -> void:
 	hurt_box_col.set_deferred("disabled", true)
-	
 
 func end_blocking_state() -> void:
-	if !is_blocking:
+	if !p_action_state == PlayerActionState.BLOCKING:
 		return
 		
 	end_blocking()
@@ -655,7 +667,6 @@ func end_blocking() -> void:
 		p_sprite.sprite_frames.set_animation_loop("block", false)
 		p_sprite.stop()
 
-	is_busy = false
 	is_blocking = false
 	p_action_state = PlayerActionState.NONE
 	hurt_box_col.set_deferred("disabled", false)
@@ -669,20 +680,25 @@ func start_attack() -> void:
 		velocity.x = 0.0
 		return
 	
-	
 	if p_action_state == PlayerActionState.REVIVE:
 		return
 	
-	if is_skilling:
+	if p_action_state == PlayerActionState.SKILL_ONE or p_action_state == PlayerActionState.SKILL_TWO:
+		return
+
+	if p_action_state == PlayerActionState.TO_HUMAN_TRANSFORM:
 		return
 	
-	if is_transforming:
+	if p_action_state == PlayerActionState.RAGE_TRANSFORM:
 		return
 	
 	if !input_available:
 		return
+		
+	if p_action_state == PlayerActionState.DASHING:
+		return
 
-	if is_blocking:
+	if p_action_state == PlayerActionState.BLOCKING:
 		return
 	
 	if is_on_floor():
@@ -691,7 +707,7 @@ func start_attack() -> void:
 	if not Input.is_action_just_pressed("attack"):
 		return
 	
-	if is_attacking:
+	if p_action_state == PlayerActionState.ATTACK:
 		
 		if attack_window_open and combo_seq < MAX_COMBO:
 			combo_input_queued = true
@@ -714,9 +730,8 @@ func close_attack_window() -> void:
 func start_attk_combo(combo_count: int) -> void:
 	if has_attk_mid_air:
 		return
-	
-	is_busy = true
-	is_attacking = true
+
+	p_action_state = PlayerActionState.ATTACK
 	mace_hit_box.set_deferred("disabled", false)
 	attack_window_open = false
 	combo_input_queued = false
@@ -759,7 +774,7 @@ func _on_main_sprite_animation_finished() -> void:
 	if is_hurt and p_action_state == PlayerActionState.HURT:
 		end_hurt()
 
-	if is_attacking:
+	if p_action_state == PlayerActionState.ATTACK or p_action_state == PlayerActionState.COMBO_ATTACK:
 		if is_on_air:
 			has_attk_mid_air = true
 			end_combo()
@@ -776,8 +791,7 @@ func _on_spider_sprite_animation_finished() -> void:
 	if is_hurt and p_action_state == PlayerActionState.HURT:
 		end_hurt()
 		
-
-	if is_attacking:
+	if p_action_state == PlayerActionState.ATTACK:
 		if is_on_air:
 			has_attk_mid_air = true
 			
@@ -890,8 +904,7 @@ func end_rage() -> void:
 
 
 func end_combo() -> void:
-	is_busy = false
-	is_attacking = false
+
 	mace_hit_box.set_deferred("disabled", true)
 	combo_input_queued = false
 	combo_seq = 0
@@ -945,7 +958,7 @@ func start_hurt(damage: float) -> void:
 	AudioManager.play_music(SFX_AGH, "voice", -10.0)
 	
 	is_busy = true
-	input_available = false
+
 	
 	if is_invulnerable:
 		return
@@ -1179,7 +1192,6 @@ func adjust_health_and_state() -> void:
 	is_skilling = false
 	is_blocking = false
 	is_dashing = false
-	
 	
 
 func unpause_after_revive() -> void:
