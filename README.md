@@ -36,5 +36,5 @@ https://github.com/clear-code-projects/UltimateGodotIntro2D - Font - Toybox
 Im not sure who the original creator was, but the snail and tileset came from free files from this course: 
 https://www.udemy.com/course/jumpstart-to-2d-game-development-godot-4-for-beginn...
 
-Video in the start screen and prolongue were taken from a streamer's stream: 
+Video in the start screen and prologue were taken from a streamer's stream: 
 https://www.youtube.com/channel/UCykMWf8B8I7c_jA8FTy2tGw 
