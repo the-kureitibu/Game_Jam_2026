@@ -1,4 +1,4 @@
-My gamejam entry for 2026, built with Godot 4.6, using GDScript.
+My gamejam entry for 2026, built with Godot 4.6, using GDScript. Playable in https://dkeii.itch.io/the-hero-party-were-useless 
 
 Besides the tileset, UI, fonts, 5 parallax bg, and the snail, everything else is drawn by yours truly. 
 
