@@ -23,6 +23,12 @@ const TUTORIAL_SCENE: String ="res://scenes/levels_scene/tutorial_level.tscn"
 
 #endregion -- SFX 
 
+#region BGM 
+@onready var AESTATE: String = "res://assets/audio/bgm/Aestate.mp3"
+
+#endregion -- BGM 
+
+
 #endregion -- References
 
 #region Timers 
@@ -101,6 +107,7 @@ func _ready() -> void:
 	dialogue_ended.connect(move_to_tutorial_scene)
 	
 	
+	
 func _process(delta: float) -> void:
 	
 	if !Input.is_action_just_pressed("skip"):
@@ -113,12 +120,15 @@ func _process(delta: float) -> void:
 		start_skip()
 
 	handle_dialogue_seq()
+	
 
 #endregion  -- Processes 
 
 #region First Sequence
 
 func fade_out_and_start() -> void:
+	AudioManager.fade_to_bgm(AESTATE, "bgm", -10.0)
+
 	var tween = create_tween()
 	tween.tween_property(first_label_container, "modulate:a", 1.0, 1.5)
 
@@ -146,6 +156,7 @@ func fade_out_and_start_vid() -> void:
 	
 	if is_skipped:
 		tween.kill()
+
 	
 func pulse_control(control: Control) -> void:
 	var tween := create_tween()
@@ -155,6 +166,8 @@ func pulse_control(control: Control) -> void:
 	tween.tween_property(control, "modulate:a", 1.0, 2.5)
 
 func fade_in_and_end_vid() -> void:
+	AudioManager.fade_out_bgm("bgm")
+
 	var tween = create_tween().set_parallel(true)
 	
 	tween.tween_property(first_label_container, "modulate:a", 0.0, 3.0)
@@ -254,6 +267,9 @@ func start_skip() -> void:
 	
 	handle_dialogue_seq()
 	
+	if AudioManager.bgm_player.is_playing():
+		AudioManager.stop_music("bgm")	
+		
 #endregion  -- Skip Functions
 
 

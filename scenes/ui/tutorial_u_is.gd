@@ -181,6 +181,7 @@ func test_func() -> void:
 
 
 func open_attk_tutorial_panel() -> void:
+	GameManager.is_tutorial_menu_open = true
 	
 	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 
@@ -200,6 +201,8 @@ func open_attk_tutorial_panel() -> void:
 
 	
 func open_jump_block_panel() -> void:
+	GameManager.is_tutorial_menu_open = true
+	
 	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 
 	if is_panel_open:
@@ -216,6 +219,7 @@ func open_jump_block_panel() -> void:
 				text_label_two, 1, current_index)
 
 func open_rage_panel() -> void:
+	GameManager.is_tutorial_menu_open = true
 	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 
 	if is_panel_open:
@@ -231,6 +235,7 @@ func open_rage_panel() -> void:
 				text_label_three, 2, current_index)
 
 func open_rage_skill_panel() -> void:
+	GameManager.is_tutorial_menu_open = true
 	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 
 	if is_panel_open:
@@ -357,6 +362,7 @@ func button_image_helper(panel: MarginContainer, image_array: Array) -> void:
 #region Exit Button
 
 func _on_exit_button_pressed() -> void:
+	GameManager.is_tutorial_menu_open = false
 	is_panel_open = false
 	
 	AudioManager.play_music(typing_sfx, "oneshot", -6.0)

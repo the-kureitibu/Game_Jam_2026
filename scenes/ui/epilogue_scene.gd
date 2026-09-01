@@ -29,7 +29,14 @@ extends Control
 
 @onready var button_margin_cont: MarginContainer = $ButtonMarginCont
 
+@onready var ty_container: MarginContainer = $TYContainer
+
+
 const START_SCENE: String = "res://scenes/ui/start_screen.tscn"
+
+@onready var thank_you_top: RichTextLabel = $TYContainer/VBoxContainer/ThankYouTop
+@onready var thank_you_body: RichTextLabel = $TYContainer/VBoxContainer/ThankYouBody
+
 
 #region BGM 
 
@@ -246,6 +253,9 @@ func show_bg_two() -> void:
 
 func show_end_buttons() -> void:
 	button_margin_cont.visible = true
+	ty_container.visible = true
+	pulse_control(thank_you_top)
+	pulse_control(thank_you_body)
 
 #endregion -- End Buttons
 

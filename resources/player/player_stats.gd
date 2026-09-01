@@ -2,7 +2,7 @@ extends Resource
 
 class_name PlayerStats
 
-@export var player_health: float = 120.0
+@export var player_health: float = 200.0
 @export var player_speed: float = 150.0
 @export var player_damage: float = 20.0
 @export var rage_amount: float = 100.0

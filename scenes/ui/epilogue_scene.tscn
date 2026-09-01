@@ -163,6 +163,41 @@ theme_override_colors/default_color = Color(0.9509199, 0.6195214, 0.74134755, 1)
 theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
 theme_override_fonts/normal_font = ExtResource("3_4g5s4")
 
+[node name="TYContainer" type="MarginContainer" parent="." unique_id=426558669]
+visible = false
+custom_minimum_size = Vector2(0, 225)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TYContainer" unique_id=256216100]
+layout_mode = 2
+
+[node name="ThankYouTop" type="RichTextLabel" parent="TYContainer/VBoxContainer" unique_id=981577626]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 6
+theme_override_colors/default_color = Color(0.8950189, 0.4042994, 0.6100351, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("3_4g5s4")
+theme_override_font_sizes/normal_font_size = 32
+text = "thank you for playing! "
+horizontal_alignment = 1
+
+[node name="ThankYouBody" type="RichTextLabel" parent="TYContainer/VBoxContainer" unique_id=443417740]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 6
+theme_override_colors/default_color = Color(0.8950189, 0.4042994, 0.6100351, 1)
+theme_override_colors/font_shadow_color = Color(0.2901961, 0.10980392, 0.25490198, 1)
+theme_override_fonts/normal_font = ExtResource("3_4g5s4")
+theme_override_font_sizes/normal_font_size = 23
+text = "Make sure to play other buckos' games too!"
+horizontal_alignment = 1
+
 [node name="ButtonMarginCont" type="MarginContainer" parent="." unique_id=1451194070]
 visible = false
 custom_minimum_size = Vector2(0, 120)

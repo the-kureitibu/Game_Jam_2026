@@ -12,10 +12,9 @@ const TEXT_ANNOUNCER = preload("res://scenes/ui/text_announcer.tscn")
 var current_scene_path: String = ""
 var previous_scene_path: String = ""
 var demon_realm_path: String = "res://scenes/levels_scene/demon_realm_level.tscn"
-var is_immortal: bool = false
+var is_immortal: bool = true
 
-
-
+var is_tutorial_menu_open := false
 
 #endregion -- References
 

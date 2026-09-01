@@ -40,6 +40,7 @@ texture = ExtResource("2_w735g")
 region_rect = Rect2(869, 134, 22, 22)
 
 [node name="MenuUI" type="Control" unique_id=1033321024]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -93,6 +93,8 @@ func _ready() -> void:
 	for arrow in arrows:
 		arrow_original_positions[arrow] = arrow.position
 	
+	SignalHub.unpause_after_menu_exit.connect(unpause_stage)
+
 
 #func _process(delta: float) -> void:
 	#animate_arrows()
@@ -216,5 +218,8 @@ func _on_arrow_four_area_body_exited(body: Node2D) -> void:
 
 #region Transitions
 
-
+func unpause_stage() -> void:
+	if get_tree().paused:
+		get_tree().paused = false
+		
 #endregion -- Transitions

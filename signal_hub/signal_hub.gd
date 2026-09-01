@@ -33,6 +33,7 @@ signal start_second_phase
 
 signal end_game_start
 signal start_end_game_dialogue
+signal unpause_after_menu_exit
 
 #endregion  -- Stage/Level Related
 

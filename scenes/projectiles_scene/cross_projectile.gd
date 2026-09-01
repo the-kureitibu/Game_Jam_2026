@@ -29,12 +29,12 @@ func handle_initial_attack() -> void:
 	main_sprite.visible = true
 	hit_box.visible = true
 	
-	
 
-	
 
 func start_anim() -> void:
-	AudioManager.play_music(light_ray_sfx, "skill", -9.0)
+	if !AudioManager.skill_sfx_player.is_playing():
+		AudioManager.play_music(light_ray_sfx, "skill", -9.0)
+	
 	anim_player.play("trigger_attack")
 
 func hit() -> int:

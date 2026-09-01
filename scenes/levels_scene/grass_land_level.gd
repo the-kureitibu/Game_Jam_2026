@@ -48,6 +48,10 @@ func _ready() -> void:
 		player_two.global_position
 	)
 	
+	SignalHub.unpause_after_menu_exit.connect(unpause_stage)
+	
+
+
 func _process(delta: float) -> void:
 	
 	if last_pos_catcher.is_colliding():
@@ -93,10 +97,11 @@ func _on_transition_area_body_entered(body: Node2D) -> void:
 		position_captured = false
 		AudioManager.fade_out_bgm("bgm")
 		
+		GameManager.capture_player_stats(player_one.p_health, player_one.r_amount)
 		GameManager.change_scene_with_transition(DEMON_REALM_SCENE)
 		
-
-		
-		
+func unpause_stage() -> void:
+	if get_tree().paused:
+		get_tree().paused = false
 
 #endregion -- Transitions 

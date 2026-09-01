@@ -46,6 +46,15 @@ func transition_to_scene(scene_path: String) -> void:
 	get_tree().change_scene_to_file(scene_path)
 	await get_tree().process_frame
 	
+	var player_one = get_tree().get_first_node_in_group("Player_target")
+	var player_two = get_tree().get_first_node_in_group("Player_target")
+	
+	if player_one and player_two:
+		
+		player_one.p_health = GameManager.player_saved_health
+		player_one.r_amount = GameManager.player_saved_rage
+	
+	
 	animation_player.play("fade_out")
 	await animation_player.animation_finished
 	

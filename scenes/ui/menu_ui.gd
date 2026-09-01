@@ -36,7 +36,11 @@ func _ready() -> void:
 	sfx_volume.value = 50.0
 
 func open_menu_panel() -> void:
+	if GameManager.is_tutorial_menu_open:
+		return
+	
 	base_panel.visible = true
+	get_tree().paused = true
 
 func adjust_sfx_volume() -> void:
 	pass
@@ -96,9 +100,9 @@ func _on_exit_button_pressed() -> void:
 
 
 func _on_x_button_pressed() -> void:
+	SignalHub.unpause_after_menu_exit.emit()
 	AudioManager.play_music(typing_sfx, "oneshot", -6.0)
 	base_panel.visible = false
-
 
 #endregion -- Buttons
 

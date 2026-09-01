@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dfiomxa4fli0f"]
 
-[ext_resource type="Script" uid="uid://bdkv2lxwhe0hc" path="res://scenes/player_scene/player_scripts/test_player_script.gd" id="1_10rhv"]
+[ext_resource type="Script" uid="uid://bekisavsywxjs" path="res://scenes/player_scene/player_scripts/player_master.gd" id="1_10rhv"]
 [ext_resource type="Script" uid="uid://rc0p3ykjd7ra" path="res://resources/player/player_stats.gd" id="2_qr5f1"]
 [ext_resource type="Texture2D" uid="uid://b2p72tagowg07" path="res://assets/sprites/player/saintmiya_main_sprite3.png" id="3_10rhv"]
 [ext_resource type="Texture2D" uid="uid://6gld3f250kl5" path="res://assets/sprites/player/saintmiya_main_sprite2.png" id="4_gdmn6"]
@@ -1016,7 +1016,7 @@ animation = &"death"
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="." unique_id=445073929]
 sprite_frames = SubResource("SpriteFrames_gdmn6")
-animation = &"idle"
+animation = &"revive"
 offset = Vector2(0, -45)
 
 [node name="CrossProjectile" parent="." unique_id=148571568 instance=ExtResource("5_10rhv")]

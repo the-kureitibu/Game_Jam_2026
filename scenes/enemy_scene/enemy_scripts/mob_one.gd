@@ -67,8 +67,16 @@ var landing_offset := 24.0
 @onready var m_sprite: AnimatedSprite2D = $MainSprite
 @onready var monster_health_bar: Control = $MonsterHealthBar
 
-
 #endregion
+
+#region SFX References
+
+@onready var THUD: String = "uid://bdnlfmbpnwt2w"
+
+
+
+#endregion SFX References
+ 
 
 #region Timers
 @onready var attk_timer := 0.0
@@ -344,6 +352,10 @@ func _on_hit_box_area_entered(area: Area2D) -> void:
 	
 	if p_target and "handle_hurt" in p_target:
 		p_target.handle_hurt(dmg)
+	
+	if !AudioManager.special_sfx_player.is_playing():
+		AudioManager.play_music(THUD, "special", -6.0)
+
 
 
 func _on_hurt_box_area_entered(area: Area2D) -> void:
