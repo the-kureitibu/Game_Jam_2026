@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://ssemu1m60nei" path="res://assets/sprites/ui/Sprite sheets/Sprite sheet for Basic Pack.png" id="9_o7jhk"]
 [ext_resource type="FontFile" uid="uid://kfq72qprgmk0" path="res://assets/sprites/ui/fonts/ToyBox.otf" id="10_pg22n"]
 [ext_resource type="PackedScene" uid="uid://ncaipo1qyrg7" path="res://scenes/environment_scene/main_parallax.tscn" id="11_o7jhk"]
+[ext_resource type="PackedScene" uid="uid://dn5srq6ttvo7w" path="res://scenes/ui/main_ui.tscn" id="12_pg22n"]
+[ext_resource type="PackedScene" uid="uid://byigv7c0sjq2o" path="res://scenes/ui/menu_ui.tscn" id="13_qtk0d"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dn0hc"]
 atlas = ExtResource("2_gokco")
@@ -218,6 +220,11 @@ size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxTexture_fos4h")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_o7jhk")
 theme_override_styles/hover = SubResource("StyleBoxTexture_pg22n")
+
+[node name="MainUI" parent="TutorialPopup" unique_id=1108660128 instance=ExtResource("12_pg22n")]
+mouse_filter = 2
+
+[node name="MenuUI" parent="TutorialPopup" unique_id=1033321024 instance=ExtResource("13_qtk0d")]
 
 [node name="Projectiles" type="Node2D" parent="." unique_id=1912013478]
 

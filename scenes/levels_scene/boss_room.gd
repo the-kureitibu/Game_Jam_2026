@@ -2,6 +2,9 @@ extends Node2D
 
 #region References
 @onready var menu_ui: Control = $CanvasLayer/MenuUI
+@onready var main_ui: Control = $CanvasLayer/MainUI
+
+
 
 const PRE_FIGHT_DIALOGUE = preload("res://scenes/ui/pre_boss_dialogue.tscn")
 const PRE_SECOND_PHASE_DIALOGUE = preload("res://scenes/ui/second_phase_dialogue.tscn")
@@ -33,7 +36,18 @@ func _ready() -> void:
 	SignalHub.end_game_start.connect(start_end_fight_dialogue)
 	SignalHub.start_end_game_dialogue.connect(move_to_end_dialogue)
 	
-	
+	SignalHub.restart_game.connect(hide_health_ui)
+	SignalHub.unpause_after_menu_exit.connect(unpause_stage)
+
+func unpause_stage() -> void:
+	if get_tree().paused:
+		get_tree().paused = false
+		
+func hide_health_ui() -> void:
+	main_ui.visible = false
+	canvas_layer.visible = false
+
+
 #endregion -- Processes 
 
 func move_to_end_dialogue() -> void:

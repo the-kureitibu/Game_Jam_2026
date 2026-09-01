@@ -6,6 +6,7 @@ extends Node2D
 
 
 @onready var menu_ui: Control = $MainUICanvas/MenuUI
+@onready var main_ui: Control = $MainUICanvas/MainUI
 
 #endregion Menu Panel
 
@@ -35,7 +36,7 @@ const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.t
 
 func _enter_tree() -> void:
 	GameManager.game_scene_state = GameManager.GameLevelStates.GRASSLAND_SCENE
-	
+		
 func _ready() -> void:
 	AudioManager.fade_to_bgm(woodland_fantasy_bgm, "bgm", -10.0)
 
@@ -49,7 +50,10 @@ func _ready() -> void:
 	)
 	
 	SignalHub.unpause_after_menu_exit.connect(unpause_stage)
-	
+	SignalHub.restart_game.connect(hide_health_ui)
+
+func hide_health_ui() -> void:
+	main_ui.visible = false
 
 
 func _process(delta: float) -> void:
@@ -97,9 +101,14 @@ func _on_transition_area_body_entered(body: Node2D) -> void:
 		position_captured = false
 		AudioManager.fade_out_bgm("bgm")
 		
+		if !GameManager.out_of_initial_level:
+			GameManager.out_of_initial_level = true
+	
 		GameManager.capture_player_stats(player_one.p_health, player_one.r_amount)
 		GameManager.change_scene_with_transition(DEMON_REALM_SCENE)
 		
+
+
 func unpause_stage() -> void:
 	if get_tree().paused:
 		get_tree().paused = false

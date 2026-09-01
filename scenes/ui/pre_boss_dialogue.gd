@@ -3,6 +3,7 @@ extends Control
 #region Base Vars
 
 #region References 
+@onready var pre_boss_dialogue: Control = $"."
 
 @onready var amiya_thumbnail_path: String = "res://assets/sprites/ui/thumbnails/Amiya_thumbnail.png"
 @onready var bucko_thumbnail_path: String = "res://assets/sprites/ui/thumbnails/bucko_thumbnail.png"
@@ -126,6 +127,10 @@ func _ready() -> void:
 	current_index += 1 
 	next_text_label.text = names_and_text_collection[3]
 	pulse_control(next_text_label)
+	SignalHub.restart_game.connect(hide_self)
+
+func hide_self() -> void:
+	pre_boss_dialogue.visible = false
 
 
 func _process(delta: float) -> void:

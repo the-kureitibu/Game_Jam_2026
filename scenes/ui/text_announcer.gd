@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 #region References
+@onready var text_announcer: CanvasLayer = $"."
 
 @onready var text_label: RichTextLabel = $MainControl/MainMargin/TextLabel
 var can_send_signal := false
@@ -12,6 +13,12 @@ func _enter_tree() -> void:
 	add_to_group("text_announcer")
 	if GameManager.game_scene_state == GameManager.GameLevelStates.END_GAME:
 		can_send_signal = true
+		
+	SignalHub.restart_game.connect(hide_self)
+
+
+func hide_self() -> void:
+	text_announcer.visible = false
 
 func announce(text: String) -> void:
 	

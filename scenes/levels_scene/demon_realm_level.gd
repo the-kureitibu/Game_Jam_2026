@@ -2,6 +2,8 @@ extends Node2D
 
 #region References 
 @onready var menu_ui: Control = $MainUICanvas/MenuUI
+@onready var main_ui: Control = $MainUICanvas/MainUI
+
 
 @onready var player_one: CharacterBody2D = $PlayerScene
 @onready var player_two: CharacterBody2D = $PlayerTwoScene
@@ -45,6 +47,18 @@ func _ready() -> void:
 		player_one.global_position,
 		player_two.global_position
 	)
+	
+	SignalHub.restart_game.connect(hide_health_ui)
+	SignalHub.unpause_after_menu_exit.connect(unpause_stage)
+
+func unpause_stage() -> void:
+	if get_tree().paused:
+		get_tree().paused = false
+		
+
+func hide_health_ui() -> void:
+	main_ui.visible = false
+
 
 func _process(delta: float) -> void:
 	

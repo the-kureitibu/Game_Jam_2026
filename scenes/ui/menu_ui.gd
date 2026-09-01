@@ -14,6 +14,7 @@ extends Control
 @onready var base_panel: MarginContainer = $BasePanel
 @onready var typing_sfx: String = "res://assets/audio/sfx/typewriter3.wav"
 const START_SCENE: String = "res://scenes/ui/start_screen.tscn"
+@onready var menu_ui: Control = $"."
 
 
 #endregion -- References Nodes
@@ -88,10 +89,13 @@ func _on_bgm_volume_value_changed(value: float) -> void:
 #region Buttons
 
 func _on_title_button_pressed() -> void:
-
-	SignalHub.restart_game.emit()
 	
+	get_tree().paused = false
+	
+	SignalHub.restart_game.emit()
+	menu_ui.visible = false
 	AudioManager.fade_out_bgm("bgm")
+	
 	GameManager.change_scene_with_transition(START_SCENE)
 
 

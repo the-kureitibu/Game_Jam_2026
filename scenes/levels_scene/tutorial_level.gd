@@ -94,6 +94,10 @@ func _ready() -> void:
 		arrow_original_positions[arrow] = arrow.position
 	
 	SignalHub.unpause_after_menu_exit.connect(unpause_stage)
+	SignalHub.restart_game.connect(hide_health_ui)
+
+func hide_health_ui() -> void:
+	ui_layer.visible = false
 
 
 #func _process(delta: float) -> void:

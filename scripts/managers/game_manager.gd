@@ -12,9 +12,10 @@ const TEXT_ANNOUNCER = preload("res://scenes/ui/text_announcer.tscn")
 var current_scene_path: String = ""
 var previous_scene_path: String = ""
 var demon_realm_path: String = "res://scenes/levels_scene/demon_realm_level.tscn"
-var is_immortal: bool = true
+var is_immortal: bool = false
 
 var is_tutorial_menu_open := false
+var out_of_initial_level := false
 
 #endregion -- References
 
@@ -106,6 +107,8 @@ func restart_game_manager() -> void:
 	can_start_boss_fight = false
 	can_start_second_phase = false
 	is_second_phase_pre_dialogue = false
+	is_tutorial_menu_open = false
+	out_of_initial_level = false
 
 
 #endregion -- Restart Levels

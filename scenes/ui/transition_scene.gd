@@ -50,9 +50,9 @@ func transition_to_scene(scene_path: String) -> void:
 	var player_two = get_tree().get_first_node_in_group("Player_target")
 	
 	if player_one and player_two:
-		
-		player_one.p_health = GameManager.player_saved_health
-		player_one.r_amount = GameManager.player_saved_rage
+		if GameManager.out_of_initial_level:
+			player_one.p_health = GameManager.player_saved_health
+			player_one.r_amount = GameManager.player_saved_rage
 	
 	
 	animation_player.play("fade_out")

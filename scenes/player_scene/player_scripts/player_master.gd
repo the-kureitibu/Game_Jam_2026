@@ -78,7 +78,7 @@ const MAX_RAGE: float = 100.0
 		p_damage = clamp(value, 0, MAX_DMG)
 		stat_changed.emit("p_damage", p_damage)
 
-@onready var r_amount: float = 95.0:
+@onready var r_amount: float = 0.0:
 	set(value):
 		if stats == null:
 			r_amount = value

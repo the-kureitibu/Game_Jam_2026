@@ -1,7 +1,8 @@
 extends Node2D
 
 #region References
-
+@onready var menu_ui: Control = $TutorialPopup/MenuUI
+@onready var main_ui: Control = $TutorialPopup/MainUI
 @onready var michael_statue: AnimatedSprite2D = $MichaelStatue
 var cur_statue_frame := 0
 var max_statue_frame := 3
@@ -49,6 +50,17 @@ func _ready() -> void:
 	top_control_michael.visible = false
 	SignalHub.show_michael_tutorial.connect(show_tutorial)
 	cracking.connect(play_crack_sounds)
+
+	SignalHub.restart_game.connect(hide_health_ui)
+	SignalHub.unpause_after_menu_exit.connect(unpause_stage)
+
+func unpause_stage() -> void:
+	if get_tree().paused:
+		get_tree().paused = false
+
+
+func hide_health_ui() -> void:
+	main_ui.visible = false
 
 
 #endregion -- Processes
@@ -125,5 +137,12 @@ func _on_exit_button_pressed() -> void:
 	SignalHub.michael.emit()
 
 #endregion -- Button Signals
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("menu"):
+		
+		menu_ui.open_menu_panel()
+
 
 #endregion -- Functions

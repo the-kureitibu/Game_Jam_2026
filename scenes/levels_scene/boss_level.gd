@@ -2,11 +2,11 @@ extends Node2D
 
 #region References 
 @onready var menu_ui: Control = $MainUI/MenuUI
+@onready var main_ui: Control = $MainUI/MainUI
 
 @onready var player_one: CharacterBody2D = $PlayerScene
 @onready var player_two: CharacterBody2D = $PlayerTwoScene
 @onready var current_path = get_tree().current_scene.scene_file_path
-@onready var main_ui: CanvasLayer = $MainUI
 
 const DEMON_REALM_SCENE: String = "res://scenes/levels_scene/demon_realm_level.tscn"
 const BOSS_ROOM_SCENE: String = "res://scenes/levels_scene/boss_room.tscn"
@@ -51,6 +51,16 @@ func _ready() -> void:
 		player_one.global_position,
 		player_two.global_position
 	)
+	
+	SignalHub.restart_game.connect(hide_health_ui)
+	SignalHub.unpause_after_menu_exit.connect(unpause_stage)
+
+func unpause_stage() -> void:
+	if get_tree().paused:
+		get_tree().paused = false
+		
+func hide_health_ui() -> void:
+	main_ui.visible = false
 
 
 #region Transitions 
